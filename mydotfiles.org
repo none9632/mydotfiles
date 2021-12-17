@@ -1143,12 +1143,12 @@ off:  '2 days, 10 hours, 3 minutes'
 *** Show memory pecentage in output
 
 Default: 'off' \\
-Values:  'on', 'off' \\
-Flag:    --memory_percent \\
+Values:  'on', 'off' \\\\
+Flag:    --memory_percent
 
 Example: \\
-on:   '1801MiB / 7881MiB (22%)' \\
-off:  '1801MiB / 7881MiB' \\
+on:   '1801MiB / 7881MiB (22%)' \\\\
+off:  '1801MiB / 7881MiB'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
 
