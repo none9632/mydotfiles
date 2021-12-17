@@ -1073,14 +1073,14 @@ Hide/Show Fully qualified domain name.
 
 Shorten the output of the kernel function.
 
-- Default:  'on'
-- Values:   'on', 'off'
-- Flag:     --kernel_shorthand
-- Supports: Everything except *BSDs (except PacBSD and PC-BSD)
+Default:  'on'
+Values:   'on', 'off'
+Flag:     --kernel_shorthand
+Supports: Everything except *BSDs (except PacBSD and PC-BSD)
 
-- Example:
-- on:  '4.8.9-1-ARCH'
-- off: 'Linux 4.8.9-1-ARCH'
+Example:
+on:  '4.8.9-1-ARCH'
+off: 'Linux 4.8.9-1-ARCH'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
 
@@ -1144,11 +1144,11 @@ off:  '2 days, 10 hours, 3 minutes'
 
 Default: 'off' \\
 Values:  'on', 'off' \\
-Flag:    --memory_percent
+Flag:    --memory_percent \\
 
 Example: \\
 on:   '1801MiB / 7881MiB (22%)' \\
-off:  '1801MiB / 7881MiB'
+off:  '1801MiB / 7881MiB' \\
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
 
