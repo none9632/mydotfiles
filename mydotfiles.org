@@ -1059,9 +1059,9 @@ Neofetch config
 
 Hide/Show Fully qualified domain name.
 
-Default:  'off' \\
-Values:   'on', 'off' \\
-Flag:     --title_fqdn
+- Default:  'off'
+- Values:   'on', 'off'
+- Flag:     --title_fqdn
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
 
@@ -1073,14 +1073,14 @@ Flag:     --title_fqdn
 
 Shorten the output of the kernel function.
 
-Default:  'on' \\
-Values:   'on', 'off' \\
-Flag:     --kernel_shorthand \\
-Supports: Everything except *BSDs (except PacBSD and PC-BSD)
+- Default:  'on'
+- Values:   'on', 'off'
+- Flag:     --kernel_shorthand
+- Supports: Everything except *BSDs (except PacBSD and PC-BSD)
 
-Example: \\
-on:  '4.8.9-1-ARCH' \\
-off: 'Linux 4.8.9-1-ARCH'
+- Example:
+- on:  '4.8.9-1-ARCH'
+- off: 'Linux 4.8.9-1-ARCH'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
 
@@ -2140,7 +2140,3 @@ Values: 'on', 'off'
 #+end_src
 
 
-* Test
-test \\
-test \\
-test
