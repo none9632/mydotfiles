@@ -1,4 +1,5 @@
 # -*- eval: (my/org-config-mode) -*-
+#+OPTIONS: \n:t
 
 #+TITILE: My dotfiles
 #+STARTUP: fold
@@ -1242,7 +1243,7 @@ Supports: Linux with 'cpufreq'
 *** CPU speed shorthand
 
 Default: 'off'
-Values:  'on', 'off'.
+Values:  'on', 'off'
 Flag:    --speed_shorthand
 
 Example:
@@ -1296,7 +1297,7 @@ Display CPU cores in output
 Default: 'logical'
 Values:  'logical', 'physical', 'off'
 Flag:    --cpu_cores
-Support: 'physical' doesn't work on BSD.
+Support: 'physical' doesn't work on BSD
 
 Example:
 logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores)
@@ -1377,7 +1378,7 @@ Display refresh rate next to each monitor
 Default: 'off'
 Values:  'on', 'off'
 Flag:    --refresh_rate
-Supports: Doesn't work on Windows.
+Supports: Doesn't work on Windows
 
 Example:
 on:  '1920x1080 @ 60Hz'
@@ -1483,7 +1484,7 @@ Flag:    --de_version
 The values can be any /dev/sdXX, mount point or directory.
 
 Default: '/'
-Values:  '/', '/dev/sdXX', '/path/to/drive'.
+Values:  '/', '/dev/sdXX', '/path/to/drive'
 Flag:    --disk_show
 
 Example:
@@ -1662,8 +1663,8 @@ Each number represents a different part of the text in
 this order: 'title', '@', 'underline', 'subtitle', 'colon', 'info'
 
 Example:
-colors=(distro)      - Text is colored based on Distro colors.
-colors=(4 6 1 8 8 6) - Text is colored in the order above.
+colors=(distro)      - Text is colored based on Distro colors
+colors=(4 6 1 8 8 6) - Text is colored in the order above
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
 
@@ -1986,8 +1987,8 @@ Values:   'distro', 'num' 'num' 'num' 'num' 'num' 'num'
 Flag:     --ascii_colors
 
 Example:
-ascii_colors=(distro)      - Ascii is colored based on Distro colors.
-ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors.
+ascii_colors=(distro)      - Ascii is colored based on Distro colors
+ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
 
