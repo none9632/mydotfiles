@@ -1,5 +1,4 @@
 # -*- eval: (my/org-config-mode) -*-
-#+OPTIONS: \n:t
 
 #+TITILE: My dotfiles
 #+STARTUP: fold
@@ -1060,8 +1059,8 @@ Neofetch config
 
 Hide/Show Fully qualified domain name.
 
-Default:  'off'
-Values:   'on', 'off'
+Default:  'off' \\
+Values:   'on', 'off' \\
 Flag:     --title_fqdn
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1074,13 +1073,13 @@ Flag:     --title_fqdn
 
 Shorten the output of the kernel function.
 
-Default:  'on'
-Values:   'on', 'off'
-Flag:     --kernel_shorthand
+Default:  'on' \\
+Values:   'on', 'off' \\
+Flag:     --kernel_shorthand \\
 Supports: Everything except *BSDs (except PacBSD and PC-BSD)
 
-Example:
-on:  '4.8.9-1-ARCH'
+Example: \\
+on:  '4.8.9-1-ARCH' \\
 off: 'Linux 4.8.9-1-ARCH'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1092,9 +1091,9 @@ off: 'Linux 4.8.9-1-ARCH'
 ** Distro
 *** Shorten the output of the distro function
 
-Default:  'off'
-Values:   'on', 'tiny', 'off'
-Flag:     --distro_shorthand
+Default:  'off' \\
+Values:   'on', 'tiny', 'off' \\
+Flag:     --distro_shorthand \\
 Supports: Everything except Windows and Haiku
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1107,12 +1106,12 @@ Supports: Everything except Windows and Haiku
 
 Show 'x86_64', 'x86' and etc in 'Distro:' output.
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --os_arch
 
-Example:
-on:  'Arch Linux x86_64'
+Example: \\
+on:  'Arch Linux x86_64' \\
 off: 'Arch Linux'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1125,13 +1124,13 @@ off: 'Arch Linux'
 
 Shorten the output of the uptime function
 
-Default: 'on'
-Values:  'on', 'tiny', 'off'
+Default: 'on' \\
+Values:  'on', 'tiny', 'off' \\
 Flag:    --uptime_shorthand
 
-Example:
-on:   '2 days, 10 hours, 3 mins'
-tiny: '2d 10h 3m'
+Example: \\
+on:   '2 days, 10 hours, 3 mins' \\
+tiny: '2d 10h 3m' \\
 off:  '2 days, 10 hours, 3 minutes'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1143,12 +1142,12 @@ off:  '2 days, 10 hours, 3 minutes'
 ** Memory
 *** Show memory pecentage in output
 
-Default: 'off'
-Values:  'on', 'off'
+Default: 'off' \\
+Values:  'on', 'off' \\
 Flag:    --memory_percent
 
-Example:
-on:   '1801MiB / 7881MiB (22%)'
+Example: \\
+on:   '1801MiB / 7881MiB (22%)' \\
 off:  '1801MiB / 7881MiB'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1159,13 +1158,13 @@ off:  '1801MiB / 7881MiB'
 
 *** Change memory output unit
 
-Default: 'mib'
-Values:  'kib', 'mib', 'gib'
+Default: 'mib' \\
+Values:  'kib', 'mib', 'gib' \\
 Flag:    --memory_unit
 
-Example:
-kib  '1020928KiB / 7117824KiB'
-mib  '1042MiB / 6951MiB'
+Example: \\
+kib  '1020928KiB / 7117824KiB' \\
+mib  '1042MiB / 6951MiB' \\
 gib: ' 0.98GiB / 6.79GiB'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1178,13 +1177,13 @@ gib: ' 0.98GiB / 6.79GiB'
 
 Show/Hide Package Manager names.
 
-Default: 'tiny'
-Values:  'on', 'tiny' 'off'
+Default: 'tiny' \\
+Values:  'on', 'tiny' 'off' \\
 Flag:    --package_managers
 
-Example:
-on:   '998 (pacman), 8 (flatpak), 4 (snap)'
-tiny: '908 (pacman, flatpak, snap)'
+Example: \\
+on:   '998 (pacman), 8 (flatpak), 4 (snap)' \\
+tiny: '908 (pacman, flatpak, snap)' \\
 off:  '908'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1196,12 +1195,12 @@ off:  '908'
 ** Shell
 *** Show the path to $SHELL
 
-Default: 'off'
-Values:  'on', 'off'
+Default: 'off' \\
+Values:  'on', 'off' \\
 Flag:    --shell_path
 
-Example:
-on:  '/bin/bash'
+Example: \\
+on:  '/bin/bash' \\
 off: 'bash'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1212,12 +1211,12 @@ off: 'bash'
 
 *** Show $SHELL version
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --shell_version
 
-Example:
-on:  'bash 4.4.5'
+Example: \\
+on:  'bash 4.4.5' \\
 off: 'bash'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1229,9 +1228,9 @@ off: 'bash'
 ** CPU
 *** CPU speed type
 
-Default:  'bios_limit'
-Values:   'scaling_cur_freq', 'scaling_min_freq', 'scaling_max_freq', 'bios_limit'.
-Flag:     --speed_type
+Default:  'bios_limit' \\
+Values:   'scaling_cur_freq', 'scaling_min_freq', 'scaling_max_freq', 'bios_limit'. \\
+Flag:     --speed_type \\
 Supports: Linux with 'cpufreq'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1242,12 +1241,12 @@ Supports: Linux with 'cpufreq'
 
 *** CPU speed shorthand
 
-Default: 'off'
-Values:  'on', 'off'
+Default: 'off' \\
+Values:  'on', 'off' \\
 Flag:    --speed_shorthand
 
-Example:
-on:    'i7-6500U (4) @ 3.1GHz'
+Example: \\
+on:    'i7-6500U (4) @ 3.1GHz' \\
 off:   'i7-6500U (4) @ 3.100GHz'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1258,12 +1257,12 @@ off:   'i7-6500U (4) @ 3.100GHz'
 
 *** Enable/Disable CPU brand in output
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --cpu_brand
 
-Example:
-on:   'Intel i7-6500U'
+Example: \\
+on:   'Intel i7-6500U' \\
 off:  'i7-6500U (4)'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1276,12 +1275,12 @@ off:  'i7-6500U (4)'
 
 Hide/Show CPU speed.
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --cpu_speed
 
-Example:
-on:  'Intel i7-6500U (4) @ 3.1GHz'
+Example: \\
+on:  'Intel i7-6500U (4) @ 3.1GHz' \\
 off: 'Intel i7-6500U (4)'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1294,14 +1293,14 @@ off: 'Intel i7-6500U (4)'
 
 Display CPU cores in output
 
-Default: 'logical'
-Values:  'logical', 'physical', 'off'
-Flag:    --cpu_cores
+Default: 'logical' \\
+Values:  'logical', 'physical', 'off' \\
+Flag:    --cpu_cores \\
 Support: 'physical' doesn't work on BSD
 
-Example:
-logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores)
-physical: 'Intel i7-6500U (2) @ 3.1GHz' (All physical cores)
+Example: \\
+logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores) \\
+physical: 'Intel i7-6500U (2) @ 3.1GHz' (All physical cores) \\
 off:      'Intel i7-6500U @ 3.1GHz'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1312,17 +1311,16 @@ off:      'Intel i7-6500U @ 3.1GHz'
 
 *** CPU Temperature
 
-Hide/Show CPU temperature.
-Note the temperature is added to the regular CPU function.
+Hide/Show CPU temperature. Note the temperature is added to the regular CPU function.
 
-Default:  'off'
-Values:   'C', 'F', 'off'
-Flag:     --cpu_temp
+Default:  'off' \\
+Values:   'C', 'F', 'off' \\
+Flag:     --cpu_temp \\
 Supports: Linux, BSD
 
-Example:
-C:   'Intel i7-6500U (4) @ 3.1GHz [27.2°C]'
-F:   'Intel i7-6500U (4) @ 3.1GHz [82.0°F]'
+Example: \\
+C:   'Intel i7-6500U (4) @ 3.1GHz [27.2°C]' \\
+F:   'Intel i7-6500U (4) @ 3.1GHz [82.0°F]' \\
 off: 'Intel i7-6500U (4) @ 3.1GHz'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1334,12 +1332,12 @@ off: 'Intel i7-6500U (4) @ 3.1GHz'
 ** GPU
 *** Enable/Disable GPU brand
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --gpu_brand
 
-Example:
-on:  'AMD HD 7950'
+Example: \\
+on:  'AMD HD 7950' \\
 off: 'HD 7950'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1350,20 +1348,20 @@ off: 'HD 7950'
 
 *** Which GPU to display
 
-Default: 'all'
-Values:  'all', 'dedicated', 'integrated'
-Flag:    --gpu_type
+Default: 'all' \\
+Values:  'all', 'dedicated', 'integrated' \\
+Flag:    --gpu_type \\
 Supports: Linux
 
-Example:
-all:
-  GPU1: AMD HD 7950
+Example: \\
+all: \\
+  GPU1: AMD HD 7950 \\
   GPU2: Intel Integrated Graphics
 
-dedicated:
+dedicated: \\
   GPU1: AMD HD 7950
 
-integrated:
+integrated: \\
   GPU1: Intel Integrated Graphics
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1375,13 +1373,13 @@ integrated:
 ** Resolution
 
 Display refresh rate next to each monitor
-Default: 'off'
-Values:  'on', 'off'
-Flag:    --refresh_rate
+Default: 'off' \\
+Values:  'on', 'off' \\
+Flag:    --refresh_rate \\
 Supports: Doesn't work on Windows
 
-Example:
-on:  '1920x1080 @ 60Hz'
+Example: \\
+on:  '1920x1080 @ 60Hz' \\
 off: '1920x1080'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1393,12 +1391,12 @@ off: '1920x1080'
 ** GTK Theme / Icons / Font
 *** Shorten output of GTK
 
-Default: 'off'
-Values:  'on', 'off'
+Default: 'off' \\
+Values:  'on', 'off' \\
 Flag:    --gtk_shorthand
 
-Example:
-on:  'Numix, Adwaita'
+Example: \\
+on:  'Numix, Adwaita' \\
 off: 'Numix [GTK2], Adwaita [GTK3]'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1409,12 +1407,12 @@ off: 'Numix [GTK2], Adwaita [GTK3]'
 
 *** Enable/Disable GTK2
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --gtk2
 
-Example:
-on:  'Numix [GTK2], Adwaita [GTK3]'
+Example: \\
+on:  'Numix [GTK2], Adwaita [GTK3]' \\
 off: 'Adwaita [GTK3]'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1425,12 +1423,12 @@ off: 'Adwaita [GTK3]'
 
 *** Enable/Disable GTK3
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --gtk3
 
-Example:
-on:  'Numix [GTK2], Adwaita [GTK3]'
+Example: \\
+on:  'Numix [GTK2], Adwaita [GTK3]' \\
 off: 'Numix [GTK2]'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1442,8 +1440,8 @@ off: 'Numix [GTK2]'
 ** IP address
 *** Website to ping for the public IP
 
-Default: 'http://ident.me'
-Values:  'url'
+Default: 'http://ident.me' \\
+Values:  'url' \\
 Flag:    --ip_host
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1454,8 +1452,8 @@ Flag:    --ip_host
 
 *** Public IP timeout
 
-Default: '2'
-Values:  'int'
+Default: '2' \\
+Values:  'int' \\
 Flag:    --ip_timeout
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1468,8 +1466,8 @@ Flag:    --ip_timeout
 
 Show Desktop Environment version
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --de_version
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1483,16 +1481,16 @@ Flag:    --de_version
 
 The values can be any /dev/sdXX, mount point or directory.
 
-Default: '/'
-Values:  '/', '/dev/sdXX', '/path/to/drive'
+Default: '/' \\
+Values:  '/', '/dev/sdXX', '/path/to/drive' \\
 Flag:    --disk_show
 
-Example:
-disk_show=('/' '/dev/sdb1'):
-     'Disk (/): 74G / 118G (66%)'
+Example: \\
+disk_show=('/' '/dev/sdb1'): \\
+     'Disk (/): 74G / 118G (66%)' \\
      'Disk (/mnt/Videos): 823G / 893G (93%)'
 
-disk_show=('/'):
+disk_show=('/'): \\
      'Disk (/): 74G / 118G (66%)'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1505,24 +1503,24 @@ disk_show=('/'):
 
 What to append to the Disk subtitle.
 
-Default: 'mount'
-Values:  'mount', 'name', 'dir', 'none'
+Default: 'mount' \\
+Values:  'mount', 'name', 'dir', 'none' \\
 Flag:    --disk_subtitle
 
-Example:
-name:   'Disk (/dev/sda1): 74G / 118G (66%)'
+Example: \\
+name:   'Disk (/dev/sda1): 74G / 118G (66%)' \\
         'Disk (/dev/sdb2): 74G / 118G (66%)'
 
-mount:  'Disk (/): 74G / 118G (66%)'
-        'Disk (/mnt/Local Disk): 74G / 118G (66%)'
+mount:  'Disk (/): 74G / 118G (66%)' \\
+        'Disk (/mnt/Local Disk): 74G / 118G (66%)' \\
         'Disk (/mnt/Videos): 74G / 118G (66%)'
 
-dir:    'Disk (/): 74G / 118G (66%)'
-        'Disk (Local Disk): 74G / 118G (66%)'
+dir:    'Disk (/): 74G / 118G (66%)' \\
+        'Disk (Local Disk): 74G / 118G (66%)' \\
         'Disk (Videos): 74G / 118G (66%)'
 
-none:   'Disk: 74G / 118G (66%)'
-        'Disk: 74G / 118G (66%)'
+none:   'Disk: 74G / 118G (66%)' \\
+        'Disk: 74G / 118G (66%)' \\
         'Disk: 74G / 118G (66%)'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1535,12 +1533,12 @@ none:   'Disk: 74G / 118G (66%)'
 
 Show/Hide disk percent.
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --disk_percent
 
-Example:
-on:  'Disk (/): 74G / 118G (66%)'
+Example: \\
+on:  'Disk (/): 74G / 118G (66%)' \\
 off: 'Disk (/): 74G / 118G'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1552,8 +1550,8 @@ off: 'Disk (/): 74G / 118G'
 ** Song
 *** Manually specify a music player
 
-Default: 'auto'
-Values:  'auto', 'player-name'
+Default: 'auto' \\
+Values:  'auto', 'player-name' \\
 Flag:    --music_player
 
 Available values for 'player-name':
@@ -1608,11 +1606,11 @@ yarock
 
 *** Format to display song information
 
-Default: '%artist% - %album% - %title%'
-Values:  '%artist%', '%album%', '%title%'
+Default: '%artist% - %album% - %title%' \\
+Values:  '%artist%', '%album%', '%title%' \\
 Flag:    --song_format
 
-Example:
+Example: \\
 default: 'Song: Jet - Get Born - Sgt Major'
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1623,13 +1621,13 @@ default: 'Song: Jet - Get Born - Sgt Major'
 
 *** Print the Artist, Album and Title on separate lines
 
-Default: 'off'
-Values:  'on', 'off'
+Default: 'off' \\
+Values:  'on', 'off' \\
 Flag:    --song_shorthand
 
-Example:
-on:  'Artist: The Fratellis'
-     'Album: Costello Music'
+Example: \\
+on:  'Artist: The Fratellis' \\
+     'Album: Costello Music' \\
      'Song: Chelsea Dagger'
 
 off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
@@ -1644,7 +1642,7 @@ off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
 
 Specify a host, password etc.
 
-Default: ''
+Default: '' \\
 Example: mpc_args=(-h HOST -P PASSWORD)
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1655,15 +1653,15 @@ Example: mpc_args=(-h HOST -P PASSWORD)
 
 ** Text colors
 
-Default:  'distro'
-Values:   'distro', 'num' 'num' 'num' 'num' 'num' 'num'
+Default:  'distro' \\
+Values:   'distro', 'num' 'num' 'num' 'num' 'num' 'num' \\
 Flag:     --colors
 
-Each number represents a different part of the text in
-this order: 'title', '@', 'underline', 'subtitle', 'colon', 'info'
+Each number represents a different part of the text in this order: 'title', '@', 'underline',
+'subtitle', 'colon', 'info'.
 
-Example:
-colors=(distro)      - Text is colored based on Distro colors
+Example: \\
+colors=(distro)      - Text is colored based on Distro colors \\
 colors=(4 6 1 8 8 6) - Text is colored in the order above
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1675,8 +1673,8 @@ colors=(4 6 1 8 8 6) - Text is colored in the order above
 ** Text options
 *** Toggle bold text
 
-Default:  'on'
-Values:   'on', 'off'
+Default:  'on' \\
+Values:   'on', 'off' \\
 Flag:     --bold
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1687,8 +1685,8 @@ Flag:     --bold
 
 *** Enable/Disable Underline
 
-Default:  'on'
-Values:   'on', 'off'
+Default:  'on' \\
+Values:   'on', 'off' \\
 Flag:     --underline
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1699,8 +1697,8 @@ Flag:     --underline
 
 *** Underline character
 
-Default:  '-'
-Values:   'string'
+Default:  '-' \\
+Values:   'string' \\
 Flag:     --underline_char
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1713,12 +1711,12 @@ Flag:     --underline_char
 
 Replace the default separator with the specified string.
 
-Default:  ':'
+Default:  ':' \\
 Flag:     --separator
 
-Example:
-separator="->":   'Shell-> bash'
-separator=" =":   'WM = dwm'
+Example: \\
+separator="->":   'Shell-> bash' \\
+separator=" =":   'WM = dwm' \\
 separator="  "
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1732,16 +1730,16 @@ separator="  "
 
 The range of colors to print.
 
-Default:  '0', '15'
-Values:   'num'
+Default:  '0', '15' \\
+Values:   'num' \\
 Flag:     --block_range
 
 Example:
 
-Display colors 0-7 in the blocks.  (8 colors)
+Display colors 0-7 in the blocks.  (8 colors) \\
 neofetch --block_range 0 7
 
-Display colors 0-15 in the blocks. (16 colors)
+Display colors 0-15 in the blocks. (16 colors) \\
 neofetch --block_range 0 15
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1752,8 +1750,8 @@ neofetch --block_range 0 15
 
 *** Toggle color blocks
 
-Default:  'on'
-Values:   'on', 'off'
+Default:  'on' \\
+Values:   'on', 'off' \\
 Flag:     --color_blocks
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1764,8 +1762,8 @@ Flag:     --color_blocks
 
 *** Color block width in spaces
 
-Default:  '3'
-Values:   'num'
+Default:  '3' \\
+Values:   'num' \\
 Flag:     --block_width
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1776,8 +1774,8 @@ Flag:     --block_width
 
 *** Color block height in lines
 
-Default:  '1'
-Values:   'num'
+Default:  '1' \\
+Values:   'num' \\
 Flag:     --block_height
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1788,14 +1786,15 @@ Flag:     --block_height
 
 *** Color Alignment
 
-Default: 'auto'
-Values:  'auto', 'num'
+Default: 'auto' \\
+Values:  'auto', 'num' \\
 Flag:    --col_offset
 
 Number specifies how far from the left side of the terminal (in spaces) to begin printing the
 columns, in case you want to e.g. center them under your text.
-Example:
-col_offset="auto" - Default behavior of neofetch
+
+Example: \\
+col_offset="auto" - Default behavior of neofetch \\
 col_offset=7      - Leave 7 spaces then print the colors
 
 #+begin_src sh  :tangle ./.config/neofetch/config.conf
@@ -1807,12 +1806,12 @@ col_offset=7      - Leave 7 spaces then print the colors
 ** Progress bar
 *** Bar characters
 
-Default:  '-', '='
-Values:   'string', 'string'
+Default:  '-', '=' \\
+Values:   'string', 'string' \\
 Flag:     --bar_char
 
-Example:
-neofetch --bar_char 'elapsed' 'total'
+Example: \\
+neofetch --bar_char 'elapsed' 'total' \\
 neofetch --bar_char '-' '='
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -1824,8 +1823,8 @@ neofetch --bar_char '-' '='
 
 *** Toggle Bar border
 
-Default:  'on'
-Values:   'on', 'off'
+Default:  'on' \\
+Values:   'on', 'off' \\
 Flag:     --bar_border
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -1838,8 +1837,8 @@ Flag:     --bar_border
 
 Number of chars long to make the progress bars.
 
-Default:  '15'
-Values:   'num'
+Default:  '15' \\
+Values:   'num' \\
 Flag:     --bar_length
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -1852,12 +1851,12 @@ Flag:     --bar_length
 
 When set to distro, uses your distro's logo colors.
 
-Default:  'distro', 'distro'
-Values:   'distro', 'num'
+Default:  'distro', 'distro' \\
+Values:   'distro', 'num' \\
 Flag:     --bar_colors
 
-Example:
-neofetch --bar_colors 3 4
+Example: \\
+neofetch --bar_colors 3 4 \\
 neofetch --bar_colors distro 5
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -1871,17 +1870,17 @@ neofetch --bar_colors distro 5
 
 Display a bar with the info.
 
-Default: 'off'
-Values:  'bar', 'infobar', 'barinfo', 'off'
-Flags:   --cpu_display
-         --memory_display
-         --battery_display
+Default: 'off' \\
+Values:  'bar', 'infobar', 'barinfo', 'off' \\
+Flags:   --cpu_display \\
+         --memory_display \\
+         --battery_display \\
          --disk_display
 
-Example:
-bar:     '[---=======]'
-infobar: 'info [---=======]'
-barinfo: '[---=======] info'
+Example: \\
+bar:     '[---=======]' \\
+infobar: 'info [---=======]' \\
+barinfo: '[---=======] info' \\
 off:     'info'
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -1896,9 +1895,9 @@ off:     'info'
 ** Backend settings
 *** Image backend
 
-Default:  'ascii'
-Values:   'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'off',
-          'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
+Default:  'ascii' \\
+Values:   'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'off', \\
+          'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty' \\
 Flag:     --backend
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -1914,9 +1913,9 @@ Which image or ascii file to display.
 'auto' will pick the best image source for whatever image backend is used. In ascii mode, distro
 ascii art will be used and in an image mode, your wallpaper will be used.
 
-Default:  'auto'
-Values:   'auto', 'ascii', 'wallpaper', '/path/to/img', '/path/to/ascii', '/path/to/dir/'
-          'command output (neofetch --ascii "$(fortune | cowsay -W 30)")'
+Default:  'auto' \\
+Values:   'auto', 'ascii', 'wallpaper', '/path/to/img', '/path/to/ascii', '/path/to/dir/' \\
+          'command output (neofetch --ascii "$(fortune | cowsay -W 30)")' \\
 Flag:     --source
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -1930,8 +1929,8 @@ Flag:     --source
 
 Which distro's ascii art to display.
 
-Default: 'auto'
-Values:  'auto', 'distro_name'
+Default: 'auto' \\
+Values:  'auto', 'distro_name' \\
 Flag:    --ascii_distro
 NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs,
@@ -1982,12 +1981,12 @@ NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
 
 *** Ascii colors
 
-Default:  'distro'
-Values:   'distro', 'num' 'num' 'num' 'num' 'num' 'num'
+Default:  'distro' \\
+Values:   'distro', 'num' 'num' 'num' 'num' 'num' 'num' \\
 Flag:     --ascii_colors
 
-Example:
-ascii_colors=(distro)      - Ascii is colored based on Distro colors
+Example: \\
+ascii_colors=(distro)      - Ascii is colored based on Distro colors \\
 ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2000,8 +1999,8 @@ ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors
 
 Whether or not to bold the ascii logo.
 
-Default: 'on'
-Values:  'on', 'off'
+Default: 'on' \\
+Values:  'on', 'off' \\
 Flag:    --ascii_bold
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2016,8 +2015,8 @@ Flag:    --ascii_bold
 Setting this to on will make neofetch redraw the image constantly until Ctrl+C is pressed. This
 fixes display issues in some terminal emulators.
 
-Default:  'off'
-Values:   'on', 'off'
+Default:  'off' \\
+Values:   'on', 'off' \\
 Flag:     --loop
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2028,7 +2027,7 @@ Flag:     --loop
 
 *** Thumbnail directory
 
-Default: '~/.cache/thumbnails/neofetch'
+Default: '~/.cache/thumbnails/neofetch' \\
 Values:  'dir'
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2039,8 +2038,8 @@ Values:  'dir'
 
 *** Crop mode
 
-Default:  'normal'
-Values:   'normal', 'fit', 'fill'
+Default:  'normal' \\
+Values:   'normal', 'fit', 'fill' \\
 Flag:     --crop_mode
 
 See this wiki page to learn about the fit and fill options.
@@ -2056,9 +2055,9 @@ https://github.com/dylanaraps/neofetch/wiki/What-is-Waifu-Crop%3F
 
 Note: Only affects 'normal' crop mode.
 
-Default:  'center'
-Values:   'northwest', 'north', 'northeast', 'west', 'center'
-          'east', 'southwest', 'south', 'southeast'
+Default:  'center' \\
+Values:   'northwest', 'north', 'northeast', 'west', 'center' \\
+          'east', 'southwest', 'south', 'southeast' \\
 Flag:     --crop_offset
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2071,9 +2070,9 @@ Flag:     --crop_offset
 
 The image is half the terminal width by default.
 
-Default: 'auto'
-Values:  'auto', '00px', '00%', 'none'
-Flags:   --image_size
+Default: 'auto' \\
+Values:  'auto', '00px', '00%', 'none' \\
+Flags:   --image_size \\
          --size
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2084,8 +2083,8 @@ Flags:   --image_size
 
 *** Gap between image and text
 
-Default: '3'
-Values:  'num', '-num'
+Default: '3' \\
+Values:  'num', '-num' \\
 Flag:    --gap
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2098,9 +2097,9 @@ Flag:    --gap
 
 Only works with the w3m backend.
 
-Default: '0'
-Values:  'px'
-Flags:   --xoffset
+Default: '0' \\
+Values:  'px' \\
+Flags:   --xoffset \\
          --yoffset
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2114,8 +2113,8 @@ Flags:   --xoffset
 
 Only works with the w3m backend.
 
-Default: ''
-Values:  'color', 'blue'
+Default: '' \\
+Values:  'color', 'blue' \\
 Flag:    --bg_color
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
@@ -2131,7 +2130,7 @@ Stdout mode
 Turn off all colors and disables image backend (ASCII/Image). Useful for piping into another
 command.
 
-Default: 'off'
+Default: 'off' \\
 Values: 'on', 'off'
 
 #+begin_src sh :tangle ./.config/neofetch/config.conf
