@@ -2089,4 +2089,3742 @@ Neofetch config
 
 #+end_src
 
+* Rofi
+
+Configuration based on https://github.com/adi1090x/rofi
+
+** Config
+
+#+begin_src css :tangle ./.config/rofi/config.rasi
+
+  configuration {
+      show-icons:           true;
+      /* icon-theme:           "Papirus"; */
+      icon-theme:           "myIcons";
+      modi:                 "window,run,ssh,drun";
+
+      terminal:             "alacritty";
+      run-command:          "{cmd}";
+      run-shell-command:    "{terminal} -e {cmd}";
+      drun-match-fields:    "name";
+      drun-display-format:  "{name}";
+      cycle:                false;
+      case-sensitive:       false;
+      monitor:              "-1";
+      cache-dir:            "/home/none9632/.cache/rofi";
+
+      display-run:          "Run";
+      display-drun:         "Run";
+      /* display-window: ; */
+      /* display-windowcd: ;*/
+      /* display-ssh: ; */
+      /* display-combi: ; */
+      /* display-keys: ; */
+      /* display-file-browser: ; */
+
+      kb-mode-complete:       "";
+      kb-remove-to-eol:       "";
+      kb-cancel:              "Super+q,Escape";
+      kb-remove-char-forward: "Delete";
+      kb-remove-char-back:    "BackSpace,Shift+BackSpace";
+      kb-secondary-paste:     "P,Control+p";
+      kb-clear-line:          "D,Control+d";
+      kb-move-front:          "I,Control+i";
+      kb-move-end:            "A,Control+a";
+      kb-move-word-back:      "Control+Left";
+      kb-move-word-forward:   "Control+Right";
+      kb-move-char-back:      "Left,Alt+h,Control+h";
+      kb-move-char-forward:   "Right,Alt+l,Control+l";
+      kb-accept-entry:        ",Return,KP_Enter";
+      kb-row-up:              "Up,ISO_Left_Tab,Alt+k";
+      kb-row-down:            "Down,Alt+j";
+  }
+
+#+end_src
+
+** Colors
+
+#+begin_src css :tangle ./.config/rofi/colors.rasi
+
+  ,* {
+      accent:           #51afef;
+      background:       #141c21;
+      background-light: #1c252a;
+      background-focus: #253137;
+      foreground:       #93a1a1;
+      on:               #5BB462;
+      off:              #DE635E;
+  }
+
+#+end_src
+
+** Themes
+*** COMMENT Applets themes
+**** Backlight
+
+#+begin_src css :tangle ./.config/rofi/themes/applets/backlight.rasi
+
+  configuration {
+      font:                           "Comfortaa 12";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       southeast;
+      width:                          250px;
+      x-offset:                       -15px;
+      y-offset:                       -45px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Brightness ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        12px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        12px;
+      margin:                         12px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 20";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         5px 10px 30px 10px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Battery
+
+#+begin_src css :tangle ./.config/rofi/themes/applets/battery.rasi
+
+  configuration {
+      font:                           "Comfortaa 12";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       southeast;
+      width:                          250px;
+      x-offset:                       -15px;
+      y-offset:                       -45px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Battery ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        12px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        12px;
+      margin:                         12px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "Iosevka Nerd Font 20";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         5px 10px 30px 10px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Music Player Daemon
+
+#+begin_src css :tangle ./.config/rofi/themes/applets/mdb.rasi
+
+  configuration {
+      font:                           "Comfortaa 12";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       southeast;
+      width:                          500px;
+      x-offset:                       -15px;
+      y-offset:                       -45px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " MPD ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        6;
+      lines:                          1;
+      spacing:                        12px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        12px;
+      margin:                         12px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 20";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         5px 10px 30px 10px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Network
+
+#+begin_src css :tangle ./.config/rofi/themes/applets/network.rasi
+
+  configuration {
+      font:                           "Comfortaa 12";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       southeast;
+      width:                          350px;
+      x-offset:                       -15px;
+      y-offset:                       -45px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Network ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        4;
+      lines:                          1;
+      spacing:                        12px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        12px;
+      margin:                         12px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 20";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         5px 10px 30px 10px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Quick links
+
+#+begin_src css :tangle ./.config/rofi/themes/applets/quicklinks.rasi
+
+  configuration {
+      font:                           "Comfortaa 12";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       southeast;
+      width:                          500px;
+      x-offset:                       -15px;
+      y-offset:                       -45px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Quick Links ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        6;
+      lines:                          1;
+      spacing:                        12px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        12px;
+      margin:                         12px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 20";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         5px 10px 30px 10px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Time
+
+#+begin_src css :tangle ./.config/rofi/themes/applets/time.rasi
+
+  configuration {
+      font:                           "Comfortaa 12";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       southeast;
+      width:                          450px;
+      x-offset:                       -15px;
+      y-offset:                       -45px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                             " Time ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        12px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        12px;
+      margin:                         12px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "Hurmit Nerd Font Mono 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         5px 10px 50px 10px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Volume
+
+#+begin_src css :tangle ./.config/rofi/themes/applets/volume.rasi
+
+  configuration {
+      font:                           "Comfortaa 12";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       southeast;
+      width:                          250px;
+      x-offset:                       -15px;
+      y-offset:                       -45px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Volume ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        12px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        12px;
+      margin:                         12px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                            "feather 20";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         5px 10px 30px 10px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+*** Menu themes
+**** Application launcher
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/appslauncher.rasi
+
+  @import "../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+      spacing:                        0;
+      highlight:                      bold;
+      font:                           "SauceCodePro Nerd Font 16";
+  }
+
+  window {
+      width:                          950px;
+      height:                         533px;
+  }
+
+  prompt {
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      padding:                        13px 16px 11px 16px;
+      background-color:               @accent;
+      text-color:                     @background-light;
+  }
+
+  inputbar {
+      padding:                        20px 20px 9px 20px;
+      children:                       [ prompt, entry, num-filtered-rows, textbox-num-sep, num-rows ];
+  }
+
+  num-filtered-rows {
+      background-color:               @background-light;
+      border:                         2px 0 2px 0;
+      border-color:                   @accent;
+      text-color:                     @accent;
+      padding:                        12px 0;
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      expand:                         false;
+  }
+
+  num-rows {
+      background-color:               @background-light;
+      border:                         2px 2px 2px 0;
+      border-color:                   @accent;
+      text-color:                     @accent;
+      padding:                        12px 13px 0 0;
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      expand:                         false;
+  }
+
+  textbox-num-sep {
+      background-color:               @background-light;
+      border:                         2px 0 2px 0;
+      border-color:                   @accent;
+      text-color:                     @accent;
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      padding:                        12px 0;
+      expand:                         false;
+      str:                            "/";
+  }
+
+  entry {
+      padding:                        12px 16px;
+      border:                         2px 0 2px 2px;
+      border-color:                   @accent;
+      background-color:               @background-light;
+  }
+
+
+  element {
+      padding:                        11px;
+      margin:                         4px 20px;
+      border-color:                   @accent;
+      background-color:               @background-light;
+  }
+
+  element selected {
+      background-color:               @background-focus;
+      border-color:                   @accent;
+  }
+
+  element-icon {
+      background-color:               inherit;
+      text-color:                     inherit;
+      size:                           32px;
+      padding:                        0 9px 0 7px;
+  }
+
+  element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
+      padding:                        3px 0 0 0;
+  }
+
+#+end_src
+
+**** Application menu
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/appsmenu.rasi
+
+  configuration {
+      show-icons:                     false;
+      font:                           "SauceCodePro Nerd Font Semibold 14";
+      disable-history:                false;
+      sidebar-mode:                   false;
+  }
+
+  @import "../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      /* width:                          950px; */
+      width:                          800px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Apps ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        5;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0.5;
+      margin:                         40px 0px 40px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** COMMENT Backlight
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/backlight.rasi
+
+  configuration {
+      font:                           "Comfortaa 14";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          500px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Brightness ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         25px 0px 65px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** File manager
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/filemanager.rasi
+
+  @import "../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+      spacing:                        0;
+      highlight:                      bold;
+      font:                           "SauceCodePro Nerd Font 16";
+  }
+
+  window {
+      width:                          950px;
+      height:                         533px;
+  }
+
+  prompt {
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      padding:                        13px 16px 11px 16px;
+      background-color:               @accent;
+      text-color:                     @background-light;
+  }
+
+  inputbar {
+      padding:                        20px 20px 9px 20px;
+      children:                       [ prompt, entry, num-filtered-rows, textbox-num-sep, num-rows ];
+  }
+
+  num-filtered-rows {
+      background-color:               @background-light;
+      border:                         2px 0 2px 0;
+      border-color:                   @accent;
+      text-color:                     @accent;
+      padding:                        12px 0;
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      expand:                         false;
+  }
+
+  num-rows {
+      background-color:               @background-light;
+      border:                         2px 2px 2px 0;
+      border-color:                   @accent;
+      text-color:                     @accent;
+      padding:                        12px 13px 0 0;
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      expand:                         false;
+  }
+
+  textbox-num-sep {
+      background-color:               @background-light;
+      border:                         2px 0 2px 0;
+      border-color:                   @accent;
+      text-color:                     @accent;
+      font:                           "SauceCodePro Nerd Font Semibold 15";
+      padding:                        12px 0;
+      expand:                         false;
+      str:                            "/";
+  }
+
+  entry {
+      padding:                        12px 16px;
+      border:                         2px 0 2px 2px;
+      border-color:                   @accent;
+      background-color:               @background-light;
+  }
+
+
+  element {
+      padding:                        11px;
+      margin:                         4px 20px;
+      border-color:                   @accent;
+      background-color:               @background-light;
+  }
+
+  element selected {
+      background-color:               @background-focus;
+      border-color:                   @accent;
+  }
+
+  element-icon {
+      background-color:               inherit;
+      text-color:                     inherit;
+      size:                           32px;
+      padding:                        0 9px 0 7px;
+  }
+
+  element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
+      padding:                        3px 0 0 0;
+  }
+
+#+end_src
+
+**** COMMENT Music Player Daemon
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/mdb.rasi
+
+  configuration {
+      font:                           "Comfortaa 14";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          950px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 4px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " MPD ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        14px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        6;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         25px 0px 65px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** COMMENT Network
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/network.rasi
+
+  configuration {
+      font:                           "Comfortaa 14";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          650px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Network ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        4;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         25px 0px 65px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Power menu
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/powermenu.rasi
+
+  configuration {
+      show-icons:                     false;
+      font:                           "SauceCodePro Nerd Font Semibold 14";
+      disable-history:                false;
+      sidebar-mode:                   false;
+  }
+
+  @import "../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          800px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " System ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        5;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0.5;
+      margin:                         40px 0px 40px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** COMMENT Quick links
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/quicklinks.rasi
+
+  configuration {
+      font:                           "Comfortaa 14";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          950px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Quick Links ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        6;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         25px 0px 65px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** Schreenshot
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/screenshot.rasi
+
+  configuration {
+      show-icons:                     false;
+      font:                           "SauceCodePro Nerd Font Semibold 14";
+      disable-history:                false;
+      sidebar-mode:                   false;
+  }
+
+  @import "../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          500px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Screenshot ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0.5;
+      margin:                         40px 0px 40px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** COMMENT Time
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/time.rasi
+
+  configuration {
+      show-icons:                     false;
+      font:                           "Comfortaa 14";
+      disable-history:                false;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          700px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 4px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Time ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
+      font:                           "Hurmit Nerd Font Mono 48";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0.5;
+      margin:                         40px 0px 40px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+**** COMMENT Volume
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/volume.rasi
+
+  configuration {
+      font:                           "SauceCodePro Nerd Font Semibold 14";
+      disable-history:                false;
+      fullscreen:                     false;
+      hide-scrollbar:                 true;
+      sidebar-mode:                   false;
+  }
+
+  @import "../../styles/colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          500px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px;
+      background-color:               @background-light;
+      text-color:                     @accent;
+      border:                         2px 2px 2px 2px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Volume ";
+      background-color:               @accent;
+      text-color:                     @background;
+      padding:                        12px 10px 0px 10px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @accent;
+      margin:                         0px 0px 0px 0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      columns:                        3;
+      lines:                          1;
+      spacing:                        15px;
+      cycle:                          true;
+      dynamic:                        true;
+      layout:                         vertical;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        15px;
+      margin:                         40px;
+  }
+
+  element {
+      background-color:               @background-light;
+      text-color:                     @foreground;
+      orientation:                    vertical;
+      border-radius:                  0px;
+  }
+
+  element-text {
+      font:                           "feather 32";
+      expand:                         true;
+      horizontal-align:               0.5;
+      vertical-align:                 0;
+      margin:                         25px 0px 65px 0px;
+  }
+
+  element normal.urgent,
+  element alternate.urgent {
+      background-color:               @off;
+      text-color:                     @background;
+      border-radius:                  0px;
+  }
+
+  element normal.active,
+  element alternate.active {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected {
+      background-color:               @accent;
+      text-color:                     @background;
+      border:                         0px;
+      border-radius:                  0px;
+      border-color:                   @border;
+  }
+
+  element selected.urgent {
+      background-color:               @on;
+      text-color:                     @background;
+  }
+
+  element selected.active {
+      background-color:               @off;
+      color:                          @background;
+  }
+
+#+end_src
+
+*** Other themes
+**** Error message
+
+#+begin_src css :tangle ./.config/rofi/themes/other/errormsg.rasi
+
+  configuration {
+      font:                           "SauceCodePro Nerd Font Semibold 14";
+      disable-history:                false;
+      sidebar-mode:                   false;
+  }
+
+  @import "colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+  }
+
+  window {
+      transparency:                   "real";
+      border-radius:                  0px;
+      location:                       center;
+      width:                          550px;
+      x-offset:                       0px;
+      y-offset:                       0px;
+  }
+
+  prompt {
+      enabled:                        true;
+      padding:                        10px 0px 10px 0px;
+      background-color:               @background;
+      text-color:                     @accent;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      str:                            " Error:";
+      background-color:               @background;
+      text-color:                     @off;
+      padding:                        10px 0px 0px 0px;
+  }
+
+  inputbar {
+      children:                       [ textbox-prompt-colon, prompt ];
+      spacing:                        0px;
+      background-color:               @background;
+      text-color:                     @foreground;
+      expand:                         false;
+      margin:                         0px;
+      padding:                        0px;
+      position:                       center;
+  }
+
+  listview {
+      enabled: false;
+  }
+
+  mainbox {
+      background-color:               @background;
+      children:                       [ inputbar, listview ];
+      spacing:                        0px;
+      margin:                         14px;
+  }
+
+#+end_src
+
+**** Input
+
+#+begin_src css :tangle ./.config/rofi/themes/other/input.rasi
+
+  @import "colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+      font:                           "SauceCodePro Nerd Font Semibold 14";
+  }
+
+  window {
+      width:                          530px;
+      padding:                        24px 23px 23px 23px;
+      border:                         0px;
+      border-radius:                  0px;
+      location:                       center;
+      y-offset:                       -28px;
+  }
+
+  entry {
+      expand:                         true;
+      text-color:                     @accent;
+  }
+
+  listview {
+      padding:                        -202px;
+  }
+
+#+end_src
+
+**** Long input
+
+#+begin_src css :tangle ./.config/rofi/themes/other/longinput.rasi
+
+  @import "colors.rasi"
+
+  ,* {
+      background-color:               @background;
+      text-color:                     @foreground;
+      font:                           "SauceCodePro Nerd Font Semibold 14";
+  }
+
+  window {
+      width:                          660px;
+      padding:                        24px 23px 23px 23px;
+      border:                         0px;
+      border-radius:                  0px;
+      location:                       center;
+      y-offset:                       -28px;
+  }
+
+  entry {
+      expand:                         true;
+      text-color:                     @accent;
+  }
+
+  listview {
+      padding:                        -202px;
+  }
+
+#+end_src
+
+** Scripts
+:PROPERTIES:
+:header-args: :tangle-mode (identity #o755)
+:END:
+
+*** COMMENT Applets scripts
+**** Backlight
+
+#+begin_src sh :tangle ./.config/rofi/scripts/applet_backlight
+	
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/applets/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/applets/configs/$style"
+  rofi_command="rofi -theme $dir/backlight.rasi"
+
+  # Error msg
+  msg() {
+      rofi -theme "$HOME/.config/rofi/applets/styles/message.rasi" -e "$1"
+  }
+
+  ## Get Brightness
+  if [[ -f /usr/bin/blight ]]; then
+      DEVICE=$(ls /sys/class/backlight | head -n 1)
+      BNESS="$(blight -d $DEVICE get brightness)"
+      PERC="$(($BNESS*100/255))"
+      BLIGHT=${PERC%.*}
+  elif [[ -f /usr/bin/xbacklight ]]; then
+      VAR="$(xbacklight -get)"
+      BLIGHT="$(printf "%.0f\n" "$VAR")"
+  else
+      msg "No suitable backlight utility found!"
+      exit 1
+  fi
+
+  if [[ $BLIGHT -ge 1 ]] && [[ $BLIGHT -le 29 ]]; then
+      MSG="Low"
+  elif [[ $BLIGHT -ge 30 ]] && [[ $BLIGHT -le 49 ]]; then
+      MSG="Optimal"
+  elif [[ $BLIGHT -ge 50 ]] && [[ $BLIGHT -le 69 ]]; then
+      MSG="High"
+  elif [[ $BLIGHT -ge 70 ]] && [[ $BLIGHT -le 99 ]]; then
+      MSG="Too Much"
+  fi
+
+  ## Icons
+  ICON_UP=""
+  ICON_DOWN=""
+  ICON_OPT=""
+
+  notify="notify-send -u low -t 1500"
+  options="$ICON_UP\n$ICON_OPT\n$ICON_DOWN"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "$BLIGHT%" -dmenu -selected-row 1)"
+  case $chosen in
+      $ICON_UP)
+          if [[ -f /usr/bin/blight ]]; then
+              blight -d $DEVICE set +10% && $notify "Brightness Up $ICON_UP"
+          elif [[ -f /usr/bin/xbacklight ]]; then
+              xbacklight -inc 10 && $notify "Brightness Up $ICON_UP"
+          fi
+          ;;
+      $ICON_DOWN)
+          if [[ -f /usr/bin/blight ]]; then
+              blight -d $DEVICE set -10% && $notify "Brightness Down $ICON_DOWN"
+          elif [[ -f /usr/bin/xbacklight ]]; then
+              xbacklight -dec 10 && $notify "Brightness Down $ICON_DOWN"
+          fi
+          ;;
+      $ICON_OPT)
+          if [[ -f /usr/bin/blight ]]; then
+              blight -d $DEVICE set 25% && $notify "Optimal Brightness $ICON_OPT"
+          elif [[ -f /usr/bin/xbacklight ]]; then
+              xbacklight -set 30 && $notify "Optimal Brightness $ICON_OPT"
+          fi
+          ;;
+  esac
+
+#+end_src
+
+**** Battery
+
+#+begin_src sh :tangle ./.config/rofi/scripts/applet_battery
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/applets/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/applets/configs/$style"
+  rofi_command="rofi -theme $dir/battery.rasi"
+
+  ## Get data
+  BATTERY="$(acpi | awk -F ' ' '{print $4}' | tr -d \%,)"
+  CHARGE="$(acpi | awk -F ' ' '{print $3}' | tr -d \,)"
+
+  active=""
+  urgent=""
+
+  if [[ $CHARGE = *"Charging"* ]]; then
+      active="-a 1"
+      ICON_CHRG=""
+      MSG=$CHARGE
+  elif [[ $CHARGE = *"Full"* ]]; then
+      active="-u 1"
+      ICON_CHRG=""
+      MSG=$CHARGE
+  else
+      urgent="-u 1"
+      ICON_CHRG=""
+      MSG=$CHARGE
+  fi
+
+  # Discharging
+  #if [[ $CHARGE -eq 1 ]] && [[ $BATTERY -eq 100 ]]; then
+  #    ICON_DISCHRG=""
+  if [[ $BATTERY -ge 5 ]] && [[ $BATTERY -le 19 ]]; then
+      ICON_DISCHRG=""
+  elif [[ $BATTERY -ge 20 ]] && [[ $BATTERY -le 39 ]]; then
+      ICON_DISCHRG=""
+  elif [[ $BATTERY -ge 40 ]] && [[ $BATTERY -le 59 ]]; then
+      ICON_DISCHRG=""
+  elif [[ $BATTERY -ge 60 ]] && [[ $BATTERY -le 79 ]]; then
+      ICON_DISCHRG=""
+  elif [[ $BATTERY -ge 80 ]] && [[ $BATTERY -le 100 ]]; then
+      ICON_DISCHRG=""
+  fi
+
+  ## Icons
+  ICON_PMGR=""
+
+  options="$ICON_DISCHRG\n$ICON_CHRG\n$ICON_PMGR"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "$BATTERY%" -dmenu $active $urgent -selected-row 0)"
+  case $chosen in
+      $ICON_CHRG)
+      ;;
+      $ICON_DISCHRG)
+      ;;
+      $ICON_PMGR)
+          xfce4-power-manager-settings
+          ;;
+  esac
+
+#+end_src
+
+**** Music Player Daemon
+
+#+begin_src sh :tangle ./.config/rofi/scripts/applet_mdb
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/applets/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/applets/configs/$style"
+  rofi_command="rofi -theme $dir/mpd.rasi"
+
+  # Gets the current status of mpd (for us to parse it later on)
+  status="$(mpc status)"
+  # Defines the Play / Pause option content
+  if [[ $status == *"[playing]"* ]]; then
+      play_pause=""
+  else
+      play_pause=""
+  fi
+  active=""
+  urgent=""
+
+  # Display if repeat mode is on / off
+  tog_repeat=""
+  if [[ $status == *"repeat: on"* ]]; then
+      active="-a 4"
+  elif [[ $status == *"repeat: off"* ]]; then
+      urgent="-u 4"
+  else
+      tog_repeat=" Parsing error"
+  fi
+
+  # Display if random mode is on / off
+  tog_random=""
+  if [[ $status == *"random: on"* ]]; then
+      [ -n "$active" ] && active+=",5" || active="-a 5"
+  elif [[ $status == *"random: off"* ]]; then
+      [ -n "$urgent" ] && urgent+=",5" || urgent="-u 5"
+  else
+      tog_random=" Parsing error"
+  fi
+  stop=""
+  next=""
+  previous=""
+
+  # Variable passed to rofi
+  options="$previous\n$play_pause\n$stop\n$next\n$tog_repeat\n$tog_random"
+
+  # Get the current playing song
+  current=$(mpc -f "%title%" current)
+  # If mpd isn't running it will return an empty string, we don't want to display that
+  if [[ -z "$current" ]]; then
+      current="-"
+  fi
+
+  # Spawn the mpd menu with the "Play / Pause" entry selected by default
+  chosen="$(echo -e "$options" | $rofi_command -p "  $current" -dmenu $active $urgent -selected-row 1)"
+  case $chosen in
+      $previous)
+          mpc -q prev && notify-send -u low -t 1800 " $(mpc current)"
+          ;;
+      $play_pause)
+          mpc -q toggle && notify-send -u low -t 1800 " $(mpc current)"
+          ;;
+      $stop)
+          mpc -q stop
+          ;;
+      $next)
+          mpc -q next && notify-send -u low -t 1800 " $(mpc current)"
+          ;;
+      $tog_repeat)
+          mpc -q repeat
+          ;;
+      $tog_random)
+          mpc -q random
+          ;;
+  esac
+
+#+end_src
+
+**** Network
+
+#+begin_src sh :tangle ./.config/rofi/scripts/applet_network
+	
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/applets/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/applets/configs/$style"
+  rofi_command="rofi -theme $dir/network.rasi"
+
+  ## Get info
+  IFACE="$(nmcli | grep -i interface | awk '/interface/ {print $2}')"
+  #SSID="$(iwgetid -r)"
+  #LIP="$(nmcli | grep -i server | awk '/server/ {print $2}')"
+  #PIP="$(dig +short myip.opendns.com @resolver1.opendns.com )"
+  STATUS="$(nmcli radio wifi)"
+
+  active=""
+  urgent=""
+
+  if (ping -c 1 archlinux.org || ping -c 1 google.com || ping -c 1 bitbucket.org || ping -c 1 github.com || ping -c 1 sourceforge.net) &>/dev/null; then
+      if [[ $STATUS == *"enable"* ]]; then
+          if [[ $IFACE == e* ]]; then
+              connected=""
+          else
+              connected=""
+          fi
+          active="-a 0"
+          SSID="﬉ $(iwgetid -r)"
+          PIP="$(wget --timeout=30 http://ipinfo.io/ip -qO -)"
+      fi
+  else
+      urgent="-u 0"
+      SSID="Disconnected"
+      PIP="Not Available"
+      connected=""
+  fi
+
+  ## Icons
+  bmon=""
+  launch_cli=""
+  launch=""
+
+  options="$connected\n$bmon\n$launch_cli\n$launch"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "$SSID" -dmenu $active $urgent -selected-row 1)"
+  case $chosen in
+      $connected)
+          if [[ $STATUS == *"enable"* ]]; then
+              nmcli radio wifi off
+          else
+              nmcli radio wifi on
+          fi 
+          ;;
+      $bmon)
+          termite -e bmon
+          ;;
+      $launch_cli)
+          termite -e nmtui
+          ;;
+      $launch)
+          nm-connection-editor
+          ;;
+  esac
+
+#+end_src
+
+**** Quick links
+
+#+begin_src sh :tangle ./.config/rofi/scripts/applet_quicklinks
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/applets/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/applets/configs/$style"
+  rofi_command="rofi -theme $dir/quicklinks.rasi"
+
+  # Error msg
+  msg() {
+      rofi -theme "$HOME/.config/rofi/applets/styles/message.rasi" -e "$1"
+  }
+
+  # Browser
+  if [[ -f /usr/bin/firefox ]]; then
+      app="firefox"
+  elif [[ -f /usr/bin/chromium ]]; then
+      app="chromium"
+  elif [[ -f /usr/bin/midori ]]; then
+      app="midori"
+  else
+      msg "No suitable web browser found!"
+      exit 1
+  fi
+
+  # Links
+  google=""
+  facebook=""
+  twitter=""
+  github=""
+  mail=""
+  youtube=""
+
+  # Variable passed to rofi
+  options="$google\n$facebook\n$twitter\n$github\n$mail\n$youtube"
+
+  chosen="$(echo -e "$options" | $rofi_command -p "Open In  :  $app" -dmenu -selected-row 0)"
+  case $chosen in
+      $google)
+          $app https://www.google.com &
+          ;;
+      $facebook)
+          $app https://www.facebook.com &
+          ;;
+      $twitter)
+          $app https://www.twitter.com &
+          ;;
+      $github)
+          $app https://www.github.com &
+          ;;
+      $mail)
+          $app https://www.gmail.com &
+          ;;
+      $youtube)
+          $app https://www.youtube.com &
+          ;;
+  esac
+
+#+end_src
+
+**** Time
+
+#+begin_src sh :tangle ./.config/rofi/scripts/applet_time
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/applets/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/applets/configs/$style"
+  rofi_command="rofi -theme $dir/time.rasi"
+
+  ## Get time and date
+  TIME="$(date +"%I:%M %p")"
+  DN=$(date +"%A")
+  MN=$(date +"%B")
+  DAY="$(date +"%d")"
+  MONTH="$(date +"%m")"
+  YEAR="$(date +"%Y")"
+
+  options="$DAY\n$MONTH\n$YEAR"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "   $DN, $TIME" -dmenu -selected-row 1)"
+
+#+end_src
+
+**** Volume
+
+#+begin_src sh :tangle ./.config/rofi/scripts/applet_volume
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/applets/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/applets/configs/$style"
+  rofi_command="rofi -theme $dir/volume.rasi"
+
+  ## Get Volume
+  #VOLUME=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')
+  MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')
+
+  active=""
+  urgent=""
+
+  if [[ $MUTE == *"off"* ]]; then
+      active="-a 1"
+  else
+      urgent="-u 1"
+  fi
+
+  if [[ $MUTE == *"off"* ]]; then
+      active="-a 1"
+  else
+      urgent="-u 1"
+  fi
+
+  if [[ $MUTE == *"on"* ]]; then
+      VOLUME="$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')%"
+  else
+      VOLUME="Mute"
+  fi
+
+  ## Icons
+  ICON_UP=""
+  ICON_DOWN=""
+  ICON_MUTED=""
+
+  options="$ICON_UP\n$ICON_MUTED\n$ICON_DOWN"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "$VOLUME" -dmenu $active $urgent -selected-row 0)"
+  case $chosen in
+      $ICON_UP)
+          amixer -Mq set Master,0 5%+ unmute && notify-send -u low -t 1500 "Volume Up $ICON_UP"
+          ;;
+      $ICON_DOWN)
+          amixer -Mq set Master,0 5%- unmute && notify-send -u low -t 1500 "Volume Down $ICON_DOWN"
+          ;;
+      $ICON_MUTED)
+          amixer -q set Master toggle
+          ;;
+  esac
+
+#+end_src
+
+*** Menu scripts
+**** Application launcher
+
+#+begin_src sh :tangle ./.config/rofi/scripts/appslauncher.sh
+
+  #!/bin/sh
+
+  xdotool key Mode_switch
+
+  rofi -show drun\
+       -theme $HOME/.config/rofi/menu_themes/appslauncher.rasi\
+       -scroll-method 1\
+
+#+end_src
+
+**** Application menu
+
+#+begin_src sh :tangle ./.config/rofi/scripts/appsmenu.sh
+
+  #!/usr/bin/env bash
+
+  rofi_command="rofi -kb-move-char-back Left,h\
+                     -kb-move-char-forward Right,l\
+                     -kb-row-first H\
+                     -kb-row-last L\
+                     -theme $HOME/.config/rofi/menu_themes/appsmenu.rasi"
+
+  # Links
+  terminal=""
+  files=""
+  editor=""
+  browser=""
+  settings=""
+
+  if [[ -f /usr/bin/alacritty ]]; then
+      term=alacritty
+  else
+      error_msg "No suitable terminal found!"
+  fi
+
+  # Variable passed to rofi
+  options="$files\n$editor\n$terminal\n$browser\n$settings"
+
+  xdotool key Mode_switch
+
+  chosen="$(echo -e "$options" | $rofi_command -p " Most Used " -dmenu -selected-row 2)"
+  case $chosen in
+      $terminal)
+          $term &
+          ;;
+      $files)
+          if [[ -f /usr/bin/lf ]]; then
+              . $HOME/.config/lf/.lfrc
+              $term -e lf &
+          else
+              error_msg "No suitable file manager found!"
+          fi
+          ;;
+      $editor)
+          if [[ -f /usr/bin/emacs ]]; then
+              # emacsclient -c -a emacs &
+              emacs &
+          else
+              error_msg "No suitable text editor found!"
+          fi
+          ;;
+      $browser)
+          if [[ -f /usr/bin/librewolf ]]; then
+              librewolf &
+          else
+              error_msg "No suitable web browser found!"
+          fi
+          ;;
+      $settings)
+          if [[ -f /usr/bin/xfce4-settings-manager ]]; then
+              xfce4-settings-manager &
+          else
+              error_msg "No suitable settings manager found!"
+          fi
+          ;;
+  esac
+
+#+end_src
+
+**** COMMENT Backlight
+
+#+begin_src sh :tangle ./.config/rofi/scripts/backlight.sh
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/menu/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/menu/configs/"
+  rofi_command="rofi -theme $dir/backlight.rasi"
+
+  # Error msg
+  msg() {
+      rofi -theme "$HOME/.config/rofi/applets/styles/message.rasi" -e "$1"
+  }
+
+  ## Get Brightness
+  if [[ -f /usr/bin/blight ]]; then
+      DEVICE=$(ls /sys/class/backlight | head -n 1)
+      BNESS="$(blight -d $DEVICE get brightness)"
+      PERC="$(($BNESS*100/255))"
+      BLIGHT=${PERC%.*}
+  elif [[ -f /usr/bin/xbacklight ]]; then
+      VAR="$(xbacklight -get)"
+      BLIGHT="$(printf "%.0f\n" "$VAR")"
+  else
+      msg "No suitable backlight utility found!"
+      exit 1
+  fi
+
+  if [[ $BLIGHT -ge 1 ]] && [[ $BLIGHT -le 29 ]]; then
+      MSG="Low"
+  elif [[ $BLIGHT -ge 30 ]] && [[ $BLIGHT -le 49 ]]; then
+      MSG="Optimal"
+  elif [[ $BLIGHT -ge 50 ]] && [[ $BLIGHT -le 69 ]]; then
+      MSG="High"
+  elif [[ $BLIGHT -ge 70 ]] && [[ $BLIGHT -le 99 ]]; then
+      MSG="Too Much"
+  fi
+
+  ## Icons
+  ICON_UP=""
+  ICON_DOWN=""
+  ICON_OPT=""
+
+  notify="notify-send -u low -t 1500"
+  options="$ICON_UP\n$ICON_OPT\n$ICON_DOWN"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "$BLIGHT%  :  $MSG" -dmenu -selected-row 1)"
+  case $chosen in
+      $ICON_UP)
+          if [[ -f /usr/bin/blight ]]; then
+              blight -d $DEVICE set +10% && $notify "Brightness Up $ICON_UP"
+          elif [[ -f /usr/bin/xbacklight ]]; then
+              xbacklight -inc 10 && $notify "Brightness Up $ICON_UP"
+          fi
+          ;;
+      $ICON_DOWN)
+          if [[ -f /usr/bin/blight ]]; then
+              blight -d $DEVICE set -10% && $notify "Brightness Down $ICON_DOWN"
+          elif [[ -f /usr/bin/xbacklight ]]; then
+              xbacklight -dec 10 && $notify "Brightness Down $ICON_DOWN"
+          fi
+          ;;
+      $ICON_OPT)
+          if [[ -f /usr/bin/blight ]]; then
+              blight -d $DEVICE set 25% && $notify "Optimal Brightness $ICON_OPT"
+          elif [[ -f /usr/bin/xbacklight ]]; then
+              xbacklight -set 30 && $notify "Optimal Brightness $ICON_OPT"
+          fi
+          ;;
+  esac
+
+#+end_src
+
+**** File manager
+
+#+begin_src sh :tangle ./.config/rofi/scripts/filemanager.sh
+
+  #!/bin/sh
+
+  pwd=$1
+  ls_command="exa -a --color=never --group-directories-first $pwd"
+  rofi_command="rofi -scroll-method 1\
+                     -i
+                     -theme $HOME/.config/rofi/menu_themes/filemanager.rasi"
+  list=$(LC_COLLATE=C ls -A --group-directories-first $pwd)
+
+  function print_icon()
+  {
+      if [ -L $pwd/$1 ]; then
+          echo "ln_file"
+      elif [ -d $pwd/$1 ]; then
+          echo "dir"
+      elif [ -x $pwd/$1 ]; then
+          echo "exe_file"
+      else
+          case "$1" in
+              Makefile)         echo "makefile"      ;;
+              makefile)         echo "makefile"      ;;
+              Dockerfile)       echo "docker1"       ;;
+              dockerfile)       echo "docker1"       ;;
+              README)           echo "markdown"      ;;
+              CMakeLists.txt)   echo "cmake"         ;;
+              TAGS)             echo "tags"          ;;
+              TODO)             echo "todo2"         ;;
+              LICENSE)          echo "license2"      ;;
+              .gitignore)       echo "git"           ;;
+              .vimrc)           echo "vim"           ;;
+              .viminfo)         echo "vim"           ;;
+              .zshrc)           echo "exe_file"      ;;
+              .zprofile)        echo "exe_file"      ;;
+              .zshenv)          echo "exe_file"      ;;
+              .bashrc)          echo "exe_file"      ;;
+              .bash_logout)     echo "exe_file"      ;;
+              .bash_profile)    echo "exe_file"      ;;
+              .profile)         echo "exe_file"      ;;
+              .xinitrc)         echo "exe_file"      ;;
+              .xprofile)        echo "exe_file"      ;;
+              ,*.asm)            echo "assembly"      ;;
+              ,*.b)              echo "brainfuck"     ;;
+              ,*.c)              echo "c"             ;;
+              ,*.cc)             echo "c"             ;;
+              ,*.clj)            echo "clojure"       ;;
+              ,*.cljc)           echo "clojure"       ;;
+              ,*.cmake)          echo "cmake"         ;;
+              ,*.conf)           echo "settings_file" ;;
+              ,*.coffee)         echo "coffee"        ;;
+              ,*.cpp)            echo "cpp"           ;;
+              ,*.cs)             echo "csharp"        ;;
+              ,*.css)            echo "css"           ;;
+              ,*.d)              echo "d"             ;;
+              ,*.dart)           echo "dart-plain"    ;;
+              ,*.db)             echo "database"      ;;
+              ,*.djvu)           echo "book"          ;;
+              ,*.doc)            echo "word"          ;;
+              ,*.dockerfile)     echo "docker1"       ;;
+              ,*.docx)           echo "word"          ;;
+              ,*.eex)            echo "elixir"        ;;
+              ,*.el)             echo "elisp"         ;;
+              ,*.elc)            echo "elisp"         ;;
+              ,*.elm)            echo "elm"           ;;
+              ,*.erl)            echo "erlang"        ;;
+              ,*.ex)             echo "elixir"        ;;
+              ,*.exs)            echo "elixir"        ;;
+              ,*.fs)             echo "fsharp"        ;;
+              ,*.go)             echo "go"            ;;
+              ,*.h)              echo "h"             ;;
+              ,*.hh)             echo "hpp"           ;;
+              ,*.hpp)            echo "hpp"           ;;
+              ,*.hs)             echo "haskell"       ;;
+              ,*.html)           echo "html"          ;;
+              ,*.ino)            echo "arduino"       ;;
+              ,*.iso)            echo "iso"           ;;
+              ,*.java)           echo "java"          ;;
+              ,*.jl)             echo "julia"         ;;
+              ,*.js)             echo "javascript"    ;;
+              ,*.jsx)            echo "jsx"           ;;
+              ,*.json)           echo "json"          ;;
+              ,*.key)            echo "key"           ;;
+              ,*.kt)             echo "kotlin"        ;;
+              ,*.kts)            echo "kotlin"        ;;
+              ,*.less)           echo "css"           ;;
+              ,*.log)            echo "log_file"      ;;
+              ,*.lua)            echo "lua"           ;;
+              ,*.md)             echo "markdown"      ;;
+              ,*.nasm)           echo "assembly"      ;;
+              ,*.ods)            echo "table_file"    ;;
+              ,*.org)            echo "org-mode"      ;;
+              ,*.pdf)            echo "pdf_file"      ;;
+              ,*.pem)            echo "key"           ;;
+              ,*.php)            echo "php"           ;;
+              ,*.pl)             echo "perl"          ;;
+              ,*.ppt)            echo "powerpoint"    ;;
+              ,*.pptx)           echo "powerpoint"    ;;
+              ,*.py)             echo "python"        ;;
+              ,*.rb)             echo "ruby"          ;;
+              ,*.rs)             echo "rust"          ;;
+              ,*.S)              echo "assembly"      ;;
+              ,*.s)              echo "assembly"      ;;
+              ,*.scala)          echo "scala"         ;;
+              ,*.sql)            echo "database"      ;;
+              ,*.sqlite)         echo "database"      ;;
+              ,*.swift)          echo "swift"         ;;
+              ,*.tex)            echo "tex"           ;;
+              ,*.torrent)        echo "torrent"       ;;
+              ,*.ts)             echo "typescript"    ;;
+              ,*.vim)            echo "vim"           ;;
+              ,*.xls)            echo "excel"         ;;
+              ,*.xlsx)           echo "excel"         ;;
+              ,*.xml)            echo "xml"           ;;
+              ,*.yml)            echo "yaml"          ;;
+              ,*.ttf)            echo "font"          ;;
+              ,*.ttc)            echo "font"          ;;
+              ,*.otf)            echo "font"          ;;
+              ,*.woff)           echo "font"          ;;
+              ,*.o)              echo "bin_file"      ;;
+              ,*.obj)            echo "bin_file"      ;;
+              ,*.exe)            echo "bin_file"      ;;
+              ,*.bin)            echo "bin_file"      ;;
+              ,*.elf)            echo "bin_file"      ;;
+              ,*.cmd)            echo "exe_file"      ;;
+              ,*.ps1)            echo "exe_file"      ;;
+              ,*.sh)             echo "exe_file"      ;;
+              ,*.bash)           echo "exe_file"      ;;
+              ,*.zsh)            echo "exe_file"      ;;
+              ,*.fish)           echo "exe_file"      ;;
+              ,*.mp4)            echo "video_file"    ;;
+              ,*.webm)           echo "video_file"    ;;
+              ,*.mkv)            echo "video_file"    ;;
+              ,*.flv)            echo "video_file"    ;;
+              ,*.vob)            echo "video_file"    ;;
+              ,*.ogv)            echo "video_file"    ;;
+              ,*.ogm)            echo "video_file"    ;;
+              ,*.gifv)           echo "video_file"    ;;
+              ,*.mpg)            echo "video_file"    ;;
+              ,*.mpeg)           echo "video_file"    ;;
+              ,*.mp4v)           echo "video_file"    ;;
+              ,*.wmv)            echo "video_file"    ;;
+              ,*.qt)             echo "video_file"    ;;
+              ,*.yuv)            echo "video_file"    ;;
+              ,*.rm)             echo "video_file"    ;;
+              ,*.rmvb)           echo "video_file"    ;;
+              ,*.viv)            echo "video_file"    ;;
+              ,*.asf)            echo "video_file"    ;;
+              ,*.m4v)            echo "video_file"    ;;
+              ,*.avi)            echo "video_file"    ;;
+              ,*.mov)            echo "video_file"    ;;
+              ,*.m2v)            echo "video_file"    ;;
+              ,*.nuv)            echo "video_file"    ;;
+              ,*.flc)            echo "video_file"    ;;
+              ,*.fli)            echo "video_file"    ;;
+              ,*.gl)             echo "video_file"    ;;
+              ,*.ogx)            echo "video_file"    ;;
+              ,*.mp3)            echo "audio_file"    ;;
+              ,*.aac)            echo "audio_file"    ;;
+              ,*.m4a)            echo "audio_file"    ;;
+              ,*.oga)            echo "audio_file"    ;;
+              ,*.spx)            echo "audio_file"    ;;
+              ,*.au)             echo "audio_file"    ;;
+              ,*.wav)            echo "audio_file"    ;;
+              ,*.opus)           echo "audio_file"    ;;
+              ,*.ra)             echo "audio_file"    ;;
+              ,*.flac)           echo "audio_file"    ;;
+              ,*.mid)            echo "audio_file"    ;;
+              ,*.midi)           echo "audio_file"    ;;
+              ,*.mka)            echo "audio_file"    ;;
+              ,*.mpc)            echo "audio_file"    ;;
+              ,*.xspf)           echo "audio_file"    ;;
+              ,*.jpg)            echo "img_file"      ;;
+              ,*.jpeg)           echo "img_file"      ;;
+              ,*.mjpg)           echo "img_file"      ;;
+              ,*.mjpeg)          echo "img_file"      ;;
+              ,*.ico)            echo "img_file"      ;;
+              ,*.gif)            echo "img_file"      ;;
+              ,*.bmp)            echo "img_file"      ;;
+              ,*.pbm)            echo "img_file"      ;;
+              ,*.pgm)            echo "img_file"      ;;
+              ,*.ppm)            echo "img_file"      ;;
+              ,*.tga)            echo "img_file"      ;;
+              ,*.xbm)            echo "img_file"      ;;
+              ,*.xpm)            echo "img_file"      ;;
+              ,*.tif)            echo "img_file"      ;;
+              ,*.tiff)           echo "img_file"      ;;
+              ,*.png)            echo "img_file"      ;;
+              ,*.svg)            echo "img_file"      ;;
+              ,*.svgz)           echo "img_file"      ;;
+              ,*.mng)            echo "img_file"      ;;
+              ,*.pcx)            echo "img_file"      ;;
+              ,*.xcf)            echo "img_file"      ;;
+              ,*.xwd)            echo "img_file"      ;;
+              ,*.cgm)            echo "img_file"      ;;
+              ,*.emf)            echo "img_file"      ;;
+              ,*.tar)            echo "zip_file"      ;;
+              ,*.tgz)            echo "zip_file"      ;;
+              ,*.arc)            echo "zip_file"      ;;
+              ,*.arj)            echo "zip_file"      ;;
+              ,*.taz)            echo "zip_file"      ;;
+              ,*.lha)            echo "zip_file"      ;;
+              ,*.lz4)            echo "zip_file"      ;;
+              ,*.lzh)            echo "zip_file"      ;;
+              ,*.lzma)           echo "zip_file"      ;;
+              ,*.tlz)            echo "zip_file"      ;;
+              ,*.txz)            echo "zip_file"      ;;
+              ,*.tzo)            echo "zip_file"      ;;
+              ,*.t7z)            echo "zip_file"      ;;
+              ,*.zip)            echo "zip_file"      ;;
+              ,*.z)              echo "zip_file"      ;;
+              ,*.dz)             echo "zip_file"      ;;
+              ,*.gz)             echo "zip_file"      ;;
+              ,*.lrz)            echo "zip_file"      ;;
+              ,*.lz)             echo "zip_file"      ;;
+              ,*.lzo)            echo "zip_file"      ;;
+              ,*.xz)             echo "zip_file"      ;;
+              ,*.zst)            echo "zip_file"      ;;
+              ,*.tzst)           echo "zip_file"      ;;
+              ,*.bz2)            echo "zip_file"      ;;
+              ,*.bz)             echo "zip_file"      ;;
+              ,*.tbz)            echo "zip_file"      ;;
+              ,*.tbz2)           echo "zip_file"      ;;
+              ,*.tz)             echo "zip_file"      ;;
+              ,*.deb)            echo "zip_file"      ;;
+              ,*.rpm)            echo "zip_file"      ;;
+              ,*.jar)            echo "zip_file"      ;;
+              ,*.war)            echo "zip_file"      ;;
+              ,*.ear)            echo "zip_file"      ;;
+              ,*.sar)            echo "zip_file"      ;;
+              ,*.rar)            echo "zip_file"      ;;
+              ,*.alz)            echo "zip_file"      ;;
+              ,*.ace)            echo "zip_file"      ;;
+              ,*.zoo)            echo "zip_file"      ;;
+              ,*.cpio)           echo "zip_file"      ;;
+              ,*.7z)             echo "zip_file"      ;;
+              ,*.rz)             echo "zip_file"      ;;
+              ,*.cab)            echo "zip_file"      ;;
+              ,*.wim)            echo "zip_file"      ;;
+              ,*.swm)            echo "zip_file"      ;;
+              ,*.dwm)            echo "zip_file"      ;;
+              ,*.esd)            echo "zip_file"      ;;
+              ,*)                echo "text_file"     ;;
+          esac
+      fi
+  }
+
+  function options()
+  {
+      for file in $list
+      do
+          icon=$(print_icon "$file")
+          echo -en "$file\0icon\x1f$icon\n"
+      done
+  }
+
+  chosen="$(options | $rofi_command -p " Search " -dmenu)"
+  if [ "$chosen" != "" ]
+  then
+      echo "$pwd/$chosen"
+  else
+      echo "."
+  fi
+
+#+end_src
+
+**** COMMENT Music Player Daemon
+
+#+begin_src sh :tangle ./.config/rofi/scripts/mdb.sh
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/menu/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/menu/configs/$style"
+  rofi_command="rofi -theme $dir/mpd.rasi"
+
+  # Gets the current status of mpd (for us to parse it later on)
+  status="$(mpc status)"
+  # Defines the Play / Pause option content
+  if [[ $status == *"[playing]"* ]]; then
+      play_pause=""
+  else
+      play_pause=""
+  fi
+  active=""
+  urgent=""
+
+  # Display if repeat mode is on / off
+  tog_repeat=""
+  if [[ $status == *"repeat: on"* ]]; then
+      active="-a 4"
+  elif [[ $status == *"repeat: off"* ]]; then
+      urgent="-u 4"
+  else
+      tog_repeat=" Parsing error"
+  fi
+
+  # Display if random mode is on / off
+  tog_random=""
+  if [[ $status == *"random: on"* ]]; then
+      [ -n "$active" ] && active+=",5" || active="-a 5"
+  elif [[ $status == *"random: off"* ]]; then
+      [ -n "$urgent" ] && urgent+=",5" || urgent="-u 5"
+  else
+      tog_random=" Parsing error"
+  fi
+  stop=""
+  next=""
+  previous=""
+
+  # Variable passed to rofi
+  options="$previous\n$play_pause\n$stop\n$next\n$tog_repeat\n$tog_random"
+
+  # Get the current playing song
+  current=$(mpc -f "%artist% - %title%" current)
+  # If mpd isn't running it will return an empty string, we don't want to display that
+  if [[ -z "$current" ]]; then
+      current="-"
+  fi
+
+  # Spawn the mpd menu with the "Play / Pause" entry selected by default
+  chosen="$(echo -e "$options" | $rofi_command -p "  $current" -dmenu $active $urgent -selected-row 1)"
+  case $chosen in
+      $previous)
+          mpc -q prev && notify-send -u low -t 1800 " $(mpc current)"
+          ;;
+      $play_pause)
+          mpc -q toggle && notify-send -u low -t 1800 " $(mpc current)"
+          ;;
+      $stop)
+          mpc -q stop
+          ;;
+      $next)
+          mpc -q next && notify-send -u low -t 1800 " $(mpc current)"
+          ;;
+      $tog_repeat)
+          mpc -q repeat
+          ;;
+      $tog_random)
+          mpc -q random
+          ;;
+  esac
+
+#+end_src
+
+**** COMMENT Network
+
+#+begin_src sh :tangle ./.config/rofi/scripts/network.sh
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/menu/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/menu/configs/$style"
+  rofi_command="rofi -theme $dir/network.rasi"
+
+  ## Get info
+  IFACE="$(nmcli | grep -i interface | awk '/interface/ {print $2}')"
+  #SSID="$(iwgetid -r)"
+  #LIP="$(nmcli | grep -i server | awk '/server/ {print $2}')"
+  #PIP="$(dig +short myip.opendns.com @resolver1.opendns.com )"
+  STATUS="$(nmcli radio wifi)"
+
+  active=""
+  urgent=""
+
+  if (ping -c 1 archlinux.org || ping -c 1 google.com || ping -c 1 bitbucket.org || ping -c 1 github.com || ping -c 1 sourceforge.net) &>/dev/null; then
+      if [[ $STATUS == *"enable"* ]]; then
+          if [[ $IFACE == e* ]]; then
+              connected=""
+          else
+              connected=""
+          fi
+          active="-a 0"
+          SSID="﬉ $(iwgetid -r)"
+          PIP="$(wget --timeout=30 http://ipinfo.io/ip -qO -)"
+      fi
+  else
+      urgent="-u 0"
+      SSID="Disconnected"
+      PIP="Not Available"
+      connected=""
+  fi
+
+  ## Icons
+  bmon=""
+  launch_cli=""
+  launch=""
+
+  options="$connected\n$bmon\n$launch_cli\n$launch"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "$SSID  :  $PIP" -dmenu $active $urgent -selected-row 1)"
+  case $chosen in
+      $connected)
+          if [[ $STATUS == *"enable"* ]]; then
+              nmcli radio wifi off
+          else
+              nmcli radio wifi on
+          fi 
+          ;;
+      $bmon)
+          termite -e bmon
+          ;;
+      $launch_cli)
+          termite -e nmtui
+          ;;
+      $launch)
+          nm-connection-editor
+          ;;
+  esac
+
+#+end_src
+
+**** Power menu
+
+#+begin_src sh :tangle ./.config/rofi/scripts/powermenu.sh
+
+  #!/usr/bin/env bash
+
+  rofi_command="rofi -kb-move-char-back Left,h\
+                     -kb-move-char-forward Right,l\
+                     -theme $HOME/.config/rofi/menu_themes/powermenu.rasi"
+
+  uptime=$(uptime -p | sed -e 's/up //g')
+
+  # Options
+  shutdown=""
+  reboot=""
+  lock=""
+  suspend=""
+  logout=""
+
+  xdotool key Mode_switch
+
+  # Variable passed to rofi
+  options="$lock\n$reboot\n$shutdown\n$suspend\n$logout"
+  chosen="$(echo -e "$options" | $rofi_command -p " 祥  $uptime " -dmenu -selected-row 2)"
+  case $chosen in
+      $shutdown)
+          systemctl poweroff
+          ;;
+      $reboot)
+          systemctl reboot
+          ;;
+      $lock)
+          if [[ -f /usr/bin/i3lock ]]; then
+              i3lock
+          elif [[ -f /usr/bin/betterlockscreen ]]; then
+              betterlockscreen -l
+          fi
+          ;;
+      $suspend)
+          mpc -q pause
+          amixer set Master mute
+          systemctl suspend
+          ;;
+      $logout)
+          if [[ "$DESKTOP_SESSION" == "Openbox" ]]; then
+              openbox --exit
+          elif [[ "$DESKTOP_SESSION" == "bspwm" ]]; then
+              bspc quit
+          elif [[ "$DESKTOP_SESSION" == "i3" ]]; then
+              i3-msg exit
+          fi
+          ;;
+  esac
+
+#+end_src
+
+**** COMMENT Quick links
+
+#+begin_src sh :tangle ./.config/rofi/scripts/quicklinks.sh
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/menu/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/menu/configs/$style"
+  rofi_command="rofi -theme $dir/quicklinks.rasi"
+
+  # Error msg
+  msg() {
+      rofi -theme "$HOME/.config/rofi/applets/styles/message.rasi" -e "$1"
+  }
+
+  # Browser
+  if [[ -f /usr/bin/firefox ]]; then
+      app="firefox"
+  elif [[ -f /usr/bin/chromium ]]; then
+      app="chromium"
+  elif [[ -f /usr/bin/midori ]]; then
+      app="midori"
+  else
+      msg "No suitable web browser found!"
+      exit 1
+  fi
+
+  # Links
+  google=""
+  facebook=""
+  twitter=""
+  github=""
+  mail=""
+  youtube=""
+
+  # Variable passed to rofi
+  options="$google\n$facebook\n$twitter\n$github\n$mail\n$youtube"
+
+  chosen="$(echo -e "$options" | $rofi_command -p "Open In  :  $app" -dmenu -selected-row 0)"
+  case $chosen in
+      $google)
+          $app https://www.google.com &
+          ;;
+      $facebook)
+          $app https://www.facebook.com &
+          ;;
+      $twitter)
+          $app https://www.twitter.com &
+          ;;
+      $github)
+          $app https://www.github.com &
+          ;;
+      $mail)
+          $app https://www.gmail.com &
+          ;;
+      $youtube)
+          $app https://www.youtube.com &
+          ;;
+  esac
+
+#+end_src
+
+**** Schreenshot
+
+#+begin_src sh :tangle ./.config/rofi/scripts/screenshot.sh
+
+  #!/bin/bash
+
+  rofi_command="rofi -kb-move-char-back Left,h\
+                     -kb-move-char-forward Right,l\
+                     -theme $HOME/.config/rofi/menu_themes/screenshot.rasi"
+
+  scr_dir="$HOME/Pictures/screenshots"
+  mkdir -p "${scr_dir}"
+
+  getStamp()
+  {
+      date '+%Y%m%d-%H%M%S'
+  }
+
+  if [[ ! -f /usr/bin/scrot ]] || [[ ! -f /usr/bin/flameshot ]]
+  then
+      [[ -f /usr/bin/scrot ]] && error_msg "Please install 'scrot'"
+      [[ -f /usr/bin/flameshot ]] && error_msg "Please install 'flameshot'"
+      exit 0
+  fi
+
+  # Options
+  screen=""
+  window=""
+  area=""
+  options="$window\n$screen\n$area"
+
+  xdotool key Mode_switch
+
+  chosen="$(echo -e "$options" | $rofi_command -p ' scrot/flameshot ' -dmenu -selected-row 1)"
+  sleep 0.35
+  case $chosen in
+      $screen)
+          scr_name=full-$(getStamp).png
+          scrot ${scr_dir}/${scr_name}
+          ;;
+      $window)
+          scr_name=window-$(getStamp).png
+          scrot -u ${scr_dir}/${scr_name}
+          ;;
+      $area)
+          window_focus=$(xdotool getwindowfocus)
+          flameshot gui --path "$scr_dir" -r > /dev/null
+          scr_path=$(find "$scr_dir" -type f -newermt `date --date='1 second ago' +%Y-%m-%dT%H:%M:%S` | head -n 1)
+          scr_name=$(basename $scr_path)
+          xdotool windowfocus $window_focus
+          ;;
+      ,*)
+          exit 0
+          ;;
+  esac
+
+  NOTIFY_ICON=/usr/share/icons/Adwaita/32x32/apps/system-users-symbolic.symbolic.png
+  # NOTIFY_ICON=${scr_dir}/${scr_file}
+  if [ -n "$scr_name" ]
+  then
+      notify-send -u normal -i $NOTIFY_ICON \
+                  "Screenshot" "Screenshot save as $scr_name"
+  fi
+
+#+end_src
+
+**** COMMENT Time
+
+#+begin_src sh :tangle ./.config/rofi/scripts/time.sh
+
+  #!/usr/bin/env bash
+
+  style="$($HOME/.config/rofi/applets/menu/style.sh)"
+
+  dir="$HOME/.config/rofi/applets/menu/configs/$style"
+  rofi_command="rofi -theme $dir/time.rasi"
+
+  ## Get time and date
+  TIME="$(date +"%I:%M %p")"
+  DN=$(date +"%A")
+  MN=$(date +"%B")
+  DAY="$(date +"%d")"
+  MONTH="$(date +"%m")"
+  YEAR="$(date +"%Y")"
+
+  options="$DAY\n$MONTH\n$YEAR"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p "   at $TIME on $DN in $MN" -dmenu -selected-row 1)"
+
+#+end_src
+
+**** COMMENT Volume
+
+#+begin_src sh :tangle ./.config/rofi/scripts/volume.sh
+
+  #!/usr/bin/env bash
+
+  dir="$HOME/.config/rofi/applets/menu/themes/"
+  # rofi_command="rofi -kb-move-char-back Left,h\
+      # -kb-move-char-forward Right,l\
+      # -theme $dir/screenshot.rasi"
+
+  rofi_command="rofi -theme $dir/volume.rasi"
+
+  ## Get Volume
+  #VOLUME=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')
+  MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')
+
+  active=""
+  urgent=""
+
+  if [[ $MUTE == *"off"* ]]; then
+      active="-a 1"
+  else
+      urgent="-u 1"
+  fi
+
+  if [[ $MUTE == *"on"* ]]; then
+      VOLUME="$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')%"
+  else
+      VOLUME="Mute"
+  fi
+
+  ## Icons
+  ICON_UP=""
+  ICON_DOWN=""
+  ICON_MUTED=""
+
+  options="$ICON_UP\n$ICON_MUTED\n$ICON_DOWN"
+
+  ## Main
+  chosen="$(echo -e "$options" | $rofi_command -p " $VOLUME " -dmenu $active $urgent -selected-row 0)"
+  case $chosen in
+      $ICON_UP)
+          amixer -Mq set Master,0 5%+ unmute && notify-send -u low -t 1500 "Volume Up $ICON_UP"
+          ;;
+      $ICON_DOWN)
+          amixer -Mq set Master,0 5%- unmute && notify-send -u low -t 1500 "Volume Down $ICON_DOWN"
+          ;;
+      $ICON_MUTED)
+          amixer -q set Master toggle
+          ;;
+  esac
+
+#+end_src
+
+*** Other scripts
+**** Error message
+
+#+begin_src sh :tangle ./.config/rofi/scripts/errormsg.sh
+
+  #!/usr/bin/env bash
+
+  options=""
+  rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/styles/error_msg.rasi"
+  $(echo -e "$options" | $rofi_command -p " $1 " -dmenu)
+
+#+end_src
+
+**** Input
+
+#+begin_src sh :tangle ./.config/rofi/scripts/input.sh
+
+  #!/bin/bash
+
+  rofi_command="rofi -dmenu\
+                     -i\
+                     -fixed-num-lines\
+                     -monitor -2\
+                     -p \" $1 \"\
+                     -theme $HOME/.config/rofi/styles/input.rasi\
+                     -kb-secondary-paste    Control+p,Control+k,Up\
+                     -kb-clear-line         Control+d,Down\
+                     -kb-move-front         Control+i\
+                     -kb-move-end           Control+a\
+                     -kb-move-char-back     Control+h,Left\
+                     -kb-move-char-forward  Control+l,Right\
+                     -kb-row-up             \"\"\
+                     -kb-row-down           \"\""
+
+  echo -n "$(eval $rofi_command)"
+
+
+#+end_src
+
+**** Long input
+
+#+begin_src sh :tangle ./.config/rofi/scripts/longinput.sh
+
+  #!/bin/bash
+
+  rofi_command="rofi -dmenu\
+                     -i\
+                     -fixed-num-lines\
+                     -monitor -2\
+                     -p \" $1 \"\
+                     -theme $HOME/.config/rofi/styles/long_input.rasi\
+                     -kb-secondary-paste    Control+p,Control+k,Up\
+                     -kb-clear-line         Control+d,Down\
+                     -kb-move-front         Control+i\
+                     -kb-move-end           Control+a\
+                     -kb-move-char-back     Control+h,Left\
+                     -kb-move-char-forward  Control+l,Right\
+                     -kb-row-up             \"\"\
+                     -kb-row-down           \"\""
+
+  echo -n "$(eval $rofi_command)"
+
+#+end_src
+
+
 

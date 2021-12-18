@@ -1,0 +1,25 @@
+@import "colors.rasi"
+
+* {
+    background-color:               @background;
+    text-color:                     @foreground;
+    font:                           "SauceCodePro Nerd Font Semibold 14";
+}
+
+window {
+    width:                          660px;
+    padding:                        24px 23px 23px 23px;
+    border:                         0px;
+    border-radius:                  0px;
+    location:                       center;
+    y-offset:                       -28px;
+}
+
+entry {
+    expand:                         true;
+    text-color:                     @accent;
+}
+
+listview {
+    padding:                        -202px;
+}

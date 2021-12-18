@@ -1,0 +1,42 @@
+configuration {
+    show-icons:           true;
+    /* icon-theme:           "Papirus"; */
+    icon-theme:           "myIcons";
+    modi:                 "window,run,ssh,drun";
+
+    terminal:             "alacritty";
+    run-command:          "{cmd}";
+    run-shell-command:    "{terminal} -e {cmd}";
+    drun-match-fields:    "name";
+    drun-display-format:  "{name}";
+    cycle:                false;
+    case-sensitive:       false;
+    monitor:              "-1";
+    cache-dir:            "/home/none9632/.cache/rofi";
+
+    display-run:          "Run";
+    display-drun:         "Run";
+    /* display-window: ; */
+    /* display-windowcd: ;*/
+    /* display-ssh: ; */
+    /* display-combi: ; */
+    /* display-keys: ; */
+    /* display-file-browser: ; */
+
+    kb-mode-complete:       "";
+    kb-remove-to-eol:       "";
+    kb-cancel:              "Super+q,Escape";
+    kb-remove-char-forward: "Delete";
+    kb-remove-char-back:    "BackSpace,Shift+BackSpace";
+    kb-secondary-paste:     "P,Control+p";
+    kb-clear-line:          "D,Control+d";
+    kb-move-front:          "I,Control+i";
+    kb-move-end:            "A,Control+a";
+    kb-move-word-back:      "Control+Left";
+    kb-move-word-forward:   "Control+Right";
+    kb-move-char-back:      "Left,Alt+h,Control+h";
+    kb-move-char-forward:   "Right,Alt+l,Control+l";
+    kb-accept-entry:        ",Return,KP_Enter";
+    kb-row-up:              "Up,ISO_Left_Tab,Alt+k";
+    kb-row-down:            "Down,Alt+j";
+}

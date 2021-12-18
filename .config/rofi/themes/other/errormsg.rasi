@@ -1,0 +1,58 @@
+configuration {
+    font:                           "SauceCodePro Nerd Font Semibold 14";
+    disable-history:                false;
+    sidebar-mode:                   false;
+}
+
+@import "colors.rasi"
+
+* {
+    background-color:               @background;
+    text-color:                     @foreground;
+}
+
+window {
+    transparency:                   "real";
+    border-radius:                  0px;
+    location:                       center;
+    width:                          550px;
+    x-offset:                       0px;
+    y-offset:                       0px;
+}
+
+prompt {
+    enabled:                        true;
+    padding:                        10px 0px 10px 0px;
+    background-color:               @background;
+    text-color:                     @accent;
+}
+
+textbox-prompt-colon {
+    expand:                         false;
+    str:                            " Error:";
+    background-color:               @background;
+    text-color:                     @off;
+    padding:                        10px 0px 0px 0px;
+}
+
+inputbar {
+    children:                       [ textbox-prompt-colon, prompt ];
+    spacing:                        0px;
+    background-color:               @background;
+    text-color:                     @foreground;
+    expand:                         false;
+    margin:                         0px;
+    padding:                        0px;
+    position:                       center;
+}
+
+listview {
+    enabled: false;
+}
+
+mainbox {
+    background-color:               @background;
+    children:                       [ inputbar, listview ];
+    spacing:                        0px;
+    margin:                         14px;
+}
