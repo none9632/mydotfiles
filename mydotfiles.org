@@ -2096,7 +2096,7 @@ Neofetch config
 
 ** Shadows
 
-#+begin_src sh
+#+begin_src conf
 
   # Enabled client-side shadows on windows. Note desktop windows
   # (windows with '_NET_WM_WINDOW_TYPE_DESKTOP') never get shadow,
@@ -2162,7 +2162,7 @@ Neofetch config
 
 ** Fading
 
-#+begin_src sh
+#+begin_src conf
 
   # Fade windows in/out when opening/closing and when opacity changes,
   #  unless no-fading-openclose is used.
@@ -2193,7 +2193,7 @@ Neofetch config
 
 ** Transparent-Opacity
 
-#+begin_src sh
+#+begin_src conf
 
   # Opacity of inactive windows. (0.1 - 1.0, defaults to 1.0)
   # inactive-opacity = 1.0;
@@ -2238,7 +2238,7 @@ Neofetch config
 
 ** Corners
 
-#+begin_src sh
+#+begin_src conf
 
   # Sets the radius of rounded window corners. When > 0, the compositor will
   # round the corners of windows. Does not interact well with
@@ -2255,8 +2255,8 @@ Neofetch config
 
 ** Background-Blurring
 
-#+begin_src sh
-
+#+begin_src conf
+	
   blur: {
       method = "dual_kawase";
       strength = 8;
@@ -2284,10 +2284,8 @@ Neofetch config
   #
   # blur-background-frame = false
 
-
   # Use fixed blur strength rather than adjusting according to window opacity.
   # blur-background-fixed = false
-
 
   # Specify the blur convolution kernel, with the following format:
   # example:
@@ -2295,7 +2293,6 @@ Neofetch config
   #
   # blur-kern = ""
   # blur-kern = "3x3box";
-
 
   # Exclude conditions for background blur.
   # blur-background-exclude = []
@@ -2310,9 +2307,10 @@ Neofetch config
 
 ** General Settings
 
-#+begin_src sh
+#+begin_src conf
 
-  # Daemonize process. Fork to background after initialization. Causes issues with certain (badly-written) drivers.
+  # Daemonize process. Fork to background after initialization.
+  # Causes issues with certain (badly-written) drivers.
   # daemon = false
 
   # Specify the backend to use: `xrender`, `glx`, or `xr_glx_hybrid`.
@@ -6269,6 +6267,4 @@ Configuration based on https://github.com/adi1090x/rofi
   echo -n "$(eval $rofi_command)"
 
 #+end_src
-
-
 
