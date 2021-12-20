@@ -105,6 +105,234 @@
 
 #+end_src
 
+* My scripts
+** inkscape-figures
+:PROPERTIES:
+:header-args: :tangle ./.local/inkscape-figures :tangle-mode (identity #o755)
+:END:
+
+*** Header
+
+#+begin_src sh
+
+  #!/bin/bash
+
+#+end_src
+
+*** Variables
+
+#+begin_src sh
+
+  figures_path=./figures/
+  images_path=./images/
+  template_svg="\
+  <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n\
+  <!-- Created with Inkscape (http://www.inkscape.org/) -->\n\
+  \n\
+  <svg\n\
+     xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n\
+     xmlns:cc=\"http://creativecommons.org/ns#\"\n\
+     xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n\
+     xmlns:svg=\"http://www.w3.org/2000/svg\"\n\
+     xmlns=\"http://www.w3.org/2000/svg\"\n\
+     xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n\
+     xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n\
+     width=\"240mm\"\n\
+     height=\"120mm\"\n\
+     viewBox=\"0 0 240 120\"\n\
+     version=\"1.1\"\n\
+     id=\"svg8\"\n\
+     inkscape:version=\"0.92.4 (unknown)\"\n\
+     sodipodi:docname=\"figure.svg\">\n\
+    <defs\n\
+       id=\"defs2\" />\n\
+    <sodipodi:namedview\n\
+       id=\"base\"\n\
+       pagecolor=\"#ffffff\"\n\
+       bordercolor=\"#666666\"\n\
+       borderopacity=\"1.0\"\n\
+       inkscape:pageopacity=\"0.0\"\n\
+       inkscape:pageshadow=\"2\"\n\
+       inkscape:zoom=\"0.99437388\"\n\
+       inkscape:cx=\"284.27627\"\n\
+       inkscape:cy=\"182.72055\"\n\
+       inkscape:document-units=\"mm\"\n\
+       inkscape:current-layer=\"layer1\"\n\
+       showgrid=\"false\"\n\
+       showborder=\"true\"\n\
+       width=\"200mm\"\n\
+       showguides=\"true\"\n\
+       inkscape:guide-bbox=\"true\"\n\
+       inkscape:window-width=\"2520\"\n\
+       inkscape:window-height=\"995\"\n\
+       inkscape:window-x=\"20\"\n\
+       inkscape:window-y=\"65\"\n\
+       inkscape:window-maximized=\"1\">\n\
+      <inkscape:grid\n\
+         type=\"xygrid\"\n\
+         id=\"grid815\"\n\
+         units=\"mm\"\n\
+         spacingx=\"10\"\n\
+         spacingy=\"10\"\n\
+         empspacing=\"4\"\n\
+         dotted=\"false\" />\n\
+    </sodipodi:namedview>\n\
+    <metadata\n\
+       id=\"metadata5\">\n\
+      <rdf:RDF>\n\
+        <cc:Work\n\
+           rdf:about=\"\">\n\
+          <dc:format>image/svg+xml</dc:format>\n\
+          <dc:type\n\
+             rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n\
+          <dc:title />\n\
+        </cc:Work>\n\
+      </rdf:RDF>\n\
+    </metadata>\n\
+    <g\n\
+       inkscape:label=\"Layer 1\"\n\
+       inkscape:groupmode=\"layer\"\n\
+       id=\"layer1\"\n\
+       transform=\"translate(0,-177)\" />\n\
+  </svg>"
+
+#+end_src
+
+*** Functions
+
+#+begin_src sh
+
+  function help
+  {
+      echo -e "\
+  Usage: inkscape-images [OPTIONS] COMMAND [ARGS]...\n\
+  \n\
+  Options:\n\
+  -h, --help             Show this message and exit.\n\
+  -d, --dir <directory>  Change images directory. Default ./images/.\n\
+  \n\
+  Commands:\n\
+  create       Creates a image.\n\
+  edit <path>  Edits a image."
+      exit 0
+  }
+
+  function create
+  {
+      [ ! -d $figures_path ] && mkdir -p $figures_path
+      if [ ! -d $figures_path ]
+      then
+          error_msg "Can't create figures path"
+          echo ""
+          return
+      fi
+
+      title="$(input "Figure name:")"
+      fig_file_path=$figures_path$(echo "${title/ /-}.svg")
+      while [ "$title" != "" ] && [ -f $fig_file_path ]
+      do
+          error_msg "file exists"
+          title="$(input "Figure name:")"
+          fig_file_path=$figures_path$(echo "${title/ /-}.svg")
+      done
+
+      [ "$title" = "" ] && return
+
+      touch $fig_file_path
+      if [ ! -f $fig_file_path ]
+      then
+          error_msg "Can't create figure file"
+          echo ""
+          return
+      fi
+
+      echo -e $template_svg > $fig_file_path
+      inkscape $fig_file_path
+      echo -n $fig_file_path
+  }
+
+  function move
+  {
+      [ ! -d $images_path ] && mkdir -p $images_path
+      if [ ! -d $images_path ]
+      then
+          error_msg "Can't create images path"
+          echo ""
+          return
+      fi
+
+      # old_filename=$(basename "$1")
+      # extension="${old_filename##*.}"
+      # new_name="$(input "New img name:")"
+      # img_file_path=$images_path$(echo "${new_name/ /-}.$extension")
+
+      # while [ "$new_name" != "" ] && [ -f $img_file_path ]
+      # do
+      # error_msg "file exists"
+      # new_name="$(input "New img name:")"
+      # img_file_path=$images_path$(echo "${new_name/ /-}.$extension")
+      # done
+
+      # [ "$new_name" = "" ] && return
+
+      # echo -n "image$file_number" | xsel --clipboard --input
+
+      file_number=$(( $(ls $images_path | wc -l)+1 ))
+      new_filename=$(echo -n "image$file_number")
+      old_filename=$(basename "$1")
+      extension="${old_filename##*.}"
+      img_file_path=$images_path$(echo "$new_filename.$extension")
+
+      cp $1 $img_file_path
+      if [ ! -f $img_file_path ]
+      then
+          error_msg "Can't create image file"
+          echo ""
+          return
+      fi
+
+      echo -n $img_file_path
+  }
+
+  function edit
+  {
+      if [ ! -f $1 ]
+      then
+          error_msg "file does not exist"
+          return
+      fi
+      inkscape $1
+  }
+
+#+end_src
+
+*** The actual script
+
+#+begin_src sh
+
+  while [ -n "$1" ]
+  do
+      case "$1" in
+          -d|--dir)
+              figures_path="$2"
+              shift ;;
+          -h|--help)
+              help ;;
+          ,*)
+              break ;;
+      esac
+      shift
+  done
+
+  case "$1" in
+      create) create    ;;
+      move)   move "$2" ;;
+      edit)   edit "$2" ;;
+      ,*)      help      ;;
+  esac
+
+#+end_src
+
 * Alacritty
 
 Configuration for Alacritty, the GPU enhanced terminal emulator.
