@@ -11,7 +11,7 @@ pkgs="alacritty neofetch rofi flameshot scrot xdotool picom-git"
 # list of files/folders to symlink in homedir
 config_files="alacritty neofetch picom rofi"
 
-rofi_bin_files="appslauncher appsmenu errormsg filemanager input longinput powermenu screenshot"
+rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
 
 error()
 {
