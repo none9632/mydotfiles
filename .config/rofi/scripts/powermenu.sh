@@ -2,7 +2,7 @@
 
 rofi_command="rofi -kb-move-char-back Left,h\
                    -kb-move-char-forward Right,l\
-                   -theme $HOME/.config/rofi/menu_themes/powermenu.rasi"
+                   -theme $HOME/.config/rofi/themes/menu/powermenu.rasi"
 
 uptime=$(uptime -p | sed -e 's/up //g')
 

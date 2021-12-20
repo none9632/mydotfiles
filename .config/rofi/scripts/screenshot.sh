@@ -2,7 +2,7 @@
 
 rofi_command="rofi -kb-move-char-back Left,h\
                    -kb-move-char-forward Right,l\
-                   -theme $HOME/.config/rofi/menu_themes/screenshot.rasi"
+                   -theme $HOME/.config/rofi/themes/menu/screenshot.rasi"
 
 scr_dir="$HOME/Pictures/screenshots"
 mkdir -p "${scr_dir}"

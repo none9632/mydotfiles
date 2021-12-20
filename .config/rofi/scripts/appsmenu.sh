@@ -4,7 +4,7 @@ rofi_command="rofi -kb-move-char-back Left,h\
                    -kb-move-char-forward Right,l\
                    -kb-row-first H\
                    -kb-row-last L\
-                   -theme $HOME/.config/rofi/menu_themes/appsmenu.rasi"
+                   -theme $HOME/.config/rofi/themes/menu/appsmenu.rasi"
 
 # Links
 terminal=""
