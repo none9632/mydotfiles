@@ -347,7 +347,7 @@ If a field is already present in a previous import, it will be replaced.
 All imports must either be absolute paths starting with `/`, or paths relative to the user's home
 directory starting with `~/`.
 
-#+begin_src sh
+#+begin_src yaml
 
   #import:
   #  - /path/to/alacritty.yml
@@ -359,7 +359,7 @@ directory starting with `~/`.
 Any items in the `env` entry below will be added as environment variables. Some entries may override
 variables set by alacritty itself.
 
-#+begin_src sh
+#+begin_src yaml
 
   env:
     # TERM variable
@@ -374,7 +374,7 @@ variables set by alacritty itself.
 
 ** Window
 
-#+begin_src sh
+#+begin_src yaml
 
   window:
     # Window dimensions (changes require restart)
@@ -450,7 +450,7 @@ variables set by alacritty itself.
 
 ** Scrolling
 
-#+begin_src sh
+#+begin_src yaml
 
   scrolling:
     # Maximum number of lines in the scrollback buffer.
@@ -459,12 +459,12 @@ variables set by alacritty itself.
 
     # Scrolling distance multiplier.
     #multiplier: 3
-	
+
 #+end_src
 
 ** Font configuration
 
-#+begin_src sh
+#+begin_src yaml
 
   font:
     normal:
@@ -507,7 +507,7 @@ variables set by alacritty itself.
 
 ** Colors
 
-#+begin_src sh
+#+begin_src yaml
 
   colors:
     # Default colors
@@ -647,7 +647,7 @@ variables set by alacritty itself.
 
 The bell is rung every time the BEL control character is received.
 
-#+begin_src sh
+#+begin_src yaml
 
   #bell:
     # Visual Bell Animation
@@ -694,7 +694,7 @@ The bell is rung every time the BEL control character is received.
 Window opacity as a floating point number from `0.0` to `1.0`. The value `0.0` is completely
 transparent and `1.0` is opaque.
 
-#+begin_src sh
+#+begin_src yaml
 
   background_opacity: 0.85
 
@@ -702,7 +702,7 @@ transparent and `1.0` is opaque.
 
 ** Selection
 
-#+begin_src sh
+#+begin_src yaml
 
   #selection:
     # This string contains all characters that are used as separators for
@@ -716,7 +716,7 @@ transparent and `1.0` is opaque.
 
 ** Cursor
 
-#+begin_src sh
+#+begin_src yaml
 
   #cursor:
     # Cursor style
@@ -763,7 +763,7 @@ transparent and `1.0` is opaque.
 
 changes require restart
 
-#+begin_src sh
+#+begin_src yaml
 
   #live_config_reload: true
 
@@ -779,7 +779,7 @@ Default:
   - (Linux/BSD) user login shell
   - (Windows) powershell
 
-#+begin_src sh
+#+begin_src yaml
 
   shell:
    program: /bin/zsh
@@ -799,7 +799,7 @@ Default:
 Directory the shell is started in. If this is unset, or `None`, the working directory of the parent
 process will be used.
 
-#+begin_src sh
+#+begin_src yaml
 
   #working_directory: None
 
@@ -809,7 +809,7 @@ process will be used.
 
 Send ESC (\x1b) before characters when alt is pressed.
 
-#+begin_src sh
+#+begin_src yaml
 
   #alt_send_esc: true
 
@@ -817,7 +817,7 @@ Send ESC (\x1b) before characters when alt is pressed.
 
 ** Mouse
 
-#+begin_src sh
+#+begin_src yaml
 
   #mouse:
   # Click settings
@@ -834,7 +834,7 @@ Send ESC (\x1b) before characters when alt is pressed.
 
 If this is `true`, the cursor is temporarily hidden when typing.
 
-#+begin_src sh
+#+begin_src yaml
 
   #hide_when_typing: false
 
@@ -842,7 +842,7 @@ If this is `true`, the cursor is temporarily hidden when typing.
 
 ** URL
 
-#+begin_src sh
+#+begin_src yaml
 
   #url:
   # URL launcher
@@ -893,7 +893,7 @@ And optionally:
 
 - `mods` (see key bindings)
 
-#+begin_src sh
+#+begin_src yaml
 
   #mouse_bindings:
   #  - { mouse: Middle, action: PasteSelection }
@@ -1100,7 +1100,7 @@ that binding.
 If the same trigger is assigned to multiple actions, all of them are executed in the order they were
 defined in.
 
-#+begin_src sh
+#+begin_src yaml
 
   #key_bindings:
   #- { key: Paste,                                       action: Paste          }
@@ -1216,7 +1216,7 @@ defined in.
 
 ** Debug
 
-#+begin_src sh
+#+begin_src yaml
 
   # Display the time it takes to redraw each frame.
   #render_timer: false
@@ -5788,7 +5788,7 @@ Configuration based on https://github.com/adi1090x/rofi
   ls_command="exa -a --color=never --group-directories-first $pwd"
   rofi_command="rofi -scroll-method 1\
                      -i
-                     -theme $HOME/.config/rofi/themes/menu/filemanager.rasi"
+                     -theme $HOME/.config/rofi/themes/menu/filesearch.rasi"
   list=$(LC_COLLATE=C ls -A --group-directories-first $pwd)
 
   function print_icon()

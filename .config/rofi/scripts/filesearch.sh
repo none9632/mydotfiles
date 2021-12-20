@@ -4,7 +4,7 @@ pwd=$1
 ls_command="exa -a --color=never --group-directories-first $pwd"
 rofi_command="rofi -scroll-method 1\
                    -i
-                   -theme $HOME/.config/rofi/themes/menu/filemanager.rasi"
+                   -theme $HOME/.config/rofi/themes/menu/filesearch.rasi"
 list=$(LC_COLLATE=C ls -A --group-directories-first $pwd)
 
 function print_icon()
