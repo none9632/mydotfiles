@@ -1,3 +1,5 @@
+#!/bin/bash
+
 dot_dir=$(pwd)          # dotfiles directory
 bin_dir=~/.local/bin    # bin files directory
 bak_dir=~/.dotfiles.bak # old dotfiles backup directory

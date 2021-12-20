@@ -8,6 +8,14 @@
 :header-args: :tangle ./install.sh :tangle-mode (identity #o755)
 :END:
 
+** Header
+
+#+begin_src sh
+
+  #!/bin/bash
+
+#+end_src
+
 ** Variables
 
 #+begin_src sh
