@@ -4818,7 +4818,7 @@ Configuration based on https://github.com/adi1090x/rofi
       sidebar-mode:                   false;
   }
 
-  @import "colors.rasi"
+  @import "../../colors.rasi"
 
   ,* {
       background-color:               @background;
@@ -4877,7 +4877,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src css :tangle ./.config/rofi/themes/other/input.rasi
 
-  @import "colors.rasi"
+  @import "../../colors.rasi"
 
   ,* {
       background-color:               @background;
@@ -4909,7 +4909,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src css :tangle ./.config/rofi/themes/other/longinput.rasi
 
-  @import "colors.rasi"
+  @import "../../colors.rasi"
 
   ,* {
       background-color:               @background;
@@ -6233,7 +6233,7 @@ Configuration based on https://github.com/adi1090x/rofi
   #!/usr/bin/env bash
 
   options=""
-  rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/styles/error_msg.rasi"
+  rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/themes/other/error_msg.rasi"
   $(echo -e "$options" | $rofi_command -p " $1 " -dmenu)
 
 #+end_src
@@ -6249,7 +6249,7 @@ Configuration based on https://github.com/adi1090x/rofi
                      -fixed-num-lines\
                      -monitor -2\
                      -p \" $1 \"\
-                     -theme $HOME/.config/rofi/styles/input.rasi\
+                     -theme $HOME/.config/rofi/themes/other/input.rasi\
                      -kb-secondary-paste    Control+p,Control+k,Up\
                      -kb-clear-line         Control+d,Down\
                      -kb-move-front         Control+i\
@@ -6275,7 +6275,7 @@ Configuration based on https://github.com/adi1090x/rofi
                      -fixed-num-lines\
                      -monitor -2\
                      -p \" $1 \"\
-                     -theme $HOME/.config/rofi/styles/long_input.rasi\
+                     -theme $HOME/.config/rofi/themes/other/long_input.rasi\
                      -kb-secondary-paste    Control+p,Control+k,Up\
                      -kb-clear-line         Control+d,Down\
                      -kb-move-front         Control+i\
