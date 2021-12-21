@@ -11,8 +11,9 @@ build_pkgs="base-devel git gcc make cmake"
 pkgs="alacritty neofetch rofi flameshot scrot xdotool picom-git"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty neofetch picom rofi"
+config_files="alacritty neofetch nvim picom rofi zathura"
 
+bin_files="inkscape-figures"
 rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
 
 error()
@@ -60,6 +61,15 @@ for file in $config_files
 do
     echo "Creating symlink to $file in home directory."
     ln -s $dot_dir/.config/$file ~/.config/$file
+done
+
+for file in $bin_files
+do
+    if [ ! -f $bin_dir/$file ]
+    then
+        echo "Creating symlink to $file in $bin_dir"
+        ln -s $dot_dir/.local/$file $bin_dir/$file
+    fi
 done
 
 for file in $rofi_bin_files
