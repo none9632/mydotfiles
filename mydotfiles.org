@@ -31,8 +31,9 @@
   pkgs="alacritty neofetch rofi flameshot scrot xdotool picom-git"
 
   # list of files/folders to symlink in homedir
-  config_files="alacritty neofetch picom rofi"
+  config_files="alacritty neofetch picom rofi zathura"
 
+  bin_files="inkscape-figures"
   rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
 
 #+end_src
@@ -92,6 +93,15 @@
   do
       echo "Creating symlink to $file in home directory."
       ln -s $dot_dir/.config/$file ~/.config/$file
+  done
+
+  for file in $bin_files
+  do
+      if [ ! -f $bin_dir/$file ]
+      then
+          echo "Creating symlink to $file in $bin_dir"
+          ln -s $dot_dir/.local/$file $bin_dir/$file
+      fi
   done
 
   for file in $rofi_bin_files
@@ -6525,3 +6535,36 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
+* Zathura
+
+#+begin_src vimrc :tangle ./.config/zathura/zathurarc
+
+  set font "SauceCodePro Nerd Font 12"
+  set default-bg "#141c21"
+  set statusbar-bg "#32424b"
+  set highlight-color "#F4BF75" #0A
+  set highlight-active-color "#6A9FB5" #0D
+
+  set inputbar-bg "#141c21"
+  set inputbar-fg "#e0e0e0"
+
+  "set statusbar-fg "#51afef"
+
+  set recolor "true"
+  # background color
+  set recolor-darkcolor "#bbc2cf" #00
+  # foreground color
+  set recolor-lightcolor "#1c252a" #06
+  set recolor-reverse-video "true"
+  set recolor-keephue "true"
+
+  # copy selection to system clipboard
+  set selection-clipboard clipboard
+
+  set scroll-step 50
+  set statusbar-h-padding 0
+  set statusbar-v-padding 0
+  map L zoom in
+  map H zoom out
+
+#+end_src
