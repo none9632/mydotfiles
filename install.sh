@@ -11,7 +11,7 @@ build_pkgs="base-devel git gcc make cmake"
 pkgs="alacritty neofetch rofi flameshot scrot xdotool picom-git"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty neofetch nvim picom rofi zathura"
+config_files="alacritty flameshot neofetch nvim picom rofi zathura"
 
 bin_files="inkscape-figures"
 rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
