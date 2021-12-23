@@ -39,7 +39,6 @@ case $chosen in
         ;;
     $editor)
         if [[ -f /usr/bin/emacs ]]; then
-            # emacsclient -c -a emacs &
             emacs &
         else
             error_msg "No suitable text editor found!"
