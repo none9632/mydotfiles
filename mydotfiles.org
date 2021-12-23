@@ -3,6 +3,15 @@
 #+TITILE: My dotfiles
 #+STARTUP: fold
 
+* Gitignore
+
+#+begin_src text :tangle ./.gitignore
+
+  ./.config/nvim/bundle
+
+#+end_src
+
+
 * Install script
 :PROPERTIES:
 :header-args: :tangle ./install.sh :tangle-mode (identity #o755)
