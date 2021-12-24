@@ -358,7 +358,7 @@
 
 Configuration for Alacritty, the GPU enhanced terminal emulator.
 
-** Import
+** COMMENT Import
 
 Import additional configuration files
 
@@ -664,7 +664,7 @@ variables set by alacritty itself.
 
 #+end_src
 
-** Bell
+** COMMENT Bell
 
 The bell is rung every time the BEL control character is received.
 
@@ -721,7 +721,7 @@ transparent and `1.0` is opaque.
 
 #+end_src
 
-** Selection
+** COMMENT Selection
 
 #+begin_src yaml
 
@@ -735,7 +735,7 @@ transparent and `1.0` is opaque.
 
 #+end_src
 
-** Cursor
+** COMMENT Cursor
 
 #+begin_src yaml
 
@@ -780,7 +780,7 @@ transparent and `1.0` is opaque.
 
 #+end_src
 
-** Live config reload
+** COMMENT Live config reload
 
 changes require restart
 
@@ -816,7 +816,7 @@ Default:
 
 #+end_src
 
-** Startup directory
+** COMMENT Startup directory
 
 Directory the shell is started in. If this is unset, or `None`, the working directory of the parent
 process will be used.
@@ -827,7 +827,7 @@ process will be used.
 
 #+end_src
 
-** ESC when alt is pressed
+** COMMENT ESC when alt is pressed
 
 Send ESC (\x1b) before characters when alt is pressed.
 
@@ -837,7 +837,7 @@ Send ESC (\x1b) before characters when alt is pressed.
 
 #+end_src
 
-** Mouse
+** COMMENT Mouse
 
 #+begin_src yaml
 
@@ -852,7 +852,7 @@ Send ESC (\x1b) before characters when alt is pressed.
 
 #+end_src
 
-** Hide when typing
+** COMMENT Hide when typing
 
 If this is `true`, the cursor is temporarily hidden when typing.
 
@@ -862,7 +862,7 @@ If this is `true`, the cursor is temporarily hidden when typing.
 
 #+end_src
 
-** URL
+** COMMENT URL
 
 #+begin_src yaml
 
@@ -891,7 +891,7 @@ If this is `true`, the cursor is temporarily hidden when typing.
 
 #+end_src
 
-** Mouse bindings
+** COMMENT Mouse bindings
 
 Mouse bindings are specified as a list of objects, much like the key
 bindings further below.
@@ -922,7 +922,7 @@ And optionally:
 
 #+end_src
 
-** Key bindings
+** COMMENT Key bindings
 
 Key bindings are specified as a list of objects. For example, this is the default paste binding:
 
@@ -1236,7 +1236,7 @@ defined in.
 
 #+end_src
 
-** Debug
+** COMMENT Debug
 
 #+begin_src yaml
 
