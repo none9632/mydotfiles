@@ -7330,7 +7330,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 * Zathura
 
-#+begin_src vimrc :tangle ./.config/zathura/zathurarc
+#+begin_src conf :tangle ./.config/zathura/zathurarc
 
   set font "SauceCodePro Nerd Font 12"
   set default-bg "#141c21"
@@ -7341,7 +7341,7 @@ Configuration based on https://github.com/adi1090x/rofi
   set inputbar-bg "#141c21"
   set inputbar-fg "#e0e0e0"
 
-  "set statusbar-fg "#51afef"
+  # set statusbar-fg "#51afef"
 
   set recolor "true"
   # background color

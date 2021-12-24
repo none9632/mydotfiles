@@ -7,7 +7,7 @@ set highlight-active-color "#6A9FB5" #0D
 set inputbar-bg "#141c21"
 set inputbar-fg "#e0e0e0"
 
-"set statusbar-fg "#51afef"
+# set statusbar-fg "#51afef"
 
 set recolor "true"
 # background color
