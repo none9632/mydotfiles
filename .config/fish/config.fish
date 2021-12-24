@@ -2,20 +2,26 @@ set -e fish_user_paths
 set -U fish_user_paths $HOME/.local/bin $HOME/Applications $fish_user_paths
 
 set fish_greeting                                 # Supresses fish's intro message
-set EDITOR "nvim"                                 # $EDITOR use Emacs in terminal
-set VISUAL "emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
 
-### "bat" as manpager
-set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-
-### "vim" as manpager
-# set -x MANPAGER '/bin/bash -c "vim -MRn -c \"set buftype=nofile showtabline=0 ft=man ts=8 nomod nolist norelativenumber nonu noma\" -c \"normal L\" -c \"nmap q :qa<CR>\"</dev/tty <(col -b)"'
-
-### "nvim" as manpager
-# set -x MANPAGER "nvim -c 'set ft=man' -"
+# set -gx EDITOR "/bin/nvim"                      # $EDITOR use Emacs in terminal
+# set -gx VISUAL "emacsclient -c -a emacs"        # $VISUAL use Emacs in GUI mode
 
 # Don't shorten the working directory in the prompt
 set -g fish_prompt_pwd_dir_length 0
+
+# Sets the cursor type
+set -g fish_cursor_default block
+set -g fish_cursor_insert line
+set -g fish_cursor_replace_one underscore
+
+# "bat" as manpager
+set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+
+# "vim" as manpager
+# set -x MANPAGER '/bin/bash -c "vim -MRn -c \"set buftype=nofile showtabline=0 ft=man ts=8 nomod nolist norelativenumber nonu noma\" -c \"normal L\" -c \"nmap q :qa<CR>\"</dev/tty <(col -b)"'
+
+# "nvim" as manpager
+# set -x MANPAGER "nvim -c 'set ft=man' -"
 
 # Set either default vi mode
 function fish_user_key_bindings
@@ -23,10 +29,6 @@ function fish_user_key_bindings
 end
 
 bind -M insert -m default jj backward-char force-repaint
-
-set -g fish_cursor_default block
-set -g fish_cursor_insert line
-set -g fish_cursor_replace_one underscore
 
 set fish_color_normal '#bbc2cf'
 set fish_color_autosuggestion '#7b7278'
@@ -65,82 +67,7 @@ end
 function fish_mode_prompt
 end
 
-# function fish_right_prompt
-#     set_color $fish_color_autosuggestion
-#     echo -n "["
-#     switch $fish_bind_mode
-#         case default
-#             set_color --bold green
-#             echo 'NORMAL'
-#         case insert
-#             set_color --bold blue
-#             echo 'INSERT'
-#         case replace_one
-#             set_color --bold blue
-#             echo 'R'
-#         case visual
-#             set_color --bold mangenta
-#             echo 'VISUAL'
-#         case '*'
-#             set_color --bold green
-#             echo '?'
-#     end
-#     set_color normal
-#     set_color $fish_color_autosuggestion
-#     echo -n "]"
-#     set_color normal
-# end
-
-set -g spark_version 1.0.0
-
-complete -xc spark -n __fish_use_subcommand -a --help -d "Show usage help"
-complete -xc spark -n __fish_use_subcommand -a --version -d "$spark_version"
-complete -xc spark -n __fish_use_subcommand -a --min -d "Minimum range value"
-complete -xc spark -n __fish_use_subcommand -a --max -d "Maximum range value"
-
-function spark -d "sparkline generator"
-    if isatty
-        switch "$argv"
-            case {,-}-v{ersion,}
-                echo "spark version $spark_version"
-            case {,-}-h{elp,}
-                echo "usage: spark [--min=<n> --max=<n>] <numbers...>  Draw sparklines"
-                echo "examples:"
-                echo "       spark 1 2 3 4"
-                echo "       seq 100 | sort -R | spark"
-                echo "       awk \\\$0=length spark.fish | spark"
-            case \*
-                echo $argv | spark $argv
-        end
-        return
-    end
-
-    command awk -v FS="[[:space:],]*" -v argv="$argv" '
-    BEGIN {
-    min = match(argv, /--min=[0-9]+/) ? substr(argv, RSTART + 6, RLENGTH - 6) + 0 : ""
-    max = match(argv, /--max=[0-9]+/) ? substr(argv, RSTART + 6, RLENGTH - 6) + 0 : ""
-    }
-    {
-    for (i = j = 1; i <= NF; i++) {
-    if ($i ~ /^--/) continue
-    if ($i !~ /^-?[0-9]/) data[count + j++] = ""
-else {
-    v = data[count + j++] = int($i)
-    if (max == "" && min == "") max = min = v
-    if (max < v) max = v
-    if (min > v ) min = v
-    }
-    }
-    count += j - 1
-    }
-END {
-n = split(min == max && max ? "▅ ▅" : "▁ ▂ ▃ ▄ ▅ ▆ ▇ █", blocks, " ")
-scale = (scale = int(256 * (max - min) / (n - 1))) ? scale : 1
-for (i = 1; i <= count; i++)
-out = out (data[i] == "" ? " " : blocks[idx = int(256 * (data[i] - min) / scale) + 1])
-print out
-}
-'
+function fish_right_prompt
 end
 
 # Functions needed for !! and !$
@@ -162,6 +89,7 @@ function __history_previous_command_arguments
             commandline -i '$'
     end
 end
+
 # The bindings for !! and !$
 if [ $fish_key_bindings = fish_vi_key_bindings ];
     bind -Minsert ! __history_previous_command
@@ -235,9 +163,6 @@ function org-search -d "send a search string to org-mode"
     printf $output
 end
 
-# spark aliases
-alias clear='/bin/clear; echo; echo; seq 1 (tput cols) | sort -R | spark | lolcat; echo; echo'
-
 # root privileges
 alias doas="doas --"
 
@@ -248,14 +173,8 @@ alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 
-# vim and emacs
+# vim
 alias vim='nvim'
-alias em='/usr/bin/emacs -nw'
-alias emacs="emacsclient -c -a 'emacs'"
-alias doomsync="~/.emacs.d/bin/doom sync"
-alias doomdoctor="~/.emacs.d/bin/doom doctor"
-alias doomupgrade="~/.emacs.d/bin/doom upgrade"
-alias doompurge="~/.emacs.d/bin/doom purge"
 
 # bat
 alias cat='bat'
