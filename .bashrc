@@ -19,6 +19,9 @@ ${bblack}]${reset}\n\
 ${bblack}└>${reset} \
 ${bcyan}${prefix}${reset} "
 
+set -o vi
+bind -m vi-insert '"jj":vi-movement-mode'
+
 alias stcpu="stress -c 8"
 alias stmem="stress -vm 2 --vm-bytes"
 
