@@ -19,7 +19,17 @@ ${bblack}]${reset}\n\
 ${bblack}└>${reset} \
 ${bcyan}${prefix}${reset} "
 
-alias ls='ls --color=auto'
+alias stcpu="stress -c 8"
+alias stmem="stress -vm 2 --vm-bytes"
+
+alias pacman="sudo pacman"
+alias pacsyu="sudo pacman -Syu"
+alias yaysyu="yay -Syu"
+
+alias ls="exa -la --color=always --group-directories-first"
+alias cat="bat"
+alias rm="rm -r"
+alias cp="cp -r"
 
 echo ""
 neofetch
