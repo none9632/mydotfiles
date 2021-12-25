@@ -1,13 +1,9 @@
 #!/bin/sh
 
 disk=$(df --output=source "$1" | tail -n 1 | grep /dev/)
+[ "$disk" = "" ] && disk=/
 
-if [ "$disk" = "" ]
-then
-    IFS=" " read -ra disk_info <<< "$(df -P -BK / | tail -n 1)"
-else
-    IFS=" " read -ra disk_info <<< "$(df -P -BK ${disk} | tail -n 1)"
-fi
+IFS=" " read -ra disk_info <<< "$(df -P -BK ${disk} | tail -n 1)"
 
 size=$(echo "${disk_info[1]}" | sed 's|[^[:digit:]]\+||g')
 used=$(echo "${disk_info[2]}" | sed 's|[^[:digit:]]\+||g')

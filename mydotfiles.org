@@ -368,6 +368,136 @@
 
 #+end_src
 
+* Bash
+** .bash_profile
+:PROPERTIES:
+:header-args: :tangle ./.bash_profile
+:END:
+
+*** Export
+
+#+begin_src sh
+
+  export PATH=$HOME/.config/rofi/bin:$HOME/.config/lf/bin:$HOME/.local/bin:$PATH
+  export ZDOTDIR="$HOME/.config/zsh"
+  export POLYBAR_LAUNCH="$HOME/Desktop/mydotfiles/.config/polybar/launch.sh"
+
+  # export SHELL="/bin/zsh"
+  export SHELL="/bin/bash"
+  export EDITOR="/bin/nvim"
+
+#+end_src
+
+*** Startup the necessary commands
+
+#+begin_src sh
+
+  [[ -f /usr/bin/udiskie ]] && udiskie &
+
+  xset r rate 300 24
+  syndaemon -t -i 1 -d
+  trash-empty 7 &
+
+#+end_src
+
+*** Load .bashrc
+
+#+begin_src sh
+
+  [[ -f ~/.bashrc ]] && . ~/.bashrc
+
+#+end_src
+
+** .bashrc
+:PROPERTIES:
+:header-args: :tangle ./.bashrc
+:END:
+
+*** Non-Interactive Shell
+
+If not running interactively, don't do anything.
+
+#+begin_src sh
+
+  [[ $- != *i* ]] && return
+
+#+end_src
+
+*** Prompt
+
+#+begin_src sh
+
+  prefix="λ"
+  green="\033[38;5;2m\033[1;1m"
+  blue="\033[34;1m"
+  bblack="\033[38;5;8m"
+  borange="\033[38;5;11m\033[1;1m"
+  bcyan="\033[38;5;14m"
+  reset="\033[0m"
+
+  PS1="\
+  ${bblack}┌[${reset}\
+  ${green}\w${reset}\
+  ${bblack}]─[${reset}\
+  ${blue}\u${reset}\
+  ${bblack}]─[${reset}\
+  ${borange}\h${reset}\
+  ${bblack}]${reset}\n\
+  ${bblack}└>${reset} \
+  ${bcyan}${prefix}${reset} "
+
+#+end_src
+
+*** Keybindings
+
+#+begin_src sh
+
+  set -o vi
+  bind -m vi-insert '"jj":vi-movement-mode'
+
+#+end_src
+
+*** Aliases
+
+#+begin_src sh
+
+  alias stcpu="stress -c 8"
+  alias stmem="stress -vm 2 --vm-bytes"
+
+  alias pacman="sudo pacman"
+  alias pacsyu="sudo pacman -Syu"
+  alias yaysyu="yay -Syu"
+
+  alias ls="exa -la --color=always --group-directories-first"
+  alias cat="bat"
+  alias rm="rm -r"
+  alias cp="cp -r"
+
+#+end_src
+
+*** Misc
+
+#+begin_src sh
+
+  . $HOME/.config/lf/.lfrc
+
+  echo ""
+  neofetch
+
+#+end_src
+
+** .inputrc
+
+Сhanges the shape of the cursor depending on the VI mode in Bash.
+
+#+begin_src sh :tangle ./.inputrc
+
+  set show-mode-in-prompt on
+  set vi-cmd-mode-string "\1\e[2 q\2"
+  set vi-ins-mode-string "\1\e[6 q\2"
+
+#+end_src
+
 * Alacritty
 :PROPERTIES:
 :header-args: :tangle ./.config/alacritty/alacritty.yml
@@ -821,7 +951,8 @@ Default:
 
   shell:
    # program: /bin/zsh
-   program: /bin/fish
+   # program: /bin/fish
+   program: /bin/bash
   #  args:
   #    - --login
 
@@ -1276,6 +1407,1072 @@ defined in.
 
   # Print all received window events.
   #print_events: false
+
+#+end_src
+
+* Flameshot
+
+#+begin_src conf :tangle ./.config/flameshot/flameshot.ini
+
+  [General]
+  buttons=@Variant(\0\0\0\x7f\0\0\0\vQList<int>\0\0\0\0\b\0\0\0\0\0\0\0\x1\0\0\0\x2\0\0\0\x3\0\0\0\x5\0\0\0\x12\0\0\0\xf\0\0\0\n)
+  contrastOpacity=188
+  copyPathAfterSave=true
+  disabledTrayIcon=true
+  drawColor=#ff0000
+  drawFontSize=8
+  drawThickness=3
+  filenamePattern=region-%Y%m%d-%H%M%S
+  savePath=/home/none9632/Pictures/screenshots
+  savePathFixed=false
+  setSaveAsFileExtension=Portable Network Graphic file (PNG) (*.png)
+  showDesktopNotification=false
+  showHelp=false
+  showSidePanelButton=false
+  showStartupLaunchMessage=false
+  startupLaunch=false
+  uiColor=#51afef
+
+  [Shortcuts]
+  TYPE_ARROW=A
+  TYPE_CIRCLE=C
+  TYPE_CIRCLECOUNT=
+  TYPE_COMMIT_CURRENT_TOOL=Ctrl+Return
+  TYPE_COPY=Ctrl+C
+  TYPE_DELETE_CURRENT_TOOL=Del
+  TYPE_DRAWER=D
+  TYPE_EXIT=Ctrl+Q
+  TYPE_MARKER=M
+  TYPE_MOVESELECTION=Ctrl+M
+  TYPE_MOVE_DOWN=Down
+  TYPE_MOVE_LEFT=Left
+  TYPE_MOVE_RIGHT=Right
+  TYPE_MOVE_UP=Up
+  TYPE_OPEN_APP=Ctrl+O
+  TYPE_PENCIL=P
+  TYPE_PIN=
+  TYPE_PIXELATE=B
+  TYPE_RECTANGLE=R
+  TYPE_REDO=Shift+U
+  TYPE_RESIZE_DOWN=Shift+Down
+  TYPE_RESIZE_LEFT=Shift+Left
+  TYPE_RESIZE_RIGHT=Shift+Right
+  TYPE_RESIZE_UP=Shift+Up
+  TYPE_SAVE=Return
+  TYPE_SELECTION=S
+  TYPE_SELECTIONINDICATOR=
+  TYPE_SELECT_ALL=Ctrl+A
+  TYPE_TEXT=T
+  TYPE_TOGGLE_PANEL=Space
+  TYPE_UNDO=U
+
+#+end_src
+
+* lf
+** Scripts
+:PROPERTIES:
+:header-args: :tangle-mode (identity #o755)
+:END:
+
+*** Cleaner
+
+#+begin_src sh :tangle ./.config/lf/scripts/lf_cleaner.sh
+
+  #!/bin/sh
+
+  if [ -n "$FIFO_UEBERZUG" ]; then
+      printf '{"action": "remove", "identifier": "preview"}\n' >"$FIFO_UEBERZUG"
+  fi
+
+#+end_src
+
+*** Disk
+
+#+begin_src sh :tangle ./.config/lf/scripts/lf_disk.sh
+
+  #!/bin/sh
+
+  disk=$(df --output=source "$1" | tail -n 1 | grep /dev/)
+  [ "$disk" = "" ] && disk=/
+
+  IFS=" " read -ra disk_info <<< "$(df -P -BK ${disk} | tail -n 1)"
+
+  size=$(echo "${disk_info[1]}" | sed 's|[^[:digit:]]\+||g')
+  used=$(echo "${disk_info[2]}" | sed 's|[^[:digit:]]\+||g')
+
+  size_m=$(printf '%.1f' "$(echo "scale=1; $size/1024" | bc)")
+  used_m=$(printf '%.1f' "$(echo "scale=1; $used/1024" | bc)")
+
+  size_g=$(printf '%.1f' "$(echo "scale=1; x=$size_m; if (x>1024) x=x/1024; x" | bc)")
+  used_g=$(printf '%.1f' "$(echo "scale=1; x=$used_m; if (x>1024) x=x/1024; x" | bc)")
+
+  if [ "$size_m" = "$size_g" ]
+  then
+      size=$(echo "${size_m}M")
+  else
+      size=$(echo "${size_g}G")
+  fi
+
+  if [ "$used_m" = "$used_g" ]
+  then
+      used=$(echo "${used_m}M")
+  else
+      used=$(echo "${used_g}G")
+  fi
+
+  echo "\
+  \033[35;5;5m\033[3;1m${used}\
+  \033[38;5;8m/\
+  \033[35;5;5m\033[3;1m${size}\033[0m"
+
+#+end_src
+
+*** Prepare file
+
+#+begin_src sh :tangle ./.config/lf/scripts/lf_prepare_file.sh
+
+  #!/bin/sh
+
+  if [ $(stat --printf="%s" $1) -eq 0 ]
+  then
+      echo "" > $1
+  else
+      sed -i "1s|^|\n|" $1
+  fi
+
+#+end_src
+
+*** Previewer
+
+#+begin_src sh :tangle ./.config/lf/scripts/lf_previewer.sh
+
+  #!/bin/sh
+
+  draw() {
+      path="$(printf '%s' "$1" | sed 's/\\/\\\\/g;s/"/\\"/g')"
+      printf '{"action": "add", "identifier": "preview", "x": %d, "y": %d, "width": %d, "height": %d, "scaler": "contain", "scaling_position_x": 0.5, "scaling_position_y": 0.5, "path": "%s"}\n' \
+             "$x" "$y" "$width" "$height" "$path" >"$FIFO_UEBERZUG"
+      exit 1
+  }
+
+  hash() {
+      printf '%s/.cache/lf/%s' "$HOME" \
+             "$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | awk '{print $1}')"
+  }
+
+  cache() {
+      if [ -f "$1" ]; then
+          draw "$1"
+      fi
+  }
+
+  batorcat() {
+      file="$1"
+      shift
+      if command -v bat > /dev/null 2>&1
+      then
+          bat --color=always --style=plain --pager=never "$file" "$@"
+      else
+          cat "$file"
+      fi
+  }
+
+  if ! [ -f "$1" ] && ! [ -h "$1" ]; then
+      exit
+  fi
+
+  width="$(($2-1))"
+  height="$(($3-1))"
+  x="$4"
+  y="$5"
+
+  default_x="1920"
+  default_y="1080"
+
+  case "$1" in
+      ,*.7z|*.a|*.ace|*.alz|*.arc|*.arj|*.bz|*.bz2|*.cab|*.cpio|*.deb|*.gz|*.jar|\
+          ,*.lha|*.lrz|*.lz|*.lzh|*.lzma|*.lzo|*.rar|*.rpm|*.rz|*.t7z|*.tar|*.tbz|\
+          ,*.tbz2|*.tgz|*.tlz|*.txz|*.tZ|*.tzo|*.war|*.xz|*.Z|*.zip)
+          als -- "$1"
+          exit 0
+          ;;
+      ,*.[1-8])
+          man -- "$1" | col -b
+          exit 0
+          ;;
+      ,*.pdf)
+          if [ -n "$FIFO_UEBERZUG" ]; then
+              cache="$(hash "$1")"
+              cache "$cache.jpg"
+              pdftoppm -f 1 -l 1 \
+                       -scale-to-x "$default_x" \
+                       -scale-to-y -1 \
+                       -singlefile \
+                       -jpeg \
+                       -- "$1" "$cache"
+              draw "$cache.jpg"
+          else
+              pdftotext -nopgbrk -q -- "$1" -
+              exit 0
+          fi
+          ;;
+      ,*.djvu|*.djv)
+          if [ -n "$FIFO_UEBERZUG" ]; then
+              cache="$(hash "$1").tiff"
+              cache "$cache"
+              ddjvu -format=tiff -quality=90 -page=1 -size="${default_x}x${default_y}" \
+                    - "$cache" <"$1"
+              draw "$cache"
+          else
+              djvutxt - <"$1"
+              exit 0
+          fi
+          ;;
+      ,*.docx|*.odt|*.epub)
+          pandoc -s -t plain -- "$1"
+          exit 0
+          ;;
+      ,*.htm|*.html|*.xhtml)
+          lynx -dump -- "$1"
+          exit 0
+          ;;
+      ,*.svg)
+          if [ -n "$FIFO_UEBERZUG" ]; then
+              cache="$(hash "$1").jpg"
+              cache "$cache"
+              convert -- "$1" "$cache"
+              draw "$cache"
+          fi
+          ;;
+  esac
+
+  case "$(file -Lb --mime-type -- "$1")" in
+      text/*)
+          #highlight -q -O ansi -- "$1" || cat -- "$1"
+          # pygmentize -f terminal -- "$1" || cat -- "$1"
+          batorcat "$1"
+          exit 0
+          ;;
+      image/*)
+          if [ -n "$FIFO_UEBERZUG" ]; then
+              orientation="$(identify -format '%[EXIF:Orientation]\n' -- "$1")"
+              if [ -n "$orientation" ] && [ "$orientation" != 1 ]; then
+                  cache="$(hash "$1").jpg"
+                  cache "$cache"
+                  convert -- "$1" -auto-orient "$cache"
+                  draw "$cache"
+              else
+                  draw "$1"
+              fi
+          fi
+          ;;
+      video/*)
+          if [ -n "$FIFO_UEBERZUG" ]; then
+              cache="$(hash "$1").jpg"
+              cache "$cache"
+              ffmpegthumbnailer -i "$1" -o "$cache" -s 0
+              draw "$cache"
+          fi
+          ;;
+  esac
+
+  header_text="File Type Classification"
+  header=""
+  len="$(( (width - (${#header_text} + 2)) / 2 ))"
+  if [ "$len" -gt 0 ]; then
+      for i in $(seq "$len"); do
+          header="-$header"
+      done
+      header="$header $header_text "
+      for i in $(seq "$len"); do
+          header="$header-"
+      done
+  else
+      header="$header_text"
+  fi
+  printf '\033[7m%s\033[0m\n' "$header"
+  file -Lb -- "$1" | fold -s -w "$width"
+  exit 0
+
+#+end_src
+
+*** Update
+
+#+begin_src sh :tangle ./.config/lf/scripts/lf_update.sh
+
+  #!/bin/sh
+
+  disk_info=$(lf_disk "$1")
+
+  lf -remote "send $2 set promptfmt \"\
+   \033[38;5;8m[\033[0m\
+  \033[34;1m%u\033[0m\
+  \033[38;5;8m]─[\033[0m\
+  \033[38;5;11m\033[3;1m%h\033[0m\
+  \033[38;5;8m]─[\033[0m\
+  $disk_info\
+  \033[38;5;8m]─[\033[0m\
+  \033[32;1m%d\033[0m\
+  \033[3;1m%f\033[0m\
+  \033[38;5;8m]\033[0m\""
+
+  lf -remote "send recol"
+
+#+end_src
+
+*** lfrun
+
+#+begin_src sh :tangle ./.config/lf/scripts/lfrun.sh
+
+  #!/bin/sh
+
+  set -e
+
+  if [ -n "$DISPLAY" ]; then
+      export FIFO_UEBERZUG="${TMPDIR:-/tmp}/lf-ueberzug-$$"
+
+      cleanup() {
+          exec 3>&-
+          rm "$FIFO_UEBERZUG"
+      }
+
+      mkfifo "$FIFO_UEBERZUG"
+      ueberzug layer -s <"$FIFO_UEBERZUG" &
+      exec 3>"$FIFO_UEBERZUG"
+      trap cleanup EXIT
+
+      if ! [ -d "$HOME/.cache/lf" ]; then
+          mkdir -p "$HOME/.cache/lf"
+      fi
+
+      lf "$@" 3>&-
+  else
+      exec "$@"
+  fi
+
+#+end_src
+
+** lf startup configuration
+
+#+begin_src sh :tangle ./.config/lf/.lfrc :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  lfcd ()
+  {
+      tmp="$(mktemp)"
+      lfrun -last-dir-path="$tmp" "$@"
+      if [ -f "$tmp" ]; then
+          dir="$(cat "$tmp")"
+          rm -f "$tmp"
+          [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+      fi
+  }
+
+  alias lf="lfcd"
+
+  export LFCP="/tmp/lfcp"
+  export LF_COLORS="\
+  .*/=34:\
+  ,*.*/=34\
+  "
+  export LF_ICONS="\
+  tw= :\
+  st= :\
+  ow= :\
+  dt= :\
+  di= :\
+  fi= :\
+  ln= :\
+  or= :\
+  ex= :\
+  Makefile*= :\
+  makefile*= :\
+  README*= :\
+  CMakeLists.txt*= :\
+  TAGS*= :\
+  TODO*= :\
+  LICENSE*= :\
+  Dockerfile*= :\
+  dockerfile*= :\
+  .gitignore*= :\
+  .vimrc*= :\
+  .viminfo*= :\
+  vimrc*= :\
+  .zshrc*= :\
+  .zprofile*= :\
+  .zshenv*= :\
+  .bashrc*= :\
+  .bash_logout*= :\
+  .bash_profile*= :\
+  .profile*= :\
+  .xinitrc*= :\
+  .xprofile*= :\
+  ,*.asm= :\
+  ,*.b= :\
+  ,*.c= :\
+  ,*.cc= :\
+  ,*.clj= :\
+  ,*.cljc= :\
+  ,*.cmake= :\
+  ,*.conf= :\
+  ,*.coffee= :\
+  ,*.cpp= :\
+  ,*.cs= :\
+  ,*.css= :\
+  ,*.d= :\
+  ,*.dart= :\
+  ,*.db= :\
+  ,*.djvu= :\
+  ,*.doc= :\
+  ,*.dockerfile= :\
+  ,*.docx= :\
+  ,*.eex= :\
+  ,*.el= :\
+  ,*.elc= :\
+  ,*.elm= :\
+  ,*.erl= :\
+  ,*.ex= :\
+  ,*.exs= :\
+  ,*.fs= :\
+  ,*.go= :\
+  ,*.h= :\
+  ,*.hh= :\
+  ,*.hpp= :\
+  ,*.hs= :\
+  ,*.html= :\
+  ,*.ino= :\
+  ,*.iso= :\
+  ,*.java= :\
+  ,*.jl= :\
+  ,*.js= :\
+  ,*.jsx= :\
+  ,*.json= :\
+  ,*.key= :\
+  ,*.kt= :\
+  ,*.kts= :\
+  ,*.less= :\
+  ,*.log= :\
+  ,*.lua= :\
+  ,*.md= :\
+  ,*.nasm= :\
+  ,*.ods= :\
+  ,*.org= :\
+  ,*.pdf= :\
+  ,*.pem= :\
+  ,*.php= :\
+  ,*.pl= :\
+  ,*.ppt= :\
+  ,*.pptx= :\
+  ,*.py= :\
+  ,*.rb= :\
+  ,*.rs= :\
+  ,*.S= :\
+  ,*.s= :\
+  ,*.scala= :\
+  ,*.sql= :\
+  ,*.sqlite= :\
+  ,*.swift= :\
+  ,*.tex= :\
+  ,*.torrent= :\
+  ,*.ts= :\
+  ,*.vim= :\
+  ,*.xls= :\
+  ,*.xlsx= :\
+  ,*.xml= :\
+  ,*.yml= :\
+  ,*.ttf= :\
+  ,*.ttc= :\
+  ,*.otf= :\
+  ,*.woff= :\
+  ,*.o= :\
+  ,*.obj= :\
+  ,*.exe= :\
+  ,*.bin= :\
+  ,*.elf= :\
+  ,*.cmd= :\
+  ,*.ps1= :\
+  ,*.sh= :\
+  ,*.bash= :\
+  ,*.zsh= :\
+  ,*.fish= :\
+  ,*.mp4= :\
+  ,*.webm= :\
+  ,*.mkv= :\
+  ,*.flv= :\
+  ,*.vob= :\
+  ,*.ogv= :\
+  ,*.ogm= :\
+  ,*.gifv= :\
+  ,*.mpg= :\
+  ,*.mpeg= :\
+  ,*.mp4v= :\
+  ,*.wmv= :\
+  ,*.qt= :\
+  ,*.yuv= :\
+  ,*.rm= :\
+  ,*.rmvb= :\
+  ,*.viv= :\
+  ,*.asf= :\
+  ,*.m4v= :\
+  ,*.avi= :\
+  ,*.mov= :\
+  ,*.m2v= :\
+  ,*.nuv= :\
+  ,*.flc= :\
+  ,*.fli= :\
+  ,*.gl= :\
+  ,*.ogx= :\
+  ,*.mp3= :\
+  ,*.aac= :\
+  ,*.m4a= :\
+  ,*.oga= :\
+  ,*.spx= :\
+  ,*.au= :\
+  ,*.wav= :\
+  ,*.opus= :\
+  ,*.ra= :\
+  ,*.flac= :\
+  ,*.mid= :\
+  ,*.midi= :\
+  ,*.mka= :\
+  ,*.mpc= :\
+  ,*.xspf= :\
+  ,*.jpg= :\
+  ,*.jpeg= :\
+  ,*.mjpg= :\
+  ,*.mjpeg= :\
+  ,*.ico= :\
+  ,*.gif= :\
+  ,*.bmp= :\
+  ,*.pbm= :\
+  ,*.pgm= :\
+  ,*.ppm= :\
+  ,*.tga= :\
+  ,*.xbm= :\
+  ,*.xpm= :\
+  ,*.tif= :\
+  ,*.tiff= :\
+  ,*.png= :\
+  ,*.svg= :\
+  ,*.svgz= :\
+  ,*.mng= :\
+  ,*.pcx= :\
+  ,*.xcf= :\
+  ,*.xwd= :\
+  ,*.cgm= :\
+  ,*.emf= :\
+  ,*.tar= :\
+  ,*.tgz= :\
+  ,*.arc= :\
+  ,*.arj= :\
+  ,*.taz= :\
+  ,*.lha= :\
+  ,*.lz4= :\
+  ,*.lzh= :\
+  ,*.lzma= :\
+  ,*.tlz= :\
+  ,*.txz= :\
+  ,*.tzo= :\
+  ,*.t7z= :\
+  ,*.zip= :\
+  ,*.z= :\
+  ,*.dz= :\
+  ,*.gz= :\
+  ,*.lrz= :\
+  ,*.lz= :\
+  ,*.lzo= :\
+  ,*.xz= :\
+  ,*.zst= :\
+  ,*.tzst= :\
+  ,*.bz2= :\
+  ,*.bz= :\
+  ,*.tbz= :\
+  ,*.tbz2= :\
+  ,*.tz= :\
+  ,*.deb= :\
+  ,*.rpm= :\
+  ,*.jar= :\
+  ,*.war= :\
+  ,*.ear= :\
+  ,*.sar= :\
+  ,*.rar= :\
+  ,*.alz= :\
+  ,*.ace= :\
+  ,*.zoo= :\
+  ,*.cpio= :\
+  ,*.7z= :\
+  ,*.rz= :\
+  ,*.cab= :\
+  ,*.wim= :\
+  ,*.swm= :\
+  ,*.dwm= :\
+  ,*.esd= :\
+  "
+
+#+end_src
+
+** lf configuration
+:PROPERTIES:
+:header-args: :tangle ./.config/lf/lfrc 
+:END:
+
+*** Options
+
+#+begin_src conf
+
+  set icons true
+  set hidden true
+  set drawbox true
+  set preview true
+  set info size
+  set dircounts on
+  set timefmt " Jan _2 2006 15:04:05"
+  set tabstop 4
+  set period 1
+  set promptfmt ""
+  set errorfmt "\033[38;5;1m error: \033[0m%s"
+  set shell 'sh'
+  set shellopts '-eu'
+  set ifs "\n"
+  set scrolloff 10
+  set previewer ~/.config/lf/bin/lf_previewer
+  set cleaner ~/.config/lf/bin/lf_cleaner
+
+#+end_src
+
+*** Custom functions
+
+#+begin_src conf
+
+  %{{
+      touch /tmp/lfundo_$id
+      lf_update . $id
+  }}
+
+  cmd recol &{{
+      w=$(tput cols)
+      if [ $w -le 100 ]; then
+          lf -remote "send $id set ratios 2:3"
+      else
+          lf -remote "send $id set ratios 1:2:3"
+      fi
+  }}
+
+  cmd my_open %{{
+      case $(file --mime-type $f -b) in
+          text/*)
+              lf -remote "send $id push e" ;;
+          inode/x-empty)
+              lf -remote "send $id push e" ;;
+          inode/directory | inode/symlink)
+              myf="$(echo $f | sed 's/\ /\\\ /g')"
+              lf -remote "send $id my_cd $myf" ;;
+          application/pdf | image/vnd.djvu)
+              zathura $f ;;
+          ,*)
+              for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done ;;
+      esac
+  }}
+
+  cmd mkdir &{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      dir_name=$(input "Dir name:")
+      while [ -e $dir_name ] && [ "$dir_name" != "" ]
+      do
+          error_msg "directory exists"
+          dir_name=$(input "Dir name:")
+      done
+
+      if [ "$dir_name" != "" ]
+      then
+          mkdir $dir_name
+          sed -i "1s|^|$(pwd)/$dir_name\n|" $FILE
+          sed -i "1s|^|del\n|" $FILE
+
+          lf -remote "send $id load"
+      fi
+  }}
+
+  cmd mkfile &{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      file_name=$(input "File name:")
+      while [ -e $file_name ] && [ "$file_name" != "" ]
+      do
+          error_msg "file exists"
+          file_name=$(input "File name:")
+      done
+
+      if [ "$file_name" != "" ]
+      then
+          touch $file_name
+          sed -i "1s|^|$(pwd)/$file_name\n|" $FILE
+          sed -i "1s|^|del\n|" $FILE
+
+          lf -remote "send $id load"
+      fi
+  }}
+
+  cmd my_rename &{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      filename="${f##*/}"
+      filename="$(printf '%q' "$filename")"
+      filename="${filename// /<space>}"
+      echo $filename | xclip -selection clipboard
+
+      new_name=$(input "New name:")
+      while [ -e $new_name ] && [ "$new_name" != "" ]
+      do
+          error_msg "file exists"
+          new_name=$(input "New name:")
+      done
+
+      if [ "$new_name" != "" ]
+      then
+          mv $f $new_name
+          sed -i "1s|^|$f\n|" $FILE
+          sed -i "1s|^|$(dirname $f)/$new_name\n|" $FILE
+          sed -i "1s|^|name_restore\n|" $FILE
+
+          lf -remote "send $id load"
+      fi
+  }}
+
+  cmd my_copy &{{
+      echo -e "$fx" > $LFCP
+      sed -i "1s|^|cp\n|" $LFCP
+
+      lf -remote "send $id copy"
+      lf -remote "send $id load"
+  }}
+
+  cmd my_cut &{{
+      echo -e "$fx" > $LFCP
+      sed -i "1s|^|mv\n|" $LFCP
+
+      lf -remote "send $id cut"
+      lf -remote "send $id load"
+  }}
+
+  cmd my_paste &{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      command=$(head -n 1 $LFCP)
+      sed -i '1d' $LFCP
+
+      while read line;
+      do
+          name=$(basename $line)
+          while [ -e ./$name ]
+          do
+              name=$name"_"
+          done
+
+          if [ "$command" = "cp" ]
+          then
+              cp -r $line ./$name
+          else
+              mv $line ./$name
+              sed -i "1s|^|$line\n|" $FILE
+          fi
+          sed -i "1s|^|$(pwd)/$name\n|" $FILE
+      done < $LFCP
+
+      if [ "$command" = "cp" ]
+      then
+          sed -i "1s|^|del\n|" $FILE
+      else
+          sed -i "1s|^|mv\n|" $FILE
+      fi
+
+      > $LFCP
+      lf -remote "send $id clear"
+      lf -remote "send $id reload"
+  }}
+
+  cmd undo &{{
+      FILE="/tmp/lfundo_$id"
+      command="$(head -n 1 $FILE)"
+      sed -i '1d' $FILE
+
+      if [ "$command" = "trash_restore" ]
+      then
+          while read line;
+          do
+              [[ -z "$line" ]] && break
+              gio trash --restore $line
+              sed -i '1d' $FILE
+          done < $FILE
+      elif [ "$command" = "name_restore" ]
+      then
+          mv $(head -n 2 $FILE)
+          sed -i '2d' $FILE
+      elif [ "$command" = "del" ]
+      then
+          while read line;
+          do
+              [[ -z "$line" ]] && break
+              rm -rf $(head -n 1 $FILE)
+              sed -i '1d' $FILE
+          done < $FILE
+      elif [ "$command" = "mv" ]
+      then
+          while read line;
+          do
+              [[ -z "$line" ]] && break
+              mv $(head -n 2 $FILE)
+              sed -i '2d' $FILE
+          done < $FILE
+      elif [ "$command" = "cd" ]
+      then
+          lf -remote "send $id cd $(head -n 1 $FILE)"
+          sed -i '1d' $FILE
+      fi
+
+      sed -i '1d' $FILE
+      lf -remote "send $id load"
+  }}
+
+  cmd chmod &{{
+      for file in $fx
+      do
+          chmod $1 $file
+      done
+      lf -remote "send $id reload"
+  }}
+
+  cmd trash &{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      for filename in $fx
+      do
+          gio trash $filename
+          filename="${filename##*/}"
+          sed -i "1s|^|trash:///$filename\n|" $FILE
+      done
+      sed -i "1s|^|trash_restore\n|" $FILE
+
+      lf -remote "send $id load"
+  }}
+
+  cmd trash_restore &{{
+      for file in $fx
+      do
+          gio trash --restore trash:///$(basename $file)
+      done
+      lf -remote "send $id reload"
+  }}
+
+  cmd trash_empty &{{
+      gio trash --empty
+      lf -remote "send $id reload"
+  }}
+
+  cmd my_cd &{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      sed -i "1s|^|$PWD\n|" $FILE
+      sed -i "1s|^|cd\n|" $FILE
+
+      myf="$(echo $1 | sed 's/\ /\\\ /g')"
+      lf -remote "send $id cd $myf"
+      lf_update $1 $id
+  }}
+
+  cmd my_updir %{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      sed -i "1s|^|$PWD\n|" $FILE
+      sed -i "1s|^|cd\n|" $FILE
+
+      lf -remote "send $id updir"
+      lf_update "$(dirname $PWD)" $id
+  }}
+
+  cmd fzf_jump ${{
+      res="$(find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
+
+      if [ -d "$res" ]; then
+          cmd="cd"
+      else
+          cmd="select"
+      fi
+
+      lf -remote "send $id $cmd \"$res\""
+  }}
+
+  cmd fzf_jump_dot ${{
+      res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
+
+      if [ -d "$res" ]; then
+          cmd="cd"
+      else 
+          cmd="select"
+      fi
+
+      lf -remote "send $id $cmd \"$res\""
+  }}
+
+  cmd my_search %{{
+      path=$(filesearch $PWD)
+      if [ -d $path ]
+      then
+          lf -remote "send $id my_cd $path"
+      else
+          lf -remote "send $id select $path"
+      fi
+  }}
+
+  cmd goto_config %{{
+      path=$(filesearch ~/.config)
+      if [ -d $path ]
+      then
+          lf -remote "send $id my_cd $path"
+      else
+          lf -remote "send $id select $path"
+      fi
+  }}
+
+  cmd git_clone ${{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      # link=$(input "Link:")
+      link=$(long_input "Link:")
+      git clone $link
+
+      # lf -remote "send $id load"
+  }}
+
+  cmd my_quit ${{
+      rm /tmp/lfundo_$id
+      lf -remote "send $id quit"
+  }}
+
+#+end_src
+
+*** Keybindings
+
+#+begin_src conf
+
+  # Remove some defaults
+  map m
+  map c
+  map d
+  map t
+  map y
+  map p
+  map f
+  map x
+
+  # remaping russian leters
+  # map а push f
+  # map б push ,
+  # map в push d
+  # map г push u
+  # map д push l
+  # map е push t
+  # map ё push `
+  # map ж push ;
+  # map з push p
+  # map и push b
+  # map й push q
+  # map к push r
+  # map л push k
+  # map м push v
+  # map н push y
+  # map о push j
+  # map п push g
+  # map р push h
+  # map с push c
+  # map т push n
+  # map у push e
+  # map ф push a
+  # map х push x
+  # map ц push w
+  # map ч push x
+  # map ш push i
+  # map щ push o
+  # map ъ push ]
+  # map ы push s
+  # map ь push m
+  # map э push '
+  # map ю push .
+  # map я push z
+
+  # basic
+  map q my_quit
+  map l my_open
+  map h my_updir
+  map r recol
+  map / my_search
+
+  # use enter for shell commands
+  map <enter> shell
+
+  # select/unselect everything
+  map a glob-select *
+  map <esc> :clear; unselect
+
+  # see hidden files
+  map . :set hidden!
+
+  # movement
+  map gh my_cd ~
+  map gc goto_config
+  map gp my_cd ~/Pictures
+  map gd my_cd ~/Documents
+  map gD my_cd ~/Downloads
+  map g/ my_cd /
+  map gt my_cd ~/.local/share/Trash/files
+  map ge my_cd /etc
+  map gm my_cd /run/media
+  map gM my_cd /mnt
+  map gu my_cd /usr
+  map gv my_cd /var
+
+  # chmod
+  map +x chmod +x
+  map +w chmod +w
+  map +r chmod +r
+  map -x chmod -x
+  map -w chmod -w
+  map -r chmod -r
+
+  # file operations
+  map cd mkdir
+  map cf mkfile
+  map cw my_rename
+  map y my_copy
+  map p my_paste
+  map s my_cut
+  map d trash
+  map D delete
+  map u undo
+  map tr trash_restore
+  map te trash_empty
+  map i git_clone
+
+  # execute current file (must be executable)
+  map x !$f
+  map X $$f
+
+  # find files
+  map ff fzf_jump
+  map fd fzf_jump_dot
+  map fg :cd /; fzf_jump_dot
 
 #+end_src
 
@@ -2385,6 +3582,788 @@ Neofetch config
 
 #+end_src
 
+* Neovim
+** init.vim
+:PROPERTIES:
+:header-args: :tangle ./.config/nvim/init.vim
+:END:
+
+*** Plugins
+
+#+begin_src vimrc
+
+  call plug#begin('~/.config/nvim/bundle')
+
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'easymotion/vim-easymotion'
+  Plug '907th/vim-auto-save'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'ap/vim-css-color'
+  Plug 'preservim/nerdcommenter'
+  Plug 'lambdalisue/suda.vim'
+  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+  Plug 'lyokha/vim-xkbswitch'
+
+  Plug 'joshdick/onedark.vim'
+  Plug 'itchyny/lightline.vim'
+
+  Plug 'preservim/nerdtree', { 'on' : 'NERDTreeToggle' }
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+  Plug 'airblade/vim-rooter'
+
+  Plug 'lervag/vimtex'
+  Plug 'sirver/ultisnips'
+  Plug 'KeitaNakamura/tex-conceal.vim', { 'for' : 'tex' }
+  Plug 'Konfekt/FastFold'
+
+  " Plug 'skywind3000/asyncrun.vim'
+
+  call plug#end()
+
+#+end_src
+
+*** Basic configuration
+
+#+begin_src vimrc
+
+  set tabstop=4
+  set shiftwidth=4
+  set smartindent
+  set expandtab
+
+  set number
+  set wildmenu
+  set hlsearch
+  set incsearch
+  set ignorecase
+  set smartcase
+  set cursorline
+
+  filetype plugin indent on
+  set encoding=utf-8
+  syntax on
+
+  " Turn backup off, since most stuff is in SVN, git etc. anyway...
+  set nobackup
+  set nowb
+  set noswapfile
+
+  set so=7
+  set nowrap
+
+  set showcmd
+
+  "Autosave
+  let g:auto_save = 1
+  let g:auto_save_silent = 1
+
+  "Отображение пробелов и табуляции
+  set list
+  set listchars=tab:→\ ,space:·
+
+  autocmd FileType * setlocal formatoptions-=o
+
+  " .rasi syntax highlighting
+  au BufNewFile,BufRead /*.rasi setf css
+  au BufNewFile,BufRead /*.fish setf bash
+
+  " set spell
+  " set spelllang=en_us,ru_ru
+  " inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+
+  " Russian keymap
+  " au VimEnter * set keymap=russian-jcukenwin
+  " set iminsert=0
+  " set imsearch=0
+
+  set timeoutlen=200
+
+#+end_src
+
+*** Keybinding
+
+#+begin_src vimrc
+
+  let g:mapleader=' '
+
+  nnoremap U <C-r>
+  nnoremap <C-r> U
+
+  nnoremap n N
+  nnoremap N n
+
+  imap jj <Esc>
+  imap оо <Esc>
+
+  "Switching between splits.
+  nnoremap <C-h> <C-w>h
+  nnoremap <C-j> <C-w>j
+  nnoremap <C-k> <C-w>k
+  nnoremap <C-l> <C-w>l
+
+  "split creation
+  nmap <Leader>l <C-w>v<C-w>l:Files<CR>
+  nmap <Leader>j <C-w>s<C-w>j:Files<CR>
+
+  nmap dA d$
+  nmap dI d0
+
+  map J }
+  map K {
+  map L w
+  map H b
+
+  "Copy/Paste to clipboard
+  map <C-c> "+y
+  map <C-p> "+P
+
+  "exit and close
+  map <Leader>q :q<CR>
+  map <C-x><C-c> :qa<CR>
+
+  "vim-plug
+  map <Leader>pi :source $HOME/.config/nvim/init.vim<CR>:PlugInstall<CR>
+  map <Leader>pd :source $HOME/.config/nvim/init.vim<CR>:PlugClean<CR>
+
+  "Easy motion
+  map /        <Plug>(easymotion-overwin-f2)
+  map <Space>w <Plug>(esymotion-bd-w)
+
+  "suda.vim
+  command! W execute 'SudaWrite' <bar> edit!
+
+  " set g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', "`":"`"}
+
+#+end_src
+
+*** COMMENT From amix/vimrc
+
+#+begin_src vimrc
+
+  " vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+  " vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+  " Useful mappings for managing tabs
+  map <leader>tn :tabnew<cr>
+  map <leader>to :tabonly<cr>
+  map <leader>tc :tabclose<cr>
+  map <leader>tm :tabmove
+  map <leader>t<leader> :tabnext
+
+  " Let 'tl' toggle between this and the last accessed tab
+  let g:lasttab = 1
+  nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+  au TabLeave * let g:lasttab = tabpagenr()
+
+  " Don't close window, when deleting a buffer
+  " command! Bclose call <SID>BufcloseCloseIt()
+  " function! <SID>BufcloseCloseIt()
+      " let l:currentBufNum = bufnr("%")
+      " let l:alternateBufNum = bufnr("#")
+
+      " if buflisted(l:alternateBufNum)
+
+
+
+          " buffer #
+      " else
+          " bnext
+      " endif
+
+      " if bufnr("%") == l:currentBufNum
+          " new
+      " endif
+
+      " if buflisted(l:currentBufNum)
+          " execute("bdelete! ".l:currentBufNum)
+      " endif
+  " endfunction
+
+  " function! CmdLine(str)
+      " call feedkeys(":" . a:str)
+  " endfunction
+
+  " function! VisualSelection(direction, extra_filter) range
+      " let l:saved_reg = @"
+      " execute "normal! vgvy"
+
+      " let l:pattern = escape(@", "\\/.*'$^~[]")
+      " let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+      " if a:direction == 'gv'
+          " call CmdLine("Ack '" . l:pattern . "' " )
+      " elseif a:direction == 'replace'
+          " call CmdLine("%s" . '/'. l:pattern . '/')
+      " endif
+
+      " let @/ = l:pattern
+      " let @" = l:saved_reg
+  " endfunction
+
+#+end_src
+
+*** LaTeX
+
+#+begin_src vimrc
+
+  " vimtex
+  let g:tex_flavor = 'latex'
+  " let g:vimtex_compiler_progname = 'nvr'
+  let g:vimtex_view_method = 'zathura'
+  let g:vimtex_view_forward_search_on_start = 1
+  let g:vimtex_quickfix_mode = 0
+  let g:vimtex_quickfix_open_on_warning = 0
+  let g:vimtex_quickfix_autoclose_after_keystrokes = 3
+  let g:vimtex_fold_enabled = 1
+  let g:vimtex_fold_types = {
+        \ 'markers' : {'enabled': 0},
+        \ 'sections' : {'parse_levels': 1},
+        \}
+  let g:vimtex_complete_enabled = 1
+  let g:vimtex_complete_close_braces = 1
+  let g:vimtex_complete_ignore_case = 1
+  let g:vimtex_complete_smart_case = 1
+  let g:vimtex_format_enabled = 1
+
+  " KeitaNakamura/tex-conceal.vim
+  set conceallevel=2
+  let g:tex_conceal="abdmg"
+  hi Conceal ctermbg=none
+
+  " au BufNewFile,BufRead /*.tex VimtexCompile
+  map <leader>c :VimtexCompile<CR>
+  map <leader>e :VimtexErrors<CR>
+  map <leader>f :VimtexView<CR>
+  nnoremap <Enter> za
+
+  " Close viewers when VimTeX buffers are closed
+  function! CloseViewers()
+      " Close viewers on quit
+      if executable('xdotool') && exists('b:vimtex')
+          \ && exists('b:vimtex.viewer') && b:vimtex.viewer.xwin_id > 0
+          call system('xdotool windowclose '. b:vimtex.viewer.xwin_id)
+      endif
+  endfunction
+
+  let mywindowid=system('xdotool getwindowfocus')
+
+  augroup vimtex_event
+      au!
+      " au User VimtexEventInitPost VimtexCompile
+      au User VimtexEventCompileSuccess call system('xdotool windowfocus ' . mywindowid)
+      au User VimtexEventCompileFailed call system('xdotool windowfocus ' . mywindowid)
+      au User VimtexEventView call system('xdotool windowfocus ' . mywindowid)
+      au User VimtexEventQuit call CloseViewers()
+  augroup END
+
+#+end_src
+
+*** coc.nvim
+
+#+begin_src vimrc
+
+  " Use tab for trigger completion with characters ahead and navigate.
+  " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+  " other plugin before putting this into your config.
+  " inoremap <silent><expr> <Tab>
+  inoremap <silent><expr> <A-j>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><A-k> pumvisible() ? "\<C-p>" : "\<C-h>"
+  " inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " Use <c-space> to trigger completion.
+  if has('nvim')
+      inoremap <silent><expr> <c-space> coc#refresh()
+  else
+      inoremap <silent><expr> <c-@> coc#refresh()
+  endif
+
+  " GoTo code navigation.
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+
+#+end_src
+
+*** Snippets
+
+#+begin_src vimrc
+
+  let g:UltiSnipsExpandTrigger = '<tab>'
+  let g:UltiSnipsJumpForwardTrigger = '<tab>'
+  let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
+
+#+end_src
+
+*** COMMENT vim-xkbswitch
+
+#+begin_src vimrc
+
+  let g:XkbSwitchEnabled = 1
+
+#+end_src
+
+*** Theme
+
+#+begin_src vimrc
+
+  set background=dark
+  colorscheme onedark
+
+  highlight Normal           ctermfg=15      ctermbg=none  cterm=none
+  highlight CursorLineNr     ctermfg=7       ctermbg=0     cterm=none
+  highlight CursorLine       ctermfg=none    ctermbg=0     cterm=none
+
+#+end_src
+
+*** Status line
+
+#+begin_src vimrc
+
+  let g:lightline = {
+      \ 'colorscheme' : 'deus',
+      \ }
+
+  " We don't need to see things like -- INSERT -- anymore
+  set noshowmode
+
+#+end_src
+
+*** Nerdtree
+
+#+begin_src vimrc
+
+  map <C-n> :NERDTreeToggle<CR>
+
+  "let g:NERDTreeDirArrowExpandable  = '>'
+  "let g:NERDTreeDirArrowCollapsible = '˅'
+  let g:NERDTreeShowHidden          = get(g:, 'NERDTreeShowHidden', 1)
+
+  "let g:NERDTreeMapCustomOpen = get(g:, 'NERDTreeMapCustomOpen', '<Tab>')
+  "let g:NERDTreeMapCustomOpen = get(g:, 'NERDTreeMapCustomOpen', '<CR>')
+  let g:NERDTreeMapOpenSplit  = get(g:, 'NERDTreeMapOpenSplit',  '<Space>j')
+  let g:NERDTreeMapOpenVSplit = get(g:, 'NERDTreeMapOpenVSplit', '<Space>l')
+
+#+end_src
+
+*** nerd-commenter
+
+#+begin_src vimrc
+
+  let g:NERDSpaceDelims = 1       " Add spaces after comment delimiters by default
+
+  map <Space>/ <Plug>NERDCommenterToggle
+
+#+end_src
+
+*** fzf
+
+#+begin_src vimrc
+
+  " This is the default extra key bindings
+  let g:fzf_action = {
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
+  " Enable per-command history.
+  " CTRL-N and CTRL-P will be automatically bound to next-history and
+  " previous-history instead of down and up. If you don't like the change,
+  " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+  let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+  map <C-f> :Files<CR>
+  map <leader>b :Buffers<CR>
+  nnoremap <leader>g :Rg<CR>
+  nnoremap <leader>t :Tags<CR>
+  nnoremap <leader>m :Marks<CR>
+
+  tmap <M-k> <C-k>
+  tmap <M-j> <C-j>
+
+  let g:fzf_tags_command = 'ctags -R'
+  " Border color
+  let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
+
+  let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline -e'
+  let $FZF_DEFAULT_COMMAND="rg --files --hidden"
+
+  " Customize fzf colors to match your color scheme
+  let g:fzf_colors =
+      \ { 'fg':      ['fg', 'Normal'],
+      \   'bg':      ['bg', 'Normal'],
+      \   'hl':      ['fg', 'Comment'],
+      \   'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \   'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \   'hl+':     ['fg', 'Statement'],
+      \   'info':    ['fg', 'PreProc'],
+      \   'border':  ['fg', 'Ignore'],
+      \   'prompt':  ['fg', 'Conditional'],
+      \   'pointer': ['fg', 'Exception'],
+      \   'marker':  ['fg', 'Keyword'],
+      \   'spinner': ['fg', 'Label'],
+      \   'header':  ['fg', 'Comment'] }
+
+  "Get Files
+  command! -bang -nargs=? -complete=dir Files
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+
+  " Get text in files with Rg
+  command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+      \   fzf#vim#with_preview(), <bang>0)
+
+  " Ripgrep advanced
+  function! RipgrepFzf(query, fullscreen)
+      let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+      let initial_command = printf(command_fmt, shellescape(a:query))
+      let reload_command = printf(command_fmt, '{q}')
+      let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+      call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+  endfunction
+
+  command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+  " Git grep
+  command! -bang -nargs=* GGrep
+      \ call fzf#vim#grep(
+      \   'git grep --line-number '.shellescape(<q-args>), 0,
+      \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
+#+end_src
+
+** Snippets
+
+#+begin_src text :tangle ./.config/nvim/UltiSnips/tex.snippets
+
+  global !p
+  def math():
+      return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+  def visual():
+      return vim.eval('mode()') == 'v'
+  endglobal
+
+  snippet template "Basic template" b
+  \documentclass[a4paper]{article}
+
+  %---------------------------------------------------
+  % Russian-specific packages
+  %---------------------------------------------------
+  \usepackage{hyperref}                % For adding links
+  \usepackage{mathtext}
+  \usepackage[T2A]{fontenc}
+  \usepackage[utf8x]{inputenc}
+  \usepackage[english,russian]{babel}
+
+  %---------------------------------------------------
+  % Other
+  %---------------------------------------------------
+  \usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm]{geometry}
+  \usepackage{amsmath}       % Mathematics
+  \usepackage{amsfonts}      % For to sign numerical sets
+  \usepackage{graphicx}      % For image paste
+  \usepackage{setspace}      % Add doublespacing and singlespacing
+
+  %---------------------------------------------------
+  % Tables
+  %---------------------------------------------------
+  \usepackage{siunitx}       % Required for alignment (S in tabular)
+  \usepackage{multirow}      % Required for multirows
+  \usepackage{booktabs}      % For prettier tables
+  \usepackage{longtable}     % To display tables on several pages
+  \usepackage{rotating}      % To display tables in landscape
+
+  \newtheorem{theorem}{Теорема}
+
+  \begin{document}
+
+  % \setcounter{tocdepth}{1} % Show sections
+  \setcounter{tocdepth}{2} % + subsections
+  % \setcounter{tocdepth}{3} % + subsubsections
+  % \setcounter{tocdepth}{4} % + paragraphs
+  % \setcounter{tocdepth}{5} % + subparagraphs
+
+  \doublespacing
+  \tableofcontents
+  \singlespacing
+  \newpage
+
+  $0
+
+  \end{document}
+  endsnippet
+
+  snippet date "Date"
+  `date +%F`
+  endsnippet
+
+  snippet beg "begin{} / end{}" bA
+  \begin{$1}
+      $0
+  \end{$1}
+  endsnippet
+
+  snippet sec "section" bA
+  \section{$1}
+  $0
+  endsnippet
+
+  snippet ssec "subsection" bA
+  \subsection{$1}
+  $0
+  endsnippet
+
+  snippet sssec "subsubsection" bA
+  \subsubsection{$1}
+  $0
+  endsnippet
+
+  snippet mk "Math" wA
+  $${1}$`!p
+  if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
+      snip.rv = ' '
+  else:
+      snip.rv = ''
+  `$2
+  endsnippet
+
+  snippet ьл "Math" wA
+  $${1}$`!p
+  if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
+      snip.rv = ' '
+  else:
+      snip.rv = ''
+  `$2
+  endsnippet
+
+  snippet dm "Math" wA
+  \[
+  $1
+  \] $0
+  endsnippet
+
+  context "math()"
+  snippet ** "multiplier sign" iA
+  \cdot $0
+  endsnippet
+
+  context "math()"
+  snippet xx "multiplier sign" iA
+  \times $0
+  endsnippet
+
+  context "math()"
+  snippet '([A-Za-z])(\d)' "auto subscript" wrA
+  `!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
+  endsnippet
+
+  context "math()"
+  snippet '_' "auto subscript" wrA
+  _{$1}$0
+  endsnippet
+
+  context "math()"
+  snippet sr "^2" iA
+  ^2
+  endsnippet
+
+  context "math()"
+  snippet cb "^3" iA
+  ^3
+  endsnippet
+
+  context "math()"
+  snippet compl "complement" iA
+  ^{c}
+  endsnippet
+
+  context "math()"
+  snippet td "superscript" iA
+  ^{$1}$0
+  endsnippet
+
+  context "math()"
+  snippet // "Fraction" iA
+  \\frac{$1}{$2}$0
+  endsnippet
+
+  context "math()"
+  snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
+  \\frac{`!p snip.rv = match.group(1)`}{$1}$0
+  endsnippet
+
+  priority 1000
+  context "math()"
+  snippet '^.*\)/' "() Fraction" wrA
+  `!p
+  stripped = match.string[:-1]
+  depth = 0
+  i = len(stripped) - 1
+  while True:
+      if stripped[i] == ')': depth += 1
+      if stripped[i] == '(': depth -= 1
+      if depth == 0: break;
+      i -= 1
+  snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+  `{$1}$0
+  endsnippet
+
+  snippet / "Fraction" i
+  \\frac{${VISUAL}}{$1}$0
+  endsnippet
+
+  priority 10
+  context "math()"
+  snippet "bar" "bar" riA
+  \overline{$1}$0
+  endsnippet
+
+  priority 100
+  context "math()"
+  snippet "([a-zA-Z])bar" "bar" riA
+  \overline{`!p snip.rv=match.group(1)`}
+  endsnippet
+
+  priority 10
+  context "math()"
+  snippet "hat" "hat" riA
+  \hat{$1}$0
+  endsnippet
+
+  priority 100
+  context "math()"
+  snippet "([a-zA-Z])hat" "hat" riA
+  \hat{`!p snip.rv=match.group(1)`}
+  endsnippet
+
+  context "math()"
+  snippet "(\\?\w+)(,\.|\.,)" "Vector postfix" riA
+  \vec{`!p snip.rv=match.group(1)`}
+  endsnippet
+
+  priority 100
+  snippet ... "ldots" iA
+  \ldots
+  endsnippet
+
+  snippet table "Table environment" b
+  \begin{table}[${1:htpb}]
+      \centering
+      \caption{${2:caption}}
+      \label{tab:${3:label}}
+      \begin{tabular}{${5:c}}
+      $0${5/((?<=.)c|l|r)|./(?1: & )/g}
+      \end{tabular}
+  \end{table}
+  endsnippet
+
+  snippet fig "Figure environment" b
+  \begin{figure}[${1:htpb}]
+      \centering
+      ${2:\includegraphics[width=0.8\textwidth]{$3}}
+      \caption{${4:$3}}
+      \label{fig:${5:${3/\W+/-/g}}}
+  \end{figure}
+  endsnippet
+
+  snippet enum "Enumerate" bA
+  \begin{enumerate}
+      \item $0
+  \end{enumerate}
+  endsnippet
+
+  snippet item "Itemize" bA
+  \begin{itemize}
+      \item $0
+  \end{itemize}
+  endsnippet
+
+  snippet desc "Description" b
+  \begin{description}
+      \item[$1] $0
+  \end{description}
+  endsnippet
+
+  snippet dm "Math" bA
+  \begin{align*}
+      $0
+  \end{align*}
+  endsnippet
+
+  snippet gt "gather" bA
+  \begin{gather*}
+      $0
+  \end{gather*}
+  endsnippet
+
+  snippet pac "Package" b
+  \usepackage[${1:options}]{${2:package}}$0
+  endsnippet
+
+  context "math()"
+  snippet => "implies" Ai
+  \implies
+  endsnippet
+
+  context "math()"
+  snippet =< "implied by" Ai
+  \impliedby
+  endsnippet
+
+  context "math()"
+  snippet iff "iff" Ai
+  \iff
+  endsnippet
+
+  context "math()"
+  snippet == "equals" iA
+  &= $1 \\\\
+  endsnippet
+
+  context "math()"
+  snippet != "equals" iA
+  \neq 
+  endsnippet
+
+  context "math()"
+  snippet NN "N" iA
+  \mathbb{N}
+  endsnippet
+
+  context "math()"
+  snippet ZZ "Z" iA
+  \mathbb{Z}
+  endsnippet
+
+  context "math()"
+  snippet QQ "Q" iA
+  \mathbb{Q}
+  endsnippet
+
+  context "math()"
+  snippet RR "R" iA
+  \mathbb{R}
+  endsnippet
+
+  context "math()"
+  snippet CC "C" iA
+  \mathbb{C}
+  endsnippet
+
+#+end_src
+
 * Picom
 :PROPERTIES:
 :header-args: :tangle ./.config/picom/picom.conf
@@ -2824,6 +4803,2503 @@ Neofetch config
 
   # round-borders = 1;
   # round-borders-execute = [];
+
+#+end_src
+
+* Polybar
+
+Configuration based on https://github.sre.pub/adi1090x/polybar-themes
+
+** Launch script
+
+#+begin_src sh :tangle ./.config/polybar/launch.sh :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  dir="$HOME/.config/polybar/"
+
+  # Terminate already running bar instances
+  killall -q polybar
+
+  # Wait until the processes have been shut down
+  while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+
+  # Launch the bar
+  polybar -c "$dir"/config.ini workspaces &
+  polybar -c "$dir"/config.ini tray &
+
+#+end_src
+
+** Config
+:PROPERTIES:
+:header-args: :tangle ./.config/polybar/config.ini
+:END:
+
+*** Global WM settings
+
+#+begin_src conf
+
+  [global/wm]
+  ; Adjust the _NET_WM_STRUT_PARTIAL top value
+  ; Used for top aligned bars
+  margin-bottom = 0
+
+  ; Adjust the _NET_WM_STRUT_PARTIAL bottom value
+  ; Used for bottom aligned bars
+  margin-top = 0
+
+#+end_src
+
+*** File Inclusion
+
+Include an external file, like module file, etc.
+
+#+begin_src conf
+
+  include-file = ~/.config/polybar/bars.ini
+  include-file = ~/.config/polybar/colors.ini
+  include-file = ~/.config/polybar/modules.ini
+  include-file = ~/.config/polybar/user_modules.ini
+
+#+end_src
+
+*** Bar settings
+
+#+begin_src conf
+
+  [bar/main]
+  ; Use either of the following command to list available outputs:
+  ; If unspecified, the application will pick the first one it finds.
+  ; $ polybar -m | cut -d ':' -f 1
+  ; $ xrandr -q | grep " connected" | cut -d ' ' -f1
+  monitor =
+
+  ; Use the specified monitor as a fallback if the main one is not found.
+  monitor-fallback =
+
+  ; Require the monitor to be in connected state
+  ; XRandR sometimes reports my monitor as being disconnected (when in use)
+  monitor-strict = false
+
+  ; Tell the Window Manager not to configure the window.
+  ; Use this to detach the bar if your WM is locking its size/position.
+  ; override-redirect = false
+
+  ; Prefer fixed center position for the `modules-center` block
+  ; When false, the center position will be based on the size of the other blocks.
+  fixed-center = true
+
+  ; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),
+  ; the percentage can optionally be extended with a pixel offset like so:
+  ; 50%:-10, this will result in a width or height of 50% minus 10 pixels
+  ; width = 98.7%
+  height = 45
+
+  ; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)
+  ; the percentage can optionally be extended with a pixel offset like so:
+  ; 50%:-10, this will result in an offset in the x or y direction
+  ; of 50% minus 10 pixels
+  ; offset-x = 14px
+  offset-y = 1%
+
+  ; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)
+  background = ${color.shade2}
+
+  ; Foreground ARGB color (e.g. #f00, #ff992a, #ddff1023)
+  foreground = ${color.foreground}
+
+  ; Background gradient (vertical steps)
+  ;   background-[0-9]+ = #aarrggbb
+  ;;background-0 =
+
+  ; Value used for drawing rounded corners
+  ; Note: This shouldn't be used together with border-size because the border
+  ; doesn't get rounded
+  ; Individual top/bottom values can be defined using:
+  ;   radius-{top,bottom}
+  radius-top = 0.0
+  radius-bottom = 0.0
+
+  ; Under-/overline pixel size and argb color
+  ; Individual values can be defined using:
+  ;   {overline,underline}-size
+  ;   {overline,underline}-color
+  underline-size = 2
+  underline-color = ${color.foreground}
+
+  ; Values applied to all borders
+  ; Individual side values can be defined using:
+  ;   border-{left,top,right,bottom}-size
+  ;   border-{left,top,right,bottom}-color
+  ; The top and bottom borders are added to the bar height, so the effective
+  ; window height is:
+  ;   height + border-top-size + border-bottom-size
+  ; Meanwhile the effective window width is defined entirely by the width key and
+  ; the border is placed withing this area. So you effectively only have the
+  ; following horizontal space on the bar:
+  ;   width - border-right-size - border-left-size
+  border-size = 0
+  border-color = ${color.foreground}
+
+  ; Number of spaces to add at the beginning/end of the bar
+  ; Individual side values can be defined using:
+  ;   padding-{left,right}
+  padding-left = 0
+  padding-right = 0
+
+  ; Number of spaces to add before/after each module
+  ; Individual side values can be defined using:
+  ;   module-margin-{left,right}
+  module-margin-left = 0
+  module-margin-right = 0
+
+  ; Fonts are defined using <font-name>;<vertical-offset>
+  ; Font names are specified using a fontconfig pattern.
+  ;   font-0 = NotoSans-Regular:size=8;2
+  ;   font-1 = MaterialIcons:size=10
+  ;   font-2 = Termsynu:size=8;-1
+  ;   font-3 = FontAwesome:size=10
+  ; See the Fonts wiki page for more details
+
+  font-0 = "Iosevka Nerd Font:pixelsize=13;4"
+  font-1 = "MyFont:pixelsize=18;4"
+
+  ; Modules are added to one of the available blocks
+  ;   modules-left = cpu ram
+  ;   modules-center = xwindow xbacklight
+  ;   modules-right = ipc clock
+
+  modules-left = launcher sep workspaces
+  modules-center =
+  modules-right = cpu memory alsa battery network date
+
+  ; The separator will be inserted between the output of each module
+  separator =
+
+  ; Opacity value between 0.0 and 1.0 used on fade in/out
+  dim-value = 1.0
+
+  ; Value to be used to set the WM_NAME atom
+  ; If the value is empty or undefined, the atom value
+  ; will be created from the following template: polybar-[BAR]_[MONITOR]
+  ; NOTE: The placeholders are not available for custom values
+  wm-name =
+
+  ; Locale used to localize various module data (e.g. date)
+  ; Expects a valid libc locale, for example: sv_SE.UTF-8
+  locale =
+
+  ; Position of the system tray window
+  ; If empty or undefined, tray support will be disabled
+  ; NOTE: A center aligned tray will cover center aligned modules
+  ;
+  ; Available positions:
+  ;   left
+  ;   center
+  ;   right
+  ;   none
+  tray-position = none
+
+  ; If true, the bar will not shift its
+  ; contents when the tray changes
+  tray-detached = false
+
+  ; Tray icon max size
+  tray-maxsize = 16
+
+  ; Background color for the tray container
+  ; ARGB color (e.g. #f00, #ff992a, #ddff1023)
+  ; By default the tray container will use the bar
+  ; background color.
+  ; tray-background = ${color.background}
+  tray-background =
+
+  ; Tray offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)
+  tray-offset-x = 0
+  tray-offset-y = 0
+
+  ; Pad the sides of each tray icon
+  tray-padding = 0
+
+  ; Scale factor for tray clients
+  tray-scale = 1.0
+
+  ; Restack the bar window and put it above the
+  ; selected window manager's root
+  ;
+  ; Fixes the issue where the bar is being drawn
+  ; on top of fullscreen window's
+  ;
+  ; Currently supported WM's:
+  ;   bspwm
+  ;   i3 (requires: `override-redirect = true`)
+  ;;wm-restack =
+
+  ; Set a DPI values used when rendering text
+  ; This only affects scalable fonts
+  ; dpi =
+
+  ; Enable support for inter-process messaging
+  ; See the Messaging wiki page for more details.
+  enable-ipc = true
+
+  ; Fallback click handlers that will be called if
+  ; there's no matching module handler found.
+  click-left =
+  click-middle =
+  click-right =
+  scroll-up =
+  scroll-down =
+  double-click-left =
+  double-click-middle =
+  double-click-right =
+
+  ; Requires polybar to be built with xcursor support (xcb-util-cursor)
+  ; Possible values are:
+  ; - default   : The default pointer as before, can also be an empty string (default)
+  ; - pointer   : Typically in the form of a hand
+  ; - ns-resize : Up and down arrows, can be used to indicate scrolling
+  cursor-click =
+  cursor-scroll =
+
+  [bar/workspaces]
+  inherit = bar/main
+  fixed-center = false
+  modules-left = workspaces
+  modules-right =
+  width = 315px
+  offset-x = 14
+
+  [bar/tray]
+  inherit = bar/main
+  fixed-center = false
+  modules-right = mycpu temperature mymemory battery keyboard updates date
+  modules-left =
+  width = 764px
+  offset-x = 1142
+
+#+end_src
+
+*** Application Settings
+
+#+begin_src conf
+
+  [settings]
+  ; The throttle settings lets the eventloop swallow up til X events
+  ; if they happen within Y millisecond after first event was received.
+  ; This is done to prevent flood of update event.
+  ;
+  ; For example if 5 modules emit an update event at the same time, we really
+  ; just care about the last one. But if we wait too long for events to swallow
+  ; the bar would appear sluggish so we continue if timeout
+  ; expires or limit is reached.
+  throttle-output = 5
+  throttle-output-for = 10
+
+  ; Time in milliseconds that the input handler will wait between processing events
+  ;throttle-input-for = 30
+
+  ; Reload upon receiving XCB_RANDR_SCREEN_CHANGE_NOTIFY events
+  screenchange-reload = false
+
+  ; Compositing operators
+  ; @see: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-operator-t
+  compositing-background = source
+  compositing-foreground = over
+  compositing-overline = over
+  compositing-underline = over
+  compositing-border = over
+
+  ; Define fallback values used by all module formats
+  ;format-foreground =
+  ;format-background =
+  ;format-underline =
+  ;format-overline =
+  ;format-spacing =
+  ;format-padding =
+  ;format-margin =
+  ;format-offset =
+
+  ; Enables pseudo-transparency for the bar
+  ; If set to true the bar can be transparent without a compositor.
+  pseudo-transparency = false
+
+#+end_src
+
+** Colors
+:PROPERTIES:
+:header-args: :tangle ./.config/polybar/colors.ini
+:END:
+
+#+begin_src conf
+
+  [color]
+
+  ;; main colors
+  background     = #bb1c252a
+  background-alt = #1c252a
+  foreground     = #cad0da
+  red-background = #bbff6c6b
+
+  red-foreground    = #ff6c6b
+  green-foreground  = #98be65
+  blue-foreground   = #51afef
+  yellow-foreground = #ffaf00
+  brown-foreground  = #c38a48
+  cyan-foreground   = #46d9ff
+  purple-foreground = #d499e5
+
+  ; shades
+  shade1 = #bb1c252a
+  shade2 = #bb202b31
+  shade3 = #bb253137
+  shade4 = #bb29363e
+  shade5 = #bb2e3c44
+  shade6 = #bb32424b
+  shade7 = #bb364852
+
+#+end_src
+
+** Bars
+:PROPERTIES:
+:header-args: :tangle ./.config/polybar/bars.ini
+:END:
+
+*** Bar
+
+#+begin_src conf
+
+  [bar]
+  fill = 
+  empty = 
+  indicator = ⏽
+  ; Nerd font :   ,  ⏽,  樂 籠 錄 , 雷 絛
+
+#+end_src
+
+*** COMMENT Module volume
+
+#+begin_src conf
+
+  [module/volume]
+  type = internal/alsa
+
+  ; Soundcard to be used
+  ; Usually in the format hw:# where # is the card number
+  ; You can find the different card numbers in `/proc/asound/cards`
+  master-soundcard = default
+  speaker-soundcard = default
+  headphone-soundcard = default
+
+  ; Name of the master, speaker and headphone mixers
+  ; Use the following command to list available mixer controls:
+  ; $ amixer scontrols | sed -nr "s/.*'([[:alnum:]]+)'.*/\1/p"
+  ; If master, speaker or headphone-soundcard isn't the default,
+  ; use `amixer -c # scontrols` instead where # is the number
+  ; of the master, speaker or headphone soundcard respectively
+  ;
+  ; Default: Master
+  master-mixer = Master
+
+  ; Optionally define speaker and headphone mixers
+  ; Default: none
+  ;;speaker-mixer = Speaker
+  ; Default: none
+  ;;headphone-mixer = Headphone
+
+  ; NOTE: This is required if headphone_mixer is defined
+  ; Use the following command to list available device controls
+  ; $ amixer controls | sed -r "/CARD/\!d; s/.*=([0-9]+).*name='([^']+)'.*/printf '%3.0f: %s\n' '\1' '\2'/e" | sort
+  ; You may also need to use `amixer -c # controls` as above for the mixer names
+  ; Default: none
+  ;;headphone-id = 9
+
+  ; Use volume mapping (similar to amixer -M and alsamixer), where the increase in volume is linear to the ear
+  ; Default: false
+  ;;mapped = true
+
+  ; Interval for volume increase/decrease (in percent points)
+  ; Default: 5
+  interval = 5
+
+  ; Available tags:
+  ;   <label-volume> (default)
+  ;   <ramp-volume>
+  ;   <bar-volume>
+  format-volume = <ramp-volume> <bar-volume>
+  format-volume-background = ${color.shade6}
+  format-volume-padding = 2
+
+  ; Available tags:
+  ;   <label-muted> (default)
+  ;   <ramp-volume>
+  ;   <bar-volume>
+  format-muted = <label-muted>
+  format-muted-prefix = 
+  format-muted-prefix-font = 2
+  format-muted-background = ${color.shade6}
+  format-muted-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  label-volume = %percentage%%
+
+  ; Available tokens:
+  ;   %percentage% (default
+  label-muted = " Muted"
+  label-muted-foreground = ${color.foreground}
+
+  ; Only applies if <ramp-volume> is used
+  ramp-volume-0 = 
+  ramp-volume-1 = 
+  ramp-volume-2 = 
+  ramp-volume-font = 2
+
+  ; Only applies if <bar-volume> is used
+  bar-volume-width = 10
+  bar-volume-gradient = false
+
+  bar-volume-indicator = ${bar.indicator}
+  bar-volume-indicator-foreground = ${color.foreground}
+
+  bar-volume-fill = ${bar.fill}
+  bar-volume-foreground-0 = ${color.foreground}
+  bar-volume-foreground-1 = ${color.foreground}
+  bar-volume-foreground-2 = ${color.foreground}
+
+  bar-volume-empty = ${bar.empty}
+  bar-volume-empty-foreground = ${color.foreground}
+
+  ; If defined, it will replace <ramp-volume> when
+  ; headphones are plugged in to `headphone_control_numid`
+  ; If undefined, <ramp-volume> will be used for both
+  ; Only applies if <ramp-volume> is used
+  ramp-headphones-0 = 
+
+#+end_src
+
+*** COMMENT Module brightness
+
+#+begin_src conf
+
+  [module/brightness]
+  ;type = internal/xbacklight
+  type = internal/backlight
+
+  ; Use the following command to list available cards:
+  ; $ ls -1 /sys/class/backlight/
+  ;card = intel_backlight
+  card = amdgpu_bl0
+
+  ; Available tags:
+  ;   <label> (default)
+  ;   <ramp>
+  ;   <bar>
+  format = <ramp> <bar>
+  format-background = ${color.shade7}
+  format-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  label = %percentage%%
+
+  ; Only applies if <ramp> is used
+  ramp-0 = 
+  ramp-1 = 
+  ramp-2 = 
+  ramp-3 = 
+  ramp-4 = 
+  ramp-font = 2
+
+  ; Only applies if <bar> is used
+  bar-width = 10
+  bar-gradient = false
+
+  bar-indicator = ${bar.indicator}
+  bar-indicator-foreground = ${color.foreground}
+
+  bar-fill = ${bar.fill}
+  bar-foreground-0 = ${color.foreground}
+  bar-foreground-1 = ${color.foreground}
+  bar-foreground-2 = ${color.foreground}
+
+  bar-empty = ${bar.empty}
+  bar-empty-foreground = ${color.foreground}
+
+#+end_src
+
+*** COMMENT Module battery_bar
+
+#+begin_src conf
+
+  [module/battery_bar]
+  type = internal/battery
+
+  ; This is useful in case the battery never reports 100% charge
+  full-at = 99
+
+  ; Use the following command to list batteries and adapters:
+  ; $ ls -1 /sys/class/power_supply/
+  battery = BAT1
+  adapter = ACAD
+
+  ; If an inotify event haven't been reported in this many
+  ; seconds, manually poll for new values.
+  ;
+  ; Needed as a fallback for systems that don't report events
+  ; on sysfs/procfs.
+  ;
+  ; Disable polling by setting the interval to 0.
+  ;
+  ; Default: 5
+  poll-interval = 2
+
+  ; see "man date" for details on how to format the time string
+  ; NOTE: if you want to use syntax tags here you need to use %%{...}
+  ; Default: %H:%M:%S
+  time-format = %H:%M
+
+  ; Available tags:
+  ;   <label-charging> (default)
+  ;   <bar-capacity>
+  ;   <ramp-capacity>
+  ;   <animation-charging>
+  format-charging = <bar-capacity>
+  format-charging-prefix = " "
+  format-charging-prefix-font = 2
+  format-charging-background = ${color.shade5}
+  format-charging-padding = 2
+
+  ; Available tags:
+  ;   <label-discharging> (default)
+  ;   <bar-capacity>
+  ;   <ramp-capacity>
+  ;   <animation-discharging>
+  format-discharging = <bar-capacity>
+  format-discharging-prefix = " "
+  format-discharging-prefix-font = 2
+  format-discharging-background = ${color.shade5}
+  format-discharging-padding = 2
+
+  ; Available tags:
+  ;   <label-full> (default)
+  ;   <bar-capacity>
+  ;   <ramp-capacity>
+  format-full = <label-full>
+  format-full-prefix = " "
+  format-full-prefix-font = 2
+  format-full-background = ${color.shade5}
+  format-full-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  ;   %time%
+  ;   %consumption% (shows current charge rate in watts)
+
+  label-charging = %percentage%%
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  ;   %time%
+  ;   %consumption% (shows current discharge rate in watts)
+  label-discharging = %percentage%%
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  label-full = "Full"
+
+  ; Only applies if <bar-capacity> is used
+  bar-capacity-width = 10
+  bar-capacity-gradient = false
+
+  bar-capacity-indicator = ${bar.indicator}
+  bar-capacity-indicator-foreground = ${color.foreground}
+
+  bar-capacity-fill = ${bar.fill}
+  bar-capacity-foreground-0 = ${color.foreground}
+  bar-capacity-foreground-1 = ${color.foreground}
+  bar-capacity-foreground-2 = ${color.foreground}
+
+  bar-capacity-empty = ${bar.empty}
+  bar-capacity-empty-foreground = ${color.foreground}
+
+#+end_src
+
+*** COMMENT Module cpu_bar
+
+#+begin_src conf
+
+  [module/cpu_bar]
+  type = internal/cpu
+
+  ; Seconds to sleep between updates
+  ; Default: 1
+  interval = 0.5
+
+  ; Available tags:
+  ;   <label> (default)
+  ;   <bar-load>
+  ;   <ramp-load>
+  ;   <ramp-coreload>
+  ;;format = <label> <ramp-coreload>
+  format = <bar-load> <label>
+  format-prefix = "﬙ "
+  format-prefix-font = 2
+  format-background = ${color.shade7}
+  format-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default) - total cpu load averaged over all cores
+  ;   %percentage-sum% - Cumulative load on all cores
+  ;   %percentage-cores% - load percentage for each core
+  ;   %percentage-core[1-9]% - load percentage for specific core
+  label = "%percentage%%"
+
+  ; Only applies if <bar-load> is used
+  bar-load-width = 10
+  bar-load-gradient = false
+
+  bar-load-indicator = ${bar.indicator}
+  bar-load-indicator-foreground = ${color.foreground}
+
+  bar-load-fill = ${bar.fill}
+  bar-load-foreground-0 = ${color.foreground}
+  bar-load-foreground-1 = ${color.foreground}
+  bar-load-foreground-2 = ${color.foreground}
+
+  bar-load-empty = ${bar.empty}
+  bar-load-empty-foreground = ${color.foreground}
+
+#+end_src
+
+*** COMMENT Module filesystem_bar
+
+#+begin_src conf
+
+  [module/filesystem_bar]
+  type = internal/fs
+
+  ; Mountpoints to display
+  mount-0 = /
+  ;;mount-1 = /home
+  ;;mount-2 = /var
+
+  ; Seconds to sleep between updates
+  ; Default: 30
+  interval = 30
+
+  ; Display fixed precision values
+  ; Default: false
+  fixed-values = false
+
+  ; Spacing between entries
+  ; Default: 2
+  ;;spacing = 4
+
+  ; Available tags:
+  ;   <label-mounted> (default)
+  ;   <bar-free>
+  ;   <bar-used>
+  ;   <ramp-capacity>
+  format-mounted = <bar-used> <label-mounted>
+  format-mounted-prefix = " "
+  format-mounted-prefix-font = 2
+  format-mounted-background = ${color.shade5}
+  format-mounted-padding = 2
+
+  ; Available tags:
+  ;   <label-unmounted> (default)
+  format-unmounted = <label-unmounted>
+  format-unmounted-prefix = " "
+  format-unmounted-prefix-font = 2
+  format-unmounted-background = ${color.shade5}
+  format-unmounted-padding = 2
+
+  ; Available tokens:
+  ;   %mountpoint%
+  ;   %type%
+  ;   %fsname%
+  ;   %percentage_free%
+  ;   %percentage_used%
+  ;   %total%
+  ;   %free%
+  ;   %used%
+  ; Default: %mountpoint% %percentage_free%%
+  label-mounted = %used%/%total%
+
+  ; Available tokens:
+  ;   %mountpoint%
+  ; Default: %mountpoint% is not mounted
+  label-unmounted = "%mountpoint%: not mounted"
+
+  ; Only applies if <bar-used> is used
+  bar-used-width = 10
+  bar-used-gradient = false
+
+  bar-used-indicator = ${bar.indicator}
+  bar-used-indicator-foreground = ${color.foreground}
+
+  bar-used-fill = ${bar.fill}
+  bar-used-foreground-0 = ${color.foreground}
+  bar-used-foreground-1 = ${color.foreground}
+  bar-used-foreground-2 = ${color.foreground}
+
+  bar-used-empty = ${bar.empty}
+  bar-used-empty-foreground = ${color.foreground}
+
+#+end_src
+
+*** COMMENT Module memory_bar
+
+#+begin_src conf
+
+  [module/memory_bar]
+  type = internal/memory
+
+  ; Seconds to sleep between updates
+  ; Default: 1
+  interval = 2
+
+  ; Available tags:
+  ;   <label> (default)
+  ;   <bar-used>
+  ;   <bar-free>
+  ;   <ramp-used>
+  ;   <ramp-free>
+  ;   <bar-swap-used>
+  ;   <bar-swap-free>
+  ;   <ramp-swap-used>
+  ;   <ramp-swap-free>
+  format = <bar-used> <label>
+  format-prefix = " "
+  format-prefix-font = 2
+  format-background = ${color.shade6}
+  format-padding = 2
+
+  ; Available tokens:
+  ;   %percentage_used% (default)
+  ;   %percentage_free%
+  ;   %gb_used%
+  ;   %gb_free%
+  ;   %gb_total%
+  ;   %mb_used%
+  ;   %mb_free%
+  ;   %mb_total%
+  ;   %percentage_swap_used%
+  ;   %percentage_swap_free%
+  ;   %mb_swap_total%
+  ;   %mb_swap_free%
+  ;   %mb_swap_used%
+  ;   %gb_swap_total%
+  ;   %gb_swap_free%
+  ;   %gb_swap_used%
+
+  label = "%mb_used%"
+
+  ; Only applies if <bar-used> is used
+  bar-used-width = 10
+  bar-used-gradient = false
+
+  bar-used-indicator = ${bar.indicator}
+  bar-used-indicator-foreground = ${color.foreground}
+
+  bar-used-fill = ${bar.fill}
+  bar-used-foreground-0 = ${color.foreground}
+  bar-used-foreground-1 = ${color.foreground}
+  bar-used-foreground-2 = ${color.foreground}
+
+  bar-used-empty = ${bar.empty}
+  bar-used-empty-foreground = ${color.foreground}
+
+#+end_src
+
+*** COMMENT Module mpd_bar
+
+#+begin_src conf
+
+  [module/mpd_bar]
+  type = internal/mpd
+
+  ; Host where mpd is running (either ip or domain name)
+  ; Can also be the full path to a unix socket where mpd is running.
+  ;;host = 127.0.0.1
+  ;;port = 6600
+  ;;password = mysecretpassword
+
+  ; Seconds to sleep between progressbar/song timer sync
+  ; Default: 1
+  interval = 1
+
+  ; Available tags:
+  ;   <label-song> (default)
+  ;   <label-time>
+  ;   <bar-progress>
+  ;   <toggle> - gets replaced with <icon-(pause|play)>
+  ;   <toggle-stop> - gets replaced with <icon-(stop|play)>
+  ;   <icon-random>
+  ;   <icon-repeat>
+  ;   <icon-repeatone> (deprecated)
+  ;   <icon-single> - Toggle playing only a single song. Replaces <icon-repeatone>
+  ;   <icon-consume>
+  ;   <icon-prev>
+  ;   <icon-stop>
+  ;   <icon-play>
+  ;   <icon-pause>
+  ;   <icon-next>
+  ;   <icon-seekb>
+  ;   <icon-seekf>
+  format-online = <label-song> <bar-progress> <label-time>
+  format-online-prefix = ﱘ
+  format-online-prefix-font = 2
+  format-online-background = ${color.shade4}
+  format-online-padding = 2
+
+  ;format-playing = ${self.format-online}
+  ;format-paused = ${self.format-online}
+  ;format-stopped = ${self.format-online}
+
+  ; Available tags:
+  ;   <label-offline>
+  format-offline = <label-offline>
+  format-offline-prefix = ﱘ
+  format-offline-prefix-font = 2
+  format-offline-background = ${color.shade4}
+  format-offline-padding = 2
+
+  ; Available tokens:
+  ;   %artist%
+  ;   %album-artist%
+  ;   %album%
+  ;   %date%
+  ;   %title%
+  ; Default: %artist% - %title%
+  label-song =  " %artist% - %title%"
+  label-song-maxlen = 25
+  label-song-ellipsis = true
+
+  ; Available tokens:
+  ;   %elapsed%
+  ;   %total%
+  ; Default: %elapsed% / %total%
+  label-time = %elapsed% / %total%
+
+  ; Available tokens:
+  ;   None
+  label-offline = " Offline"
+
+  ; Only applies if <icon-X> is used
+  icon-play = 喇
+  icon-pause = 
+  icon-stop =
+  icon-prev =
+  icon-next =
+  icon-seekb =
+  icon-seekf =
+  icon-random =
+  icon-repeat =
+  icon-repeatone =
+  icon-single =
+  icon-consume =
+
+  ; Used to display the state of random/repeat/repeatone/single
+  ; Only applies if <icon-[random|repeat|repeatone|single]> is used
+  toggle-on-foreground = ${color.foreground}
+  toggle-off-foreground = ${color.background}
+
+  ; Only applies if <bar-progress> is used
+  bar-progress-width = 10
+  bar-progress-gradient = false
+
+  bar-progress-indicator = ${bar.indicator}
+  bar-progress-indicator-foreground = ${color.foreground}
+
+  bar-progress-fill = ${bar.fill}
+  bar-progress-foreground-0 = ${color.foreground}
+  bar-progress-foreground-1 = ${color.foreground}
+  bar-progress-foreground-2 = ${color.foreground}
+
+  bar-progress-empty = ${bar.empty}
+  bar-progress-empty-foreground = ${color.foreground}
+
+#+end_src
+
+** Modules
+:PROPERTIES:
+:header-args: :tangle ./.config/polybar/modules.ini
+:END:
+
+*** COMMENT alsa
+
+#+begin_src conf
+
+  [module/alsa]
+  type = internal/alsa
+
+  ; Soundcard to be used
+  ; Usually in the format hw:# where # is the card number
+  ; You can find the different card numbers in `/proc/asound/cards`
+  master-soundcard = default
+  speaker-soundcard = default
+  headphone-soundcard = default
+
+  ; Name of the master, speaker and headphone mixers
+  ; Use the following command to list available mixer controls:
+  ; $ amixer scontrols | sed -nr "s/.*'([[:alnum:]]+)'.*/\1/p"
+  ; If master, speaker or headphone-soundcard isn't the default,
+  ; use `amixer -c # scontrols` instead where # is the number
+  ; of the master, speaker or headphone soundcard respectively
+  ;
+  ; Default: Master
+  master-mixer = Master
+
+  ; Optionally define speaker and headphone mixers
+  ; Default: none
+  ;;speaker-mixer = Speaker
+  ; Default: none
+  ;;headphone-mixer = Headphone
+
+  ; NOTE: This is required if headphone_mixer is defined
+  ; Use the following command to list available device controls
+  ; $ amixer controls | sed -r "/CARD/\!d; s/.*=([0-9]+).*name='([^']+)'.*/printf '%3.0f: %s\n' '\1' '\2'/e" | sort
+  ; You may also need to use `amixer -c # controls` as above for the mixer names
+  ; Default: none
+  ;;headphone-id = 9
+
+  ; Use volume mapping (similar to amixer -M and alsamixer), where the increase in volume is linear to the ear
+  ; Default: false
+  ;;mapped = true
+
+  ; Interval for volume increase/decrease (in percent points)
+  ; Default: 5
+  interval = 5
+
+  ; Available tags:
+  ;   <label-volume> (default)
+  ;   <ramp-volume>
+  ;   <bar-volume>
+  format-volume = <ramp-volume> <label-volume>
+  format-volume-background = ${color.shade6}
+  format-volume-padding = 2
+
+  ; Available tags:
+  ;   <label-muted> (default)
+  ;   <ramp-volume>
+  ;   <bar-volume>
+  format-muted = <label-muted>
+  format-muted-prefix = 
+  format-muted-prefix-font = 2
+  format-muted-background = ${color.shade6}
+  format-muted-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  label-volume = %percentage%%
+
+  ; Available tokens:
+  ;   %percentage% (default
+  label-muted = " Muted"
+  label-muted-foreground = ${color.foreground}
+
+  ; Only applies if <ramp-volume> is used
+  ramp-volume-0 = 
+  ramp-volume-1 = 
+  ramp-volume-2 = 
+  ramp-volume-font = 2
+
+  ; If defined, it will replace <ramp-volume> when
+  ; headphones are plugged in to `headphone_control_numid`
+  ; If undefined, <ramp-volume> will be used for both
+  ; Only applies if <ramp-volume> is used
+  ramp-headphones-0 = 
+
+#+end_src
+
+*** COMMENT backlight
+
+#+begin_src conf
+
+  [module/backlight]
+  ;type = internal/xbacklight
+  type = internal/backlight
+
+  ; Use the following command to list available cards:
+  ; $ ls -1 /sys/class/backlight/
+  ;card = intel_backlight
+  card = amdgpu_bl0
+
+  ; Available tags:
+  ;   <label> (default)
+  ;   <ramp>
+  ;   <bar>
+  format = <ramp> <label>
+  format-background = ${color.shade3}
+  format-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  label = %percentage%%
+
+  ; Only applies if <ramp> is used
+  ramp-0 = 
+  ramp-1 = 
+  ramp-2 = 
+  ramp-3 = 
+  ramp-4 = 
+  ramp-font = 2
+
+#+end_src
+
+*** battery
+
+#+begin_src conf
+
+  [module/battery]
+  type = internal/battery
+
+  ; This is useful in case the battery never reports 100% charge
+  ; full-at = 99
+
+  ; Use the following command to list batteries and adapters:
+  ; $ ls -1 /sys/class/power_supply/
+  battery = BAT1
+  adapter = ACAD
+
+  ; If an inotify event haven't been reported in this many
+  ; seconds, manually poll for new values.
+  ;
+  ; Needed as a fallback for systems that don't report events
+  ; on sysfs/procfs.
+  ;
+  ; Disable polling by setting the interval to 0.
+  ;
+  ; Default: 5
+  poll-interval = 2
+
+  ; see "man date" for details on how to format the time string
+  ; NOTE: if you want to use syntax tags here you need to use %%{...}
+  ; Default: %H:%M:%S
+  time-format = %H:%M
+
+  ; Available tags:
+  ;   <label-charging> (default)
+  ;   <bar-capacity>
+  ;   <ramp-capacity>
+  ;   <animation-charging>
+  format-charging = <animation-charging> <label-charging>
+  format-charging-background = ${color.shade4}
+  format-charging-padding = 1
+
+  ; Available tags:
+  ;   <label-discharging> (default)
+  ;   <bar-capacity>
+  ;   <ramp-capacity>
+  ;   <animation-discharging>
+  format-discharging = <ramp-capacity> <label-discharging>
+  format-discharging-background = ${color.shade4}
+  format-discharging-padding = 1
+
+  ; Available tags:
+  ;   <label-full> (default)
+  ;   <bar-capacity>
+  ;   <ramp-capacity>
+  format-full = " 99%"
+  format-full-prefix = ""
+  format-full-prefix-font = 2
+  format-full-prefix-foreground = ${color.cyan-foreground}
+  format-full-background = ${color.shade4}
+  format-full-padding = 1
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  ;   %time%
+  ;   %consumption% (shows current charge rate in watts)
+  label-charging = %percentage:2%%
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  ;   %time%
+  ;   %consumption% (shows current discharge rate in watts)
+  label-discharging = %percentage:2%%
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  label-full = " Full"
+
+  ; Only applies if <ramp-capacity> is used
+  ramp-capacity-0 = ""
+  ramp-capacity-1 = ""
+  ramp-capacity-2 = ""
+  ramp-capacity-3 = ""
+  ramp-capacity-4 = ""
+  ramp-capacity-0-foreground = ${color.cyan-foreground}
+  ramp-capacity-1-foreground = ${color.cyan-foreground}
+  ramp-capacity-2-foreground = ${color.cyan-foreground}
+  ramp-capacity-3-foreground = ${color.cyan-foreground}
+  ramp-capacity-4-foreground = ${color.cyan-foreground}
+  ramp-capacity-font = 2
+
+  ; Only applies if <bar-capacity> is used
+  ; bar-capacity-width = 10
+
+  ; Only applies if <animation-charging> is used
+
+  animation-charging-0 = ""
+  animation-charging-1 = ""
+  animation-charging-2 = ""
+  animation-charging-3 = ""
+  animation-charging-4 = ""
+  animation-charging-1-foreground = ${color.cyan-foreground}
+  animation-charging-0-foreground = ${color.cyan-foreground}
+  animation-charging-2-foreground = ${color.cyan-foreground}
+  animation-charging-3-foreground = ${color.cyan-foreground}
+  animation-charging-4-foreground = ${color.cyan-foreground}
+  animation-charging-font = 2
+
+  ; Framerate in milliseconds
+  animation-charging-framerate = 750
+
+  ; Only applies if <animation-discharging> is used
+  ;;animation-discharging-0 = ${battery.anim0}
+  ;;animation-discharging-1 = ${battery.anim1}
+
+  ; Framerate in milliseconds
+  ;animation-discharging-framerate = 500
+
+#+end_src
+
+*** COMMENT bspwm
+
+#+begin_src conf
+
+  [module/bspwm]
+  type = internal/bspwm
+
+  ; Only show workspaces defined on the same output as the bar
+  ; NOTE: The bspwm and XRandR monitor names must match, which they do by default.
+  ; Default: true
+  pin-workspaces = true
+
+  ; Output mode flags after focused state label
+  ; Default: false
+  inline-mode = false
+
+  ; Create click handler used to focus workspace
+  ; Default: true
+  enable-click = false
+
+  ; Create scroll handlers used to cycle workspaces
+  ; Default: true
+  enable-scroll = false
+
+  ; Set the scroll cycle direction
+  ; Default: true
+  reverse-scroll = false
+
+  ; Use fuzzy (partial) matching on labels when assigning
+  ; icons to workspaces
+  ; Example: code;♚ will apply the icon to all workspaces
+  ; containing 'code' in the label
+  ; Default: false
+  fuzzy-match = true
+
+  ; ws-icon-[0-9]+ = label;icon
+  ; Note that the label needs to correspond with the bspwm workspace name
+  ws-icon-0 = code;♚
+  ws-icon-1 = office;♛
+  ws-icon-2 = graphics;♜
+  ws-icon-3 = mail;♝
+  ws-icon-4 = web;♞
+  ws-icon-default = ♟
+
+  ; Available tags:
+  ;   <label-monitor>
+  ;   <label-state> - gets replaced with <label-(focused|urgent|occupied|empty)>
+  ;   <label-mode> - gets replaced with <label-(monocle|tiled|fullscreen|floating|locked|sticky|private)>
+  ; Default: <label-state>
+  format = <label-state> <label-mode>
+
+  ; Available tokens:
+  ;   %name%
+  ; Default: %name%
+  label-monitor = %name%
+
+  ; If any values for label-dimmed-N are defined, the workspace/mode
+  ; colors will get overridden with those values if the monitor is out of focus
+  ; To only override workspaces in a specific state, use:
+  ;   label-dimmed-focused
+  ;   label-dimmed-occupied
+  ;   label-dimmed-urgent
+  ;   label-dimmed-empty
+  label-dimmed-foreground = #555
+  label-dimmed-underline = ${bar/top.background}
+  label-dimmed-focused-background = #f00
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-focused = %icon%
+  label-focused-foreground = #ffffff
+  label-focused-background = #3f3f3f
+  label-focused-underline = #fba922
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-occupied = %icon%
+  label-occupied-underline = #555555
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-urgent = %icon%
+  label-urgent-foreground = #000000
+  label-urgent-background = #bd2c40
+  label-urgent-underline = #9b0a20
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-empty = %icon%
+  label-empty-foreground = #55
+
+  ; The following labels will be used to indicate the layout/mode
+  ; for the focused workspace. Requires <label-mode>
+  ;
+  ; Available tokens:
+  ;   None
+  label-monocle = 
+  label-tiled = 
+  label-fullscreen = 
+  label-floating = 
+  label-pseudotiled = P
+  label-locked = 
+  label-locked-foreground = #bd2c40
+  label-sticky = 
+  label-sticky-foreground = #fba922
+  label-private = 
+  label-private-foreground = #bd2c40
+
+  ; Separator in between workspaces
+  label-separator = |
+  label-separator-padding = 2
+  label-separator-foreground = #ffb52a
+
+#+end_src
+
+*** cpu
+
+#+begin_src conf
+
+  [module/cpu]
+  type = internal/cpu
+
+  ; Seconds to sleep between updates
+  ; Default: 1
+  interval = 1
+
+  ; Available tags:
+  ;   <label> (default)
+  ;   <bar-load>
+  ;   <ramp-load>
+  ;   <ramp-coreload>
+  ;;format = <label> <ramp-coreload>
+  format = <label>
+  format-prefix = 
+  format-prefix-font = 2
+  format-background = ${color.shade7}
+  format-foreground = ${color.foreground}
+  format-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default) - total cpu load averaged over all cores
+  ;   %percentage-sum% - Cumulative load on all cores
+  ;   %percentage-cores% - load percentage for each core
+  ;   %percentage-core[1-9]% - load percentage for specific core
+  label = " %percentage%%"
+
+  ; Spacing between individual per-core ramps
+  ;;ramp-coreload-spacing = 1
+  ;;ramp-coreload-0 = ${cpu.load0}
+  ;;ramp-coreload-1 = ${cpu.load1}
+
+  ;;ramp-load-0 = ${cpu.load0}
+  ;;ramp-load-1 = ${cpu.load1}
+
+#+end_src
+
+*** date
+
+#+begin_src conf
+
+  [module/date]
+  type = internal/date
+
+  ; Seconds to sleep between updates
+  interval = 1.0
+
+  ; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
+  ; NOTE: if you want to use syntax tags here you need to use %%{...}
+  ;;date = %Y-%m-%d%
+
+  ; Optional time format
+  time = " %H:%M | %a | %d %b"
+
+  ; if `date-alt` or `time-alt` is defined, clicking
+  ; the module will toggle between formats
+  ;;date-alt = %A, %d %B %Y
+  time-alt = " %a, %d %b %Y"
+
+  ; Available tags:
+  ;   <label> (default)
+  format = <label>
+  format-prefix = 
+  format-prefix-foreground = ${color.blue-foreground}
+  format-prefix-font = 2
+  format-background = ${color.shade1}
+  format-foreground = ${color.foreground}
+  format-padding = 1
+
+  ; Available tokens:
+  ;   %date%
+  ;   %time%
+  ; Default: %date%
+  label = %time%
+
+#+end_src
+
+*** COMMENT filesystem
+
+#+begin_src conf
+
+  [module/filesystem]
+  type = internal/fs
+
+  ; Mountpoints to display
+  mount-0 = /
+  ;;mount-1 = /home
+  ;;mount-2 = /var
+
+  ; Seconds to sleep between updates
+  ; Default: 30
+  interval = 30
+
+  ; Display fixed precision values
+  ; Default: false
+  fixed-values = true
+
+  ; Spacing between entries
+  ; Default: 2
+  ;;spacing = 4
+
+  ; Available tags:
+  ;   <label-mounted> (default)
+  ;   <bar-free>
+  ;   <bar-used>
+  ;   <ramp-capacity>
+  format-mounted = <label-mounted>
+  format-mounted-prefix = 
+  format-mounted-prefix-font = 2
+  format-mounted-background = ${color.shade6}
+  format-mounted-padding = 2
+
+  ; Available tags:
+  ;   <label-unmounted> (default)
+  format-unmounted = <label-unmounted>
+  format-unmounted-prefix = 
+  format-unmounted-prefix-font = 2
+  format-unmounted-background = ${color.shade6}
+  format-unmounted-padding = 2
+
+  ; Available tokens:
+  ;   %mountpoint%
+  ;   %type%
+  ;   %fsname%
+  ;   %percentage_free%
+  ;   %percentage_used%
+  ;   %total%
+  ;   %free%
+  ;   %used%
+  ; Default: %mountpoint% %percentage_free%%
+  label-mounted = " %free%"
+
+  ; Available tokens:
+  ;   %mountpoint%
+  ; Default: %mountpoint% is not mounted
+  label-unmounted = " %mountpoint%: not mounted"
+
+#+end_src
+
+*** COMMENT github
+
+#+begin_src conf
+
+  [module/github]
+  type = internal/github
+
+  ; Accessing an access token stored in file
+  token = ${file:/path/to/file/containing/github/access.token}
+
+  ; Accessing an access token stored in an environment variable
+  token = ${env:GITHUB_ACCESS_TOKEN}
+
+  ; Whether empty notifications should be displayed or not
+  empty-notifications = false
+
+  ; Number of seconds in between requests
+  interval = 10
+
+  ; Available tags:
+  ;   <label> (default)
+  format = <label>
+  format-prefix = 
+
+  ; Available tokens:
+  ;   %notifications% (default)
+  ; Default: Notifications: %notifications%
+  label = %notifications%
+
+#+end_src
+
+*** COMMENT i3
+
+#+begin_src conf
+
+  [module/i3]
+  type = internal/i3
+
+  ; Only show workspaces defined on the same output as the bar
+  ;
+  ; Useful if you want to show monitor specific workspaces
+  ; on different bars
+  ;
+  ; Default: false
+  pin-workspaces = true
+
+  ; This will split the workspace name on ':'
+  ; Default: false
+  strip-wsnumbers = true
+
+  ; Sort the workspaces by index instead of the default
+  ; sorting that groups the workspaces by output
+  ; Default: false
+  index-sort = true
+
+  ; Create click handler used to focus workspace
+  ; Default: true
+  enable-click = false
+
+  ; Create scroll handlers used to cycle workspaces
+  ; Default: true
+  enable-scroll = false
+
+  ; Wrap around when reaching the first/last workspace
+  ; Default: true
+  wrapping-scroll = false
+
+  ; Set the scroll cycle direction
+  ; Default: true
+  reverse-scroll = false
+
+  ; Use fuzzy (partial) matching on labels when assigning
+  ; icons to workspaces
+  ; Example: code;♚ will apply the icon to all workspaces
+  ; containing 'code' in the label
+  ; Default: false
+  fuzzy-match = true
+
+  ; ws-icon-[0-9]+ = label;icon
+  ; NOTE: The label needs to match the name of the i3 workspace
+  ws-icon-0 = 1;♚
+  ws-icon-1 = 2;♛
+  ws-icon-2 = 3;♜
+  ws-icon-3 = 4;♝
+  ws-icon-4 = 5;♞
+  ws-icon-default = ♟
+  ; NOTE: You cannot skip icons, e.g. to get a ws-icon-6
+  ; you must also define a ws-icon-5.
+
+  ; Available tags:
+  ;   <label-state> (default) - gets replaced with <label-(focused|unfocused|visible|urgent)>
+  ;   <label-mode> (default)
+  format = <label-state> <label-mode>
+
+  ; Available tokens:
+  ;   %mode%
+  ; Default: %mode%
+  label-mode = %mode%
+  label-mode-padding = 2
+  label-mode-background = #e60053
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ;   %output%
+  ; Default: %icon%  %name%
+  label-focused = %index%
+  label-focused-foreground = #ffffff
+  label-focused-background = #3f3f3f
+  label-focused-underline = #fba922
+  label-focused-padding = 4
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ;   %output%
+  ; Default: %icon%  %name%
+  label-unfocused = %index%
+  label-unfocused-padding = 4
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ;   %output%
+  ; Default: %icon%  %name%
+  label-visible = %index%
+  label-visible-underline = #555555
+  label-visible-padding = 4
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ;   %output%
+  ; Default: %icon%  %name%
+  label-urgent = %index%
+  label-urgent-foreground = #000000
+  label-urgent-background = #bd2c40
+  label-urgent-padding = 4
+
+  ; Separator in between workspaces
+  label-separator = |
+  label-separator-padding = 2
+  label-separator-foreground = #ffb52a
+
+#+end_src
+
+*** COMMENT memory
+
+#+begin_src conf
+
+  [module/memory]
+  type = internal/memory
+
+  ; Seconds to sleep between updates
+  ; Default: 1
+  interval = 1
+
+  ; Available tags:
+  ;   <label> (default)
+  ;   <bar-used>
+  ;   <bar-free>
+  ;   <ramp-used>
+  ;   <ramp-free>
+  ;   <bar-swap-used>
+  ;   <bar-swap-free>
+  ;   <ramp-swap-used>
+  ;   <ramp-swap-free>
+  format = <label>
+  format-prefix = 
+  format-prefix-font = 2
+  format-background = ${color.shade5}
+  format-padding = 2
+
+  ; Available tokens:
+  ;   %percentage_used% (default)
+  ;   %percentage_free%
+  ;   %gb_used%
+  ;   %gb_free%
+  ;   %gb_total%
+  ;   %mb_used%
+  ;   %mb_free%
+  ;   %mb_total%
+  ;   %percentage_swap_used%
+  ;   %percentage_swap_free%
+  ;   %mb_swap_total%
+  ;   %mb_swap_free%
+  ;   %mb_swap_used%
+  ;   %gb_swap_total%
+  ;   %gb_swap_free%
+  ;   %gb_swap_used%
+
+  label = " %mb_used%"
+
+  ; Only applies if <ramp-used> is used
+  ;;ramp-used-0 = ${memory.used0}
+  ;;ramp-used-1 = ${memory.used1}
+  ;;ramp-used-2 = ${memory.used2}
+
+  ; Only applies if <ramp-free> is used
+  ;;ramp-free-0 = ${memory.free0}
+  ;;ramp-free-1 = ${memory.free1}
+  ;;ramp-free-2 = ${memory.free2}
+
+#+end_src
+
+*** COMMENT network
+
+#+begin_src conf
+
+  ; If you use both a wired and a wireless network, just add 2 module definitions. For example
+  [module/wired-network]
+  type = internal/network
+  interface = eth0
+
+  [module/wireless-network]
+  type = internal/network
+  interface = wlp3s0
+
+  ; Normal Module
+  [module/network]
+  type = internal/network
+  interface = wlan0
+
+  ; Seconds to sleep between updates
+  ; Default: 1
+  interval = 1.0
+
+  ; Test connectivity every Nth update
+  ; A value of 0 disables the feature
+  ; NOTE: Experimental (needs more testing)
+  ; Default: 0
+  ;ping-interval = 3
+
+  ; @deprecated: Define min width using token specifiers (%downspeed:min% and %upspeed:min%)
+  ; Minimum output width of upload/download rate
+  ; Default: 3
+  ;;udspeed-minwidth = 5
+
+  ; Accumulate values from all interfaces
+  ; when querying for up/downspeed rate
+  ; Default: false
+  accumulate-stats = true
+
+  ; Consider an `UNKNOWN` interface state as up.
+  ; Some devices have an unknown state, even when they're running
+  ; Default: false
+  unknown-as-up = true
+
+  ; Available tags:
+  ;   <label-connected> (default)
+  ;   <ramp-signal>
+  format-connected = <label-connected>
+  format-connected-prefix = 直
+  format-connected-prefix-font = 2
+  format-connected-background = ${color.shade4}
+  format-connected-padding = 2
+
+  ; Available tags:
+  ;   <label-disconnected> (default)
+  format-disconnected = <label-disconnected>
+  format-disconnected-prefix = 睊
+  format-disconnected-prefix-font = 2
+  format-disconnected-background = ${color.shade4}
+  format-disconnected-padding = 2
+
+  ; Available tags:
+  ;   <label-connected> (default)
+  ;   <label-packetloss>
+  ;   <animation-packetloss>
+  ;;format-packetloss = <animation-packetloss> <label-connected>
+
+  ; Available tokens:
+  ;   %ifname%    [wireless+wired]
+  ;   %local_ip%  [wireless+wired]
+  ;   %local_ip6% [wireless+wired]
+  ;   %essid%     [wireless]
+  ;   %signal%    [wireless]
+  ;   %upspeed%   [wireless+wired]
+  ;   %downspeed% [wireless+wired]
+  ;   %linkspeed% [wired]
+  ; Default: %ifname% %local_ip%
+  label-connected = "%{A1:networkmanager_dmenu &:} %essid%%{A}"
+
+  ; Available tokens:
+  ;   %ifname%    [wireless+wired]
+  ; Default: (none)
+  label-disconnected = "%{A1:networkmanager_dmenu &:} Offline%{A}"
+  ;;label-disconnected-foreground = #66ffffff
+
+  ; Available tokens:
+  ;   %ifname%    [wireless+wired]
+  ;   %local_ip%  [wireless+wired]
+  ;   %local_ip6% [wireless+wired]
+  ;   %essid%     [wireless]
+  ;   %signal%    [wireless]
+  ;   %upspeed%   [wireless+wired]
+  ;   %downspeed% [wireless+wired]
+  ;   %linkspeed% [wired]
+  ; Default: (none)
+  ;label-packetloss = %essid%
+  ;label-packetloss-foreground = #eefafafa
+
+  ; Only applies if <ramp-signal> is used
+  ramp-signal-0 = 直
+  ramp-signal-1 = 直
+  ramp-signal-2 = 直
+
+  ; Only applies if <animation-packetloss> is used
+  ;;animation-packetloss-0 = ⚠
+  ;;animation-packetloss-0-foreground = #ffa64c
+  ;;animation-packetloss-1 = ⚠
+  ;;animation-packetloss-1-foreground = #000000
+  ; Framerate in milliseconds
+  ;;animation-packetloss-framerate = 500
+
+#+end_src
+
+*** COMMENT pulseaudio
+
+#+begin_src conf
+
+  [module/pulseaudio]
+  type = internal/pulseaudio
+
+  ; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+  ; If not, uses default sink
+  sink = alsa_output.pci-0000_03_00.6.analog-stereo
+
+  ; Use PA_VOLUME_UI_MAX (~153%) if true, or PA_VOLUME_NORM (100%) if false
+  ; Default: true
+  use-ui-max = false
+
+  ; Interval for volume increase/decrease (in percent points)
+  ; Default: 5
+  interval = 5
+
+  ; Available tags:
+  ;   <label-volume> (default)
+  ;   <ramp-volume>
+  ;   <bar-volume>
+  format-volume = <ramp-volume> <label-volume>
+  format-volume-background = ${color.shade4}
+  format-volume-padding = 2
+
+  ; Available tags:
+  ;   <label-muted> (default)
+  ;   <ramp-volume>
+  ;   <bar-volume>
+  format-muted = <label-muted>
+  format-muted-prefix = 
+  format-muted-prefix-font = 2
+  format-muted-background = ${color.shade4}
+  format-muted-padding = 2
+
+  ; Available tokens:
+  ;   %percentage% (default)
+  label-volume = %percentage%%
+
+  ; Available tokens:
+  ;   %percentage% (default
+  label-muted = " Muted"
+  label-muted-foreground = ${color.foreground}
+
+  ; Only applies if <ramp-volume> is used
+  ramp-volume-0 = 
+  ramp-volume-1 = 
+  ramp-volume-2 = 
+  ramp-volume-font = 2
+
+#+end_src
+
+*** temperature
+
+#+begin_src conf
+
+  [module/temperature]
+  type = internal/temperature
+
+  ; Seconds to sleep between updates
+  ; Default: 1
+  interval = 0.5
+
+  ; Thermal zone to use
+  ; To list all the zone types, run 
+  ; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+  ; Default: 0
+  thermal-zone = 0
+
+  ; Full path of temperature sysfs path
+  ; Use `sensors` to find preferred temperature source, then run
+  ; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+  ; to find path to desired file
+  ; Default reverts to thermal zone setting
+  ;;hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+  hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input
+
+  ; Threshold temperature to display warning label (in degrees celsius)
+  ; Default: 80
+  warn-temperature = 65
+
+  ; Whether or not to show units next to the temperature tokens (°C, °F)
+  ; Default: true
+  units = true
+
+  ; Available tags:
+  ;   <label> (default)
+  ;   <ramp>
+  format = <ramp> <label>
+  format-background = ${color.shade6}
+  format-foreground = ${color.foreground}
+  format-padding = 1
+
+  ; Available tags:
+  ;   <label-warn> (default)
+  ;   <ramp>
+  format-warn = <ramp> <label-warn>
+  format-warn-background = ${color.red-background}
+  format-warn-foreground = ${color.background}
+  format-warn-padding = 1
+
+  ; Available tokens:
+  ;   %temperature% (deprecated)
+  ;   %temperature-c%   (default, temperature in °C)
+  ;   %temperature-f%   (temperature in °F)
+  label = %temperature-c%
+
+  ; Available tokens:
+  ;   %temperature% (deprecated)
+  ;   %temperature-c%   (default, temperature in °C)
+  ;   %temperature-f%   (temperature in °F)
+  label-warn = "%temperature-c%"
+
+  ; Requires the <ramp> tag
+  ; The icon selection will range from 0 to `warn-temperature`
+  ; with the current temperature as index.
+  ramp-0 = ""
+  ramp-0-foreground = ${color.yellow-foreground}
+  ramp-1 = ""
+  ramp-1-foreground = ${color.yellow-foreground}
+  ramp-2 = ""
+  ramp-2-foreground = ${color.yellow-foreground}
+  ramp-3 = ""
+  ramp-3-foreground = ${color.yellow-foreground}
+  ramp-4 = ""
+  ramp-4-foreground = ${color.yellow-foreground}
+  ramp-font = 2
+
+#+end_src
+
+*** keyboard
+
+#+begin_src conf
+
+  [module/keyboard]
+  type = internal/xkeyboard
+
+  ; List of indicators to ignore
+  blacklist-0 = num lock
+  blacklist-1 = scroll lock
+
+  ; Available tags:
+  ;   <label-layout> (default)
+  ;   <label-indicator> (default)
+  format = <label-layout>
+  format-prefix = ""
+  format-prefix-foreground = ${color.purple-foreground}
+  format-prefix-font = 2
+  format-background = ${color.shade3}
+  format-foreground = ${color.foreground}
+  format-padding = 1
+
+  ; Available tokens:
+  ;   %layout%
+  ;   %name%
+  ;   %number%
+  ; Default: %layout%
+  label-layout = " %layout%"
+
+  ; Available tokens:
+  ;   %name%
+  ; Default: %name%
+  label-indicator-on = %name%
+  label-indicator-on-foreground = ${color.foreground}
+
+#+end_src
+
+*** COMMENT title
+
+#+begin_src conf
+
+  [module/title]
+  type = internal/xwindow
+
+  ; Available tags:
+  ;   <label> (default)
+  format = <label>
+  format-prefix = ﯑
+  format-prefix-font = 2
+  format-prefix-background = ${color.shade8}
+  format-prefix-foreground = #0a0a0a
+  format-prefix-padding = 2
+
+  ; Available tokens:
+  ;   %title%
+  ; Default: %title%
+  label = "%title%"
+  label-maxlen = 30
+  label-background = ${color.background}
+  label-foreground = ${color.foreground}
+  label-padding = 2
+
+  ; Used instead of label when there is no window title
+  label-empty = "Desktop"
+  label-empty-background = ${color.background}
+  label-empty-foreground = ${color.foreground}
+  label-empty-padding = 2
+
+#+end_src
+
+*** workspaces
+
+#+begin_src conf
+
+  [module/workspaces]
+  type = internal/xworkspaces
+
+  ; Only show workspaces defined on the same output as the bar
+  ;
+  ; Useful if you want to show monitor specific workspaces
+  ; on different bars
+  ;
+  ; Default: false
+  ; pin-workspaces = true
+  pin-workspaces = false
+
+  ; Create click handler used to focus desktop
+  ; Default: true
+  enable-click = true
+
+  ; Create scroll handlers used to cycle desktops
+  ; Default: true
+  enable-scroll = true
+
+  ; icon-[0-9]+ = <desktop-name>;<icon>
+  ; NOTE: The desktop name needs to match the name configured by the WM
+  ; You can get a list of the defined desktops using:
+  ; $ xprop -root _NET_DESKTOP_NAMES
+  icon-0 = 1;1
+  icon-1 = 2;2
+  icon-2 = 3;3
+  icon-3 = 4;4
+  icon-4 = 5;5
+  icon-5 = 6;6
+  icon-6 = 7;7
+  icon-7 = 8;8
+  icon-8 = 9;9
+  icon-default = 0
+
+  ; Available tags:
+  ;   <label-monitor>
+  ;   <label-state> - gets replaced with <label-(active|urgent|occupied|empty)>
+  ; Default: <label-state>
+  format = <label-state>
+  format-background = ${color.background}
+  format-foreground = ${color.foreground}
+
+  ; Available tokens:
+  ;   %name%
+  ; Default: %name%
+  label-monitor = %name%
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-active = %icon%
+  label-active-background = ${color.blue-foreground}
+  label-active-foreground = ${color.background-alt}
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-occupied = %icon%
+  label-occupied-background = ${color.background}
+  label-occupied-foreground = ${color.blue-foreground}
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-urgent = %icon%
+  label-urgent-background = ${color.background}
+  label-urgent-foreground = #CC6666
+
+  ; Available tokens:
+  ;   %name%
+  ;   %icon%
+  ;   %index%
+  ; Default: %icon%  %name%
+  label-empty = %icon%
+  label-empty-background = ${color.background}
+  label-empty-foreground = ${color.foreground}
+
+  label-active-padding = 2
+  label-urgent-padding = 2
+  label-occupied-padding = 2
+  label-empty-padding = 2
+
+#+end_src
+
+** User modules
+*** Updates
+**** Module config
+
+#+begin_src conf :tangle ./.config/polybar/user_modules.ini
+
+  [module/updates]
+  type = custom/script
+
+   ; Available tokens:
+  ;   %counter%
+  ; Command to be executed (using "/usr/bin/env sh -c [command]")
+  exec = ~/.config/polybar/scripts/updates.sh
+
+  ; Conditional command that, if defined, needs to exit successfully
+  ; before the main exec command is invoked.
+  ; Default: ""
+  ;;exec-if = ""
+
+  ; Will the script output continous content?
+  ; Default: false
+  tail = true
+
+  ; Seconds to sleep between updates
+  ; Default: 2 (0 if `tail = true`)
+  interval = 10
+
+  ; Available tags:
+  ;   <output> - deprecated
+  ;   <label> (default)
+  format = <label>
+  format-prefix = 
+  format-prefix-foreground = ${color.brown-foreground}
+  format-prefix-font = 2
+  format-background = ${color.shade2}
+  format-foreground = ${color.foreground}
+  format-padding = 1
+
+  ; Available tokens:
+  ;   %output%
+  ; Default: %output%
+  label = %output%
+  label-background = ${color.shade2}
+
+  ; Available tokens:
+  ;   %counter%
+  ;   %pid%
+  ;
+  ; "click-(left|middle|right)" will be executed using "/usr/bin/env sh -c [command]"
+  ;; click-left = exo-open --launch TerminalEmulator &
+  ;; click-right = exo-open --launch TerminalEmulator &
+  ;;double-click-left = echo double left %counter%
+  ;;double-click-middle = echo double middle %counter%
+  ;;double-click-right = echo double right %counter%
+
+  ; Available tokens:
+  ;   %counter%
+  ;   %pid%
+  ;
+  ; "scroll-(up|down)" will be executed using "/usr/bin/env sh -c [command]"
+  ;;scroll-up = echo scroll up %counter%
+  ;;scroll-down = echo scroll down %counter%
+
+#+end_src
+
+**** Script
+
+#+begin_src sh :tangle ./.config/polybar/scripts/updates.sh :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  NOTIFY_ICON=/usr/share/icons/Papirus/32x32/apps/system-software-update.svg
+
+  get_total_updates() {
+      sudo yay -Syy 2>~/.cache/updates/updates.log
+      updates=$(yay -Qu 2>/dev/null | wc -l);
+  }
+
+  while true; do
+      echo "  0"
+      sleep 1
+      get_total_updates
+
+      # notify user of updates
+      if hash notify-send &>/dev/null && [ $updates -gt 0 ]
+      then
+          notify-send -u normal -i $NOTIFY_ICON \
+                      "You should update soon" "$updates New packages"
+      fi
+
+      # when there are updates available
+      # every 100 seconds another check for updates is done
+      while (( $updates > 0 )); do
+          if (( $updates > 99 )); then
+              echo "$updates"
+          elif (( $updates > 9 )); then
+              echo " $updates"
+          else
+              echo "  $updates"
+          fi
+          sleep 600
+          get_total_updates
+      done
+
+      # when no updates are available, use a longer loop, this saves on CPU
+      # and network uptime, only checking once every 10 min for new updates
+      while (( $updates == 0 )); do
+          echo "  0"
+          sleep 600
+          get_total_updates
+      done
+  done
+
+#+end_src
+
+*** COMMENT Network speed
+
+#+begin_src conf
+
+  [module/network_speed]
+  type = custom/script
+
+  ; Available tokens:
+  ;   %counter%
+  ; Command to be executed (using "/usr/bin/env sh -c [command]")
+  exec = ~/.config/polybar/colorblocks/scripts/updates.sh
+
+#+end_src
+
+*** My CPU
+**** Module config
+
+#+begin_src conf :tangle ./.config/polybar/user_modules.ini
+
+  [module/mycpu]
+  type = custom/script
+
+  ; Available tokens:
+  ;   %counter%
+  ; Command to be executed (using "/usr/bin/env sh -c [command]")
+  exec = ~/.config/polybar/scripts/cpu/cpu
+
+  ; Will the script output continous content?
+  ; Default: false
+  tail = true
+
+  ; Seconds to sleep between updates
+  ; Default: 2 (0 if `tail = true`)
+  interval = 1
+
+  ; Available tags:
+  ;   <output> - deprecated
+  ;   <label> (default)
+  format = <label>
+  format-prefix = " "
+  format-prefix-foreground = ${color.red-foreground}
+  format-prefix-font = 2
+  format-background = ${color.shade7}
+  format-foreground = ${color.foreground}
+
+  ; Available tokens:
+  ;   %output%
+  ; Default: %output%
+  label = %output%
+  label-background = ${color.shade7}
+
+#+end_src
+
+**** Script
+***** Makefile
+
+#+begin_src makefile :tangle ./.config/polybar/scripts/cpu/Makefile
+
+  TARGET := cpu
+
+  CC     := gcc
+  CCFLAG := -Wall -O3
+  FILES  := cpu.c
+
+  .PHONY: rebuild clean
+
+  $(TARGET): $(FILES)
+      $(CC) $(CCFLAG) $(FILES) -o $(TARGET)
+
+  rebuild: clean $(TARGET)
+
+  clean:
+      rm $(TARGET)
+
+#+end_src
+
+***** Program
+
+#+begin_src c :tangle ./.config/polybar/scripts/cpu/cpu.c
+
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <time.h>
+
+  void read_stat(long long int *a)
+  {
+	  FILE *stat = fopen("/proc/stat","r");
+
+	  if (stat == NULL)
+		  exit(EXIT_FAILURE);
+
+	  fscanf(stat,"%*s %lli %lli %lli %lli %lli %lli %lli", &a[0], &a[1], &a[2], &a[3], &a[4], &a[5], &a[6]);
+	  fclose(stat);
+  }
+
+  int main(void)
+  {
+	  long long int a[7], b[7];
+	  double delta;
+	  int used;
+
+	  read_stat(a);
+	  usleep(250000);
+	  read_stat(b);
+
+	  delta = ((b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6]) - (a[0] + a[1] + a[2] + a[3] + a[4] + a[5] + a[6]));
+	  used  = (delta - (b[3] - a[3])) / delta * 100;
+
+	  if (used == 100)
+		  printf("%i%% \n", used);
+	  else if (used > 9)
+		  printf(" %i%% \n", used);
+	  else
+		  printf("  %i%% \n", used);
+
+	  return 0;
+  }
+
+#+end_src
+
+*** My memory
+**** Module config
+
+#+begin_src conf :tangle ./.config/polybar/user_modules.ini
+
+  [module/mymemory]
+  type = custom/script
+
+  ; Available tokens:
+  ;   %counter%
+  ; Command to be executed (using "/usr/bin/env sh -c [command]")
+  exec = ~/.config/polybar/scripts/ram/ram
+
+  ; Will the script output continous content?
+  ; Default: false
+  tail = true
+
+  ; Seconds to sleep between updates
+  ; Default: 2 (0 if `tail = true`)
+  interval = 1
+
+  ; Available tags:
+  ;   <output> - deprecated
+  ;   <label> (default)
+  format = <label>
+  format-prefix = "  "
+  format-prefix-foreground = ${color.green-foreground}
+  format-prefix-font = 2
+  format-background = ${color.shade5}
+  format-foreground = ${color.foreground}
+  ; format-padding = 2
+
+  ; Available tokens:
+  ;   %output%
+  ; Default: %output%
+  label = %output%
+  label-background = ${color.shade5}
+
+#+end_src
+
+**** Script
+***** Makefile
+
+#+begin_src makefile :tangle ./.config/polybar/scripts/ram/Makefile
+
+  TARGET := ram
+
+  CC     := gcc
+  CCFLAG := -Wall -O3
+  FILES  := ram.c
+
+  .PHONY: rebuild clean
+
+  $(TARGET): $(FILES)
+      $(CC) $(CCFLAG) $(FILES) -o $(TARGET)
+
+  rebuild: clean $(TARGET)
+
+  clean:
+      rm $(TARGET)
+
+#+end_src
+
+***** Program
+
+#+begin_src c :tangle ./.config/polybar/scripts/ram/ram.c
+
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <time.h>
+
+  void read_stat(long long int *a)
+  {
+      FILE *stat = fopen("/proc/stat","r");
+
+      if (stat == NULL)
+          exit(EXIT_FAILURE);
+
+      fscanf(stat,"%*s %lli %lli %lli %lli %lli %lli %lli", &a[0], &a[1], &a[2], &a[3], &a[4], &a[5], &a[6]);
+      fclose(stat);
+  }
+
+  int main(void)
+  {
+      long long int a[7], b[7];
+      double delta;
+      int used;
+
+      read_stat(a);
+      usleep(250000);
+      read_stat(b);
+
+      delta = ((b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6]) - (a[0] + a[1] + a[2] + a[3] + a[4] + a[5] + a[6]));
+      used  = (delta - (b[3] - a[3])) / delta * 100;
+
+      if (used == 100)
+          printf("%i%% \n", used);
+      else if (used > 9)
+          printf(" %i%% \n", used);
+      else
+          printf("  %i%% \n", used);
+
+      return 0;
+  }
+
+#+end_src
+
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  #define SIZE 28
+
+  #define mem_available_s buffers_s
+  #define swap_cached_s   shmem_s
+  #define active_s        shmem_s
+  #define inactive_s      shmem_s
+  #define active_anon_s   shmem_s
+  #define inactive_anoa_s shmem_s
+  #define active_file_s   shmem_s
+  #define inactive_file_s shmem_s
+  #define unevictable_s   shmem_s
+  #define mlocked_s       shmem_s
+  #define swap_total_s    shmem_s
+  #define swap_free_s     shmem_s
+  #define dirty_s         shmem_s
+  #define writeback_s     shmem_s
+  #define anon_pages_s    shmem_s
+  #define mapped_s        shmem_s
+  #define kreclaimable_s  sreclaimable_s
+  #define slab_s          sreclaimable_s
+
+  int take_num(char *str)
+  {
+    int num = 0;
+
+    for (int i = 16; i < SIZE - 4; ++i)
+      {
+        char ch = str[i];
+
+        if (ch == ' ')
+          continue;
+
+        num = num * 10 + (ch - '0');
+      }
+
+    return num;
+  }
+
+  int main(void)
+  {
+    FILE *meminfo = fopen("/proc/meminfo", "r");
+    char mem_total_s[SIZE],
+      mem_free_s[SIZE],
+      buffers_s[SIZE],
+      cached_s[SIZE],
+      shmem_s[SIZE],
+      sreclaimable_s[SIZE];
+
+    if (meminfo == NULL)
+      exit(EXIT_FAILURE);
+
+    fread(mem_total_s,     sizeof(char), SIZE, meminfo);
+    fread(mem_free_s,      sizeof(char), SIZE, meminfo);
+    fread(buffers_s,       sizeof(char), SIZE, meminfo);
+    fread(mem_available_s, sizeof(char), SIZE, meminfo);
+    fread(cached_s,        sizeof(char), SIZE, meminfo);
+    fread(swap_cached_s,   sizeof(char), SIZE, meminfo);
+    fread(active_s,        sizeof(char), SIZE, meminfo);
+    fread(inactive_s,      sizeof(char), SIZE, meminfo);
+    fread(active_anon_s,   sizeof(char), SIZE, meminfo);
+    fread(inactive_anoa_s, sizeof(char), SIZE, meminfo);
+    fread(active_file_s,   sizeof(char), SIZE, meminfo);
+    fread(inactive_file_s, sizeof(char), SIZE, meminfo);
+    fread(unevictable_s,   sizeof(char), SIZE, meminfo);
+    fread(mlocked_s,       sizeof(char), SIZE, meminfo);
+    fread(swap_total_s,    sizeof(char), SIZE, meminfo);
+    fread(swap_free_s,     sizeof(char), SIZE, meminfo);
+    fread(dirty_s,         sizeof(char), SIZE, meminfo);
+    fread(writeback_s,     sizeof(char), SIZE, meminfo);
+    fread(anon_pages_s,    sizeof(char), SIZE, meminfo);
+    fread(mapped_s,        sizeof(char), SIZE, meminfo);
+    fread(shmem_s,         sizeof(char), SIZE, meminfo);
+    fread(kreclaimable_s,  sizeof(char), SIZE, meminfo);
+    fread(slab_s,          sizeof(char), SIZE, meminfo);
+    fread(sreclaimable_s,  sizeof(char), SIZE, meminfo);
+
+    int mem_total    = take_num(mem_total_s),
+      mem_free     = take_num(mem_free_s),
+      buffers      = take_num(buffers_s),
+      shmem        = take_num(shmem_s),
+      sreclaimable = take_num(sreclaimable_s),
+      cached       = take_num(cached_s) + sreclaimable - shmem;
+
+    int used = mem_total - (mem_free + buffers + cached);
+    double total_M = mem_total / 1024;
+    double used_M = used / 1024;
+
+    if (used_M < 1024)
+      if (used_M < 1000)
+        printf(" %iM/%.2lfG \n", (int)used_M, total_M / 1024);
+      else
+        printf("%iM/%.2lfG \n", (int)used_M, total_M / 1024);
+    else
+      printf("%.2lfG/%.2lfG \n", used_M / 1024, total_M / 1024);
+
+    fclose(meminfo);
+    return 0;
+  }
 
 #+end_src
 
@@ -6563,788 +11039,6 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-* Neovim
-** init.vim
-:PROPERTIES:
-:header-args: :tangle ./.config/nvim/init.vim
-:END:
-
-*** Plugins
-
-#+begin_src vimrc
-
-  call plug#begin('~/.config/nvim/bundle')
-
-  Plug 'jiangmiao/auto-pairs'
-  Plug 'easymotion/vim-easymotion'
-  Plug '907th/vim-auto-save'
-  Plug 'ryanoasis/vim-devicons'
-  Plug 'ap/vim-css-color'
-  Plug 'preservim/nerdcommenter'
-  Plug 'lambdalisue/suda.vim'
-  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-  Plug 'lyokha/vim-xkbswitch'
-
-  Plug 'joshdick/onedark.vim'
-  Plug 'itchyny/lightline.vim'
-
-  Plug 'preservim/nerdtree', { 'on' : 'NERDTreeToggle' }
-  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  Plug 'junegunn/fzf.vim'
-  Plug 'airblade/vim-rooter'
-
-  Plug 'lervag/vimtex'
-  Plug 'sirver/ultisnips'
-  Plug 'KeitaNakamura/tex-conceal.vim', { 'for' : 'tex' }
-  Plug 'Konfekt/FastFold'
-
-  " Plug 'skywind3000/asyncrun.vim'
-
-  call plug#end()
-
-#+end_src
-
-*** Basic configuration
-
-#+begin_src vimrc
-
-  set tabstop=4
-  set shiftwidth=4
-  set smartindent
-  set expandtab
-
-  set number
-  set wildmenu
-  set hlsearch
-  set incsearch
-  set ignorecase
-  set smartcase
-  set cursorline
-
-  filetype plugin indent on
-  set encoding=utf-8
-  syntax on
-
-  " Turn backup off, since most stuff is in SVN, git etc. anyway...
-  set nobackup
-  set nowb
-  set noswapfile
-
-  set so=7
-  set nowrap
-
-  set showcmd
-
-  "Autosave
-  let g:auto_save = 1
-  let g:auto_save_silent = 1
-
-  "Отображение пробелов и табуляции
-  set list
-  set listchars=tab:→\ ,space:·
-
-  autocmd FileType * setlocal formatoptions-=o
-
-  " .rasi syntax highlighting
-  au BufNewFile,BufRead /*.rasi setf css
-  au BufNewFile,BufRead /*.fish setf bash
-
-  " set spell
-  " set spelllang=en_us,ru_ru
-  " inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
-
-  " Russian keymap
-  " au VimEnter * set keymap=russian-jcukenwin
-  " set iminsert=0
-  " set imsearch=0
-
-  set timeoutlen=200
-
-#+end_src
-
-*** Keybinding
-
-#+begin_src vimrc
-
-  let g:mapleader=' '
-
-  nnoremap U <C-r>
-  nnoremap <C-r> U
-
-  nnoremap n N
-  nnoremap N n
-
-  imap jj <Esc>
-  imap оо <Esc>
-
-  "Switching between splits.
-  nnoremap <C-h> <C-w>h
-  nnoremap <C-j> <C-w>j
-  nnoremap <C-k> <C-w>k
-  nnoremap <C-l> <C-w>l
-
-  "split creation
-  nmap <Leader>l <C-w>v<C-w>l:Files<CR>
-  nmap <Leader>j <C-w>s<C-w>j:Files<CR>
-
-  nmap dA d$
-  nmap dI d0
-
-  map J }
-  map K {
-  map L w
-  map H b
-
-  "Copy/Paste to clipboard
-  map <C-c> "+y
-  map <C-p> "+P
-
-  "exit and close
-  map <Leader>q :q<CR>
-  map <C-x><C-c> :qa<CR>
-
-  "vim-plug
-  map <Leader>pi :source $HOME/.config/nvim/init.vim<CR>:PlugInstall<CR>
-  map <Leader>pd :source $HOME/.config/nvim/init.vim<CR>:PlugClean<CR>
-
-  "Easy motion
-  map /        <Plug>(easymotion-overwin-f2)
-  map <Space>w <Plug>(esymotion-bd-w)
-
-  "suda.vim
-  command! W execute 'SudaWrite' <bar> edit!
-
-  " set g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', "`":"`"}
-
-#+end_src
-
-*** COMMENT From amix/vimrc
-
-#+begin_src vimrc
-
-  " vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-  " vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
-
-  " Useful mappings for managing tabs
-  map <leader>tn :tabnew<cr>
-  map <leader>to :tabonly<cr>
-  map <leader>tc :tabclose<cr>
-  map <leader>tm :tabmove
-  map <leader>t<leader> :tabnext
-
-  " Let 'tl' toggle between this and the last accessed tab
-  let g:lasttab = 1
-  nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-  au TabLeave * let g:lasttab = tabpagenr()
-
-  " Don't close window, when deleting a buffer
-  " command! Bclose call <SID>BufcloseCloseIt()
-  " function! <SID>BufcloseCloseIt()
-      " let l:currentBufNum = bufnr("%")
-      " let l:alternateBufNum = bufnr("#")
-
-      " if buflisted(l:alternateBufNum)
-
-
-
-          " buffer #
-      " else
-          " bnext
-      " endif
-
-      " if bufnr("%") == l:currentBufNum
-          " new
-      " endif
-
-      " if buflisted(l:currentBufNum)
-          " execute("bdelete! ".l:currentBufNum)
-      " endif
-  " endfunction
-
-  " function! CmdLine(str)
-      " call feedkeys(":" . a:str)
-  " endfunction
-
-  " function! VisualSelection(direction, extra_filter) range
-      " let l:saved_reg = @"
-      " execute "normal! vgvy"
-
-      " let l:pattern = escape(@", "\\/.*'$^~[]")
-      " let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-      " if a:direction == 'gv'
-          " call CmdLine("Ack '" . l:pattern . "' " )
-      " elseif a:direction == 'replace'
-          " call CmdLine("%s" . '/'. l:pattern . '/')
-      " endif
-
-      " let @/ = l:pattern
-      " let @" = l:saved_reg
-  " endfunction
-
-#+end_src
-
-*** LaTeX
-
-#+begin_src vimrc
-
-  " vimtex
-  let g:tex_flavor = 'latex'
-  " let g:vimtex_compiler_progname = 'nvr'
-  let g:vimtex_view_method = 'zathura'
-  let g:vimtex_view_forward_search_on_start = 1
-  let g:vimtex_quickfix_mode = 0
-  let g:vimtex_quickfix_open_on_warning = 0
-  let g:vimtex_quickfix_autoclose_after_keystrokes = 3
-  let g:vimtex_fold_enabled = 1
-  let g:vimtex_fold_types = {
-        \ 'markers' : {'enabled': 0},
-        \ 'sections' : {'parse_levels': 1},
-        \}
-  let g:vimtex_complete_enabled = 1
-  let g:vimtex_complete_close_braces = 1
-  let g:vimtex_complete_ignore_case = 1
-  let g:vimtex_complete_smart_case = 1
-  let g:vimtex_format_enabled = 1
-
-  " KeitaNakamura/tex-conceal.vim
-  set conceallevel=2
-  let g:tex_conceal="abdmg"
-  hi Conceal ctermbg=none
-
-  " au BufNewFile,BufRead /*.tex VimtexCompile
-  map <leader>c :VimtexCompile<CR>
-  map <leader>e :VimtexErrors<CR>
-  map <leader>f :VimtexView<CR>
-  nnoremap <Enter> za
-
-  " Close viewers when VimTeX buffers are closed
-  function! CloseViewers()
-      " Close viewers on quit
-      if executable('xdotool') && exists('b:vimtex')
-          \ && exists('b:vimtex.viewer') && b:vimtex.viewer.xwin_id > 0
-          call system('xdotool windowclose '. b:vimtex.viewer.xwin_id)
-      endif
-  endfunction
-
-  let mywindowid=system('xdotool getwindowfocus')
-
-  augroup vimtex_event
-      au!
-      " au User VimtexEventInitPost VimtexCompile
-      au User VimtexEventCompileSuccess call system('xdotool windowfocus ' . mywindowid)
-      au User VimtexEventCompileFailed call system('xdotool windowfocus ' . mywindowid)
-      au User VimtexEventView call system('xdotool windowfocus ' . mywindowid)
-      au User VimtexEventQuit call CloseViewers()
-  augroup END
-
-#+end_src
-
-*** coc.nvim
-
-#+begin_src vimrc
-
-  " Use tab for trigger completion with characters ahead and navigate.
-  " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-  " other plugin before putting this into your config.
-  " inoremap <silent><expr> <Tab>
-  inoremap <silent><expr> <A-j>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><A-k> pumvisible() ? "\<C-p>" : "\<C-h>"
-  " inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
-
-  " Use <c-space> to trigger completion.
-  if has('nvim')
-      inoremap <silent><expr> <c-space> coc#refresh()
-  else
-      inoremap <silent><expr> <c-@> coc#refresh()
-  endif
-
-  " GoTo code navigation.
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-
-#+end_src
-
-*** Snippets
-
-#+begin_src vimrc
-
-  let g:UltiSnipsExpandTrigger = '<tab>'
-  let g:UltiSnipsJumpForwardTrigger = '<tab>'
-  let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
-
-#+end_src
-
-*** COMMENT vim-xkbswitch
-
-#+begin_src vimrc
-
-  let g:XkbSwitchEnabled = 1
-
-#+end_src
-
-*** Theme
-
-#+begin_src vimrc
-
-  set background=dark
-  colorscheme onedark
-
-  highlight Normal           ctermfg=15      ctermbg=none  cterm=none
-  highlight CursorLineNr     ctermfg=7       ctermbg=0     cterm=none
-  highlight CursorLine       ctermfg=none    ctermbg=0     cterm=none
-
-#+end_src
-
-*** Status line
-
-#+begin_src vimrc
-
-  let g:lightline = {
-      \ 'colorscheme' : 'deus',
-      \ }
-
-  " We don't need to see things like -- INSERT -- anymore
-  set noshowmode
-
-#+end_src
-
-*** Nerdtree
-
-#+begin_src vimrc
-
-  map <C-n> :NERDTreeToggle<CR>
-
-  "let g:NERDTreeDirArrowExpandable  = '>'
-  "let g:NERDTreeDirArrowCollapsible = '˅'
-  let g:NERDTreeShowHidden          = get(g:, 'NERDTreeShowHidden', 1)
-
-  "let g:NERDTreeMapCustomOpen = get(g:, 'NERDTreeMapCustomOpen', '<Tab>')
-  "let g:NERDTreeMapCustomOpen = get(g:, 'NERDTreeMapCustomOpen', '<CR>')
-  let g:NERDTreeMapOpenSplit  = get(g:, 'NERDTreeMapOpenSplit',  '<Space>j')
-  let g:NERDTreeMapOpenVSplit = get(g:, 'NERDTreeMapOpenVSplit', '<Space>l')
-
-#+end_src
-
-*** nerd-commenter
-
-#+begin_src vimrc
-
-  let g:NERDSpaceDelims = 1       " Add spaces after comment delimiters by default
-
-  map <Space>/ <Plug>NERDCommenterToggle
-
-#+end_src
-
-*** fzf
-
-#+begin_src vimrc
-
-  " This is the default extra key bindings
-  let g:fzf_action = {
-    \ 'ctrl-t': 'tab split',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit' }
-
-  " Enable per-command history.
-  " CTRL-N and CTRL-P will be automatically bound to next-history and
-  " previous-history instead of down and up. If you don't like the change,
-  " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-  let g:fzf_history_dir = '~/.local/share/fzf-history'
-
-  map <C-f> :Files<CR>
-  map <leader>b :Buffers<CR>
-  nnoremap <leader>g :Rg<CR>
-  nnoremap <leader>t :Tags<CR>
-  nnoremap <leader>m :Marks<CR>
-
-  tmap <M-k> <C-k>
-  tmap <M-j> <C-j>
-
-  let g:fzf_tags_command = 'ctags -R'
-  " Border color
-  let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
-
-  let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline -e'
-  let $FZF_DEFAULT_COMMAND="rg --files --hidden"
-
-  " Customize fzf colors to match your color scheme
-  let g:fzf_colors =
-      \ { 'fg':      ['fg', 'Normal'],
-      \   'bg':      ['bg', 'Normal'],
-      \   'hl':      ['fg', 'Comment'],
-      \   'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \   'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \   'hl+':     ['fg', 'Statement'],
-      \   'info':    ['fg', 'PreProc'],
-      \   'border':  ['fg', 'Ignore'],
-      \   'prompt':  ['fg', 'Conditional'],
-      \   'pointer': ['fg', 'Exception'],
-      \   'marker':  ['fg', 'Keyword'],
-      \   'spinner': ['fg', 'Label'],
-      \   'header':  ['fg', 'Comment'] }
-
-  "Get Files
-  command! -bang -nargs=? -complete=dir Files
-      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
-
-  " Get text in files with Rg
-  command! -bang -nargs=* Rg
-      \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-      \   fzf#vim#with_preview(), <bang>0)
-
-  " Ripgrep advanced
-  function! RipgrepFzf(query, fullscreen)
-      let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-      let initial_command = printf(command_fmt, shellescape(a:query))
-      let reload_command = printf(command_fmt, '{q}')
-      let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-      call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-  endfunction
-
-  command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-  " Git grep
-  command! -bang -nargs=* GGrep
-      \ call fzf#vim#grep(
-      \   'git grep --line-number '.shellescape(<q-args>), 0,
-      \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
-
-#+end_src
-
-** Snippets
-
-#+begin_src text :tangle ./.config/nvim/UltiSnips/tex.snippets
-
-  global !p
-  def math():
-      return vim.eval('vimtex#syntax#in_mathzone()') == '1'
-  def visual():
-      return vim.eval('mode()') == 'v'
-  endglobal
-
-  snippet template "Basic template" b
-  \documentclass[a4paper]{article}
-
-  %---------------------------------------------------
-  % Russian-specific packages
-  %---------------------------------------------------
-  \usepackage{hyperref}                % For adding links
-  \usepackage{mathtext}
-  \usepackage[T2A]{fontenc}
-  \usepackage[utf8x]{inputenc}
-  \usepackage[english,russian]{babel}
-
-  %---------------------------------------------------
-  % Other
-  %---------------------------------------------------
-  \usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm]{geometry}
-  \usepackage{amsmath}       % Mathematics
-  \usepackage{amsfonts}      % For to sign numerical sets
-  \usepackage{graphicx}      % For image paste
-  \usepackage{setspace}      % Add doublespacing and singlespacing
-
-  %---------------------------------------------------
-  % Tables
-  %---------------------------------------------------
-  \usepackage{siunitx}       % Required for alignment (S in tabular)
-  \usepackage{multirow}      % Required for multirows
-  \usepackage{booktabs}      % For prettier tables
-  \usepackage{longtable}     % To display tables on several pages
-  \usepackage{rotating}      % To display tables in landscape
-
-  \newtheorem{theorem}{Теорема}
-
-  \begin{document}
-
-  % \setcounter{tocdepth}{1} % Show sections
-  \setcounter{tocdepth}{2} % + subsections
-  % \setcounter{tocdepth}{3} % + subsubsections
-  % \setcounter{tocdepth}{4} % + paragraphs
-  % \setcounter{tocdepth}{5} % + subparagraphs
-
-  \doublespacing
-  \tableofcontents
-  \singlespacing
-  \newpage
-
-  $0
-
-  \end{document}
-  endsnippet
-
-  snippet date "Date"
-  `date +%F`
-  endsnippet
-
-  snippet beg "begin{} / end{}" bA
-  \begin{$1}
-      $0
-  \end{$1}
-  endsnippet
-
-  snippet sec "section" bA
-  \section{$1}
-  $0
-  endsnippet
-
-  snippet ssec "subsection" bA
-  \subsection{$1}
-  $0
-  endsnippet
-
-  snippet sssec "subsubsection" bA
-  \subsubsection{$1}
-  $0
-  endsnippet
-
-  snippet mk "Math" wA
-  $${1}$`!p
-  if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
-      snip.rv = ' '
-  else:
-      snip.rv = ''
-  `$2
-  endsnippet
-
-  snippet ьл "Math" wA
-  $${1}$`!p
-  if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
-      snip.rv = ' '
-  else:
-      snip.rv = ''
-  `$2
-  endsnippet
-
-  snippet dm "Math" wA
-  \[
-  $1
-  \] $0
-  endsnippet
-
-  context "math()"
-  snippet ** "multiplier sign" iA
-  \cdot $0
-  endsnippet
-
-  context "math()"
-  snippet xx "multiplier sign" iA
-  \times $0
-  endsnippet
-
-  context "math()"
-  snippet '([A-Za-z])(\d)' "auto subscript" wrA
-  `!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
-  endsnippet
-
-  context "math()"
-  snippet '_' "auto subscript" wrA
-  _{$1}$0
-  endsnippet
-
-  context "math()"
-  snippet sr "^2" iA
-  ^2
-  endsnippet
-
-  context "math()"
-  snippet cb "^3" iA
-  ^3
-  endsnippet
-
-  context "math()"
-  snippet compl "complement" iA
-  ^{c}
-  endsnippet
-
-  context "math()"
-  snippet td "superscript" iA
-  ^{$1}$0
-  endsnippet
-
-  context "math()"
-  snippet // "Fraction" iA
-  \\frac{$1}{$2}$0
-  endsnippet
-
-  context "math()"
-  snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
-  \\frac{`!p snip.rv = match.group(1)`}{$1}$0
-  endsnippet
-
-  priority 1000
-  context "math()"
-  snippet '^.*\)/' "() Fraction" wrA
-  `!p
-  stripped = match.string[:-1]
-  depth = 0
-  i = len(stripped) - 1
-  while True:
-      if stripped[i] == ')': depth += 1
-      if stripped[i] == '(': depth -= 1
-      if depth == 0: break;
-      i -= 1
-  snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
-  `{$1}$0
-  endsnippet
-
-  snippet / "Fraction" i
-  \\frac{${VISUAL}}{$1}$0
-  endsnippet
-
-  priority 10
-  context "math()"
-  snippet "bar" "bar" riA
-  \overline{$1}$0
-  endsnippet
-
-  priority 100
-  context "math()"
-  snippet "([a-zA-Z])bar" "bar" riA
-  \overline{`!p snip.rv=match.group(1)`}
-  endsnippet
-
-  priority 10
-  context "math()"
-  snippet "hat" "hat" riA
-  \hat{$1}$0
-  endsnippet
-
-  priority 100
-  context "math()"
-  snippet "([a-zA-Z])hat" "hat" riA
-  \hat{`!p snip.rv=match.group(1)`}
-  endsnippet
-
-  context "math()"
-  snippet "(\\?\w+)(,\.|\.,)" "Vector postfix" riA
-  \vec{`!p snip.rv=match.group(1)`}
-  endsnippet
-
-  priority 100
-  snippet ... "ldots" iA
-  \ldots
-  endsnippet
-
-  snippet table "Table environment" b
-  \begin{table}[${1:htpb}]
-      \centering
-      \caption{${2:caption}}
-      \label{tab:${3:label}}
-      \begin{tabular}{${5:c}}
-      $0${5/((?<=.)c|l|r)|./(?1: & )/g}
-      \end{tabular}
-  \end{table}
-  endsnippet
-
-  snippet fig "Figure environment" b
-  \begin{figure}[${1:htpb}]
-      \centering
-      ${2:\includegraphics[width=0.8\textwidth]{$3}}
-      \caption{${4:$3}}
-      \label{fig:${5:${3/\W+/-/g}}}
-  \end{figure}
-  endsnippet
-
-  snippet enum "Enumerate" bA
-  \begin{enumerate}
-      \item $0
-  \end{enumerate}
-  endsnippet
-
-  snippet item "Itemize" bA
-  \begin{itemize}
-      \item $0
-  \end{itemize}
-  endsnippet
-
-  snippet desc "Description" b
-  \begin{description}
-      \item[$1] $0
-  \end{description}
-  endsnippet
-
-  snippet dm "Math" bA
-  \begin{align*}
-      $0
-  \end{align*}
-  endsnippet
-
-  snippet gt "gather" bA
-  \begin{gather*}
-      $0
-  \end{gather*}
-  endsnippet
-
-  snippet pac "Package" b
-  \usepackage[${1:options}]{${2:package}}$0
-  endsnippet
-
-  context "math()"
-  snippet => "implies" Ai
-  \implies
-  endsnippet
-
-  context "math()"
-  snippet =< "implied by" Ai
-  \impliedby
-  endsnippet
-
-  context "math()"
-  snippet iff "iff" Ai
-  \iff
-  endsnippet
-
-  context "math()"
-  snippet == "equals" iA
-  &= $1 \\\\
-  endsnippet
-
-  context "math()"
-  snippet != "equals" iA
-  \neq 
-  endsnippet
-
-  context "math()"
-  snippet NN "N" iA
-  \mathbb{N}
-  endsnippet
-
-  context "math()"
-  snippet ZZ "Z" iA
-  \mathbb{Z}
-  endsnippet
-
-  context "math()"
-  snippet QQ "Q" iA
-  \mathbb{Q}
-  endsnippet
-
-  context "math()"
-  snippet RR "R" iA
-  \mathbb{R}
-  endsnippet
-
-  context "math()"
-  snippet CC "C" iA
-  \mathbb{C}
-  endsnippet
-
-#+end_src
-
 * Zathura
 
 #+begin_src conf :tangle ./.config/zathura/zathurarc
@@ -7376,1206 +11070,6 @@ Configuration based on https://github.com/adi1090x/rofi
   set statusbar-v-padding 0
   map L zoom in
   map H zoom out
-
-#+end_src
-
-* Flameshot
-
-#+begin_src conf :tangle ./.config/flameshot/flameshot.ini
-
-  [General]
-  buttons=@Variant(\0\0\0\x7f\0\0\0\vQList<int>\0\0\0\0\b\0\0\0\0\0\0\0\x1\0\0\0\x2\0\0\0\x3\0\0\0\x5\0\0\0\x12\0\0\0\xf\0\0\0\n)
-  contrastOpacity=188
-  copyPathAfterSave=true
-  disabledTrayIcon=true
-  drawColor=#ff0000
-  drawFontSize=8
-  drawThickness=3
-  filenamePattern=region-%Y%m%d-%H%M%S
-  savePath=/home/none9632/Pictures/screenshots
-  savePathFixed=false
-  setSaveAsFileExtension=Portable Network Graphic file (PNG) (*.png)
-  showDesktopNotification=false
-  showHelp=false
-  showSidePanelButton=false
-  showStartupLaunchMessage=false
-  startupLaunch=false
-  uiColor=#51afef
-
-  [Shortcuts]
-  TYPE_ARROW=A
-  TYPE_CIRCLE=C
-  TYPE_CIRCLECOUNT=
-  TYPE_COMMIT_CURRENT_TOOL=Ctrl+Return
-  TYPE_COPY=Ctrl+C
-  TYPE_DELETE_CURRENT_TOOL=Del
-  TYPE_DRAWER=D
-  TYPE_EXIT=Ctrl+Q
-  TYPE_MARKER=M
-  TYPE_MOVESELECTION=Ctrl+M
-  TYPE_MOVE_DOWN=Down
-  TYPE_MOVE_LEFT=Left
-  TYPE_MOVE_RIGHT=Right
-  TYPE_MOVE_UP=Up
-  TYPE_OPEN_APP=Ctrl+O
-  TYPE_PENCIL=P
-  TYPE_PIN=
-  TYPE_PIXELATE=B
-  TYPE_RECTANGLE=R
-  TYPE_REDO=Shift+U
-  TYPE_RESIZE_DOWN=Shift+Down
-  TYPE_RESIZE_LEFT=Shift+Left
-  TYPE_RESIZE_RIGHT=Shift+Right
-  TYPE_RESIZE_UP=Shift+Up
-  TYPE_SAVE=Return
-  TYPE_SELECTION=S
-  TYPE_SELECTIONINDICATOR=
-  TYPE_SELECT_ALL=Ctrl+A
-  TYPE_TEXT=T
-  TYPE_TOGGLE_PANEL=Space
-  TYPE_UNDO=U
-
-#+end_src
-
-* Bash
-** .bash_profile
-:PROPERTIES:
-:header-args: :tangle ./.bash_profile
-:END:
-
-*** Export
-
-#+begin_src sh
-
-  export PATH=$HOME/.config/rofi/bin:$HOME/.config/lf/bin:$HOME/.local/bin:$PATH
-  # export ZDOTDIR="$HOME/.config/zsh"
-  # export POLYBAR_LAUNCH="$HOME/Desktop/mydotfiles/.config/polybar/launch.sh"
-
-  # export SHELL="/bin/zsh"
-  export SHELL="/bin/bash"
-  export EDITOR="/bin/nvim"
-
-#+end_src
-
-*** Startup the necessary commands
-
-#+begin_src sh
-
-  [[ -f /usr/bin/udiskie ]] && udiskie &
-
-  xset r rate 300 24
-  syndaemon -t -i 1 -d
-  trash-empty 7 &
-
-#+end_src
-
-*** Load .bashrc
-
-#+begin_src sh
-
-  [[ -f ~/.bashrc ]] && . ~/.bashrc
-
-#+end_src
-
-** .bashrc
-:PROPERTIES:
-:header-args: :tangle ./.bashrc
-:END:
-
-*** Non-Interactive Shell
-
-If not running interactively, don't do anything.
-
-#+begin_src sh
-
-  [[ $- != *i* ]] && return
-
-#+end_src
-
-*** Prompt
-
-#+begin_src sh
-
-  prefix="λ"
-  green="\033[38;5;2m\033[1;1m"
-  blue="\033[34;1m"
-  bblack="\033[38;5;8m"
-  borange="\033[38;5;11m\033[1;1m"
-  bcyan="\033[38;5;14m"
-  reset="\033[0m"
-
-  PS1="\
-  ${bblack}┌[${reset}\
-  ${green}\w${reset}\
-  ${bblack}]─[${reset}\
-  ${blue}\u${reset}\
-  ${bblack}]─[${reset}\
-  ${borange}\h${reset}\
-  ${bblack}]${reset}\n\
-  ${bblack}└>${reset} \
-  ${bcyan}${prefix}${reset} "
-
-#+end_src
-
-*** Keybindings
-
-#+begin_src sh
-
-  set -o vi
-  bind -m vi-insert '"jj":vi-movement-mode'
-
-#+end_src
-
-*** Aliases
-
-#+begin_src sh
-
-  alias stcpu="stress -c 8"
-  alias stmem="stress -vm 2 --vm-bytes"
-
-  alias pacman="sudo pacman"
-  alias pacsyu="sudo pacman -Syu"
-  alias yaysyu="yay -Syu"
-
-  alias ls="exa -la --color=always --group-directories-first"
-  alias cat="bat"
-  alias rm="rm -r"
-  alias cp="cp -r"
-
-#+end_src
-
-*** Misc
-
-#+begin_src sh
-
-  . $HOME/.config/lf/.lfrc
-
-  echo ""
-  neofetch
-
-#+end_src
-
-** .inputrc
-
-Сhanges the shape of the cursor depending on the VI mode in Bash.
-
-#+begin_src sh :tangle ./.inputrc
-
-  set show-mode-in-prompt on
-  set vi-cmd-mode-string "\1\e[2 q\2"
-  set vi-ins-mode-string "\1\e[6 q\2"
-
-#+end_src
-
-* lf
-** Scripts
-:PROPERTIES:
-:header-args: :tangle-mode (identity #o755)
-:END:
-
-*** Cleaner
-
-#+begin_src sh :tangle ./.config/lf/scripts/lf_cleaner.sh
-
-  #!/bin/sh
-
-  if [ -n "$FIFO_UEBERZUG" ]; then
-      printf '{"action": "remove", "identifier": "preview"}\n' >"$FIFO_UEBERZUG"
-  fi
-
-#+end_src
-
-*** Disk
-
-#+begin_src sh :tangle ./.config/lf/scripts/lf_disk.sh
-
-  #!/bin/sh
-
-  disk=$(df --output=source "$1" | tail -n 1 | grep /dev/)
-
-  if [ "$disk" = "" ]
-  then
-      IFS=" " read -ra disk_info <<< "$(df -P -BK / | tail -n 1)"
-  else
-      IFS=" " read -ra disk_info <<< "$(df -P -BK ${disk} | tail -n 1)"
-  fi
-
-  size=$(echo "${disk_info[1]}" | sed 's|[^[:digit:]]\+||g')
-  used=$(echo "${disk_info[2]}" | sed 's|[^[:digit:]]\+||g')
-
-  size_m=$(printf '%.1f' "$(echo "scale=1; $size/1024" | bc)")
-  used_m=$(printf '%.1f' "$(echo "scale=1; $used/1024" | bc)")
-
-  size_g=$(printf '%.1f' "$(echo "scale=1; x=$size_m; if (x>1024) x=x/1024; x" | bc)")
-  used_g=$(printf '%.1f' "$(echo "scale=1; x=$used_m; if (x>1024) x=x/1024; x" | bc)")
-
-  if [ "$size_m" = "$size_g" ]
-  then
-      size=$(echo "${size_m}M")
-  else
-      size=$(echo "${size_g}G")
-  fi
-
-  if [ "$used_m" = "$used_g" ]
-  then
-      used=$(echo "${used_m}M")
-  else
-      used=$(echo "${used_g}G")
-  fi
-
-  echo "\
-  \033[35;5;5m\033[3;1m${used}\
-  \033[38;5;8m/\
-  \033[35;5;5m\033[3;1m${size}\033[0m"
-
-#+end_src
-
-*** Prepare file
-
-#+begin_src sh :tangle ./.config/lf/scripts/lf_prepare_file.sh
-
-  #!/bin/sh
-
-  if [ $(stat --printf="%s" $1) -eq 0 ]
-  then
-      echo "" > $1
-  else
-      sed -i "1s|^|\n|" $1
-  fi
-
-#+end_src
-
-*** Previewer
-
-#+begin_src sh :tangle ./.config/lf/scripts/lf_previewer.sh
-
-  #!/bin/sh
-
-  draw() {
-      path="$(printf '%s' "$1" | sed 's/\\/\\\\/g;s/"/\\"/g')"
-      printf '{"action": "add", "identifier": "preview", "x": %d, "y": %d, "width": %d, "height": %d, "scaler": "contain", "scaling_position_x": 0.5, "scaling_position_y": 0.5, "path": "%s"}\n' \
-             "$x" "$y" "$width" "$height" "$path" >"$FIFO_UEBERZUG"
-      exit 1
-  }
-
-  hash() {
-      printf '%s/.cache/lf/%s' "$HOME" \
-             "$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | awk '{print $1}')"
-  }
-
-  cache() {
-      if [ -f "$1" ]; then
-          draw "$1"
-      fi
-  }
-
-  batorcat() {
-      file="$1"
-      shift
-      if command -v bat > /dev/null 2>&1
-      then
-          bat --color=always --style=plain --pager=never "$file" "$@"
-      else
-          cat "$file"
-      fi
-  }
-
-  if ! [ -f "$1" ] && ! [ -h "$1" ]; then
-      exit
-  fi
-
-  width="$(($2-1))"
-  height="$(($3-1))"
-  x="$4"
-  y="$5"
-
-  default_x="1920"
-  default_y="1080"
-
-  case "$1" in
-      ,*.7z|*.a|*.ace|*.alz|*.arc|*.arj|*.bz|*.bz2|*.cab|*.cpio|*.deb|*.gz|*.jar|\
-          ,*.lha|*.lrz|*.lz|*.lzh|*.lzma|*.lzo|*.rar|*.rpm|*.rz|*.t7z|*.tar|*.tbz|\
-          ,*.tbz2|*.tgz|*.tlz|*.txz|*.tZ|*.tzo|*.war|*.xz|*.Z|*.zip)
-          als -- "$1"
-          exit 0
-          ;;
-      ,*.[1-8])
-          man -- "$1" | col -b
-          exit 0
-          ;;
-      ,*.pdf)
-          if [ -n "$FIFO_UEBERZUG" ]; then
-              cache="$(hash "$1")"
-              cache "$cache.jpg"
-              pdftoppm -f 1 -l 1 \
-                       -scale-to-x "$default_x" \
-                       -scale-to-y -1 \
-                       -singlefile \
-                       -jpeg \
-                       -- "$1" "$cache"
-              draw "$cache.jpg"
-          else
-              pdftotext -nopgbrk -q -- "$1" -
-              exit 0
-          fi
-          ;;
-      ,*.djvu|*.djv)
-          if [ -n "$FIFO_UEBERZUG" ]; then
-              cache="$(hash "$1").tiff"
-              cache "$cache"
-              ddjvu -format=tiff -quality=90 -page=1 -size="${default_x}x${default_y}" \
-                    - "$cache" <"$1"
-              draw "$cache"
-          else
-              djvutxt - <"$1"
-              exit 0
-          fi
-          ;;
-      ,*.docx|*.odt|*.epub)
-          pandoc -s -t plain -- "$1"
-          exit 0
-          ;;
-      ,*.htm|*.html|*.xhtml)
-          lynx -dump -- "$1"
-          exit 0
-          ;;
-      ,*.svg)
-          if [ -n "$FIFO_UEBERZUG" ]; then
-              cache="$(hash "$1").jpg"
-              cache "$cache"
-              convert -- "$1" "$cache"
-              draw "$cache"
-          fi
-          ;;
-  esac
-
-  case "$(file -Lb --mime-type -- "$1")" in
-      text/*)
-          #highlight -q -O ansi -- "$1" || cat -- "$1"
-          # pygmentize -f terminal -- "$1" || cat -- "$1"
-          batorcat "$1"
-          exit 0
-          ;;
-      image/*)
-          if [ -n "$FIFO_UEBERZUG" ]; then
-              orientation="$(identify -format '%[EXIF:Orientation]\n' -- "$1")"
-              if [ -n "$orientation" ] && [ "$orientation" != 1 ]; then
-                  cache="$(hash "$1").jpg"
-                  cache "$cache"
-                  convert -- "$1" -auto-orient "$cache"
-                  draw "$cache"
-              else
-                  draw "$1"
-              fi
-          fi
-          ;;
-      video/*)
-          if [ -n "$FIFO_UEBERZUG" ]; then
-              cache="$(hash "$1").jpg"
-              cache "$cache"
-              ffmpegthumbnailer -i "$1" -o "$cache" -s 0
-              draw "$cache"
-          fi
-          ;;
-  esac
-
-  header_text="File Type Classification"
-  header=""
-  len="$(( (width - (${#header_text} + 2)) / 2 ))"
-  if [ "$len" -gt 0 ]; then
-      for i in $(seq "$len"); do
-          header="-$header"
-      done
-      header="$header $header_text "
-      for i in $(seq "$len"); do
-          header="$header-"
-      done
-  else
-      header="$header_text"
-  fi
-  printf '\033[7m%s\033[0m\n' "$header"
-  file -Lb -- "$1" | fold -s -w "$width"
-  exit 0
-
-#+end_src
-
-*** Update
-
-#+begin_src sh :tangle ./.config/lf/scripts/lf_update.sh
-
-  #!/bin/sh
-
-  disk_info=$(lf_disk "$1")
-
-  lf -remote "send $2 set promptfmt \"\
-   \033[38;5;8m[\033[0m\
-  \033[34;1m%u\033[0m\
-  \033[38;5;8m]─[\033[0m\
-  \033[38;5;11m\033[3;1m%h\033[0m\
-  \033[38;5;8m]─[\033[0m\
-  $disk_info\
-  \033[38;5;8m]─[\033[0m\
-  \033[32;1m%d\033[0m\
-  \033[3;1m%f\033[0m\
-  \033[38;5;8m]\033[0m\""
-
-  lf -remote "send recol"
-
-#+end_src
-
-*** lfrun
-
-#+begin_src sh :tangle ./.config/lf/scripts/lfrun.sh
-
-  #!/bin/sh
-
-  set -e
-
-  if [ -n "$DISPLAY" ]; then
-      export FIFO_UEBERZUG="${TMPDIR:-/tmp}/lf-ueberzug-$$"
-
-      cleanup() {
-          exec 3>&-
-          rm "$FIFO_UEBERZUG"
-      }
-
-      mkfifo "$FIFO_UEBERZUG"
-      ueberzug layer -s <"$FIFO_UEBERZUG" &
-      exec 3>"$FIFO_UEBERZUG"
-      trap cleanup EXIT
-
-      if ! [ -d "$HOME/.cache/lf" ]; then
-          mkdir -p "$HOME/.cache/lf"
-      fi
-
-      lf "$@" 3>&-
-  else
-      exec "$@"
-  fi
-
-#+end_src
-
-** lf startup configuration
-
-#+begin_src sh :tangle ./.config/lf/.lfrc :tangle-mode (identity #o755)
-
-  #!/bin/sh
-
-  lfcd ()
-  {
-      tmp="$(mktemp)"
-      lfrun -last-dir-path="$tmp" "$@"
-      if [ -f "$tmp" ]; then
-          dir="$(cat "$tmp")"
-          rm -f "$tmp"
-          [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-      fi
-  }
-
-  alias lf="lfcd"
-
-  export LFCP="/tmp/lfcp"
-  export LF_COLORS="\
-  .*/=34:\
-  ,*.*/=34\
-  "
-  export LF_ICONS="\
-  tw= :\
-  st= :\
-  ow= :\
-  dt= :\
-  di= :\
-  fi= :\
-  ln= :\
-  or= :\
-  ex= :\
-  Makefile*= :\
-  makefile*= :\
-  README*= :\
-  CMakeLists.txt*= :\
-  TAGS*= :\
-  TODO*= :\
-  LICENSE*= :\
-  Dockerfile*= :\
-  dockerfile*= :\
-  .gitignore*= :\
-  .vimrc*= :\
-  .viminfo*= :\
-  vimrc*= :\
-  .zshrc*= :\
-  .zprofile*= :\
-  .zshenv*= :\
-  .bashrc*= :\
-  .bash_logout*= :\
-  .bash_profile*= :\
-  .profile*= :\
-  .xinitrc*= :\
-  .xprofile*= :\
-  ,*.asm= :\
-  ,*.b= :\
-  ,*.c= :\
-  ,*.cc= :\
-  ,*.clj= :\
-  ,*.cljc= :\
-  ,*.cmake= :\
-  ,*.conf= :\
-  ,*.coffee= :\
-  ,*.cpp= :\
-  ,*.cs= :\
-  ,*.css= :\
-  ,*.d= :\
-  ,*.dart= :\
-  ,*.db= :\
-  ,*.djvu= :\
-  ,*.doc= :\
-  ,*.dockerfile= :\
-  ,*.docx= :\
-  ,*.eex= :\
-  ,*.el= :\
-  ,*.elc= :\
-  ,*.elm= :\
-  ,*.erl= :\
-  ,*.ex= :\
-  ,*.exs= :\
-  ,*.fs= :\
-  ,*.go= :\
-  ,*.h= :\
-  ,*.hh= :\
-  ,*.hpp= :\
-  ,*.hs= :\
-  ,*.html= :\
-  ,*.ino= :\
-  ,*.iso= :\
-  ,*.java= :\
-  ,*.jl= :\
-  ,*.js= :\
-  ,*.jsx= :\
-  ,*.json= :\
-  ,*.key= :\
-  ,*.kt= :\
-  ,*.kts= :\
-  ,*.less= :\
-  ,*.log= :\
-  ,*.lua= :\
-  ,*.md= :\
-  ,*.nasm= :\
-  ,*.ods= :\
-  ,*.org= :\
-  ,*.pdf= :\
-  ,*.pem= :\
-  ,*.php= :\
-  ,*.pl= :\
-  ,*.ppt= :\
-  ,*.pptx= :\
-  ,*.py= :\
-  ,*.rb= :\
-  ,*.rs= :\
-  ,*.S= :\
-  ,*.s= :\
-  ,*.scala= :\
-  ,*.sql= :\
-  ,*.sqlite= :\
-  ,*.swift= :\
-  ,*.tex= :\
-  ,*.torrent= :\
-  ,*.ts= :\
-  ,*.vim= :\
-  ,*.xls= :\
-  ,*.xlsx= :\
-  ,*.xml= :\
-  ,*.yml= :\
-  ,*.ttf= :\
-  ,*.ttc= :\
-  ,*.otf= :\
-  ,*.woff= :\
-  ,*.o= :\
-  ,*.obj= :\
-  ,*.exe= :\
-  ,*.bin= :\
-  ,*.elf= :\
-  ,*.cmd= :\
-  ,*.ps1= :\
-  ,*.sh= :\
-  ,*.bash= :\
-  ,*.zsh= :\
-  ,*.fish= :\
-  ,*.mp4= :\
-  ,*.webm= :\
-  ,*.mkv= :\
-  ,*.flv= :\
-  ,*.vob= :\
-  ,*.ogv= :\
-  ,*.ogm= :\
-  ,*.gifv= :\
-  ,*.mpg= :\
-  ,*.mpeg= :\
-  ,*.mp4v= :\
-  ,*.wmv= :\
-  ,*.qt= :\
-  ,*.yuv= :\
-  ,*.rm= :\
-  ,*.rmvb= :\
-  ,*.viv= :\
-  ,*.asf= :\
-  ,*.m4v= :\
-  ,*.avi= :\
-  ,*.mov= :\
-  ,*.m2v= :\
-  ,*.nuv= :\
-  ,*.flc= :\
-  ,*.fli= :\
-  ,*.gl= :\
-  ,*.ogx= :\
-  ,*.mp3= :\
-  ,*.aac= :\
-  ,*.m4a= :\
-  ,*.oga= :\
-  ,*.spx= :\
-  ,*.au= :\
-  ,*.wav= :\
-  ,*.opus= :\
-  ,*.ra= :\
-  ,*.flac= :\
-  ,*.mid= :\
-  ,*.midi= :\
-  ,*.mka= :\
-  ,*.mpc= :\
-  ,*.xspf= :\
-  ,*.jpg= :\
-  ,*.jpeg= :\
-  ,*.mjpg= :\
-  ,*.mjpeg= :\
-  ,*.ico= :\
-  ,*.gif= :\
-  ,*.bmp= :\
-  ,*.pbm= :\
-  ,*.pgm= :\
-  ,*.ppm= :\
-  ,*.tga= :\
-  ,*.xbm= :\
-  ,*.xpm= :\
-  ,*.tif= :\
-  ,*.tiff= :\
-  ,*.png= :\
-  ,*.svg= :\
-  ,*.svgz= :\
-  ,*.mng= :\
-  ,*.pcx= :\
-  ,*.xcf= :\
-  ,*.xwd= :\
-  ,*.cgm= :\
-  ,*.emf= :\
-  ,*.tar= :\
-  ,*.tgz= :\
-  ,*.arc= :\
-  ,*.arj= :\
-  ,*.taz= :\
-  ,*.lha= :\
-  ,*.lz4= :\
-  ,*.lzh= :\
-  ,*.lzma= :\
-  ,*.tlz= :\
-  ,*.txz= :\
-  ,*.tzo= :\
-  ,*.t7z= :\
-  ,*.zip= :\
-  ,*.z= :\
-  ,*.dz= :\
-  ,*.gz= :\
-  ,*.lrz= :\
-  ,*.lz= :\
-  ,*.lzo= :\
-  ,*.xz= :\
-  ,*.zst= :\
-  ,*.tzst= :\
-  ,*.bz2= :\
-  ,*.bz= :\
-  ,*.tbz= :\
-  ,*.tbz2= :\
-  ,*.tz= :\
-  ,*.deb= :\
-  ,*.rpm= :\
-  ,*.jar= :\
-  ,*.war= :\
-  ,*.ear= :\
-  ,*.sar= :\
-  ,*.rar= :\
-  ,*.alz= :\
-  ,*.ace= :\
-  ,*.zoo= :\
-  ,*.cpio= :\
-  ,*.7z= :\
-  ,*.rz= :\
-  ,*.cab= :\
-  ,*.wim= :\
-  ,*.swm= :\
-  ,*.dwm= :\
-  ,*.esd= :\
-  "
-
-#+end_src
-
-** lf configuration
-:PROPERTIES:
-:header-args: :tangle ./.config/lf/lfrc 
-:END:
-
-*** Options
-
-#+begin_src conf
-
-  set icons true
-  set hidden true
-  set drawbox true
-  set preview true
-  set info size
-  set dircounts on
-  set timefmt " Jan _2 2006 15:04:05"
-  set tabstop 4
-  set period 1
-  set promptfmt ""
-  set errorfmt "\033[38;5;1m error: \033[0m%s"
-  set shell 'sh'
-  set shellopts '-eu'
-  set ifs "\n"
-  set scrolloff 10
-  set previewer ~/.config/lf/bin/lf_previewer
-  set cleaner ~/.config/lf/bin/lf_cleaner
-
-#+end_src
-
-*** Custom functions
-
-#+begin_src conf
-
-  %{{
-      touch /tmp/lfundo_$id
-      lf_update . $id
-  }}
-
-  cmd recol &{{
-      w=$(tput cols)
-      if [ $w -le 100 ]; then
-          lf -remote "send $id set ratios 2:3"
-      else
-          lf -remote "send $id set ratios 1:2:3"
-      fi
-  }}
-
-  cmd my_open %{{
-      case $(file --mime-type $f -b) in
-          text/*)
-              lf -remote "send $id push e" ;;
-          inode/x-empty)
-              lf -remote "send $id push e" ;;
-          inode/directory | inode/symlink)
-              myf="$(echo $f | sed 's/\ /\\\ /g')"
-              lf -remote "send $id my_cd $myf" ;;
-          application/pdf | image/vnd.djvu)
-              zathura $f ;;
-          ,*)
-              for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done ;;
-      esac
-  }}
-
-  cmd mkdir &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      dir_name=$(input "Dir name:")
-      while [ -e $dir_name ] && [ "$dir_name" != "" ]
-      do
-          error_msg "directory exists"
-          dir_name=$(input "Dir name:")
-      done
-
-      if [ "$dir_name" != "" ]
-      then
-          mkdir $dir_name
-          sed -i "1s|^|$(pwd)/$dir_name\n|" $FILE
-          sed -i "1s|^|del\n|" $FILE
-
-          lf -remote "send $id load"
-      fi
-  }}
-
-  cmd mkfile &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      file_name=$(input "File name:")
-      while [ -e $file_name ] && [ "$file_name" != "" ]
-      do
-          error_msg "file exists"
-          file_name=$(input "File name:")
-      done
-
-      if [ "$file_name" != "" ]
-      then
-          touch $file_name
-          sed -i "1s|^|$(pwd)/$file_name\n|" $FILE
-          sed -i "1s|^|del\n|" $FILE
-
-          lf -remote "send $id load"
-      fi
-  }}
-
-  cmd my_rename &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      filename="${f##*/}"
-      filename="$(printf '%q' "$filename")"
-      filename="${filename// /<space>}"
-      echo $filename | xclip -selection clipboard
-
-      new_name=$(input "New name:")
-      while [ -e $new_name ] && [ "$new_name" != "" ]
-      do
-          error_msg "file exists"
-          new_name=$(input "New name:")
-      done
-
-      if [ "$new_name" != "" ]
-      then
-          mv $f $new_name
-          sed -i "1s|^|$f\n|" $FILE
-          sed -i "1s|^|$(dirname $f)/$new_name\n|" $FILE
-          sed -i "1s|^|name_restore\n|" $FILE
-
-          lf -remote "send $id load"
-      fi
-  }}
-
-  cmd my_copy &{{
-      echo -e "$fx" > $LFCP
-      sed -i "1s|^|cp\n|" $LFCP
-
-      lf -remote "send $id copy"
-      lf -remote "send $id load"
-  }}
-
-  cmd my_cut &{{
-      echo -e "$fx" > $LFCP
-      sed -i "1s|^|mv\n|" $LFCP
-
-      lf -remote "send $id cut"
-      lf -remote "send $id load"
-  }}
-
-  cmd my_paste &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      command=$(head -n 1 $LFCP)
-      sed -i '1d' $LFCP
-
-      while read line;
-      do
-          name=$(basename $line)
-          while [ -e ./$name ]
-          do
-              name=$name"_"
-          done
-
-          if [ "$command" = "cp" ]
-          then
-              cp -r $line ./$name
-          else
-              mv $line ./$name
-              sed -i "1s|^|$line\n|" $FILE
-          fi
-          sed -i "1s|^|$(pwd)/$name\n|" $FILE
-      done < $LFCP
-
-      if [ "$command" = "cp" ]
-      then
-          sed -i "1s|^|del\n|" $FILE
-      else
-          sed -i "1s|^|mv\n|" $FILE
-      fi
-
-      > $LFCP
-      lf -remote "send $id clear"
-      lf -remote "send $id reload"
-  }}
-
-  cmd undo &{{
-      FILE="/tmp/lfundo_$id"
-      command="$(head -n 1 $FILE)"
-      sed -i '1d' $FILE
-
-      if [ "$command" = "trash_restore" ]
-      then
-          while read line;
-          do
-              [[ -z "$line" ]] && break
-              gio trash --restore $line
-              sed -i '1d' $FILE
-          done < $FILE
-      elif [ "$command" = "name_restore" ]
-      then
-          mv $(head -n 2 $FILE)
-          sed -i '2d' $FILE
-      elif [ "$command" = "del" ]
-      then
-          while read line;
-          do
-              [[ -z "$line" ]] && break
-              rm -rf $(head -n 1 $FILE)
-              sed -i '1d' $FILE
-          done < $FILE
-      elif [ "$command" = "mv" ]
-      then
-          while read line;
-          do
-              [[ -z "$line" ]] && break
-              mv $(head -n 2 $FILE)
-              sed -i '2d' $FILE
-          done < $FILE
-      elif [ "$command" = "cd" ]
-      then
-          lf -remote "send $id cd $(head -n 1 $FILE)"
-          sed -i '1d' $FILE
-      fi
-
-      sed -i '1d' $FILE
-      lf -remote "send $id load"
-  }}
-
-  cmd chmod &{{
-      for file in $fx
-      do
-          chmod $1 $file
-      done
-      lf -remote "send $id reload"
-  }}
-
-  cmd trash &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      for filename in $fx
-      do
-          gio trash $filename
-          filename="${filename##*/}"
-          sed -i "1s|^|trash:///$filename\n|" $FILE
-      done
-      sed -i "1s|^|trash_restore\n|" $FILE
-
-      lf -remote "send $id load"
-  }}
-
-  cmd trash_restore &{{
-      for file in $fx
-      do
-          gio trash --restore trash:///$(basename $file)
-      done
-      lf -remote "send $id reload"
-  }}
-
-  cmd trash_empty &{{
-      gio trash --empty
-      lf -remote "send $id reload"
-  }}
-
-  cmd my_cd &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      sed -i "1s|^|$PWD\n|" $FILE
-      sed -i "1s|^|cd\n|" $FILE
-
-      myf="$(echo $1 | sed 's/\ /\\\ /g')"
-      lf -remote "send $id cd $myf"
-      lf_update $1 $id
-  }}
-
-  cmd my_updir %{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      sed -i "1s|^|$PWD\n|" $FILE
-      sed -i "1s|^|cd\n|" $FILE
-
-      lf -remote "send $id updir"
-      lf_update "$(dirname $PWD)" $id
-  }}
-
-  cmd fzf_jump ${{
-      res="$(find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
-
-      if [ -d "$res" ]; then
-          cmd="cd"
-      else
-          cmd="select"
-      fi
-
-      lf -remote "send $id $cmd \"$res\""
-  }}
-
-  cmd fzf_jump_dot ${{
-      res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
-
-      if [ -d "$res" ]; then
-          cmd="cd"
-      else 
-          cmd="select"
-      fi
-
-      lf -remote "send $id $cmd \"$res\""
-  }}
-
-  cmd my_search %{{
-      path=$(filesearch $PWD)
-      if [ -d $path ]
-      then
-          lf -remote "send $id my_cd $path"
-      else
-          lf -remote "send $id select $path"
-      fi
-  }}
-
-  cmd goto_config %{{
-      path=$(filesearch ~/.config)
-      if [ -d $path ]
-      then
-          lf -remote "send $id my_cd $path"
-      else
-          lf -remote "send $id select $path"
-      fi
-  }}
-
-  cmd git_clone ${{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      # link=$(input "Link:")
-      link=$(long_input "Link:")
-      git clone $link
-
-      # lf -remote "send $id load"
-  }}
-
-  cmd my_quit ${{
-      rm /tmp/lfundo_$id
-      lf -remote "send $id quit"
-  }}
-
-#+end_src
-
-*** Keybindings
-
-#+begin_src conf
-
-  # Remove some defaults
-  map m
-  map c
-  map d
-  map t
-  map y
-  map p
-  map f
-  map x
-
-  # remaping russian leters
-  # map а push f
-  # map б push ,
-  # map в push d
-  # map г push u
-  # map д push l
-  # map е push t
-  # map ё push `
-  # map ж push ;
-  # map з push p
-  # map и push b
-  # map й push q
-  # map к push r
-  # map л push k
-  # map м push v
-  # map н push y
-  # map о push j
-  # map п push g
-  # map р push h
-  # map с push c
-  # map т push n
-  # map у push e
-  # map ф push a
-  # map х push x
-  # map ц push w
-  # map ч push x
-  # map ш push i
-  # map щ push o
-  # map ъ push ]
-  # map ы push s
-  # map ь push m
-  # map э push '
-  # map ю push .
-  # map я push z
-
-  # basic
-  map q my_quit
-  map l my_open
-  map h my_updir
-  map r recol
-  map / my_search
-
-  # use enter for shell commands
-  map <enter> shell
-
-  # select/unselect everything
-  map a glob-select *
-  map <esc> :clear; unselect
-
-  # see hidden files
-  map . :set hidden!
-
-  # movement
-  map gh my_cd ~
-  map gc goto_config
-  map gp my_cd ~/Pictures
-  map gd my_cd ~/Documents
-  map gD my_cd ~/Downloads
-  map g/ my_cd /
-  map gt my_cd ~/.local/share/Trash/files
-  map ge my_cd /etc
-  map gm my_cd /run/media
-  map gM my_cd /mnt
-  map gu my_cd /usr
-  map gv my_cd /var
-
-  # chmod
-  map +x chmod +x
-  map +w chmod +w
-  map +r chmod +r
-  map -x chmod -x
-  map -w chmod -w
-  map -r chmod -r
-
-  # file operations
-  map cd mkdir
-  map cf mkfile
-  map cw my_rename
-  map y my_copy
-  map p my_paste
-  map s my_cut
-  map d trash
-  map D delete
-  map u undo
-  map tr trash_restore
-  map te trash_empty
-  map i git_clone
-
-  # execute current file (must be executable)
-  map x !$f
-  map X $$f
-
-  # find files
-  map ff fzf_jump
-  map fd fzf_jump_dot
-  map fg :cd /; fzf_jump_dot
 
 #+end_src
 
