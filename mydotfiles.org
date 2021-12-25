@@ -39,7 +39,7 @@
   pkgs="alacritty neofetch rofi flameshot scrot xdotool picom-git"
 
   # list of files/folders to symlink in homedir
-  config_files="alacritty flameshot fish neofetch nvim rofi zathura"
+  config_files="alacritty flameshot neofetch nvim rofi zathura"
 
   bin_files="inkscape-figures"
   rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
@@ -7420,12 +7420,13 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-* Fish
+* COMMENT Commented configs
+** Fish
 :PROPERTIES:
 :header-args: :tangle ./.config/fish/config.fish
 :END:
 
-** Adding to the path
+*** Adding to the path
 
 First line removes the path; second line sets it. Without the first line, your path gets massive and
 fish becomes very slow.
@@ -7437,7 +7438,7 @@ fish becomes very slow.
 
 #+end_src
 
-** Export
+*** Export
 
 #+begin_src fish
 
@@ -7465,7 +7466,7 @@ fish becomes very slow.
 
 #+end_src
 
-** Keybinding
+*** Keybinding
 
 #+begin_src fish
 
@@ -7478,7 +7479,7 @@ fish becomes very slow.
 
 #+end_src
 
-** Autocomplete and highlight colors
+*** Autocomplete and highlight colors
 
 #+begin_src fish
 
@@ -7486,7 +7487,7 @@ fish becomes very slow.
   set fish_color_autosuggestion '#7b7278'
   set fish_color_command magenta
   set fish_color_error --bold red
-  set fish_color_param yellow
+  set fish_color_param '#e7c07b'
   # set fish_color_quote
   set fish_color_cwd green --bold
   set fish_color_user blue --bold
@@ -7494,7 +7495,7 @@ fish becomes very slow.
 
 #+end_src
 
-** Prompt
+*** Prompt
 
 #+begin_src fish
 
@@ -7530,7 +7531,7 @@ fish becomes very slow.
 
 #+end_src
 
-** Functions
+*** Functions
 
 #+begin_src fish
 
@@ -7629,7 +7630,7 @@ fish becomes very slow.
 
 #+end_src
 
-** Aliases
+*** Aliases
 
 #+begin_src fish
 
@@ -7724,7 +7725,7 @@ fish becomes very slow.
 
 #+end_src
 
-** Run commands
+*** Run commands
 
 #+begin_src fish
 
