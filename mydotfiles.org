@@ -7433,7 +7433,7 @@ Configuration based on https://github.com/adi1090x/rofi
 :header-args: :tangle ./.bash_profile
 :END:
 
-*** Variables
+*** Export
 
 #+begin_src sh
 
@@ -7447,7 +7447,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-*** Run some commands
+*** Startup the necessary commands
 
 #+begin_src sh
 
@@ -7515,7 +7515,7 @@ If not running interactively, don't do anything.
 
 #+end_src
 
-*** Run some commands
+*** Startup the necessary commands
 
 #+begin_src sh
 
