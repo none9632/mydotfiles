@@ -28,13 +28,12 @@
 
 #+begin_src sh
 
-  dot_dir=$(pwd)          # dotfiles directory
-  bin_dir=~/.local/bin    # bin files directory
-  bak_dir=~/.dotfiles.bak # old dotfiles backup directory
+  dot_dir=$(pwd)               # dotfiles directory
+  bin_dir=~/.local/bin         # bin files directory
+  old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
   # list of the build packages
   build_pkgs="base-devel git gcc make cmake"
-
   # list of packages that will be installed
   pkgs="alacritty neofetch rofi flameshot scrot xdotool picom-git"
 
@@ -82,44 +81,52 @@
   yay --noconfirm --needed -Sy $pkgs
 
   # create dotfiles_old in homedir
-  [ -d $bak_dir ] && rm -rf $bak_dir
-  echo "Creating $bak_dir for backup of any existing config files"
-  mkdir -p $bak_dir
-  mkdir -p $bak_dir/.config
+  [ -d $old_dots_dir ] && rm -rf $old_dots_dir
+  echo "Creating $old_dots_dir for backup of any existing config files"
+  mkdir -p $old_dots_dir
+  mkdir -p $old_dots_dir/.config
 
-  # move any existing dotfiles in homedir to  directory, then create symlinks
-  for file in $config_files
-  do
-      if [ -d ~/.config/$file ]
-      then
-          echo "Moving $file from ~/.config to $bak_dir/.config"
-          mv ~/.config/$file $bak_dir/.config 2> /dev/null
-      fi
-  done
+  # # move any existing dotfiles in homedir to directory, then create symlinks
+  # for file in $config_files
+  # do
+  #     if [ -d ~/.config/$file ]
+  #     then
+  #         echo "Moving $file from ~/.config to $old_dots_dir/.config"
+  #         mv ~/.config/$file $old_dots_dir/.config 2> /dev/null
+  #     fi
+  # done
 
-  for file in $config_files
-  do
-      echo "Creating symlink to $file in home directory."
-      ln -s $dot_dir/.config/$file ~/.config/$file
-  done
+  # for file in $config_files
+  # do
+  #     echo "Creating symlink to $file in home directory."
+  #     ln -s $dot_dir/.config/$file ~/.config/$file
+  # done
 
-  for file in $bin_files
-  do
-      if [ ! -f $bin_dir/$file ]
-      then
-          echo "Creating symlink to $file in $bin_dir"
-          ln -s $dot_dir/.local/$file $bin_dir/$file
-      fi
-  done
+  # for file in $bin_files
+  # do
+  #     if [ ! -f $bin_dir/$file ]
+  #     then
+  #         echo "Creating symlink to $file in $bin_dir"
+  #         ln -s $dot_dir/.local/$file $bin_dir/$file
+  #     fi
+  # done
 
-  for file in $rofi_bin_files
-  do
-      if [ ! -f $bin_dir/$file ]
-      then
-          echo "Creating symlink to $file in $bin_dir"
-          ln -s $dot_dir/.config/rofi/scripts/$file.sh $bin_dir/$file
-      fi
-  done
+  # for file in $rofi_bin_files
+  # do
+  #     if [ ! -f $bin_dir/$file ]
+  #     then
+  #         echo "Creating symlink to $file in $bin_dir"
+  #         ln -s $dot_dir/.config/rofi/scripts/$file.sh $bin_dir/$file
+  #     fi
+  # done
+
+  [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
+  [ -f ~/.bashrc ] && mv ~/.bashrc $old_dots_dir
+
+  echo "Creating symlink to .bash_profile"
+  ln -s $dot_dir/.bash_profile ~/.bash_profile
+  echo "Creating symlink to .bashrc"
+  ln -s $dot_dir/.bashrc ~/.bashrc
 
 #+end_src
 
@@ -7417,6 +7424,103 @@ Configuration based on https://github.com/adi1090x/rofi
   TYPE_TEXT=T
   TYPE_TOGGLE_PANEL=Space
   TYPE_UNDO=U
+
+#+end_src
+
+* Bash
+** .bash_profile
+:PROPERTIES:
+:header-args: :tangle ./.bash_profile
+:END:
+
+*** Variables
+
+#+begin_src sh
+
+  export PATH=$HOME/.config/rofi/bin:$HOME/.config/lf/bin:$HOME/.local/bin:$PATH
+  # export ZDOTDIR="$HOME/.config/zsh"
+  # export POLYBAR_LAUNCH="$HOME/Desktop/mydotfiles/.config/polybar/launch.sh"
+
+  # export SHELL="/bin/zsh"
+  export SHELL="/bin/bash"
+  export EDITOR="/bin/nvim"
+
+#+end_src
+
+*** Run some commands
+
+#+begin_src sh
+
+  [[ -f /usr/bin/udiskie ]] && udiskie &
+
+  xset r rate 300 24
+  syndaemon -t -i 1 -d
+  trash-empty 7 &
+
+#+end_src
+
+*** Load .bashrc
+
+#+begin_src sh
+
+  [[ -f ~/.bashrc ]] && . ~/.bashrc
+
+#+end_src
+
+** .bash_rc
+:PROPERTIES:
+:header-args: :tangle ./.bashrc
+:END:
+
+*** Non-Interactive Shell
+
+If not running interactively, don't do anything.
+
+#+begin_src sh
+
+  [[ $- != *i* ]] && return
+
+#+end_src
+
+*** Prompt
+
+#+begin_src sh
+
+  prefix="λ"
+  green="\033[38;5;2m\033[1;1m"
+  blue="\033[34;1m"
+  bblack="\033[38;5;8m"
+  borange="\033[38;5;11m\033[1;1m"
+  bcyan="\033[38;5;14m"
+  reset="\033[0m"
+
+  PS1="\
+  ${bblack}┌[${reset}\
+  ${green}\w${reset}\
+  ${bblack}]─[${reset}\
+  ${blue}\u${reset}\
+  ${bblack}]─[${reset}\
+  ${borange}\h${reset}\
+  ${bblack}]${reset}\n\
+  ${bblack}└>${reset} \
+  ${bcyan}${prefix}${reset} "
+
+#+end_src
+
+*** Aliases
+
+#+begin_src sh
+
+  alias ls='ls --color=auto'
+
+#+end_src
+
+*** Run some commands
+
+#+begin_src sh
+
+  echo ""
+  neofetch
 
 #+end_src
 
