@@ -34,5 +34,7 @@ alias cat="bat"
 alias rm="rm -r"
 alias cp="cp -r"
 
+. $HOME/.config/lf/.lfrc
+
 echo ""
 neofetch

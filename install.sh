@@ -7,12 +7,13 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 # list of the build packages
 build_pkgs="base-devel git gcc make cmake"
 # list of packages that will be installed
-pkgs="alacritty neofetch rofi flameshot scrot xdotool picom-git"
+pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty flameshot neofetch nvim rofi zathura"
+config_files="alacritty flameshot lf neofetch nvim rofi zathura"
 
 bin_files="inkscape-figures"
+lf_bin_files="lf_cleaner lf_disk lf_prepare_file lf_previewer lf_update lfrun"
 rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
 
 error()
@@ -38,7 +39,7 @@ then
 fi
 
 # install the necessary packages
-yay --noconfirm --needed -Sy $pkgs
+yay --noconfirm --needed -S $pkgs
 
 # create dotfiles_old in homedir
 [ -d $old_dots_dir ] && rm -rf $old_dots_dir
@@ -67,6 +68,14 @@ do
     then
         echo "Creating symlink to $file in $bin_dir"
         ln -s $dot_dir/.local/$file $bin_dir/$file
+    fi
+done
+for file in $lf_bin_files
+do
+    if [ ! -f $bin_dir/$file ]
+    then
+        echo "Creating symlink to $file in $bin_dir"
+        ln -s $dot_dir/.config/lf/scripts/$file.sh $bin_dir/$file
     fi
 done
 for file in $rofi_bin_files

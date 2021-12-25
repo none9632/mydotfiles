@@ -1,0 +1,440 @@
+set icons true
+set hidden true
+set drawbox true
+set preview true
+set info size
+set dircounts on
+set timefmt " Jan _2 2006 15:04:05"
+set tabstop 4
+set period 1
+set promptfmt ""
+set errorfmt "\033[38;5;1m error: \033[0m%s"
+set shell 'sh'
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 10
+set previewer ~/.config/lf/bin/lf_previewer
+set cleaner ~/.config/lf/bin/lf_cleaner
+
+%{{
+    touch /tmp/lfundo_$id
+    lf_update . $id
+}}
+
+cmd recol &{{
+    w=$(tput cols)
+    if [ $w -le 100 ]; then
+        lf -remote "send $id set ratios 2:3"
+    else
+        lf -remote "send $id set ratios 1:2:3"
+    fi
+}}
+
+cmd my_open %{{
+    case $(file --mime-type $f -b) in
+        text/*)
+            lf -remote "send $id push e" ;;
+        inode/x-empty)
+            lf -remote "send $id push e" ;;
+        inode/directory | inode/symlink)
+            myf="$(echo $f | sed 's/\ /\\\ /g')"
+            lf -remote "send $id my_cd $myf" ;;
+        application/pdf | image/vnd.djvu)
+            zathura $f ;;
+        *)
+            for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done ;;
+    esac
+}}
+
+cmd mkdir &{{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    dir_name=$(input "Dir name:")
+    while [ -e $dir_name ] && [ "$dir_name" != "" ]
+    do
+        error_msg "directory exists"
+        dir_name=$(input "Dir name:")
+    done
+
+    if [ "$dir_name" != "" ]
+    then
+        mkdir $dir_name
+        sed -i "1s|^|$(pwd)/$dir_name\n|" $FILE
+        sed -i "1s|^|del\n|" $FILE
+
+        lf -remote "send $id load"
+    fi
+}}
+
+cmd mkfile &{{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    file_name=$(input "File name:")
+    while [ -e $file_name ] && [ "$file_name" != "" ]
+    do
+        error_msg "file exists"
+        file_name=$(input "File name:")
+    done
+
+    if [ "$file_name" != "" ]
+    then
+        touch $file_name
+        sed -i "1s|^|$(pwd)/$file_name\n|" $FILE
+        sed -i "1s|^|del\n|" $FILE
+
+        lf -remote "send $id load"
+    fi
+}}
+
+cmd my_rename &{{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    filename="${f##*/}"
+    filename="$(printf '%q' "$filename")"
+    filename="${filename// /<space>}"
+    echo $filename | xclip -selection clipboard
+
+    new_name=$(input "New name:")
+    while [ -e $new_name ] && [ "$new_name" != "" ]
+    do
+        error_msg "file exists"
+        new_name=$(input "New name:")
+    done
+
+    if [ "$new_name" != "" ]
+    then
+        mv $f $new_name
+        sed -i "1s|^|$f\n|" $FILE
+        sed -i "1s|^|$(dirname $f)/$new_name\n|" $FILE
+        sed -i "1s|^|name_restore\n|" $FILE
+
+        lf -remote "send $id load"
+    fi
+}}
+
+cmd my_copy &{{
+    echo -e "$fx" > $LFCP
+    sed -i "1s|^|cp\n|" $LFCP
+
+    lf -remote "send $id copy"
+    lf -remote "send $id load"
+}}
+
+cmd my_cut &{{
+    echo -e "$fx" > $LFCP
+    sed -i "1s|^|mv\n|" $LFCP
+
+    lf -remote "send $id cut"
+    lf -remote "send $id load"
+}}
+
+cmd my_paste &{{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    command=$(head -n 1 $LFCP)
+    sed -i '1d' $LFCP
+
+    while read line;
+    do
+        name=$(basename $line)
+        while [ -e ./$name ]
+        do
+            name=$name"_"
+        done
+
+        if [ "$command" = "cp" ]
+        then
+            cp -r $line ./$name
+        else
+            mv $line ./$name
+            sed -i "1s|^|$line\n|" $FILE
+        fi
+        sed -i "1s|^|$(pwd)/$name\n|" $FILE
+    done < $LFCP
+
+    if [ "$command" = "cp" ]
+    then
+        sed -i "1s|^|del\n|" $FILE
+    else
+        sed -i "1s|^|mv\n|" $FILE
+    fi
+
+    > $LFCP
+    lf -remote "send $id clear"
+    lf -remote "send $id reload"
+}}
+
+cmd undo &{{
+    FILE="/tmp/lfundo_$id"
+    command="$(head -n 1 $FILE)"
+    sed -i '1d' $FILE
+
+    if [ "$command" = "trash_restore" ]
+    then
+        while read line;
+        do
+            [[ -z "$line" ]] && break
+            gio trash --restore $line
+            sed -i '1d' $FILE
+        done < $FILE
+    elif [ "$command" = "name_restore" ]
+    then
+        mv $(head -n 2 $FILE)
+        sed -i '2d' $FILE
+    elif [ "$command" = "del" ]
+    then
+        while read line;
+        do
+            [[ -z "$line" ]] && break
+            rm -rf $(head -n 1 $FILE)
+            sed -i '1d' $FILE
+        done < $FILE
+    elif [ "$command" = "mv" ]
+    then
+        while read line;
+        do
+            [[ -z "$line" ]] && break
+            mv $(head -n 2 $FILE)
+            sed -i '2d' $FILE
+        done < $FILE
+    elif [ "$command" = "cd" ]
+    then
+        lf -remote "send $id cd $(head -n 1 $FILE)"
+        sed -i '1d' $FILE
+    fi
+
+    sed -i '1d' $FILE
+    lf -remote "send $id load"
+}}
+
+cmd chmod &{{
+    for file in $fx
+    do
+        chmod $1 $file
+    done
+    lf -remote "send $id reload"
+}}
+
+cmd trash &{{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    for filename in $fx
+    do
+        gio trash $filename
+        filename="${filename##*/}"
+        sed -i "1s|^|trash:///$filename\n|" $FILE
+    done
+    sed -i "1s|^|trash_restore\n|" $FILE
+
+    lf -remote "send $id load"
+}}
+
+cmd trash_restore &{{
+    for file in $fx
+    do
+        gio trash --restore trash:///$(basename $file)
+    done
+    lf -remote "send $id reload"
+}}
+
+cmd trash_empty &{{
+    gio trash --empty
+    lf -remote "send $id reload"
+}}
+
+cmd my_cd &{{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    sed -i "1s|^|$PWD\n|" $FILE
+    sed -i "1s|^|cd\n|" $FILE
+
+    myf="$(echo $1 | sed 's/\ /\\\ /g')"
+    lf -remote "send $id cd $myf"
+    lf_update $1 $id
+}}
+
+cmd my_updir %{{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    sed -i "1s|^|$PWD\n|" $FILE
+    sed -i "1s|^|cd\n|" $FILE
+
+    lf -remote "send $id updir"
+    lf_update "$(dirname $PWD)" $id
+}}
+
+cmd fzf_jump ${{
+    res="$(find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
+
+    if [ -d "$res" ]; then
+        cmd="cd"
+    else
+        cmd="select"
+    fi
+
+    lf -remote "send $id $cmd \"$res\""
+}}
+
+cmd fzf_jump_dot ${{
+    res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
+
+    if [ -d "$res" ]; then
+        cmd="cd"
+    else 
+        cmd="select"
+    fi
+
+    lf -remote "send $id $cmd \"$res\""
+}}
+
+cmd my_search %{{
+    path=$(filesearch $PWD)
+    if [ -d $path ]
+    then
+        lf -remote "send $id my_cd $path"
+    else
+        lf -remote "send $id select $path"
+    fi
+}}
+
+cmd goto_config %{{
+    path=$(filesearch ~/.config)
+    if [ -d $path ]
+    then
+        lf -remote "send $id my_cd $path"
+    else
+        lf -remote "send $id select $path"
+    fi
+}}
+
+cmd git_clone ${{
+    FILE="/tmp/lfundo_$id"
+    lf_prepare_file $FILE
+
+    # link=$(input "Link:")
+    link=$(long_input "Link:")
+    git clone $link
+
+    # lf -remote "send $id load"
+}}
+
+cmd my_quit ${{
+    rm /tmp/lfundo_$id
+    lf -remote "send $id quit"
+}}
+
+# Remove some defaults
+map m
+map c
+map d
+map t
+map y
+map p
+map f
+map x
+
+# remaping russian leters
+# map а push f
+# map б push ,
+# map в push d
+# map г push u
+# map д push l
+# map е push t
+# map ё push `
+# map ж push ;
+# map з push p
+# map и push b
+# map й push q
+# map к push r
+# map л push k
+# map м push v
+# map н push y
+# map о push j
+# map п push g
+# map р push h
+# map с push c
+# map т push n
+# map у push e
+# map ф push a
+# map х push x
+# map ц push w
+# map ч push x
+# map ш push i
+# map щ push o
+# map ъ push ]
+# map ы push s
+# map ь push m
+# map э push '
+# map ю push .
+# map я push z
+
+# basic
+map q my_quit
+map l my_open
+map h my_updir
+map r recol
+map / my_search
+
+# use enter for shell commands
+map <enter> shell
+
+# select/unselect everything
+map a glob-select *
+map <esc> :clear; unselect
+
+# see hidden files
+map . :set hidden!
+
+# movement
+map gh my_cd ~
+map gc goto_config
+map gp my_cd ~/Pictures
+map gd my_cd ~/Documents
+map gD my_cd ~/Downloads
+map g/ my_cd /
+map gt my_cd ~/.local/share/Trash/files
+map ge my_cd /etc
+map gm my_cd /run/media
+map gM my_cd /mnt
+map gu my_cd /usr
+map gv my_cd /var
+
+# chmod
+map +x chmod +x
+map +w chmod +w
+map +r chmod +r
+map -x chmod -x
+map -w chmod -w
+map -r chmod -r
+
+# file operations
+map cd mkdir
+map cf mkfile
+map cw my_rename
+map y my_copy
+map p my_paste
+map s my_cut
+map d trash
+map D delete
+map u undo
+map tr trash_restore
+map te trash_empty
+map i git_clone
+
+# execute current file (must be executable)
+map x !$f
+map X $$f
+
+# find files
+map ff fzf_jump
+map fd fzf_jump_dot
+map fg :cd /; fzf_jump_dot
