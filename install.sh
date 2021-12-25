@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 dot_dir=$(pwd)               # dotfiles directory
 bin_dir=~/.local/bin         # bin files directory

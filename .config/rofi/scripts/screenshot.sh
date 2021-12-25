@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rofi_command="rofi -kb-move-char-back Left,h\
                    -kb-move-char-forward Right,l\

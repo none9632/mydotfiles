@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 options=""
 rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/themes/other/error_msg.rasi"

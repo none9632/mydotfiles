@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rofi_command="rofi -dmenu\
                    -i\

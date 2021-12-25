@@ -20,7 +20,7 @@
 
 #+begin_src sh
 
-  #!/bin/bash
+  #!/bin/sh
 
 #+end_src
 
@@ -141,7 +141,7 @@
 
 #+begin_src sh
 
-  #!/bin/bash
+  #!/bin/sh
 
 #+end_src
 
@@ -5667,7 +5667,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src sh :tangle ./.config/rofi/scripts/appsmenu.sh
 
-  #!/usr/bin/env bash
+  #!/bin/sh
 
   rofi_command="rofi -kb-move-char-back Left,h\
                      -kb-move-char-forward Right,l\
@@ -6228,7 +6228,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src sh :tangle ./.config/rofi/scripts/powermenu.sh
 
-  #!/usr/bin/env bash
+  #!/bin/sh
 
   rofi_command="rofi -kb-move-char-back Left,h\
                      -kb-move-char-forward Right,l\
@@ -6347,7 +6347,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src sh :tangle ./.config/rofi/scripts/screenshot.sh
 
-  #!/bin/bash
+  #!/bin/sh
 
   rofi_command="rofi -kb-move-char-back Left,h\
                      -kb-move-char-forward Right,l\
@@ -6495,7 +6495,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src sh :tangle ./.config/rofi/scripts/errormsg.sh
 
-  #!/usr/bin/env bash
+  #!/bin/sh
 
   options=""
   rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/themes/other/error_msg.rasi"
@@ -6507,7 +6507,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src sh :tangle ./.config/rofi/scripts/input.sh
 
-  #!/bin/bash
+  #!/bin/sh
 
   rofi_command="rofi -dmenu\
                      -i\
@@ -6533,7 +6533,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src sh :tangle ./.config/rofi/scripts/longinput.sh
 
-  #!/bin/bash
+  #!/bin/sh
 
   rofi_command="rofi -dmenu\
                      -i\

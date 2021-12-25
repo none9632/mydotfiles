@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 figures_path=./figures/
 images_path=./images/
