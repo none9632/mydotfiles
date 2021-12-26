@@ -13,7 +13,7 @@ pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git"
 config_files="alacritty flameshot lf neofetch nvim rofi zathura"
 
 bin_files="inkscape-figures"
-lf_bin_files="lf_cleaner lf_disk lf_prepare_file lf_previewer lf_update lfrun"
+lf_bin_files="lf_disk lf_prepare_file lf_update lfrun"
 rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
 
 error()

@@ -41,7 +41,7 @@
   config_files="alacritty flameshot lf neofetch nvim rofi zathura"
 
   bin_files="inkscape-figures"
-  lf_bin_files="lf_cleaner lf_disk lf_prepare_file lf_previewer lf_update lfrun"
+  lf_bin_files="lf_disk lf_prepare_file lf_update lfrun"
   rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
 
 #+end_src
@@ -1938,8 +1938,8 @@ defined in.
   set shellopts '-eu'
   set ifs "\n"
   set scrolloff 10
-  set previewer ~/.config/lf/bin/lf_previewer
-  set cleaner ~/.config/lf/bin/lf_cleaner
+  set previewer ~/.config/lf/scripts/lf_previewer.sh
+  set cleaner ~/.config/lf/scripts/lf_cleaner.sh
 
 #+end_src
 
