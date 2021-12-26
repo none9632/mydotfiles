@@ -11,5 +11,3 @@ export EDITOR="/bin/nvim"
 xset r rate 300 24
 syndaemon -t -i 1 -d
 trash-empty 7 &
-
-[[ -f ~/.bashrc ]] && . ~/.bashrc

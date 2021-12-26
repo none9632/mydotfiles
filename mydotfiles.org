@@ -400,104 +400,6 @@
 
 #+end_src
 
-*** Load .bashrc
-
-#+begin_src sh
-
-  [[ -f ~/.bashrc ]] && . ~/.bashrc
-
-#+end_src
-
-** .bashrc
-:PROPERTIES:
-:header-args: :tangle ./.bashrc
-:END:
-
-*** Non-Interactive Shell
-
-If not running interactively, don't do anything.
-
-#+begin_src sh
-
-  [[ $- != *i* ]] && return
-
-#+end_src
-
-*** Prompt
-
-#+begin_src sh
-
-  prefix="λ"
-  green="\033[38;5;2m\033[1;1m"
-  blue="\033[34;1m"
-  bblack="\033[38;5;8m"
-  borange="\033[38;5;11m\033[1;1m"
-  bcyan="\033[38;5;14m"
-  reset="\033[0m"
-
-  PS1="\
-  ${bblack}┌[${reset}\
-  ${green}\w${reset}\
-  ${bblack}]─[${reset}\
-  ${blue}\u${reset}\
-  ${bblack}]─[${reset}\
-  ${borange}\h${reset}\
-  ${bblack}]${reset}\n\
-  ${bblack}└>${reset} \
-  ${bcyan}${prefix}${reset} "
-
-#+end_src
-
-*** Keybindings
-
-#+begin_src sh
-
-  set -o vi
-  bind -m vi-insert '"jj":vi-movement-mode'
-
-#+end_src
-
-*** Aliases
-
-#+begin_src sh
-
-  alias stcpu="stress -c 8"
-  alias stmem="stress -vm 2 --vm-bytes"
-
-  alias pacman="sudo pacman"
-  alias pacsyu="sudo pacman -Syu"
-  alias yaysyu="yay -Syu"
-
-  alias ls="exa -la --color=always --group-directories-first"
-  alias cat="bat"
-  alias rm="rm -r"
-  alias cp="cp -r"
-
-#+end_src
-
-*** Misc
-
-#+begin_src sh
-
-  . $HOME/.config/lf/.lfrc
-
-  echo ""
-  neofetch
-
-#+end_src
-
-** .inputrc
-
-Сhanges the shape of the cursor depending on the VI mode in Bash.
-
-#+begin_src sh :tangle ./.inputrc
-
-  set show-mode-in-prompt on
-  set vi-cmd-mode-string "\1\e[2 q\2"
-  set vi-ins-mode-string "\1\e[6 q\2"
-
-#+end_src
-
 * Alacritty
 :PROPERTIES:
 :header-args: :tangle ./.config/alacritty/alacritty.yml
@@ -11384,6 +11286,98 @@ fish becomes very slow.
 
   echo ""
   neofetch
+
+#+end_src
+
+
+** Bash
+*** .bashrc
+:PROPERTIES:
+:header-args: :tangle ./.bashrc
+:END:
+
+**** Non-Interactive Shell
+
+If not running interactively, don't do anything.
+
+#+begin_src sh
+
+  [[ $- != *i* ]] && return
+
+#+end_src
+
+**** Prompt
+
+#+begin_src sh
+
+  prefix="λ"
+  green="\033[38;5;2m\033[1;1m"
+  blue="\033[34;1m"
+  bblack="\033[38;5;8m"
+  borange="\033[38;5;11m\033[1;1m"
+  bcyan="\033[38;5;14m"
+  reset="\033[0m"
+
+  PS1="\
+  ${bblack}┌[${reset}\
+  ${green}\w${reset}\
+  ${bblack}]─[${reset}\
+  ${blue}\u${reset}\
+  ${bblack}]─[${reset}\
+  ${borange}\h${reset}\
+  ${bblack}]${reset}\n\
+  ${bblack}└>${reset} \
+  ${bcyan}${prefix}${reset} "
+
+#+end_src
+
+**** Keybindings
+
+#+begin_src sh
+
+  set -o vi
+  bind -m vi-insert '"jj":vi-movement-mode'
+
+#+end_src
+
+**** Aliases
+
+#+begin_src sh
+
+  alias stcpu="stress -c 8"
+  alias stmem="stress -vm 2 --vm-bytes"
+
+  alias pacman="sudo pacman"
+  alias pacsyu="sudo pacman -Syu"
+  alias yaysyu="yay -Syu"
+
+  alias ls="exa -la --color=always --group-directories-first"
+  alias cat="bat"
+  alias rm="rm -r"
+  alias cp="cp -r"
+
+#+end_src
+
+**** Misc
+
+#+begin_src sh
+
+  . $HOME/.config/lf/.lfrc
+
+  echo ""
+  neofetch
+
+#+end_src
+
+*** .inputrc
+
+Сhanges the shape of the cursor depending on the VI mode in Bash.
+
+#+begin_src sh :tangle ./.inputrc
+
+  set show-mode-in-prompt on
+  set vi-cmd-mode-string "\1\e[2 q\2"
+  set vi-ins-mode-string "\1\e[6 q\2"
 
 #+end_src
 
