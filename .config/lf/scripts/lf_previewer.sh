@@ -99,7 +99,7 @@ case "$1" in
 esac
 
 case "$(file -Lb --mime-type -- "$1")" in
-    text/*)
+    text/*|application/*)
         #highlight -q -O ansi -- "$1" || cat -- "$1"
         # pygmentize -f terminal -- "$1" || cat -- "$1"
         batorcat "$1"

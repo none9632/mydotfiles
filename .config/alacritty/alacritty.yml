@@ -258,7 +258,6 @@ background_opacity: 0.85
 
 shell:
  program: /bin/zsh
- # program: /bin/fish
 #  args:
 #    - --login
 

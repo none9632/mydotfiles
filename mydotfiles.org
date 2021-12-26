@@ -852,9 +852,7 @@ Default:
 #+begin_src yaml
 
   shell:
-   # program: /bin/zsh
-   # program: /bin/fish
-   program: /bin/bash
+   program: /bin/zsh
   #  args:
   #    - --login
 
@@ -1549,7 +1547,7 @@ defined in.
   esac
 
   case "$(file -Lb --mime-type -- "$1")" in
-      text/*)
+      text/*|application/*)
           #highlight -q -O ansi -- "$1" || cat -- "$1"
           # pygmentize -f terminal -- "$1" || cat -- "$1"
           batorcat "$1"
