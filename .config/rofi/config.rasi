@@ -16,12 +16,6 @@ configuration {
 
     display-run:          "Run";
     display-drun:         "Run";
-    /* display-window: ; */
-    /* display-windowcd: ;*/
-    /* display-ssh: ; */
-    /* display-combi: ; */
-    /* display-keys: ; */
-    /* display-file-browser: ; */
 
     kb-mode-complete:       "";
     kb-remove-to-eol:       "";

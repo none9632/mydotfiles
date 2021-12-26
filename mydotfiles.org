@@ -129,15 +129,8 @@
   done
 
   [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
-  [ -f ~/.bashrc ] && mv ~/.bashrc $old_dots_dir
-  [ -f ~/.inputrc ] && mv ~/.inputrc $old_dots_dir
-
   echo "Creating symlink to .bash_profile"
   ln -s $dot_dir/.bash_profile ~/.bash_profile
-  echo "Creating symlink to .bashrc"
-  ln -s $dot_dir/.bashrc ~/.bashrc
-  echo "Creating symlink to .inputrc"
-  ln -s $dot_dir/.inputrc ~/.inputrc
 
 #+end_src
 
@@ -489,8 +482,8 @@
   ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
 
   ZSH_HIGHLIGHT_REGEXP+=('\bsudo\b' fg=#e76f51)
-  ZSH_HIGHLIGHT_REGEXP+=('\bhttp://.*\b' fg=#51afef,underline)
-  ZSH_HIGHLIGHT_REGEXP+=('\bhttps://.*\b' fg=#51afef,underline)
+  ZSH_HIGHLIGHT_REGEXP+=('\bhttp://\S*\b' fg=#51afef,underline)
+  ZSH_HIGHLIGHT_REGEXP+=('\bhttps://\S*\b' fg=#51afef,underline)
 
   ZSH_HIGHLIGHT_STYLES[arg0]='fg=#c792ea'
   ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#e7c07b'
@@ -669,7 +662,7 @@
 
 #+end_src
 
-** Help command
+** COMMENT Help command
 
 #+begin_src sh
 
@@ -2626,7 +2619,7 @@ defined in.
       lf_prepare_file $FILE
 
       # link=$(input "Link:")
-      link=$(long_input "Link:")
+      link=$(longinput "Link:")
       git clone $link
 
       # lf -remote "send $id load"
@@ -7605,12 +7598,6 @@ Configuration based on https://github.com/adi1090x/rofi
 
       display-run:          "Run";
       display-drun:         "Run";
-      /* display-window: ; */
-      /* display-windowcd: ;*/
-      /* display-ssh: ; */
-      /* display-combi: ; */
-      /* display-keys: ; */
-      /* display-file-browser: ; */
 
       kb-mode-complete:       "";
       kb-remove-to-eol:       "";
@@ -11301,7 +11288,7 @@ Configuration based on https://github.com/adi1090x/rofi
                      -fixed-num-lines\
                      -monitor -2\
                      -p \" $1 \"\
-                     -theme $HOME/.config/rofi/themes/other/long_input.rasi\
+                     -theme $HOME/.config/rofi/themes/other/longinput.rasi\
                      -kb-secondary-paste    Control+p,Control+k,Up\
                      -kb-clear-line         Control+d,Down\
                      -kb-move-front         Control+i\

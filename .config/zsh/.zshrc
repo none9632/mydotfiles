@@ -53,8 +53,8 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
 
 ZSH_HIGHLIGHT_REGEXP+=('\bsudo\b' fg=#e76f51)
-ZSH_HIGHLIGHT_REGEXP+=('\bhttp://.*\b' fg=#51afef,underline)
-ZSH_HIGHLIGHT_REGEXP+=('\bhttps://.*\b' fg=#51afef,underline)
+ZSH_HIGHLIGHT_REGEXP+=('\bhttp://\S*\b' fg=#51afef,underline)
+ZSH_HIGHLIGHT_REGEXP+=('\bhttps://\S*\b' fg=#51afef,underline)
 
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=#c792ea'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#e7c07b'
@@ -181,10 +181,6 @@ function reset_broken_terminal()
 }
 
 add-zsh-hook -Uz precmd reset_broken_terminal
-
-autoload -Uz run-help
-unalias run-help
-alias help=run-help
 
 alias stcpu="stress -c 8"
 alias stmem="stress -vm 2 --vm-bytes"

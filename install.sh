@@ -88,12 +88,5 @@ do
 done
 
 [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
-[ -f ~/.bashrc ] && mv ~/.bashrc $old_dots_dir
-[ -f ~/.inputrc ] && mv ~/.inputrc $old_dots_dir
-
 echo "Creating symlink to .bash_profile"
 ln -s $dot_dir/.bash_profile ~/.bash_profile
-echo "Creating symlink to .bashrc"
-ln -s $dot_dir/.bashrc ~/.bashrc
-echo "Creating symlink to .inputrc"
-ln -s $dot_dir/.inputrc ~/.inputrc

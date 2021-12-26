@@ -321,7 +321,7 @@ cmd git_clone ${{
     lf_prepare_file $FILE
 
     # link=$(input "Link:")
-    link=$(long_input "Link:")
+    link=$(longinput "Link:")
     git clone $link
 
     # lf -remote "send $id load"

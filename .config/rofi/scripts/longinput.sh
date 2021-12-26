@@ -5,7 +5,7 @@ rofi_command="rofi -dmenu\
                    -fixed-num-lines\
                    -monitor -2\
                    -p \" $1 \"\
-                   -theme $HOME/.config/rofi/themes/other/long_input.rasi\
+                   -theme $HOME/.config/rofi/themes/other/longinput.rasi\
                    -kb-secondary-paste    Control+p,Control+k,Up\
                    -kb-clear-line         Control+d,Down\
                    -kb-move-front         Control+i\
