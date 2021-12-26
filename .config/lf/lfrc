@@ -289,7 +289,7 @@ cmd fzf_jump_dot ${{
 
     if [ -d "$res" ]; then
         cmd="cd"
-    else 
+    else
         cmd="select"
     fi
 
@@ -320,11 +320,13 @@ cmd git_clone ${{
     FILE="/tmp/lfundo_$id"
     lf_prepare_file $FILE
 
-    # link=$(input "Link:")
     link=$(longinput "Link:")
     git clone $link
+}}
 
-    # lf -remote "send $id load"
+cmd chng_layout %{{
+    xdotool key Mode_switch
+    lf -remote "send $id push $1"
 }}
 
 cmd my_quit ${{
@@ -341,41 +343,6 @@ map y
 map p
 map f
 map x
-
-# remaping russian leters
-# map а push f
-# map б push ,
-# map в push d
-# map г push u
-# map д push l
-# map е push t
-# map ё push `
-# map ж push ;
-# map з push p
-# map и push b
-# map й push q
-# map к push r
-# map л push k
-# map м push v
-# map н push y
-# map о push j
-# map п push g
-# map р push h
-# map с push c
-# map т push n
-# map у push e
-# map ф push a
-# map х push x
-# map ц push w
-# map ч push x
-# map ш push i
-# map щ push o
-# map ъ push ]
-# map ы push s
-# map ь push m
-# map э push '
-# map ю push .
-# map я push z
 
 # basic
 map q my_quit
@@ -438,3 +405,38 @@ map X $$f
 map ff fzf_jump
 map fd fzf_jump_dot
 map fg :cd /; fzf_jump_dot
+
+# Automatic switchover of the Russian layout
+map а chng_layout f
+map б chng_layout ,
+map в chng_layout d
+map г chng_layout u
+map д chng_layout l
+map е chng_layout t
+map ё chng_layout `
+map ж chng_layout ;
+map з chng_layout p
+map и chng_layout b
+map й chng_layout q
+map к chng_layout r
+map л chng_layout k
+map м chng_layout v
+map н chng_layout y
+map о chng_layout j
+map п chng_layout g
+map р chng_layout h
+map с chng_layout c
+map т chng_layout n
+map у chng_layout e
+map ф chng_layout a
+map х chng_layout x
+map ц chng_layout w
+map ч chng_layout x
+map ш chng_layout i
+map щ chng_layout o
+map ъ chng_layout ]
+map ы chng_layout s
+map ь chng_layout m
+map э chng_layout '
+map ю chng_layout .
+map я chng_layout m
