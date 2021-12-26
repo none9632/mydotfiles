@@ -10,7 +10,7 @@ build_pkgs="base-devel git gcc make cmake"
 pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty flameshot lf neofetch nvim rofi zathura"
+config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh"
 
 bin_files="inkscape-figures"
 lf_bin_files="lf_disk lf_prepare_file lf_update lfrun"
