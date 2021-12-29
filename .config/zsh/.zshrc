@@ -1,16 +1,25 @@
 autoload -Uz add-zsh-hook
 
-autoload -U compinit && compinit
+export ZIT_MODULES_PATH="${ZDOTDIR}/plugins/"
 
-source ~/.config/zsh/fzf-tab/fzf-tab.zsh
+if [[ ! -d "${ZIT_MODULES_PATH}/zit" ]]; then
+    git clone "https://github.com/none9632/zit.git" "${ZIT_MODULES_PATH}/zit"
+fi
+
+source "${ZIT_MODULES_PATH}/zit/zit.zsh"
+
+zit-il "zsh-users/zsh-syntax-highlighting"
+zit-il "zsh-users/zsh-autosuggestions"
+zit-il "zsh-users/zsh-completions"
+# zit-il "zdharma-continuum/fast-syntax-highlighting"
+zit-il "Aloxaf/fzf-tab"
+
+autoload -Uz compinit && compinit
 
 setopt COMPLETE_ALIASES
 # _comp_options+=(globdots)
 
 zmodload zsh/complist
-
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/doc/pkgfile/command-not-found.zsh
 
 HISTSIZE=10000
 SAVEHIST=10000
@@ -47,8 +56,6 @@ ${GREY}]
 └>${END} \
 ${BCYAN}${PREFIX}${END} \
 ${WHITE}${END}"
-
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
 

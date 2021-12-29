@@ -9,6 +9,7 @@
 
   .config/nvim/bundle
   .config/zsh/.zcompdump
+  .config/zsh/plugins
 
 #+end_src
 
@@ -407,21 +408,36 @@
 
 #+end_src
 
+** Plugins
+
+#+begin_src sh
+
+  export ZIT_MODULES_PATH="${ZDOTDIR}/plugins/"
+
+  if [[ ! -d "${ZIT_MODULES_PATH}/zit" ]]; then
+      git clone "https://github.com/none9632/zit.git" "${ZIT_MODULES_PATH}/zit"
+  fi
+
+  source "${ZIT_MODULES_PATH}/zit/zit.zsh"
+
+  zit-il "zsh-users/zsh-syntax-highlighting"
+  zit-il "zsh-users/zsh-autosuggestions"
+  zit-il "zsh-users/zsh-completions"
+  # zit-il "zdharma-continuum/fast-syntax-highlighting"
+  zit-il "Aloxaf/fzf-tab"
+
+#+end_src
+
 ** Completion
 
 #+begin_src sh
 
-  autoload -U compinit && compinit
-
-  source ~/.config/zsh/fzf-tab/fzf-tab.zsh
+  autoload -Uz compinit && compinit
 
   setopt COMPLETE_ALIASES
   # _comp_options+=(globdots)
 
   zmodload zsh/complist
-
-  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-  source /usr/share/doc/pkgfile/command-not-found.zsh
 
 #+end_src
 
@@ -476,8 +492,6 @@
 ** Syntax highlighting
 
 #+begin_src sh
-
-  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
   ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
 
