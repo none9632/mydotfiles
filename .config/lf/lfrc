@@ -351,9 +351,6 @@ map h my_updir
 map r recol
 map / my_search
 
-# use enter for shell commands
-map <enter> shell
-
 # select/unselect everything
 map a glob-select *
 map <esc> :clear; unselect

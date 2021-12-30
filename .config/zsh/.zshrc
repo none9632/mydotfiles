@@ -109,7 +109,6 @@ zle -N exit_zsh
 
 bindkey -M  vicmd "U"  redo
 bindkey -M  vicmd "zz" kill-whole-line
-bindkey -sM vicmd "dd" "zzi"
 bindkey -M  vicmd "k"  up-history
 bindkey -M  vicmd "j"  down-history
 bindkey -M  vicmd "L"  forward-word
@@ -143,15 +142,15 @@ zle -N go-usr
 zle -N go-dev
 zle -N go-var
 
-bindkey -M  vicmd "gh" go-home
-bindkey -M  vicmd "g/" go-root
-bindkey -M  vicmd "gt" go-trash
-bindkey -M  vicmd "ge" go-etc
-bindkey -M  vicmd "gm" go-media
-bindkey -M  vicmd "gM" go-mnt
-bindkey -M  vicmd "gu" go-usr
-bindkey -M  vicmd "gd" go-dev
-bindkey -M  vicmd "gv" go-var
+bindkey -M vicmd "gh" go-home
+bindkey -M vicmd "g/" go-root
+bindkey -M vicmd "gt" go-trash
+bindkey -M vicmd "ge" go-etc
+bindkey -M vicmd "gm" go-media
+bindkey -M vicmd "gM" go-mnt
+bindkey -M vicmd "gu" go-usr
+bindkey -M vicmd "gd" go-dev
+bindkey -M vicmd "gv" go-var
 
 copy-to-xclip()
 {
