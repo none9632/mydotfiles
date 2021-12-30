@@ -50,10 +50,11 @@ case $chosen in
         ;;
 esac
 
-NOTIFY_ICON=/usr/share/icons/Adwaita/32x32/apps/system-users-symbolic.symbolic.png
-# NOTIFY_ICON=${scr_dir}/${scr_file}
 if [ -n "$scr_name" ]
 then
-    notify-send -u normal -i $NOTIFY_ICON \
+    tmp_small_image=/tmp/screenshot_tmp
+    echo $scr_dir/$scr_name > /tmp/testfile
+    convert $scr_dir/$scr_name -resize 100x60 $tmp_small_image
+    notify-send -u normal -i $tmp_small_image \
                 "Screenshot" "Screenshot save as $scr_name"
 fi
