@@ -8,11 +8,25 @@ fi
 
 source "${ZIT_MODULES_PATH}/zit/zit.zsh"
 
-zit-il "zsh-users/zsh-syntax-highlighting"
 zit-il "zsh-users/zsh-autosuggestions"
 zit-il "zsh-users/zsh-completions"
-# zit-il "zdharma-continuum/fast-syntax-highlighting"
+zit-il "zdharma-continuum/fast-syntax-highlighting"
+# zit-il "zsh-users/zsh-syntax-highlighting"
 zit-il "Aloxaf/fzf-tab"
+zit-il "hlissner/zsh-autopair"
+
+function fix-autopair-insert ()
+{
+    autopair-insert
+    xdotool key '0xff89'
+}
+
+zle -N fix-autopair-insert
+
+for p in ${(@k)AUTOPAIR_PAIRS}; do
+    bindkey "$p" fix-autopair-insert
+    bindkey -M isearch "$p" self-insert
+done
 
 autoload -Uz compinit && compinit
 
@@ -77,16 +91,14 @@ bindkey -v
 
 KEYTIMEOUT=25
 
-MODE="${GREEN}NORMAL${END}"
-
 # Updates editor information when the keymap changes.
 function zle-keymap-select()
 {
     # change cursor style in vi-mode
     case $KEYMAP in
-        vicmd)      print -n -- "\E]50;CursorShape=0\C-G" && MODE="${GREEN}NORMAL${END}";;
-        viins|main) print -n -- "\E]50;CursorShape=1\C-G" && MODE="${BLUE}INSERT${END}";;
-        vivis)      print -n -- "\E]50;CursorShape=0\C-G" && MODE="${PURPLE}VISUAL${END}";;
+        vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;
+        viins|main) print -n -- "\E]50;CursorShape=1\C-G";;
+        vivis)      print -n -- "\E]50;CursorShape=0\C-G";;
     esac
 
     zle reset-prompt
@@ -94,14 +106,9 @@ function zle-keymap-select()
 }
 
 # Start every prompt in insert mode
-function zle-line-init()
-{
-    zle -K viins
-}
+function zle-line-init() { zle -K viins }
 
-function exit_zsh() {
-    exit
-}
+function exit_zsh() { exit }
 
 zle -N zle-line-init
 zle -N zle-keymap-select
@@ -120,37 +127,6 @@ bindkey -M  vicmd "q"  exit_zsh
 bindkey -M  viins "jj" vi-cmd-mode
 bindkey -M  viins "^?" backward-delete-char
 bindkey -sM viins "^l" "jjla"
-
-# goto bindkey
-function go-home()   { cd ~; zle reset-prompt; zle -R }
-function go-root()   { cd /; zle reset-prompt; zle -R }
-function go-trash()  { cd ~/.local/share/Trash/files; zle reset-prompt; zle -R }
-function go-etc()    { cd /etc; zle reset-prompt; zle -R }
-function go-media()  { cd /run/media; zle reset-prompt; zle -R }
-function go-mnt()    { cd /mnt; zle reset-prompt; zle -R }
-function go-usr()    { cd /usr; zle reset-prompt; zle -R }
-function go-dev()    { cd /dev; zle reset-prompt; zle -R }
-function go-var()    { cd /var; zle reset-prompt; zle -R }
-
-zle -N go-home
-zle -N go-root
-zle -N go-trash
-zle -N go-etc
-zle -N go-media
-zle -N go-mnt
-zle -N go-usr
-zle -N go-dev
-zle -N go-var
-
-bindkey -M vicmd "gh" go-home
-bindkey -M vicmd "g/" go-root
-bindkey -M vicmd "gt" go-trash
-bindkey -M vicmd "ge" go-etc
-bindkey -M vicmd "gm" go-media
-bindkey -M vicmd "gM" go-mnt
-bindkey -M vicmd "gu" go-usr
-bindkey -M vicmd "gd" go-dev
-bindkey -M vicmd "gv" go-var
 
 copy-to-xclip()
 {
