@@ -400,11 +400,87 @@
 :header-args: :tangle ./.config/zsh/.zshrc :tangle-mode (identity #o755)
 :END:
 
-** add-zsh-hook
+** Functions
 
 #+begin_src sh
 
-  autoload -Uz add-zsh-hook
+  # Function to source files if they exist
+  function zsh_add_file()
+  {
+      [ -f "$ZDOTDIR/$1" ] && source "$ZDOTDIR/$1"
+  }
+
+  function zsh_add_plugin()
+  {
+      PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
+      if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
+          # For plugins
+          zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
+              zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
+      else
+          git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
+      fi
+  }
+
+  function zsh_add_completion()
+  {
+      PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
+      if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
+          # For completions
+          completion_file_path=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
+          fpath+="$(dirname "${completion_file_path}")"
+          zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh"
+      else
+          git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
+          fpath+=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
+          [ -f $ZDOTDIR/.zccompdump ] && $ZDOTDIR/.zccompdump
+      fi
+      completion_file="$(basename "${completion_file_path}")"
+      if [ "$2" = true ] && compinit "${completion_file:1}"
+  }
+
+  # Unpacking the archive
+  function ex ()
+  {
+      if [ -f $1 ] ; then
+          case $1 in
+              ,*.tar.bz2) tar xvjf $1   ;;
+              ,*.tar.gz)  tar xvzf $1   ;;
+              ,*.tar.xz)  tar xvfJ $1   ;;
+              ,*.bz2)     bunzip2 $1    ;;
+              ,*.rar)     unrar x $1    ;;
+              ,*.gz)      gunzip $1     ;;
+              ,*.tar)     tar xvf $1    ;;
+              ,*.tbz2)    tar xvjf $1   ;;
+              ,*.tgz)     tar xvzf $1   ;;
+              ,*.zip)     unzip $1      ;;
+              ,*.Z)       uncompress $1 ;;
+              ,*.7z)      7z x $1       ;;
+              ,*)         echo "'$1' cannot be unpacked with ex()" ;;
+          esac
+      else
+          echo "'$1' is not valid file"
+      fi
+  }
+
+  # Packing in the archive
+  function pk ()
+  {
+      if [ $1 ] ; then
+          case $1 in
+              tbz)    tar cjvf $2.tar.bz2 $2   ;;
+              tgz)    tar czvf $2.tar.gz  $2   ;;
+              tar)    tar cpvf $2.tar  $2      ;;
+              bz2)    bzip $2                  ;;
+              gz)     gzip -c -9 -n $2 > $2.gz ;;
+              zip)    zip -r $2.zip $2         ;;
+              7z)     7z a $2.7z $2            ;;
+              ,*)      echo "'$1' cannot be packed with pk()" ;;
+          esac
+      else
+          echo "'$1' is not valid file"
+      fi
+  }
 
 #+end_src
 
@@ -412,77 +488,21 @@
 
 #+begin_src sh
 
-  export ZIT_MODULES_PATH="${ZDOTDIR}/plugins/"
+  mkdir -p ~/.config/zsh/plugins
 
-  if [[ ! -d "${ZIT_MODULES_PATH}/zit" ]]; then
-      git clone "https://github.com/none9632/zit.git" "${ZIT_MODULES_PATH}/zit"
-  fi
-
-  source "${ZIT_MODULES_PATH}/zit/zit.zsh"
-
-  zit-il "zsh-users/zsh-autosuggestions"
-  zit-il "zsh-users/zsh-completions"
-  zit-il "zdharma-continuum/fast-syntax-highlighting"
-  # zit-il "zsh-users/zsh-syntax-highlighting"
-  zit-il "Aloxaf/fzf-tab"
-  zit-il "hlissner/zsh-autopair"
+  zsh_add_plugin "zsh-users/zsh-autosuggestions"
+  zsh_add_plugin "zsh-users/zsh-completions"
+  zsh_add_plugin "zdharma-continuum/fast-syntax-highlighting"
+  # zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
+  zsh_add_plugin "Aloxaf/fzf-tab"
+  zsh_add_plugin "hlissner/zsh-autopair"
 
 #+end_src
 
-** Autopair
+** Prompt
 
 #+begin_src sh
 
-  function fix-autopair-insert ()
-  {
-      autopair-insert
-      xdotool key '0xff89'
-  }
-
-  zle -N fix-autopair-insert
-
-  for p in ${(@k)AUTOPAIR_PAIRS}; do
-      bindkey "$p" fix-autopair-insert
-      bindkey -M isearch "$p" self-insert
-  done
-
-#+end_src
-
-** Completion
-
-#+begin_src sh
-
-  autoload -Uz compinit && compinit
-
-  setopt COMPLETE_ALIASES
-  # _comp_options+=(globdots)
-
-  zmodload zsh/complist
-
-#+end_src
-
-** History
-
-#+begin_src sh
-
-  HISTSIZE=10000
-  SAVEHIST=10000
-  HISTFILE=$HOME/.cache/zsh/history
-
-  # Ignoring repetitive lines in the history
-  setopt HIST_IGNORE_DUPS
-  setopt HIST_IGNORE_SPACE
-  setopt HIST_REDUCE_BLANKS
-  # setopt INC_APPEND_HISTORY
-  setopt SHARE_HISTORY
-
-#+end_src
-
-** Prompts
-
-#+begin_src sh
-
-  autoload -U promptinit && promptinit
   autoload -U colors && colors
 
   PREFIX="λ"
@@ -509,31 +529,26 @@
 
 #+end_src
 
-** Syntax highlighting
+** History
 
 #+begin_src sh
 
-  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
+  HISTSIZE=10000
+  SAVEHIST=10000
+  HISTFILE=$HOME/.cache/zsh/history
 
-  ZSH_HIGHLIGHT_REGEXP+=('\bsudo\b' fg=#e76f51)
-  ZSH_HIGHLIGHT_REGEXP+=('\bhttp://\S*\b' fg=#51afef,underline)
-  ZSH_HIGHLIGHT_REGEXP+=('\bhttps://\S*\b' fg=#51afef,underline)
-
-  ZSH_HIGHLIGHT_STYLES[arg0]='fg=#c792ea'
-  ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#e7c07b'
-  ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#e7c07b'
-  ZSH_HIGHLIGHT_STYLES[path]='fg=#98be65'
+  # Ignoring repetitive lines in the history
+  setopt HIST_IGNORE_DUPS
+  setopt HIST_IGNORE_SPACE
+  setopt HIST_REDUCE_BLANKS
+  # setopt INC_APPEND_HISTORY
+  setopt SHARE_HISTORY
 
 #+end_src
 
 ** Keybinding
 
 #+begin_src sh
-
-  autoload -Uz up-line-or-beginning-search
-  autoload -Uz down-line-or-beginning-search
-  zle -N up-line-or-beginning-search
-  zle -N down-line-or-beginning-search
 
   bindkey -v
 
@@ -554,16 +569,15 @@
   }
 
   # Start every prompt in insert mode
-  function zle-line-init() { zle -K viins }
+  function zle-line-init () { zle -K viins }
 
-  function exit_zsh() { exit }
+  function exit_zsh () { exit }
 
-  zle -N zle-line-init
   zle -N zle-keymap-select
+  zle -N zle-line-init
   zle -N exit_zsh
 
   bindkey -M  vicmd "U"  redo
-  bindkey -M  vicmd "zz" kill-whole-line
   bindkey -M  vicmd "k"  up-history
   bindkey -M  vicmd "j"  down-history
   bindkey -M  vicmd "L"  forward-word
@@ -578,92 +592,22 @@
 
 #+end_src
 
-** Copy/Paste into clipboard
+** Autopair
 
 #+begin_src sh
 
-  copy-to-xclip()
+  function fix-autopair-insert ()
   {
-      [[ "$REGION_ACTIVE" -ne 0 ]] && zle copy-region-as-kill
-      print -rn -- $CUTBUFFER | xclip -selection clipboard -i
+      autopair-insert
+      xdotool key '0xff89'
   }
 
-  normal-paste-xclip() {
-      killring=("$CUTBUFFER" "${(@)killring[1,-2]}")
-      CUTBUFFER=$(xclip -selection clipboard -o)
-      zle yank
-      xdotool key 'h'
-      xdotool key 'l'
-  }
+  zle -N fix-autopair-insert
 
-  insert-paste-xclip() {
-      killring=("$CUTBUFFER" "${(@)killring[1,-2]}")
-      CUTBUFFER=$(xclip -selection clipboard -o)
-      zle yank
-      xdotool key 'KP_Tab'
-  }
-
-  zle -N copy-to-xclip
-  zle -N normal-paste-xclip
-  zle -N insert-paste-xclip
-
-  # bindkey -M vicmd "y" copy-to-xclip
-  bindkey -M vicmd "p"  normal-paste-xclip
-  bindkey -M viins "^p" insert-paste-xclip
-
-#+end_src
-
-** Resetting the terminal with escape sequences
-
-#+begin_src sh
-
-  function reset_broken_terminal()
-  {
-      printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
-  }
-
-  add-zsh-hook -Uz precmd reset_broken_terminal
-
-#+end_src
-
-** COMMENT Remembering recen directories
-
-#+begin_src sh
-
-  DIRSTACKPATH="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-  DIRSTACKFILE="${DIRSTACKPATH}/dirs"
-  DIRSTACKSIZE='20'
-
-  mkdir -p $DIRSTACKPATH
-
-  if [[ -f "$DIRSTACKFILE" ]] && (( ${#dirstack} == 0 )); then
-      dirstack=("${(@f)"$(< "$DIRSTACKFILE")"}")
-      [[ -d "${dirstack[1]}" ]] && cd -- "${dirstack[1]}"
-  fi
-
-  chpwd_dirstack() {
-      print -l -- "$PWD" "${(u)dirstack[@]}" > "$DIRSTACKFILE"
-  }
-
-  add-zsh-hook -Uz chpwd chpwd_dirstack
-
-  setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
-
-  # Remove duplicate entries
-  setopt PUSHD_IGNORE_DUPS
-
-  # This reverts the +/- operators.
-  setopt PUSHD_MINUS
-
-#+end_src
-
-** COMMENT Help command
-
-#+begin_src sh
-
-  autoload -Uz run-help
-  unalias run-help
-  alias help=run-help
+  for p in ${(@k)AUTOPAIR_PAIRS}; do
+      bindkey "$p" fix-autopair-insert
+      bindkey -M isearch "$p" self-insert
+  done
 
 #+end_src
 
@@ -689,80 +633,29 @@
 
 #+begin_src sh
 
+  # Resetting the terminal with escape sequences
+  function reset_broken_terminal()
+  {
+      printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
+  }
+
+  add-zsh-hook -Uz precmd reset_broken_terminal
+
   # lf
   . $HOME/.config/lf/.lfrc
 
   # Persistent rehash
-  zstyle ':completion:*' rehash true
+  # zstyle ':completion:*' rehash true
 
-  # Unpacking the archive
-  ex ()
-  {
-      if [ -f $1 ] ; then
-          case $1 in
-              ,*.tar.bz2) tar xvjf $1   ;;
-              ,*.tar.gz)  tar xvzf $1   ;;
-              ,*.tar.xz)  tar xvfJ $1   ;;
-              ,*.bz2)     bunzip2 $1    ;;
-              ,*.rar)     unrar x $1    ;;
-              ,*.gz)      gunzip $1     ;;
-              ,*.tar)     tar xvf $1    ;;
-              ,*.tbz2)    tar xvjf $1   ;;
-              ,*.tgz)     tar xvzf $1   ;;
-              ,*.zip)     unzip $1      ;;
-              ,*.Z)       uncompress $1 ;;
-              ,*.7z)      7z x $1       ;;
-              ,*)         echo "'$1' cannot be unpacked with ex()" ;;
-          esac
-      else
-          echo "'$1' is not valid file"
-      fi
-  }
+  # enable-fzf-tab
 
-  # Packing in the archive
-  pk ()
-  {
-      if [ $1 ] ; then
-          case $1 in
-              tbz)    tar cjvf $2.tar.bz2 $2   ;;
-              tgz)    tar czvf $2.tar.gz  $2   ;;
-              tar)    tar cpvf $2.tar  $2      ;;
-              bz2)    bzip $2                  ;;
-              gz)     gzip -c -9 -n $2 > $2.gz ;;
-              zip)    zip -r $2.zip $2         ;;
-              7z)     7z a $2.7z $2            ;;
-              ,*)      echo "'$1' cannot be packed with pk()" ;;
-          esac
-      else
-          echo "'$1' is not valid file"
-      fi
-  }
-
-  enable-fzf-tab
-
-  cd ~
+  # cd ~
 
   # Run neofetch
   [[ -f /usr/bin/neofetch ]] && echo "" && neofetch
 
 #+end_src
 
-** COMMENT fzf
-
-#+begin_src sh
-
-  fzf-history-widget-accept()
-  {
-      fzf-history-widget
-      zle accept-line
-  }
-
-  zle     -N     fzf-history-widget-accept
-  bindkey '^X^R' fzf-history-widget-accept
-
-  export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-
-#+end_src
 
 * Alacritty
 :PROPERTIES:
