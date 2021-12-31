@@ -405,31 +405,44 @@
 #+begin_src sh
 
   # Function to source files if they exist
-  function zsh_add_file()
+  function zsh-add-file ()
   {
       [ -f "$ZDOTDIR/$1" ] && source "$ZDOTDIR/$1"
   }
 
-  function zsh_add_plugin()
+  function zsh-add-plugin ()
   {
       PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
       if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
           # For plugins
-          zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
-              zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
+          zsh-add-file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
+              zsh-add-file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
       else
           git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
       fi
   }
 
-  function zsh_add_completion()
+  function zsh-upgrade ()
+  {
+      local module_dir
+      for module_dir in "${ZIT_MODULES_UPGRADE[@]}"
+      do
+          pushd "${module_dir}" > /dev/null || continue
+          printf 'Updating %s\n' "${module_dir}"
+          git pull
+          printf '\n'
+          popd > /dev/null || continue
+      done
+  }
+
+  function zsh_add_completion ()
   {
       PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
       if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
           # For completions
           completion_file_path=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
           fpath+="$(dirname "${completion_file_path}")"
-          zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh"
+          zsh-add-file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh"
       else
           git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
           fpath+=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
