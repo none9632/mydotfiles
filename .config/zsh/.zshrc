@@ -91,12 +91,12 @@ function pk ()
 
 mkdir -p ~/.config/zsh/plugins
 
-zsh_add_plugin "zsh-users/zsh-autosuggestions"
-zsh_add_plugin "zsh-users/zsh-completions"
-zsh_add_plugin "zdharma-continuum/fast-syntax-highlighting"
-# zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
-zsh_add_plugin "Aloxaf/fzf-tab"
-zsh_add_plugin "hlissner/zsh-autopair"
+zsh-add-plugin "zsh-users/zsh-autosuggestions"
+zsh-add-plugin "zsh-users/zsh-completions"
+zsh-add-plugin "zdharma-continuum/fast-syntax-highlighting"
+# zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
+zsh-add-plugin "Aloxaf/fzf-tab"
+zsh-add-plugin "hlissner/zsh-autopair"
 
 autoload -U colors && colors
 
@@ -203,7 +203,7 @@ function reset_broken_terminal()
 {
     printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
 }
-
+autoload -Uz add-zsh-hook
 add-zsh-hook -Uz precmd reset_broken_terminal
 
 # lf
