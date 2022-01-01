@@ -221,8 +221,7 @@ alias stcpu="stress -c 8"
 alias stmem="stress -vm 2 --vm-bytes"
 
 alias pacman="sudo pacman"
-alias pacsyu="sudo pacman -Syu"
-alias yaysyu="yay -Syu"
+alias update="yay -Syu"
 
 alias ls="exa -la --color=always --group-directories-first"
 alias cat="bat"
@@ -231,6 +230,17 @@ alias rm="rm -r"
 alias cp="cp -r"
 
 alias src="source ~/.config/zsh/.zshrc"
+alias mkcd='foo(){ mkdir -p "$1"; cd "$1" }; foo '
+alias c='clear'
+
+# navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
 
 # get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -252,6 +262,9 @@ alias -g LL="2>&1 | less"
 alias -g CA="2>&1 | cat -A"
 alias -g NE="2> /dev/null"
 alias -g NUL="> /dev/null 2>&1"
+
+# git
+alias gac="git add . && git commit -a -m "
 
 # Resetting the terminal with escape sequences
 function reset_broken_terminal()
