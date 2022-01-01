@@ -29,7 +29,7 @@ function zsh-upgrade ()
     done
 }
 
-function zsh_add_completion ()
+function zsh-add-completion ()
 {
     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
     if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
@@ -176,7 +176,8 @@ bindkey -sM viins "^l" "jjla"
 function fix-autopair-insert ()
 {
     autopair-insert
-    xdotool key '0xff89'
+    zle vi-forward-char
+    zle vi-backward-char
 }
 
 zle -N fix-autopair-insert
