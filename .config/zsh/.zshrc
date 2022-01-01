@@ -92,11 +92,14 @@ function pk ()
 mkdir -p ~/.config/zsh/plugins
 
 zsh-add-plugin "zsh-users/zsh-autosuggestions"
-zsh-add-plugin "zsh-users/zsh-completions"
 zsh-add-plugin "zdharma-continuum/fast-syntax-highlighting"
-# zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
-zsh-add-plugin "Aloxaf/fzf-tab"
 zsh-add-plugin "hlissner/zsh-autopair"
+zsh-add-plugin "none9632/zsh-sudo"
+
+# zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
+# zsh-add-plugin "zsh-users/zsh-completions"
+# zsh-add-plugin "chitoku-k/fzf-zsh-completions"
+# zsh-add-plugin "Aloxaf/fzf-tab"
 
 autoload -U colors && colors
 
