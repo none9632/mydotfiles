@@ -95,6 +95,7 @@ zsh-add-plugin "zsh-users/zsh-autosuggestions"
 zsh-add-plugin "zdharma-continuum/fast-syntax-highlighting"
 zsh-add-plugin "hlissner/zsh-autopair"
 zsh-add-plugin "none9632/zsh-sudo"
+zsh-add-plugin "tom-auger/cmdtime"
 
 # zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
 # zsh-add-plugin "zsh-users/zsh-completions"
@@ -223,6 +224,7 @@ alias stmem="stress -vm 2 --vm-bytes"
 
 alias pacman="sudo pacman"
 alias update="yay -Syu"
+alias inl="yay -Slq | fzf --multi --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro yay -S"
 
 alias ls="exa -la --color=always --group-directories-first"
 alias cat="bat"
