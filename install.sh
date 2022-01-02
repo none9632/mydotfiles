@@ -14,7 +14,7 @@ config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh"
 
 bin_files="inkscape-figures"
 lf_bin_files="lf_disk lf_prepare_file lf_update lfrun"
-rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
+rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot wifi"
 
 error()
 {

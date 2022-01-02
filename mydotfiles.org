@@ -44,7 +44,7 @@
 
   bin_files="inkscape-figures"
   lf_bin_files="lf_disk lf_prepare_file lf_update lfrun"
-  rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot"
+  rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot wifi"
 
 #+end_src
 
@@ -9871,6 +9871,95 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
+**** Wifi
+
+#+begin_src css :tangle ./.config/rofi/themes/menu/wifi.rasi
+
+  ,* {
+      transparency:     "real";
+      se:               rgba ( 94, 108, 145, 75 % );
+      bg:               rgba ( 0, 0, 0, 0 % );
+      red:              rgba ( 255, 85, 85, 75 % );
+      bg2:              rgba ( 40, 42, 54, 75 % );
+      al:               rgba ( 0, 0, 0, 0 % );
+      opacity:          75.0000% ;
+      fg:               rgba ( 248, 248, 242, 75 % );
+      background-color: var(bg);
+      ac:               rgba ( 255, 121, 198, 75 % );
+  }
+  window {
+      padding:          10;
+      height:           35%;
+      width:            20.5%;
+      location:         north east;
+      anchor:           north east;
+      x-offset:         -14px;
+      y-offset:         67px;
+      background-color: var(bg2);
+      border-radius:    6px ;
+      border-color:     var(ac);
+      border:           0px ;
+      children: [listview];
+  }
+  entry {
+      spacing:    0;
+      text-color: var(fg);
+  }
+  mainbox {
+      padding:      0;
+      border-color: var(ac);
+      border:       0px ;
+      children:     [ inputbar,listview ];
+  }
+  listview {
+      fixed-height: 0;
+      padding:      5px ;
+      scrollbar:    false;
+      dynamic:      true;
+      border-color: var(ac);
+      columns:      1;
+      spacing:      4px ;
+      border:       0px ;
+  }
+  element-text {
+      background-color: rgba ( 0, 0, 0, 0 % );
+      text-color:       inherit;
+  }
+  element {
+      padding:       5px ;
+      border:        0px ;
+      border-radius: 4px ;
+      horizontal-align: 0.5;
+  }
+
+
+  element normal.normal {
+      background-color: var(bg);
+      text-color:       var(fg);
+  }
+  element normal.active {
+      background-color: var(green);
+      text-color:       var(bg2);
+  }
+  element selected.normal {
+      background-color: var(fg);
+      text-color:       var(bg2);
+  }
+  element selected.active {
+      background-color: var(fg);
+      text-color:       var(bg2);
+  }
+  element alternate.normal {
+      background-color: var(bg);
+      text-color:       var(fg);
+  }
+  element alternate.active {
+      background-color: var(bg);
+      text-color:       var(fg);
+  }
+
+#+end_src
+
 *** Other themes
 **** Error message
 
@@ -11286,6 +11375,63 @@ Configuration based on https://github.com/adi1090x/rofi
           amixer -q set Master toggle
           ;;
   esac
+
+#+end_src
+
+**** Wifi
+
+#+begin_src sh :tangle ./.config/rofi/scripts/wifi.sh
+
+  #!/bin/sh
+
+  # this prints a beautifully formatted list. bash was a mistake
+  nmcli -t d wifi rescan
+  LIST=$(nmcli --fields SSID,SECURITY,BARS device wifi list | sed '/^--/d' | sed 1d | sed -E "s/WPA*.?\S/~~/g" | sed "s/~~ ~~/~~/g;s/802\.1X//g;s/--/~~/g;s/  *~/~/g;s/~  */~/g;s/_/ /g" | column -t -s '~')
+
+  # get current connection status
+  CONSTATE=$(nmcli -fields WIFI g)
+  if [[ "$CONSTATE" =~ "enabled" ]]; then
+      TOGGLE="Disable WiFi 睊"
+  elif [[ "$CONSTATE" =~ "disabled" ]]; then
+      TOGGLE="Enable WiFi 直"
+  fi
+
+  # display menu; store user choice
+  # CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row 1 -config "./theme.rasi")
+  CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row 1 -config "../themes/menu/wifi.rasi")
+  # store selected SSID
+  CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
+
+  if [ "$CHENTRY" = "" ]; then
+      exit
+  elif [ "$CHENTRY" = "Enable WiFi 直" ]; then
+      nmcli radio wifi on
+  elif [ "$CHENTRY" = "Disable WiFi 睊" ]; then
+      nmcli radio wifi off
+  else
+      # get list of known connections
+      KNOWNCON=$(nmcli connection show)
+
+      # If the connection is already in use, then this will still be able to get the SSID
+      if [ "$CHSSID" = "*" ]; then
+          CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $3}')
+      fi
+
+      # Parses the list of preconfigured connections to see if it already contains the chosen SSID. This speeds up the connection process
+      if [[ $(echo "$KNOWNCON" | grep "$CHSSID") = "$CHSSID" ]]; then
+          nmcli con up "$CHSSID"
+      else
+          if [[ "$CHENTRY" =~ "" ]]; then
+              WIFIPASS=$(echo " Press Enter if network is saved" | rofi -dmenu -p " WiFi Password: " -lines 1 )
+          fi
+          if nmcli dev wifi con "$CHSSID" password "$WIFIPASS"
+          then
+              notify-send 'Connection successful'
+          else
+              notify-send 'Connection failed'
+          fi
+      fi
+  fi
 
 #+end_src
 
