@@ -630,6 +630,7 @@
   {
       CUTBUFFER=$(xsel -o -b </dev/null)
       zle yank
+      zle down-line
   }
 
   function clip-copy ()
@@ -687,7 +688,7 @@
   alias mkcd='foo(){ mkdir -p "$1"; cd "$1" }; foo '
   alias c='clear'
 
-  # navigation
+  # Navigation
   alias ..='cd ..'
   alias ...='cd ../..'
   alias ....='cd ../../../../'
@@ -696,7 +697,7 @@
   alias .4='cd ../../../..'
   alias .5='cd ../../../../..'
 
-  # get fastest mirrors
+  # Get fastest mirrors
   alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
   alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
   alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
@@ -742,13 +743,77 @@
 
   # enable-fzf-tab
 
-  # cd ~
-
   # Run neofetch
   [[ -f /usr/bin/neofetch ]] && echo "" && neofetch
 
 #+end_src
 
+
+** COMMENT Syntax highlighting
+
+#+begin_src sh
+
+  fast-theme ~/.config/zsh/mytheme.ini >/dev/null
+
+#+end_src
+
+** COMMENT Syntax highlighting
+
+#+begin_src sh
+
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
+
+  ZSH_HIGHLIGHT_REGEXP+=('\bsudo\b' fg=#e76f51)
+  ZSH_HIGHLIGHT_REGEXP+=('\bhttp://\S*\b' fg=#51afef,underline)
+  ZSH_HIGHLIGHT_REGEXP+=('\bhttps://\S*\b' fg=#51afef,underline)
+
+  ZSH_HIGHLIGHT_STYLES[arg0]='fg=#c792ea'
+  ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#e7c07b'
+  ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#e7c07b'
+  ZSH_HIGHLIGHT_STYLES[path]='fg=#98be65'
+
+#+end_src
+
+** COMMENT Remembering recen directories
+
+#+begin_src sh
+
+  DIRSTACKPATH="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+  DIRSTACKFILE="${DIRSTACKPATH}/dirs"
+  DIRSTACKSIZE='20'
+
+  mkdir -p $DIRSTACKPATH
+
+  if [[ -f "$DIRSTACKFILE" ]] && (( ${#dirstack} == 0 )); then
+      dirstack=("${(@f)"$(< "$DIRSTACKFILE")"}")
+      [[ -d "${dirstack[1]}" ]] && cd -- "${dirstack[1]}"
+  fi
+
+  chpwd_dirstack() {
+      print -l -- "$PWD" "${(u)dirstack[@]}" > "$DIRSTACKFILE"
+  }
+
+  add-zsh-hook -Uz chpwd chpwd_dirstack
+
+  setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
+
+  # Remove duplicate entries
+  setopt PUSHD_IGNORE_DUPS
+
+  # This reverts the +/- operators.
+  setopt PUSHD_MINUS
+
+#+end_src
+
+** COMMENT Help command
+
+#+begin_src sh
+
+  autoload -Uz run-help
+  unalias run-help
+  alias help=run-help
+
+#+end_src
 
 * Alacritty
 :PROPERTIES:
@@ -11630,7 +11695,6 @@ fish becomes very slow.
   neofetch
 
 #+end_src
-
 
 ** Bash
 *** .bashrc

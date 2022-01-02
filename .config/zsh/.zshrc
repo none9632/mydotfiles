@@ -188,6 +188,7 @@ function clip-paste ()
 {
     CUTBUFFER=$(xsel -o -b </dev/null)
     zle yank
+    zle down-line
 }
 
 function clip-copy ()
@@ -233,7 +234,7 @@ alias src="source ~/.config/zsh/.zshrc"
 alias mkcd='foo(){ mkdir -p "$1"; cd "$1" }; foo '
 alias c='clear'
 
-# navigation
+# Navigation
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../../../'
@@ -242,7 +243,7 @@ alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 
-# get fastest mirrors
+# Get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
 alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
 alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
@@ -281,8 +282,6 @@ add-zsh-hook -Uz precmd reset_broken_terminal
 # zstyle ':completion:*' rehash true
 
 # enable-fzf-tab
-
-# cd ~
 
 # Run neofetch
 [[ -f /usr/bin/neofetch ]] && echo "" && neofetch
