@@ -234,17 +234,19 @@ alias rm="rm -r"
 alias cp="cp -r"
 
 alias src="source ~/.config/zsh/.zshrc"
-alias mkcd='foo(){ mkdir -p "$1"; cd "$1" }; foo '
-alias c='clear'
+alias mkcd="foo(){ mkdir -p \"$1\"; cd \"$1\" }; foo "
+alias c="clear"
+alias env="xdotool keydown Shift; printenv | fzf; xdotool keyup Shift"
+alias als="alias | fzf"
 
 # Navigation
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../../../'
-alias .....='cd ../../../../'
-alias .3='cd ../../..'
-alias .4='cd ../../../..'
-alias .5='cd ../../../../..'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../../../"
+alias .....="cd ../../../../"
+alias .3="cd ../../.."
+alias .4="cd ../../../.."
+alias .5="cd ../../../../.."
 
 # Get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -253,13 +255,13 @@ alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/p
 alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
 # Colorize grep output
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
+alias grep="grep --color=auto"
+alias egrep="egrep --color=auto"
+alias fgrep="fgrep --color=auto"
 
-alias -g H='| head'
-alias -g T='| tail'
-alias -g G='| grep'
+alias -g H="| head"
+alias -g T="| tail"
+alias -g G="| grep"
 alias -g L="| less"
 alias -g M="| most"
 alias -g LL="2>&1 | less"
