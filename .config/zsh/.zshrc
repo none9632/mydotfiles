@@ -140,7 +140,8 @@ setopt SHARE_HISTORY
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
 
-export FZF_DEFAULT_COMMAND='fd --type f --color=never --hidden'
+export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
+export FZF_DEFAULT_OPTS="--bind 'alt-k:up' --bind 'alt-j:down'"
 # export FZF_DEFAULT_OPTS='--no-height --color=bg+:#343d46,gutter:-1,pointer:#ff3c3c,info:#0dbc79,hl:#0dbc79,hl+:#23d18b'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -181,9 +182,9 @@ bindkey -M  vicmd "H" backward-word
 bindkey -sM vicmd ":" ""
 bindkey -sM vicmd "/" ""
 
-bindkey -M  viins "jj" vi-cmd-mode
-bindkey -M  viins "^?" backward-delete-char
-bindkey -sM viins "^l" "jjla"
+bindkey -M viins "jj" vi-cmd-mode
+bindkey -M viins "^?" backward-delete-char
+bindkey -M viins "^l" vi-forward-char
 
 function clip-paste ()
 {
