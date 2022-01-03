@@ -92,12 +92,11 @@ function pk ()
 mkdir -p ~/.config/zsh/plugins
 
 zsh-add-plugin "zsh-users/zsh-autosuggestions"
-zsh-add-plugin "zdharma-continuum/fast-syntax-highlighting"
 zsh-add-plugin "hlissner/zsh-autopair"
 zsh-add-plugin "none9632/zsh-sudo"
 zsh-add-plugin "tom-auger/cmdtime"
+zsh-add-plugin "zdharma-continuum/fast-syntax-highlighting"
 
-# zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
 # zsh-add-plugin "chitoku-k/fzf-zsh-completions"
 
 autoload -U colors && colors
@@ -123,6 +122,8 @@ ${GREY}]
 └>${END} \
 ${BCYAN}${PREFIX}${END} \
 ${WHITE}${END}"
+
+fast-theme ~/.config/zsh/mytheme.ini >/dev/null
 
 HISTSIZE=10000
 SAVEHIST=10000
