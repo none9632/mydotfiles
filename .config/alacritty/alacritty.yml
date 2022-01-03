@@ -196,28 +196,15 @@ colors:
   # background: '#ffffff'
 
   # Normal colors
-
   normal:
-    # black:   '#141c21'
-    # black:   '#161e22'
     black:   '#182024'
     red:     '#ff6c6b'
     green:   '#98be65'
     yellow:  '#da8548'
-    # yellow:  '#ffaf00'
     blue:    '#51afef'
     magenta: '#d499e5'
     cyan:    '#5699af'
     white:   '#bbc2cf'
-  # normal:
-    # black:   '#1c1f24'
-    # red:     '#ff6c6b'
-    # green:   '#98be65'
-    # yellow:  '#da8548'
-    # blue:    '#51afef'
-    # magenta: '#d499e5'
-    # cyan:    '#5699af'
-    # white:   '#42444a'
 
   # Bright colors
   bright:
@@ -260,9 +247,3 @@ shell:
  program: /bin/zsh
 #  args:
 #    - --login
-
-# Startup directory
-#
-# Directory the shell is started in. If this is unset, or `None`, the working
-# directory of the parent process will be used.
-#working_directory: None
