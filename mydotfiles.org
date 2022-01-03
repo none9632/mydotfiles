@@ -657,7 +657,7 @@
 #+begin_src conf
 
   [other]
-  variable             = 113
+  variable             = cyan
   assign               = none
   assign-array-bracket = green
   history-expansion    = blue,bold
