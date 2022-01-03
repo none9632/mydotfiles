@@ -150,6 +150,8 @@ export FZF_ALT_C_COMMAND='fd --type d --type symlink . --color=never --hidden'
 export FZF_ALT_C_OPTS="--preview 'exa -1a --color=always --group-directories-first {} | head -50'"
 
 bindkey "^h^h" fzf-cd-widget
+bindkey -M vicmd "r" fzf-history-widget
+bindkey -M vicmd "t" fzf-file-widget
 
 bindkey -v
 
@@ -286,8 +288,6 @@ add-zsh-hook -Uz precmd reset_broken_terminal
 
 # Persistent rehash
 # zstyle ':completion:*' rehash true
-
-# enable-fzf-tab
 
 # Run neofetch
 [[ -f /usr/bin/neofetch ]] && echo "" && neofetch

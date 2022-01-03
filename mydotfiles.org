@@ -588,7 +588,7 @@
   subcommand     = blue
   alias          = magenta
   suffix-alias   = magenta
-  global-alias   = bg:blue
+  global-alias   = magenta
   builtin        = magenta
   function       = magenta
   command        = magenta
@@ -735,6 +735,8 @@
   export FZF_ALT_C_OPTS="--preview 'exa -1a --color=always --group-directories-first {} | head -50'"
 
   bindkey "^h^h" fzf-cd-widget
+  bindkey -M vicmd "r" fzf-history-widget
+  bindkey -M vicmd "t" fzf-file-widget
 
 #+end_src
 
@@ -902,13 +904,10 @@
   # Persistent rehash
   # zstyle ':completion:*' rehash true
 
-  # enable-fzf-tab
-
   # Run neofetch
   [[ -f /usr/bin/neofetch ]] && echo "" && neofetch
 
 #+end_src
-
 
 ** COMMENT Remembering recen directories
 
