@@ -92,10 +92,7 @@ cmd my_rename &{{
     FILE="/tmp/lfundo_$id"
     lf_prepare_file $FILE
 
-    filename="${f##*/}"
-    filename="$(printf '%q' "$filename")"
-    filename="${filename// /<space>}"
-    echo $filename | xclip -selection clipboard
+    echo "${f##*/}" | xclip -selection clipboard
 
     new_name=$(input "New name:")
     while [ -e $new_name ] && [ "$new_name" != "" ]
