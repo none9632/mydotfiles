@@ -13,8 +13,6 @@ pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git"
 config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh"
 
 bin_files="inkscape-figures"
-lf_bin_files="lf_disk lf_prepare_file lf_update lfrun"
-rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot wifi"
 
 error()
 {
@@ -68,22 +66,6 @@ do
     then
         echo "Creating symlink to $file in $bin_dir"
         ln -s $dot_dir/.local/$file $bin_dir/$file
-    fi
-done
-for file in $lf_bin_files
-do
-    if [ ! -f $bin_dir/$file ]
-    then
-        echo "Creating symlink to $file in $bin_dir"
-        ln -s $dot_dir/.config/lf/scripts/$file.sh $bin_dir/$file
-    fi
-done
-for file in $rofi_bin_files
-do
-    if [ ! -f $bin_dir/$file ]
-    then
-        echo "Creating symlink to $file in $bin_dir"
-        ln -s $dot_dir/.config/rofi/scripts/$file.sh $bin_dir/$file
     fi
 done
 

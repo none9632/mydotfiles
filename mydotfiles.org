@@ -43,8 +43,6 @@
   config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh"
 
   bin_files="inkscape-figures"
-  lf_bin_files="lf_disk lf_prepare_file lf_update lfrun"
-  rofi_bin_files="appslauncher appsmenu errormsg filesearch input longinput powermenu screenshot wifi"
 
 #+end_src
 
@@ -110,22 +108,6 @@
       then
           echo "Creating symlink to $file in $bin_dir"
           ln -s $dot_dir/.local/$file $bin_dir/$file
-      fi
-  done
-  for file in $lf_bin_files
-  do
-      if [ ! -f $bin_dir/$file ]
-      then
-          echo "Creating symlink to $file in $bin_dir"
-          ln -s $dot_dir/.config/lf/scripts/$file.sh $bin_dir/$file
-      fi
-  done
-  for file in $rofi_bin_files
-  do
-      if [ ! -f $bin_dir/$file ]
-      then
-          echo "Creating symlink to $file in $bin_dir"
-          ln -s $dot_dir/.config/rofi/scripts/$file.sh $bin_dir/$file
       fi
   done
 
@@ -373,7 +355,7 @@
 
 #+begin_src sh
 
-  export PATH=$HOME/.config/rofi/bin:$HOME/.config/lf/bin:$HOME/.local/bin:$PATH
+  export PATH=$HOME/.config/rofi/scripts:$HOME/.config/lf/scripts:$HOME/.local/bin:$PATH
   export ZDOTDIR="$HOME/.config/zsh"
   export POLYBAR_LAUNCH="$HOME/Desktop/mydotfiles/.config/polybar/launch.sh"
 
@@ -1915,7 +1897,7 @@ defined in.
 
 *** Cleaner
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_cleaner.sh
+#+begin_src sh :tangle ./.config/lf/scripts/lf_cleaner
 
   #!/bin/sh
 
@@ -1927,7 +1909,7 @@ defined in.
 
 *** Disk
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_disk.sh
+#+begin_src sh :tangle ./.config/lf/scripts/lf_disk
 
   #!/bin/sh
 
@@ -1968,7 +1950,7 @@ defined in.
 
 *** Prepare file
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_prepare_file.sh
+#+begin_src sh :tangle ./.config/lf/scripts/lf_prepare_file
 
   #!/bin/sh
 
@@ -1983,7 +1965,7 @@ defined in.
 
 *** Previewer
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_previewer.sh
+#+begin_src sh :tangle ./.config/lf/scripts/lf_previewer
 
   #!/bin/sh
 
@@ -2137,7 +2119,7 @@ defined in.
 
 *** Update
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_update.sh
+#+begin_src sh :tangle ./.config/lf/scripts/lf_update
 
   #!/bin/sh
 
@@ -2161,7 +2143,7 @@ defined in.
 
 *** lfrun
 
-#+begin_src sh :tangle ./.config/lf/scripts/lfrun.sh
+#+begin_src sh :tangle ./.config/lf/scripts/lfrun
 
   #!/bin/sh
 
@@ -10654,7 +10636,7 @@ Configuration based on https://github.com/adi1090x/rofi
 *** Menu scripts
 **** Application launcher
 
-#+begin_src sh :tangle ./.config/rofi/scripts/appslauncher.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/appslauncher
 
   #!/bin/sh
 
@@ -10668,7 +10650,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Application menu
 
-#+begin_src sh :tangle ./.config/rofi/scripts/appsmenu.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/appsmenu
 
   #!/bin/sh
 
@@ -10812,7 +10794,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** File search
 
-#+begin_src sh :tangle ./.config/rofi/scripts/filesearch.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/filesearch
 
   #!/bin/sh
 
@@ -11229,7 +11211,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Power menu
 
-#+begin_src sh :tangle ./.config/rofi/scripts/powermenu.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/powermenu
 
   #!/bin/sh
 
@@ -11348,7 +11330,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Schreenshot
 
-#+begin_src sh :tangle ./.config/rofi/scripts/screenshot.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/screenshot
 
   #!/bin/sh
 
@@ -11496,7 +11478,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Wifi
 
-#+begin_src sh :tangle ./.config/rofi/scripts/wifi.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/wifi
 
   #!/bin/sh
 
@@ -11554,7 +11536,7 @@ Configuration based on https://github.com/adi1090x/rofi
 *** Other scripts
 **** Error message
 
-#+begin_src sh :tangle ./.config/rofi/scripts/errormsg.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/errormsg
 
   #!/bin/sh
 
@@ -11566,7 +11548,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Input
 
-#+begin_src sh :tangle ./.config/rofi/scripts/input.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/input
 
   #!/bin/sh
 
@@ -11592,7 +11574,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Long input
 
-#+begin_src sh :tangle ./.config/rofi/scripts/longinput.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/longinput
 
   #!/bin/sh
 
