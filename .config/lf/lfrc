@@ -13,8 +13,8 @@ set shell 'sh'
 set shellopts '-eu'
 set ifs "\n"
 set scrolloff 10
-set previewer ~/.config/lf/scripts/lf_previewer.sh
-set cleaner ~/.config/lf/scripts/lf_cleaner.sh
+set previewer ~/.config/lf/scripts/lf_previewer
+set cleaner ~/.config/lf/scripts/lf_cleaner
 
 %{{
     touch /tmp/lfundo_$id

@@ -2459,8 +2459,8 @@ defined in.
   set shellopts '-eu'
   set ifs "\n"
   set scrolloff 10
-  set previewer ~/.config/lf/scripts/lf_previewer.sh
-  set cleaner ~/.config/lf/scripts/lf_cleaner.sh
+  set previewer ~/.config/lf/scripts/lf_previewer
+  set cleaner ~/.config/lf/scripts/lf_cleaner
 
 #+end_src
 
@@ -7399,7 +7399,7 @@ Include an external file, like module file, etc.
   ; Available tokens:
   ;   %counter%
   ; Command to be executed (using "/usr/bin/env sh -c [command]")
-  exec = ~/.config/polybar/colorblocks/scripts/updates.sh
+  exec =
 
 #+end_src
 
