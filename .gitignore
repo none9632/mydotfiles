@@ -1,3 +1,5 @@
 .config/nvim/bundle
 .config/zsh/.zcompdump
 .config/zsh/plugins
+.config/polybar/scripts/cpu
+.config/polybar/scripts/ram

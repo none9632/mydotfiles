@@ -10,6 +10,8 @@
   .config/nvim/bundle
   .config/zsh/.zcompdump
   .config/zsh/plugins
+  .config/polybar/scripts/cpu
+  .config/polybar/scripts/ram
 
 #+end_src
 
@@ -7441,29 +7443,8 @@ Include an external file, like module file, etc.
 #+end_src
 
 **** Script
-***** Makefile
 
-#+begin_src makefile :tangle ./.config/polybar/scripts/cpu/Makefile
-
-  TARGET := cpu
-
-  CC     := gcc
-  CCFLAG := -Wall -O3
-  FILES  := cpu.c
-
-  .PHONY: rebuild clean
-
-  $(TARGET): $(FILES)
-      $(CC) $(CCFLAG) $(FILES) -o $(TARGET)
-
-  rebuild: clean $(TARGET)
-
-  clean:
-      rm $(TARGET)
-
-#+end_src
-
-***** Program
+gcc -Wall -O3 cpu.c -o cpu
 
 #+begin_src c :tangle ./.config/polybar/scripts/cpu/cpu.c
 
@@ -7549,72 +7530,10 @@ Include an external file, like module file, etc.
 #+end_src
 
 **** Script
-***** Makefile
 
-#+begin_src makefile :tangle ./.config/polybar/scripts/ram/Makefile
-
-  TARGET := ram
-
-  CC     := gcc
-  CCFLAG := -Wall -O3
-  FILES  := ram.c
-
-  .PHONY: rebuild clean
-
-  $(TARGET): $(FILES)
-      $(CC) $(CCFLAG) $(FILES) -o $(TARGET)
-
-  rebuild: clean $(TARGET)
-
-  clean:
-      rm $(TARGET)
-
-#+end_src
-
-***** Program
+gcc -Wall -O3 ram.c -o ram
 
 #+begin_src c :tangle ./.config/polybar/scripts/ram/ram.c
-
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <unistd.h>
-  #include <time.h>
-
-  void read_stat(long long int *a)
-  {
-      FILE *stat = fopen("/proc/stat","r");
-
-      if (stat == NULL)
-          exit(EXIT_FAILURE);
-
-      fscanf(stat,"%*s %lli %lli %lli %lli %lli %lli %lli", &a[0], &a[1], &a[2], &a[3], &a[4], &a[5], &a[6]);
-      fclose(stat);
-  }
-
-  int main(void)
-  {
-      long long int a[7], b[7];
-      double delta;
-      int used;
-
-      read_stat(a);
-      usleep(250000);
-      read_stat(b);
-
-      delta = ((b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6]) - (a[0] + a[1] + a[2] + a[3] + a[4] + a[5] + a[6]));
-      used  = (delta - (b[3] - a[3])) / delta * 100;
-
-      if (used == 100)
-          printf("%i%% \n", used);
-      else if (used > 9)
-          printf(" %i%% \n", used);
-      else
-          printf("  %i%% \n", used);
-
-      return 0;
-  }
-
-#+end_src
 
   #include <stdio.h>
   #include <stdlib.h>
@@ -7715,6 +7634,40 @@ Include an external file, like module file, etc.
       printf("%.2lfG/%.2lfG \n", used_M / 1024, total_M / 1024);
 
     fclose(meminfo);
+    return 0;
+  }
+
+#+end_src
+
+*** COMMENT My battery
+**** Module config
+**** Script
+
+gcc -Wall -O3 battery.c -o battery
+
+#+begin_src c :tangle ./.config/polybar/scripts/battery/battery.c
+
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  int main(void)
+  {
+    FILE *capacity_f = fopen("/sys/class/power_supply/BAT1/capacity", "r");
+    int capacity;
+
+    if (capacity_f == NULL)
+      exit(EXIT_FAILURE);
+
+    fscanf(capacity_f, "%i", &capacity);
+
+    if (capacity == 100)
+      printf("%d%%\n", capacity);
+    else if (capacity > 9)
+      printf(" %d%%\n", capacity);
+    else
+      printf("  %d%%\n", capacity);
+
+    fclose(capacity_f);
     return 0;
   }
 
