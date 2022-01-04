@@ -7,12 +7,15 @@ function zsh-add-file ()
 function zsh-add-plugin ()
 {
     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
-    if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
-        # For plugins
-        zsh-add-file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
-            zsh-add-file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
+    PLUGIN_DIR="$ZDOTDIR/plugins/$PLUGIN_NAME"
+
+    [ ! -d "$PLUGIN_DIR" ] && git clone "https://github.com/$1.git" "$PLUGIN_DIR"
+
+    if   [ "$2" != "" ] && [ -f $PLUGIN_DIR/$2 ];    then source $PLUGIN_DIR/$2
+    elif [ -f $PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh ]; then source $PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh
+    elif [ -f $PLUGIN_DIR/$PLUGIN_NAME.zsh ];        then source $PLUGIN_DIR/$PLUGIN_NAME.zsh
     else
-        git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
+        echo "Can't load $PLUGIN_NAME"
     fi
 }
 
