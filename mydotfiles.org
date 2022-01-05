@@ -2489,13 +2489,37 @@ defined in.
           inode/x-empty)
               lf -remote "send $id push e" ;;
           inode/directory | inode/symlink)
-              myf="$(echo $f | sed 's/\ /\\\ /g')"
-              lf -remote "send $id my_cd $myf" ;;
+              fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+              lf -remote "send $id my_cd $fix_f" ;;
           application/pdf | image/vnd.djvu)
               zathura $f ;;
           ,*)
               for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done ;;
       esac
+  }}
+
+  cmd my_cd &{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      sed -i "1s|^|$PWD\n|" $FILE
+      sed -i "1s|^|cd\n|" $FILE
+
+      fix_f="$(echo $1 | sed 's/\ /\\\ /g')"
+      eval zoxide add $fix_f
+      lf -remote "send $id cd $fix_f"
+      lf_update $1 $id
+  }}
+
+  cmd my_updir %{{
+      FILE="/tmp/lfundo_$id"
+      lf_prepare_file $FILE
+
+      sed -i "1s|^|$PWD\n|" $FILE
+      sed -i "1s|^|cd\n|" $FILE
+
+      lf -remote "send $id updir"
+      lf_update "$(dirname $PWD)" $id
   }}
 
   cmd mkdir &{{
@@ -2696,29 +2720,6 @@ defined in.
       lf -remote "send $id reload"
   }}
 
-  cmd my_cd &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      sed -i "1s|^|$PWD\n|" $FILE
-      sed -i "1s|^|cd\n|" $FILE
-
-      myf="$(echo $1 | sed 's/\ /\\\ /g')"
-      lf -remote "send $id cd $myf"
-      lf_update $1 $id
-  }}
-
-  cmd my_updir %{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
-      sed -i "1s|^|$PWD\n|" $FILE
-      sed -i "1s|^|cd\n|" $FILE
-
-      lf -remote "send $id updir"
-      lf_update "$(dirname $PWD)" $id
-  }}
-
   cmd fzf_jump ${{
       res="$(find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
           -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
@@ -2743,6 +2744,11 @@ defined in.
       fi
 
       lf -remote "send $id $cmd \"$res\""
+  }}
+
+  cmd fzf_jump_prev ${{
+      dir=$(zoxide query -i)
+      lf -remote "send $id my_cd $dir"
   }}
 
   cmd my_search %{{
@@ -2836,8 +2842,8 @@ defined in.
   map -r chmod -r
 
   # file operations
-  map cd mkdir
-  map cf mkfile
+  map md mkdir
+  map mf mkfile
   map cw my_rename
   map y my_copy
   map p my_paste
@@ -2855,7 +2861,8 @@ defined in.
 
   # find files
   map ff fzf_jump
-  map fd fzf_jump_dot
+  map fd fzf_jump_prev
+  map cd fzf_jump_dot
   map fg :cd /; fzf_jump_dot
 
   # Automatic switchover of the Russian layout
