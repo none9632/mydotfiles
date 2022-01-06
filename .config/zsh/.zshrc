@@ -128,7 +128,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
 
 ZSH_HIGHLIGHT_REGEXP+=('\bsudo\b' fg=#e76f51)
 ZSH_HIGHLIGHT_REGEXP+=("[\$][a-zA-Z0-9_]*" fg=#5699af)
-ZSH_HIGHLIGHT_REGEXP+=("\b(http|https|ftp)://[^\"|\ |']*\b" fg=#51afef,underline)
+ZSH_HIGHLIGHT_REGEXP+=("\b(http|https|ftp)://[^\"|\ |'|\$]*\b" fg=#51afef,underline)
 
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=#c792ea'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#e7c07b'
@@ -157,8 +157,7 @@ export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
 export FZF_DEFAULT_OPTS="--bind 'tab:down'\
                          --bind 'shift-tab:up'\
                          --bind 'alt-j:down'\
-                         --bind 'alt-k:up'\
-                         --bind 'space:toggle'"
+                         --bind 'alt-k:up'"
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
@@ -249,7 +248,7 @@ alias stmem="stress -vm 2 --vm-bytes"
 
 alias pacman="sudo pacman"
 alias update="yay -Syu"
-alias inl="yay -Slq | fzf $FZF_DEFAULT_OPTS --reverse --multi --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro yay -S"
+alias inl="yay -Slq | fzf $FZF_DEFAULT_OPTS --bind 'space:toggle' --reverse --multi --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro yay -S"
 
 alias ls="exa -la --color=always --group-directories-first"
 alias cat="bat"
@@ -304,11 +303,10 @@ function reset_broken_terminal()
 autoload -Uz add-zsh-hook
 add-zsh-hook -Uz precmd reset_broken_terminal
 
+source /usr/share/doc/pkgfile/command-not-found.zsh
+
 # lf
 . $HOME/.config/lf/.lfrc
-
-# Persistent rehash
-# zstyle ':completion:*' rehash true
 
 # Run neofetch
 [[ -f /usr/bin/neofetch ]] && echo "" && neofetch
