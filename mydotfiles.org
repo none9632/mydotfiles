@@ -39,7 +39,7 @@
   # list of the build packages
   build_pkgs="base-devel git gcc make cmake"
   # list of packages that will be installed
-  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git"
+  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git zoxide"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh"
@@ -555,6 +555,8 @@
   SAVEHIST=10000
   HISTFILE=$HOME/.cache/zsh/history
 
+  mkdir -p $HOME/.cache/zsh
+
   # Ignoring repetitive lines in the history
   setopt HIST_IGNORE_DUPS
   setopt HIST_IGNORE_SPACE
@@ -752,11 +754,10 @@
   autoload -Uz add-zsh-hook
   add-zsh-hook -Uz precmd reset_broken_terminal
 
+  source /usr/share/doc/pkgfile/command-not-found.zsh
+
   # lf
   . $HOME/.config/lf/.lfrc
-
-  # Persistent rehash
-  # zstyle ':completion:*' rehash true
 
   # Run neofetch
   [[ -f /usr/bin/neofetch ]] && echo "" && neofetch
@@ -791,16 +792,6 @@
 
   # This reverts the +/- operators.
   setopt PUSHD_MINUS
-
-#+end_src
-
-** COMMENT Help command
-
-#+begin_src sh
-
-  autoload -Uz run-help
-  unalias run-help
-  alias help=run-help
 
 #+end_src
 

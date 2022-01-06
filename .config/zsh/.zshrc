@@ -141,6 +141,8 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=$HOME/.cache/zsh/history
 
+mkdir -p $HOME/.cache/zsh
+
 # Ignoring repetitive lines in the history
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
