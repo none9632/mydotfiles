@@ -98,9 +98,7 @@ zsh-add-plugin "zsh-users/zsh-autosuggestions"
 zsh-add-plugin "hlissner/zsh-autopair"
 zsh-add-plugin "none9632/zsh-sudo"
 zsh-add-plugin "tom-auger/cmdtime"
-zsh-add-plugin "zdharma-continuum/fast-syntax-highlighting"
-
-# zsh-add-plugin "chitoku-k/fzf-zsh-completions"
+zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
 
 autoload -U colors && colors
 
@@ -126,7 +124,18 @@ ${GREY}]
 ${BCYAN}${PREFIX}${END} \
 ${WHITE}${END}"
 
-fast-theme ~/.config/zsh/mytheme.ini >/dev/null
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
+
+ZSH_HIGHLIGHT_REGEXP+=('\bsudo\b' fg=#e76f51)
+ZSH_HIGHLIGHT_REGEXP+=("[\$][a-zA-Z0-9_]*" fg=#5699af)
+ZSH_HIGHLIGHT_REGEXP+=("\b(http|https|ftp)://[^\"|\ |']*\b" fg=#51afef,underline)
+
+ZSH_HIGHLIGHT_STYLES[arg0]='fg=#c792ea'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#e7c07b'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#e7c07b'
+ZSH_HIGHLIGHT_STYLES[path]='fg=#98be65'
+ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]='none'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#5699af'
 
 HISTSIZE=10000
 SAVEHIST=10000
@@ -201,7 +210,8 @@ function clip-paste ()
 {
     CUTBUFFER=$(xsel -o -b </dev/null)
     zle yank
-    zle down-line
+    # Needed in order for the highlighting rules to apply
+    zle copy-region-as-kill
 }
 
 function clip-copy ()
@@ -218,10 +228,11 @@ bindkey -M vicmd "y" clip-copy
 bindkey -M viins "^p" clip-paste
 bindkey -M vicmd "p" clip-paste
 
+# Needed in order for the highlighting rules to apply
 function fix-autopair-insert ()
 {
     autopair-insert
-    zle down-line
+    zle copy-region-as-kill
 }
 
 zle -N fix-autopair-insert

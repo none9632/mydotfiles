@@ -494,9 +494,7 @@
   zsh-add-plugin "hlissner/zsh-autopair"
   zsh-add-plugin "none9632/zsh-sudo"
   zsh-add-plugin "tom-auger/cmdtime"
-  zsh-add-plugin "zdharma-continuum/fast-syntax-highlighting"
-
-  # zsh-add-plugin "chitoku-k/fzf-zsh-completions"
+  zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
 
 #+end_src
 
@@ -534,156 +532,18 @@
 
 #+begin_src sh
 
-  fast-theme ~/.config/zsh/mytheme.ini >/dev/null
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern regexp)
 
-#+end_src
+  ZSH_HIGHLIGHT_REGEXP+=('\bsudo\b' fg=#e76f51)
+  ZSH_HIGHLIGHT_REGEXP+=("[\$][a-zA-Z0-9_]*" fg=#5699af)
+  ZSH_HIGHLIGHT_REGEXP+=("\b(http|https|ftp)://[^\"|\ |']*\b" fg=#51afef,underline)
 
-*** My theme
-:PROPERTIES:
-:header-args: :tangle ./.config/zsh/mytheme.ini
-:END:
-
-**** Base
-
-#+begin_src conf
-
-  [base]
-  default          = none
-  unknown-token    = red,bold
-  commandseparator = 8
-  redirection      = none
-  here-string-tri  = yellow
-  here-string-text = yellow
-  here-string-var  = cyan,bg:18
-  exec-descriptor  = yellow,bold
-  comment          = black,bold
-  correct-subtle   = 12
-  incorrect-subtle = red
-  subtle-separator = green
-  subtle-bg        = bg:18
-  secondary        = free
-  ; recursive-base   =
-
-#+end_src
-
-**** Command point
-
-#+begin_src conf
-
-  [command-point]
-  reserved-word  = blue
-  subcommand     = blue
-  alias          = magenta
-  suffix-alias   = magenta
-  global-alias   = magenta
-  builtin        = magenta
-  function       = magenta
-  command        = magenta
-  precommand     = magenta
-  hashed-command = magenta
-  single-sq-bracket = green
-  double-sq-bracket = green
-  double-paren   = yellow
-
-#+end_src
-
-**** Paths
-
-#+begin_src conf
-
-  [paths]
-  path          = green
-  pathseparator =
-  path-to-dir   = green
-  globbing      = blue,bold
-  globbing-ext  = 13
-
-#+end_src
-
-**** Brackets
-
-#+begin_src conf
-
-  [brackets]
-  ; paired-bracket = bg:red,black
-  paired-bracket = blue,bold
-  bracket-level-1 = green,bold
-  bracket-level-2 = yellow,bold
-  bracket-level-3 = cyan,bold
-
-#+end_src
-
-**** Arguments
-
-#+begin_src conf
-
-  [arguments]
-  single-hyphen-option   = #e7c07b
-  double-hyphen-option   = #e7c07b
-  back-quoted-argument   = none
-  single-quoted-argument = yellow
-  double-quoted-argument = yellow
-  dollar-quoted-argument = yellow
-
-#+end_src
-
-**** In string
-
-#+begin_src conf
-
-  [in-string]
-  ; backslash in $'...'
-  back-dollar-quoted-argument           = cyan
-  ; backslash or $... in "..."
-  back-or-dollar-double-quoted-argument = cyan
-
-#+end_src
-
-**** Other
-
-#+begin_src conf
-
-  [other]
-  variable             = cyan
-  assign               = none
-  assign-array-bracket = green
-  history-expansion    = blue,bold
-
-#+end_src
-
-**** Math
-
-#+begin_src conf
-
-  [math]
-  mathvar = blue,bold
-  mathnum = magenta
-  matherr = red
-
-#+end_src
-
-**** For loop
-
-#+begin_src conf
-
-  [for-loop]
-  forvar = none
-  fornum = magenta
-  ; operator
-  foroper = yellow
-  ; separator
-  forsep = yellow,bold
-
-#+end_src
-
-**** Case
-
-#+begin_src conf
-
-  [case]
-  case-input       = green
-  case-parentheses = yellow
-  case-condition   = bg:blue
+  ZSH_HIGHLIGHT_STYLES[arg0]='fg=#c792ea'
+  ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#e7c07b'
+  ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#e7c07b'
+  ZSH_HIGHLIGHT_STYLES[path]='fg=#98be65'
+  ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]='none'
+  ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#5699af'
 
 #+end_src
 
@@ -782,7 +642,8 @@
   {
       CUTBUFFER=$(xsel -o -b </dev/null)
       zle yank
-      zle down-line
+      # Needed in order for the highlighting rules to apply
+      zle copy-region-as-kill
   }
 
   function clip-copy ()
@@ -805,10 +666,11 @@
 
 #+begin_src sh
 
+  # Needed in order for the highlighting rules to apply
   function fix-autopair-insert ()
   {
       autopair-insert
-      zle down-line
+      zle copy-region-as-kill
   }
 
   zle -N fix-autopair-insert
