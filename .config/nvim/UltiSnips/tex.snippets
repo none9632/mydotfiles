@@ -5,60 +5,6 @@ def visual():
     return vim.eval('mode()') == 'v'
 endglobal
 
-snippet template "Basic template" b
-\documentclass[a4paper]{article}
-
-%---------------------------------------------------
-% Russian-specific packages
-%---------------------------------------------------
-\usepackage{hyperref}                % For adding links
-\usepackage{mathtext}
-\usepackage[T2A]{fontenc}
-\usepackage[utf8x]{inputenc}
-\usepackage[english,russian]{babel}
-
-%---------------------------------------------------
-% Other
-%---------------------------------------------------
-\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm]{geometry}
-\usepackage{amsmath}       % Mathematics
-\usepackage{amsfonts}      % For to sign numerical sets
-\usepackage{graphicx}      % For image paste
-\usepackage{setspace}      % Add doublespacing and singlespacing
-
-%---------------------------------------------------
-% Tables
-%---------------------------------------------------
-\usepackage{siunitx}       % Required for alignment (S in tabular)
-\usepackage{multirow}      % Required for multirows
-\usepackage{booktabs}      % For prettier tables
-\usepackage{longtable}     % To display tables on several pages
-\usepackage{rotating}      % To display tables in landscape
-
-\newtheorem{theorem}{Теорема}
-
-\begin{document}
-
-% \setcounter{tocdepth}{1} % Show sections
-\setcounter{tocdepth}{2} % + subsections
-% \setcounter{tocdepth}{3} % + subsubsections
-% \setcounter{tocdepth}{4} % + paragraphs
-% \setcounter{tocdepth}{5} % + subparagraphs
-
-\doublespacing
-\tableofcontents
-\singlespacing
-\newpage
-
-$0
-
-\end{document}
-endsnippet
-
-snippet date "Date"
-`date +%F`
-endsnippet
-
 snippet beg "begin{} / end{}" bA
 \begin{$1}
     $0
