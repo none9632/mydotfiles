@@ -154,10 +154,7 @@ setopt SHARE_HISTORY
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
 
 export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
-export FZF_DEFAULT_OPTS="--bind 'tab:down'\
-                         --bind 'shift-tab:up'\
-                         --bind 'alt-j:down'\
-                         --bind 'alt-k:up'"
+export FZF_DEFAULT_OPTS="--bind 'alt-j:down' --bind 'alt-k:up'"
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
@@ -246,10 +243,6 @@ done
 alias stcpu="stress -c 8"
 alias stmem="stress -vm 2 --vm-bytes"
 
-alias pacman="sudo pacman"
-alias update="yay -Syu"
-alias inl="yay -Slq | fzf $FZF_DEFAULT_OPTS --bind 'space:toggle' --reverse --multi --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro yay -S"
-
 alias ls="exa -la --color=always --group-directories-first"
 alias cat="bat"
 alias vim="nvim"
@@ -261,6 +254,7 @@ alias mkcd="foo(){ mkdir -p \"$1\"; cd \"$1\" }; foo "
 alias c="clear"
 alias env="xdotool keydown Shift; printenv | fzf; xdotool keyup Shift"
 alias als="alias | fzf"
+alias upgrade="yay -Syu"
 
 # Navigation
 alias ..="cd .."
