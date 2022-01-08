@@ -44,7 +44,7 @@
   # list of files/folders to symlink in homedir
   config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh"
 
-  bin_files="inkscape-figures"
+  bin_files="inkscape-figures update in pin re"
 
 #+end_src
 
@@ -344,6 +344,89 @@
       edit)   edit "$2" ;;
       ,*)      help      ;;
   esac
+
+#+end_src
+
+** update
+
+#+begin_src sh :tangle ./.local/update :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  cache_dir=$HOME/.cache/updates
+  yay_log_file=$cache_dir/updates.log
+  yay_cache_file=$cache_dir/yay_cache
+  pac_cache_file=$cache_dir/pacman_cache
+
+  mkdir -p $cache_dir
+
+  sudo yay -Syy >/dev/null 2>$yay_log_file
+  pacman -Slq > $pac_cache_file
+  yay -Slq > $yay_cache_file
+
+#+end_src
+
+** yay install package
+
+Install packages using yay
+
+#+begin_src sh :tangle ./.local/in :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  cache_dir=$HOME/.cache/updates
+  yay_cache_file=$cache_dir/yay_cache
+
+  mkdir -p $cache_dir
+
+  if [ ! -s $yay_cache_file ]
+  then
+      echo "Creating cache..."
+      yay -Slq > $yay_cache_file
+      echo "Done"
+  fi
+
+  cat $yay_cache_file | fzf --bind 'space:toggle' --reverse --multi --preview 'yay -Si {1}' | xargs -ro yay -S
+
+#+end_src
+
+** pacman install package
+
+Install packages using pacman
+
+#+begin_src sh :tangle ./.local/pin :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  cache_dir=$HOME/.cache/updates
+  pac_cache_file=$cache_dir/pacman_cache
+
+  mkdir -p $cache_dir
+
+  if [[ ! "$EUID" = 0 ]]; then
+      sudo ls /root
+  fi
+
+  if [ ! -s $pac_cache_file ]
+  then
+      echo "Creating cache..."
+      pacman -Slq > $pac_cache_file
+      echo "Done"
+  fi
+
+  cat $pac_cache_file | fzf --bind 'space:toggle' --reverse --multi --preview 'pacman -Si {1}' | xargs -ro pacman -S
+
+
+#+end_src
+
+** remove package
+
+#+begin_src sh :tangle ./.local/re :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  # Remove installed packages
+  yay -Qq | fzf --bind 'space:toggle' --reverse -q "$1" -m --preview 'yay -Qi {1}' | xargs -ro yay -Rns
 
 #+end_src
 

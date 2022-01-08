@@ -1,0 +1,15 @@
+#!/bin/sh
+
+cache_dir=$HOME/.cache/updates
+yay_cache_file=$cache_dir/yay_cache
+
+mkdir -p $cache_dir
+
+if [ ! -s $yay_cache_file ]
+then
+    echo "Creating cache..."
+    yay -Slq > $yay_cache_file
+    echo "Done"
+fi
+
+cat $yay_cache_file | fzf --bind 'space:toggle' --reverse --multi --preview 'yay -Si {1}' | xargs -ro yay -S
