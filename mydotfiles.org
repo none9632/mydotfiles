@@ -122,7 +122,7 @@
 * My scripts
 ** inkscape-figures
 :PROPERTIES:
-:header-args: :tangle ./.local/inkscape-figures :tangle-mode (identity #o755)
+:header-args: :tangle ./bin/inkscape-figures :tangle-mode (identity #o755)
 :END:
 
 *** Header
@@ -349,7 +349,7 @@
 
 ** update
 
-#+begin_src sh :tangle ./.local/update :tangle-mode (identity #o755)
+#+begin_src sh :tangle ./bin/update :tangle-mode (identity #o755)
 
   #!/bin/sh
 
@@ -370,7 +370,7 @@
 
 Install packages using yay
 
-#+begin_src sh :tangle ./.local/in :tangle-mode (identity #o755)
+#+begin_src sh :tangle ./bin/in :tangle-mode (identity #o755)
 
   #!/bin/sh
 
@@ -394,7 +394,7 @@ Install packages using yay
 
 Install packages using pacman
 
-#+begin_src sh :tangle ./.local/pin :tangle-mode (identity #o755)
+#+begin_src sh :tangle ./bin/pin :tangle-mode (identity #o755)
 
   #!/bin/sh
 
@@ -421,7 +421,7 @@ Install packages using pacman
 
 ** remove package
 
-#+begin_src sh :tangle ./.local/re :tangle-mode (identity #o755)
+#+begin_src sh :tangle ./bin/re :tangle-mode (identity #o755)
 
   #!/bin/sh
 
