@@ -10,7 +10,7 @@ build_pkgs="base-devel git gcc make cmake"
 pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git zoxide"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh"
+config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar"
 
 bin_files="inkscape-figures update in pin re"
 
@@ -65,7 +65,7 @@ do
     if [ ! -f $bin_dir/$file ]
     then
         echo "Creating symlink to $file in $bin_dir"
-        ln -s $dot_dir/.local/$file $bin_dir/$file
+        ln -s $dot_dir/bin/$file $bin_dir/$file
     fi
 done
 
