@@ -715,6 +715,7 @@ Install packages using pacman
   }
   zle -N fix-fzf-tab
   bindkey "^I" fix-fzf-tab
+	
 #+end_src
 
 ** Keybinding
@@ -884,37 +885,6 @@ Install packages using pacman
 
   # Run neofetch
   [[ -f /usr/bin/neofetch ]] && echo "" && neofetch
-
-#+end_src
-
-** COMMENT Remembering recen directories
-
-#+begin_src sh
-
-  DIRSTACKPATH="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-  DIRSTACKFILE="${DIRSTACKPATH}/dirs"
-  DIRSTACKSIZE='20'
-
-  mkdir -p $DIRSTACKPATH
-
-  if [[ -f "$DIRSTACKFILE" ]] && (( ${#dirstack} == 0 )); then
-      dirstack=("${(@f)"$(< "$DIRSTACKFILE")"}")
-      [[ -d "${dirstack[1]}" ]] && cd -- "${dirstack[1]}"
-  fi
-
-  chpwd_dirstack() {
-      print -l -- "$PWD" "${(u)dirstack[@]}" > "$DIRSTACKFILE"
-  }
-
-  add-zsh-hook -Uz chpwd chpwd_dirstack
-
-  setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
-
-  # Remove duplicate entries
-  setopt PUSHD_IGNORE_DUPS
-
-  # This reverts the +/- operators.
-  setopt PUSHD_MINUS
 
 #+end_src
 
