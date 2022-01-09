@@ -99,6 +99,7 @@ zsh-add-plugin "hlissner/zsh-autopair"
 zsh-add-plugin "none9632/zsh-sudo"
 zsh-add-plugin "tom-auger/cmdtime"
 zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
+zsh-add-plugin "Aloxaf/fzf-tab"
 
 autoload -U colors && colors
 
@@ -162,9 +163,49 @@ export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
 export FZF_ALT_C_COMMAND='fd --type d --type symlink . --color=never --hidden'
 export FZF_ALT_C_OPTS="--preview 'exa -1a --color=always --group-directories-first {} | head -50'"
 
+export FZF_HISTDIR=$HOME/.cache/fzf
+
+FZF_COMPLETION_TRIGGER='hh'
+
+function find_file ()
+{
+    res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
+    LBUFFER+="$res "
+    # Needed in order for the highlighting rules to apply
+    zle copy-region-as-kill
+}
+zle -N find_file
+
 bindkey "^h^h" fzf-cd-widget
 bindkey -M vicmd "R" fzf-history-widget
 bindkey -M vicmd "T" fzf-file-widget
+bindkey "^f" find_file
+
+autoload -U compinit && compinit
+
+_comp_options+=(globdots)
+
+# Use a cache in order to proxy the list of results
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.cache/zsh/
+
+# Ignore completion functions for commands you don't have
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+# Persistent rehash
+zstyle ':completion:*' rehash true
+
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Needed in order for the highlighting rules to apply
+function fix-fzf-tab ()
+{
+    zle fzf-tab-complete
+    zle copy-region-as-kill
+}
+zle -N fix-fzf-tab
+bindkey "^I" fix-fzf-tab
 
 bindkey -v
 
@@ -281,6 +322,7 @@ alias -g T="| tail"
 alias -g G="| grep"
 alias -g L="| less"
 alias -g M="| most"
+alias -g C='| wc -l'
 alias -g LL="2>&1 | less"
 alias -g CA="2>&1 | cat -A"
 alias -g NE="2> /dev/null"
