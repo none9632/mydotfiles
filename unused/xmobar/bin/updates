@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ -f /usr/bin/yay ]]
+then
+    # echo "$(yay -Qu | wc -l) updates"
+    echo "$(paru -Qu | wc -l) updates"
+fi

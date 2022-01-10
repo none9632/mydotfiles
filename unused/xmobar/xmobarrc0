@@ -1,0 +1,64 @@
+Config
+{
+    -- appearance
+      font            = "xft:SauceCodePro Nerd Font Mono:antialias=true:hinting=true"
+    , additionalFonts = [
+        "xft:SauceCodePro Nerd Font:size=14"
+        --"xft:font-linux"
+      ]
+    , bgColor         = "#282c34"
+    , fgColor         = "#bbc2cf"
+    , position        = Top
+    , border          = BottomB
+    , borderColor     = "#646464"
+
+    -- layout
+    , iconRoot = "/home/none9632/.config/xmobar/xpm/"
+    , sepChar  = "%"   -- delineator between plugin names and straight text
+    , alignSep = "}{"  -- separator between left-right alignment
+    , template = " %StdinReader% } %dynnetwork% { <icon=cpu/cpu.xpm/> %mycpu% <icon=separator.xpm/> %mytemp% <icon=separator.xpm/> %mymem% <icon=separator.xpm/> %mybattery% <icon=separator.xpm/> %kbd% <icon=separator.xpm/> %updates% <icon=separator.xpm/> %date% "
+
+    -- general behavior
+    , lowerOnStart     = True    -- send to bottom of window stack on start
+    , hideOnStart      = False   -- start with window unmapped (hidden)
+    , allDesktops      = True    -- show on all desktops
+    , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+    , pickBroadest     = False   -- choose widest display (multi-monitor)
+    , persistent       = True    -- enable/disable hiding (True = disabled)
+
+    -- plugins
+    , commands =
+
+         -- network activity monitor (dynamic interface resolution)
+         [ Run DynNetwork     [ "--template" , "<icon=network/network_rx.xpm/> <rx> <icon=network/network_tx.xpm/> <tx>"
+                              , "-S"         , "True"
+                              ] 10
+
+         -- StdinReader
+         , Run StdinReader
+
+         -- cpu activity monitor
+         , Run ComX "/home/none9632/.config/xmobar/bin/cpu/cpu" [] "N/A" "mycpu" 10
+
+         -- cpu core temperature monitor
+         , Run ComX "/home/none9632/.config/xmobar/bin/temperature" [] "N/A" "mytemp" 20
+
+         -- memory usage monitor
+         , Run ComX "/home/none9632/.config/xmobar/bin/ram/ram" [] "N/A" "mymem" 15
+ 
+         -- battery monitor
+         , Run ComX "/home/none9632/.config/xmobar/bin/battery/battery" [] "N/A" "mybattery" 10
+
+         -- time and date indicator 
+         , Run Date "%b %_d<fc=#707880>/</fc>%m<fc=#707880>/</fc>%y <icon=separator.xpm/> %H<fc=#707880>:</fc>%M" "date" 10
+
+         -- keyboard layout indicator
+         , Run Kbd            [ ("us"         , "US")
+                              , ("ru"         , "RU")
+                              ]
+
+         -- updates count
+         , Run ComX "/home/none9632/.config/xmobar/bin/updates" [] "N/A" "updates" 6000
+
+         ]
+}

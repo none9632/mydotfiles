@@ -1,0 +1,97 @@
+#!/bin/sh
+
+export TERMINAL="alacritty"
+
+export LC_COLLATE="C"
+export NNN_BMS='D:~/Downloads;'
+export NNN_FIFO=/tmp/nnn.fifo nnn
+export NNN_PLUG='f:preview-tui'
+
+n ()
+{
+    # Block nesting of nnn in subshells
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, remove the "export" as in:
+    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    # NOTE: NNN_TMPFILE is fixed, should not be modified
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
+    # stty start undef
+    # stty stop undef
+    # stty lwrap undef
+    # stty lnext undef
+
+    nnn "$@"
+
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+
+    # xdotool key ; f
+}
+
+nnn-preview ()
+{
+    # Block nesting of nnn in subshells
+    if [ -n "$NNNLVL" ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, remove the "export" as in:
+    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    # NOTE: NNN_TMPFILE is fixed, should not be modified
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # This will create a fifo where all nnn selections will be written to
+    NNN_FIFO="$(mktemp --suffix=-nnn -u)"
+    export NNN_FIFO
+    (umask 077; mkfifo "$NNN_FIFO")
+
+    # Preview command
+    preview_cmd="$HOME/.config/nnn/plugins/preview-my"
+
+    # Use `xterm` as a preview window
+    if (which alacritty &> /dev/null); then
+        alacritty -e "$preview_cmd" &
+
+    # Unable to find a program to use as a preview window
+    else
+        echo "unable to open preview, please install tmux or xterm"
+    fi
+
+    nnn "$@"
+
+    rm -f "$NNN_FIFO"
+}
+
+nnn_keys ()
+{
+    # sleep 0.2
+    xdotool key 0x003b f
+    # sleep 0.2
+    xdotool key super+K
+    # sleep 0.2
+    xdotool key super+k
+}
+
+alias nnn="n -edH"
+
+if [ -n "$NNNLVL" ]
+then
+    PREFIX="n³"
+    init_prompt
+
+    # alias ls="exa --color=always --group-directories-first"
+    # alias ll="ls -l"
+    # alias la="ls -a"
+    # alias lla="ls -la"
+fi

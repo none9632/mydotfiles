@@ -11496,7 +11496,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-* COMMENT Commented configs
+* COMMENT Unused configs
 ** Fish
 :PROPERTIES:
 :header-args: :tangle ./.config/fish/config.fish

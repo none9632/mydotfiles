@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cpu_temp=$(printf "%.0f" $(sensors | grep "Tctl:" | sed "s/.*+\([0-9.]*\)°C.*/\1/"))
+number=$(printf "%.0f" $(echo "scale=2; $cpu_temp / 12.5" | bc))
+
+if [ $number -lt 4 ]
+then 
+    echo "<icon=temperature/temperature_${number}.xpm/> <fc=#98be65>${cpu_temp}</fc>°C"
+else
+    if [ $number -gt 5 ]
+    then
+        echo "<icon=temperature/temperature_${number}.xpm/> <fc=#ff6c6b>${cpu_temp}</fc>°C"
+    else
+        echo "<icon=temperature/temperature_${number}.xpm/> <fc=#da8548>${cpu_temp}</fc>°C"
+    fi
+fi
+
