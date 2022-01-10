@@ -30,7 +30,7 @@ do
     fi
 
     # when there are updates available
-    # every 100 seconds another check for updates is done
+    # every 1000 seconds another check for updates is done
     while (( $updates > 0 ))
     do
         if (( $updates > 99 )); then
@@ -40,7 +40,7 @@ do
         else
             echo "  $updates"
         fi
-        sleep 600
+        sleep 1000
         get_total_updates
     done
 
@@ -49,7 +49,7 @@ do
     while (( $updates == 0 ))
     do
         echo "  0"
-        sleep 600
+        sleep 1000
         get_total_updates
     done
 done

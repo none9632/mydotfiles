@@ -578,7 +578,6 @@ Install packages using pacman
   zsh-add-plugin "none9632/zsh-sudo"
   zsh-add-plugin "tom-auger/cmdtime"
   zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
-  zsh-add-plugin "Aloxaf/fzf-tab"
 
 #+end_src
 
@@ -693,6 +692,7 @@ Install packages using pacman
 
   autoload -U compinit && compinit
 
+  # Added hidden files
   _comp_options+=(globdots)
 
   # Use a cache in order to proxy the list of results
@@ -707,6 +707,8 @@ Install packages using pacman
 
   zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
+  zsh-add-plugin "Aloxaf/fzf-tab"
+
   # Needed in order for the highlighting rules to apply
   function fix-fzf-tab ()
   {
@@ -715,7 +717,7 @@ Install packages using pacman
   }
   zle -N fix-fzf-tab
   bindkey "^I" fix-fzf-tab
-	
+
 #+end_src
 
 ** Keybinding
@@ -7274,7 +7276,7 @@ Include an external file, like module file, etc.
       fi
 
       # when there are updates available
-      # every 100 seconds another check for updates is done
+      # every 1000 seconds another check for updates is done
       while (( $updates > 0 ))
       do
           if (( $updates > 99 )); then
@@ -7284,7 +7286,7 @@ Include an external file, like module file, etc.
           else
               echo "  $updates"
           fi
-          sleep 600
+          sleep 1000
           get_total_updates
       done
 
@@ -7293,7 +7295,7 @@ Include an external file, like module file, etc.
       while (( $updates == 0 ))
       do
           echo "  0"
-          sleep 600
+          sleep 1000
           get_total_updates
       done
   done

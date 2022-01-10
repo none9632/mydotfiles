@@ -99,7 +99,6 @@ zsh-add-plugin "hlissner/zsh-autopair"
 zsh-add-plugin "none9632/zsh-sudo"
 zsh-add-plugin "tom-auger/cmdtime"
 zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
-zsh-add-plugin "Aloxaf/fzf-tab"
 
 autoload -U colors && colors
 
@@ -184,6 +183,7 @@ bindkey "^f" find_file
 
 autoload -U compinit && compinit
 
+# Added hidden files
 _comp_options+=(globdots)
 
 # Use a cache in order to proxy the list of results
@@ -197,6 +197,8 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*' rehash true
 
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+zsh-add-plugin "Aloxaf/fzf-tab"
 
 # Needed in order for the highlighting rules to apply
 function fix-fzf-tab ()
