@@ -9,32 +9,32 @@ ICON_UP=""
 ICON_DOWN=""
 ICON_OPT=""
 
-if [[ ! -f /usr/bin/blight ]]
+if [[ ! -f /bin/brightnessctl ]]
 then
-    errormsg "Please install 'blight'"
+    errormsg "Please install 'brightnessctl'"
     exit 1
 fi
 
-DEVICE=$(ls /sys/class/backlight | head -n 1)
 row=1
-
 options="$ICON_UP\n$ICON_OPT\n$ICON_DOWN"
 while
-    BNESS="$(blight -d $DEVICE get brightness)"
-    PERC="$(($BNESS*100/255))"
+    BNESS="$(brightnessctl get)"
+    MAX="$(brightnessctl max)"
+    PERC="$((BNESS*100/MAX))"
     BLIGHT=${PERC%.*}
     chosen="$(echo -e "$options" | $rofi_command -p " $BLIGHT% " -dmenu -selected-row $row)"
+
     case $chosen in
         $ICON_UP)
-            blight -d $DEVICE set +10%
+            brightnessctl -q set +10%
             row=0
             ;;
         $ICON_DOWN)
-            blight -d $DEVICE set -10%
+            brightnessctl -q set 10%-
             row=2
             ;;
         $ICON_OPT)
-            blight -d $DEVICE set 70%
+            brightnessctl -q set 70%
             row=1
             ;;
     esac
