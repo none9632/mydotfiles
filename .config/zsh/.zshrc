@@ -292,6 +292,7 @@ alias cat="bat"
 alias vim="nvim"
 alias rm="rm -r"
 alias cp="cp -r"
+alias pin="sudo pin"
 
 alias src="source ~/.config/zsh/.zshrc"
 alias mkcd="foo(){ mkdir -p \"$1\"; cd \"$1\" }; foo "

@@ -5,10 +5,6 @@ pac_cache_file=$cache_dir/pacman_cache
 
 mkdir -p $cache_dir
 
-if [[ ! "$EUID" = 0 ]]; then
-    sudo ls /root
-fi
-
 if [ ! -s $pac_cache_file ]
 then
     echo "Creating cache..."

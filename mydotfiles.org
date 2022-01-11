@@ -403,10 +403,6 @@ Install packages using pacman
 
   mkdir -p $cache_dir
 
-  if [[ ! "$EUID" = 0 ]]; then
-      sudo ls /root
-  fi
-
   if [ ! -s $pac_cache_file ]
   then
       echo "Creating cache..."
@@ -825,6 +821,7 @@ Install packages using pacman
   alias vim="nvim"
   alias rm="rm -r"
   alias cp="cp -r"
+  alias pin="sudo pin"
 
   alias src="source ~/.config/zsh/.zshrc"
   alias mkcd="foo(){ mkdir -p \"$1\"; cd \"$1\" }; foo "
