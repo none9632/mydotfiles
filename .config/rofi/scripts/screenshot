@@ -14,8 +14,8 @@ getStamp()
 
 if [[ ! -f /usr/bin/scrot ]] || [[ ! -f /usr/bin/flameshot ]]
 then
-    [[ -f /usr/bin/scrot ]] && error_msg "Please install 'scrot'"
-    [[ -f /usr/bin/flameshot ]] && error_msg "Please install 'flameshot'"
+    [[ -f /usr/bin/scrot ]] && errormsg "Please install 'scrot'"
+    [[ -f /usr/bin/flameshot ]] && errormsg "Please install 'flameshot'"
     exit 0
 fi
 

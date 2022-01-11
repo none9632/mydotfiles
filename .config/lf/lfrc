@@ -77,7 +77,7 @@ cmd mkdir &{{
     dir_name=$(input "Dir name:")
     while [ -e $dir_name ] && [ "$dir_name" != "" ]
     do
-        error_msg "directory exists"
+        errormsg "directory exists"
         dir_name=$(input "Dir name:")
     done
 
@@ -98,7 +98,7 @@ cmd mkfile &{{
     file_name=$(input "File name:")
     while [ -e $file_name ] && [ "$file_name" != "" ]
     do
-        error_msg "file exists"
+        errormsg "file exists"
         file_name=$(input "File name:")
     done
 
@@ -121,7 +121,7 @@ cmd my_rename &{{
     new_name=$(input "New name:")
     while [ -e $new_name ] && [ "$new_name" != "" ]
     do
-        error_msg "file exists"
+        errormsg "file exists"
         new_name=$(input "New name:")
     done
 

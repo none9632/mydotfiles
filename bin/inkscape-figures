@@ -93,7 +93,7 @@ function create
     [ ! -d $figures_path ] && mkdir -p $figures_path
     if [ ! -d $figures_path ]
     then
-        error_msg "Can't create figures path"
+        errormsg "Can't create figures path"
         echo ""
         return
     fi
@@ -102,7 +102,7 @@ function create
     fig_file_path=$figures_path$(echo "${title/ /-}.svg")
     while [ "$title" != "" ] && [ -f $fig_file_path ]
     do
-        error_msg "file exists"
+        errormsg "file exists"
         title="$(input "Figure name:")"
         fig_file_path=$figures_path$(echo "${title/ /-}.svg")
     done
@@ -112,7 +112,7 @@ function create
     touch $fig_file_path
     if [ ! -f $fig_file_path ]
     then
-        error_msg "Can't create figure file"
+        errormsg "Can't create figure file"
         echo ""
         return
     fi
@@ -127,7 +127,7 @@ function move
     [ ! -d $images_path ] && mkdir -p $images_path
     if [ ! -d $images_path ]
     then
-        error_msg "Can't create images path"
+        errormsg "Can't create images path"
         echo ""
         return
     fi
@@ -139,7 +139,7 @@ function move
 
     # while [ "$new_name" != "" ] && [ -f $img_file_path ]
     # do
-    # error_msg "file exists"
+    # errormsg "file exists"
     # new_name="$(input "New img name:")"
     # img_file_path=$images_path$(echo "${new_name/ /-}.$extension")
     # done
@@ -157,7 +157,7 @@ function move
     cp $1 $img_file_path
     if [ ! -f $img_file_path ]
     then
-        error_msg "Can't create image file"
+        errormsg "Can't create image file"
         echo ""
         return
     fi
@@ -169,7 +169,7 @@ function edit
 {
     if [ ! -f $1 ]
     then
-        error_msg "file does not exist"
+        errormsg "file does not exist"
         return
     fi
     inkscape $1

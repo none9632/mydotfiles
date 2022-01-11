@@ -236,7 +236,7 @@
       [ ! -d $figures_path ] && mkdir -p $figures_path
       if [ ! -d $figures_path ]
       then
-          error_msg "Can't create figures path"
+          errormsg "Can't create figures path"
           echo ""
           return
       fi
@@ -245,7 +245,7 @@
       fig_file_path=$figures_path$(echo "${title/ /-}.svg")
       while [ "$title" != "" ] && [ -f $fig_file_path ]
       do
-          error_msg "file exists"
+          errormsg "file exists"
           title="$(input "Figure name:")"
           fig_file_path=$figures_path$(echo "${title/ /-}.svg")
       done
@@ -255,7 +255,7 @@
       touch $fig_file_path
       if [ ! -f $fig_file_path ]
       then
-          error_msg "Can't create figure file"
+          errormsg "Can't create figure file"
           echo ""
           return
       fi
@@ -270,7 +270,7 @@
       [ ! -d $images_path ] && mkdir -p $images_path
       if [ ! -d $images_path ]
       then
-          error_msg "Can't create images path"
+          errormsg "Can't create images path"
           echo ""
           return
       fi
@@ -282,7 +282,7 @@
 
       # while [ "$new_name" != "" ] && [ -f $img_file_path ]
       # do
-      # error_msg "file exists"
+      # errormsg "file exists"
       # new_name="$(input "New img name:")"
       # img_file_path=$images_path$(echo "${new_name/ /-}.$extension")
       # done
@@ -300,7 +300,7 @@
       cp $1 $img_file_path
       if [ ! -f $img_file_path ]
       then
-          error_msg "Can't create image file"
+          errormsg "Can't create image file"
           echo ""
           return
       fi
@@ -312,7 +312,7 @@
   {
       if [ ! -f $1 ]
       then
-          error_msg "file does not exist"
+          errormsg "file does not exist"
           return
       fi
       inkscape $1
@@ -2478,7 +2478,7 @@ defined in.
       dir_name=$(input "Dir name:")
       while [ -e $dir_name ] && [ "$dir_name" != "" ]
       do
-          error_msg "directory exists"
+          errormsg "directory exists"
           dir_name=$(input "Dir name:")
       done
 
@@ -2499,7 +2499,7 @@ defined in.
       file_name=$(input "File name:")
       while [ -e $file_name ] && [ "$file_name" != "" ]
       do
-          error_msg "file exists"
+          errormsg "file exists"
           file_name=$(input "File name:")
       done
 
@@ -2522,7 +2522,7 @@ defined in.
       new_name=$(input "New name:")
       while [ -e $new_name ] && [ "$new_name" != "" ]
       do
-          error_msg "file exists"
+          errormsg "file exists"
           new_name=$(input "New name:")
       done
 
@@ -10537,7 +10537,7 @@ Configuration based on https://github.com/adi1090x/rofi
   if [[ -f /usr/bin/alacritty ]]; then
       term=alacritty
   else
-      error_msg "No suitable terminal found!"
+      errormsg "No suitable terminal found!"
   fi
 
   # Variable passed to rofi
@@ -10555,49 +10555,43 @@ Configuration based on https://github.com/adi1090x/rofi
               . $HOME/.config/lf/.lfrc
               $term -e lf &
           else
-              error_msg "No suitable file manager found!"
+              errormsg "No suitable file manager found!"
           fi
           ;;
       $editor)
           if [[ -f /usr/bin/emacs ]]; then
               emacs &
           else
-              error_msg "No suitable text editor found!"
+              errormsg "No suitable text editor found!"
           fi
           ;;
       $browser)
           if [[ -f /usr/bin/librewolf ]]; then
               librewolf &
           else
-              error_msg "No suitable web browser found!"
+              errormsg "No suitable web browser found!"
           fi
           ;;
       $settings)
           if [[ -f /usr/bin/xfce4-settings-manager ]]; then
               xfce4-settings-manager &
           else
-              error_msg "No suitable settings manager found!"
+              errormsg "No suitable settings manager found!"
           fi
           ;;
   esac
 
 #+end_src
 
-**** COMMENT Backlight
+**** Brightness
 
-#+begin_src sh :tangle ./.config/rofi/scripts/backlight.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/brightness
 
   #!/usr/bin/env bash
 
-  style="$($HOME/.config/rofi/applets/menu/style.sh)"
-
-  dir="$HOME/.config/rofi/applets/menu/configs/"
-  rofi_command="rofi -theme $dir/backlight.rasi"
-
-  # Error msg
-  msg() {
-      rofi -theme "$HOME/.config/rofi/applets/styles/message.rasi" -e "$1"
-  }
+  rofi_command="rofi -kb-move-char-back Left,h\
+                     -kb-move-char-forward Right,l\
+                     -theme $HOME/.config/rofi/themes/menu/brightness.rasi"
 
   ## Get Brightness
   if [[ -f /usr/bin/blight ]]; then
@@ -11215,8 +11209,8 @@ Configuration based on https://github.com/adi1090x/rofi
 
   if [[ ! -f /usr/bin/scrot ]] || [[ ! -f /usr/bin/flameshot ]]
   then
-      [[ -f /usr/bin/scrot ]] && error_msg "Please install 'scrot'"
-      [[ -f /usr/bin/flameshot ]] && error_msg "Please install 'flameshot'"
+      [[ -f /usr/bin/scrot ]] && errormsg "Please install 'scrot'"
+      [[ -f /usr/bin/flameshot ]] && errormsg "Please install 'flameshot'"
       exit 0
   fi
 
@@ -11408,7 +11402,7 @@ Configuration based on https://github.com/adi1090x/rofi
   #!/bin/sh
 
   options=""
-  rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/themes/other/error_msg.rasi"
+  rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/themes/other/errormsg.rasi"
   $(echo -e "$options" | $rofi_command -p " $1 " -dmenu)
 
 #+end_src
