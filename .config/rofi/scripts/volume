@@ -1,0 +1,39 @@
+#!/bin/sh
+
+rofi_command="rofi -kb-move-char-back Left,h\
+                   -kb-move-char-forward Right,l\
+                   -theme $HOME/.config/rofi/themes/menu/volume.rasi"
+
+## Icons
+ICON_UP=""
+ICON_DOWN=""
+ICON_MUTED=""
+
+row=1
+options="$ICON_MUTED\n$ICON_UP\n$ICON_DOWN"
+
+while
+    MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')
+    if [[ $MUTE == *"off"* ]]; then
+        row=0
+        VOLUME="Mute"
+    else
+        VOLUME="$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')%"
+    fi
+
+    chosen="$(echo -e "$options" | $rofi_command -p " $VOLUME " -dmenu -selected-row $row)"
+    case $chosen in
+        $ICON_UP)
+            amixer -Mq set Master,0 5%+ unmute
+            row=1
+            ;;
+        $ICON_DOWN)
+            amixer -Mq set Master,0 5%- unmute
+            row=2
+            ;;
+        $ICON_MUTED)
+            amixer -q set Master toggle
+            ;;
+    esac
+    [ "$chosen" = "$ICON_UP" ] || [ "$chosen" = "$ICON_DOWN" ]
+do true; done

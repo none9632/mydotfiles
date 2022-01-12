@@ -39,7 +39,7 @@
   # list of the build packages
   build_pkgs="base-devel git gcc make cmake"
   # list of packages that will be installed
-  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git zoxide brightnessctl"
+  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git zoxide brightnessctl alsa-utils"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar"
@@ -8841,19 +8841,18 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** COMMENT Volume
+**** Volume
 
 #+begin_src css :tangle ./.config/rofi/themes/menu/volume.rasi
 
   configuration {
+      show-icons:                     false;
       font:                           "SauceCodePro Nerd Font Semibold 14";
       disable-history:                false;
-      fullscreen:                     false;
-      hide-scrollbar:                 true;
       sidebar-mode:                   false;
   }
 
-  @import "../../styles/colors.rasi"
+  @import "../../colors.rasi"
 
   ,* {
       background-color:               @background;
@@ -8925,11 +8924,13 @@ Configuration based on https://github.com/adi1090x/rofi
   }
 
   element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
       font:                           "feather 32";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0;
-      margin:                         25px 0px 65px 0px;
+      vertical-align:                 0.5;
+      margin:                         40px 0px 40px 0px;
   }
 
   element normal.urgent,
@@ -10046,58 +10047,49 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** COMMENT Volume
+**** Volume
 
-#+begin_src sh :tangle ./.config/rofi/scripts/volume.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/volume
 
-  #!/usr/bin/env bash
+  #!/bin/sh
 
-  dir="$HOME/.config/rofi/applets/menu/themes/"
-  # rofi_command="rofi -kb-move-char-back Left,h\
-      # -kb-move-char-forward Right,l\
-      # -theme $dir/screenshot.rasi"
-
-  rofi_command="rofi -theme $dir/volume.rasi"
-
-  ## Get Volume
-  #VOLUME=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')
-  MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')
-
-  active=""
-  urgent=""
-
-  if [[ $MUTE == *"off"* ]]; then
-      active="-a 1"
-  else
-      urgent="-u 1"
-  fi
-
-  if [[ $MUTE == *"on"* ]]; then
-      VOLUME="$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')%"
-  else
-      VOLUME="Mute"
-  fi
+  rofi_command="rofi -kb-move-char-back Left,h\
+                     -kb-move-char-forward Right,l\
+                     -theme $HOME/.config/rofi/themes/menu/volume.rasi"
 
   ## Icons
   ICON_UP=""
   ICON_DOWN=""
   ICON_MUTED=""
 
-  options="$ICON_UP\n$ICON_MUTED\n$ICON_DOWN"
+  row=1
+  options="$ICON_MUTED\n$ICON_UP\n$ICON_DOWN"
 
-  ## Main
-  chosen="$(echo -e "$options" | $rofi_command -p " $VOLUME " -dmenu $active $urgent -selected-row 0)"
-  case $chosen in
-      $ICON_UP)
-          amixer -Mq set Master,0 5%+ unmute && notify-send -u low -t 1500 "Volume Up $ICON_UP"
-          ;;
-      $ICON_DOWN)
-          amixer -Mq set Master,0 5%- unmute && notify-send -u low -t 1500 "Volume Down $ICON_DOWN"
-          ;;
-      $ICON_MUTED)
-          amixer -q set Master toggle
-          ;;
-  esac
+  while
+      MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')
+      if [[ $MUTE == *"off"* ]]; then
+          row=0
+          VOLUME="Mute"
+      else
+          VOLUME="$(amixer get Master | tail -n 1 | awk -F ' ' '{print $5}' | tr -d '[]%')%"
+      fi
+
+      chosen="$(echo -e "$options" | $rofi_command -p " $VOLUME " -dmenu -selected-row $row)"
+      case $chosen in
+          $ICON_UP)
+              amixer -Mq set Master,0 5%+ unmute
+              row=1
+              ;;
+          $ICON_DOWN)
+              amixer -Mq set Master,0 5%- unmute
+              row=2
+              ;;
+          $ICON_MUTED)
+              amixer -q set Master toggle
+              ;;
+      esac
+      [ "$chosen" = "$ICON_UP" ] || [ "$chosen" = "$ICON_DOWN" ]
+  do true; done
 
 #+end_src
 

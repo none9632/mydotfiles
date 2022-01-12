@@ -7,7 +7,7 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 # list of the build packages
 build_pkgs="base-devel git gcc make cmake"
 # list of packages that will be installed
-pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git zoxide brightnessctl"
+pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git zoxide brightnessctl alsa-utils"
 
 # list of files/folders to symlink in homedir
 config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar"
