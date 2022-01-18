@@ -7249,6 +7249,11 @@ Include an external file, like module file, etc.
 
   get_total_updates ()
   {
+      while [ $(ping -c 1 -q archlinux.org >&/dev/null; echo $?) -ne 0 ]
+      do
+          sleep 1
+      done
+
       update
       updates=$(yay -Qu 2>/dev/null | wc -l);
   }
@@ -9373,7 +9378,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src sh :tangle ./.config/rofi/scripts/brightness
 
-  #!/usr/bin/env bash
+  #!/bin/sh
 
   rofi_command="rofi -kb-move-char-back Left,h\
                      -kb-move-char-forward Right,l\
