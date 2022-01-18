@@ -7,6 +7,7 @@ pac_cache_file=$cache_dir/pacman_cache
 
 mkdir -p $cache_dir
 
+> $yay_log_file
 sudo yay -Syy >/dev/null 2>$yay_log_file
 pacman -Slq > $pac_cache_file
 yay -Slq > $yay_cache_file

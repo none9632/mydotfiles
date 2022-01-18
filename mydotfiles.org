@@ -360,6 +360,7 @@
 
   mkdir -p $cache_dir
 
+  > $yay_log_file
   sudo yay -Syy >/dev/null 2>$yay_log_file
   pacman -Slq > $pac_cache_file
   yay -Slq > $yay_cache_file
@@ -7249,11 +7250,6 @@ Include an external file, like module file, etc.
 
   get_total_updates ()
   {
-      while [ $(ping -c 1 -q archlinux.org >&/dev/null; echo $?) -ne 0 ]
-      do
-          sleep 1
-      done
-
       update
       updates=$(yay -Qu 2>/dev/null | wc -l);
   }

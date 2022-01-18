@@ -5,11 +5,6 @@ yay_log_file=$HOME/.cache/updates/updates.log
 
 get_total_updates ()
 {
-    while [ $(ping -c 1 -q archlinux.org >&/dev/null; echo $?) -ne 0 ]
-    do
-        sleep 1
-    done
-
     update
     updates=$(yay -Qu 2>/dev/null | wc -l);
 }
