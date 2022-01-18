@@ -2928,7 +2928,7 @@ Neofetch config
 
 #+end_src
 
-** Title
+** COMMENT Title
 
 #+begin_src sh
 
@@ -2941,7 +2941,7 @@ Neofetch config
 
 #+end_src
 
-** Kernel
+** COMMENT Kernel
 
 #+begin_src sh
 
@@ -2960,7 +2960,7 @@ Neofetch config
 #+end_src
 
 ** Distro
-*** Shorten the output of the distro function
+*** COMMENT Shorten the output of the distro function
 
 #+begin_src sh
 
@@ -2989,7 +2989,7 @@ Neofetch config
 
 #+end_src
 
-** Uptime
+** COMMENT Uptime
 
 #+begin_src sh
 
@@ -3023,7 +3023,7 @@ Neofetch config
 
 #+end_src
 
-*** Change memory output unit
+*** COMMENT Change memory output unit
 
 #+begin_src sh
 
@@ -3057,7 +3057,7 @@ Neofetch config
 
 #+end_src
 
-** Shell
+** COMMENT Shell
 *** Show the path to $SHELL
 
 #+begin_src sh
@@ -3089,7 +3089,7 @@ Neofetch config
 #+end_src
 
 ** CPU
-*** CPU speed type
+*** COMMENT CPU speed type
 
 #+begin_src sh
 
@@ -3118,7 +3118,7 @@ Neofetch config
 
 #+end_src
 
-*** Enable/Disable CPU brand in output
+*** COMMENT Enable/Disable CPU brand in output
 
 #+begin_src sh
 
@@ -3133,7 +3133,7 @@ Neofetch config
 
 #+end_src
 
-*** CPU Speed
+*** COMMENT CPU Speed
 
 #+begin_src sh
 
@@ -3150,7 +3150,7 @@ Neofetch config
 
 #+end_src
 
-*** CPU Cores
+*** COMMENT CPU Cores
 
 #+begin_src sh
 
@@ -3169,7 +3169,7 @@ Neofetch config
 
 #+end_src
 
-*** CPU Temperature
+*** COMMENT CPU Temperature
 
 #+begin_src sh
 
@@ -3191,7 +3191,7 @@ Neofetch config
 
 #+end_src
 
-** GPU
+** COMMENT GPU
 *** Enable/Disable GPU brand
 
 #+begin_src sh
@@ -3248,7 +3248,7 @@ Neofetch config
 
 #+end_src
 
-** GTK Theme / Icons / Font
+** COMMENT GTK Theme / Icons / Font
 *** Shorten output of GTK
 
 #+begin_src sh
@@ -3294,7 +3294,7 @@ Neofetch config
 
 #+end_src
 
-** IP address
+** COMMENT IP address
 *** Website to ping for the public IP
 
 #+begin_src sh
@@ -3317,7 +3317,7 @@ Neofetch config
 
 #+end_src
 
-** Desktop evironment
+** COMMENT Desktop evironment
 
 #+begin_src sh
 
@@ -3330,7 +3330,7 @@ Neofetch config
 
 #+end_src
 
-** Disk
+** COMMENT Disk
 *** Which disks to display
 
 #+begin_src sh
@@ -3399,7 +3399,7 @@ Neofetch config
 
 #+end_src
 
-** Song
+** COMMENT Song
 *** Manually specify a music player
 
 #+begin_src sh
@@ -3497,7 +3497,7 @@ Neofetch config
 
 #+end_src
 
-** Text colors
+** COMMENT Text colors
 
 #+begin_src sh
 
@@ -3516,7 +3516,7 @@ Neofetch config
 #+end_src
 
 ** Text options
-*** Toggle bold text
+*** COMMENT Toggle bold text
 
 #+begin_src sh
 
@@ -3527,7 +3527,7 @@ Neofetch config
 
 #+end_src
 
-*** Enable/Disable Underline
+*** COMMENT Enable/Disable Underline
 
 #+begin_src sh
 
@@ -3538,7 +3538,7 @@ Neofetch config
 
 #+end_src
 
-*** Underline character
+*** COMMENT Underline character
 
 #+begin_src sh
 
@@ -3566,7 +3566,7 @@ Neofetch config
 
 #+end_src
 
-** Color blocks
+** COMMENT Color blocks
 *** Color block range
 
 #+begin_src sh
@@ -3639,7 +3639,7 @@ Neofetch config
 
 #+end_src
 
-** Progress bar
+** COMMENT Progress bar
 *** Bar characters
 
 #+begin_src sh
@@ -3723,7 +3723,7 @@ Neofetch config
 
 #+end_src
 
-** Backend settings
+** COMMENT Backend settings
 *** Image backend
 
 #+begin_src sh
@@ -3754,7 +3754,7 @@ Neofetch config
 
 #+end_src
 
-** Ascii options
+** COMMENT Ascii options
 *** Ascii distro
 
 #+begin_src sh
@@ -3837,7 +3837,7 @@ Neofetch config
 #+end_src
 
 ** Image options
-*** Image loop
+*** COMMENT Image loop
 
 #+begin_src sh
 
@@ -3851,7 +3851,7 @@ Neofetch config
 
 #+end_src
 
-*** Thumbnail directory
+*** COMMENT Thumbnail directory
 
 #+begin_src sh
 
@@ -3861,7 +3861,7 @@ Neofetch config
 
 #+end_src
 
-*** Crop mode
+*** COMMENT Crop mode
 
 #+begin_src sh
 
@@ -3875,7 +3875,7 @@ Neofetch config
 
 #+end_src
 
-*** Crop offset
+*** COMMENT Crop offset
 
 #+begin_src sh
 
@@ -3889,7 +3889,7 @@ Neofetch config
 
 #+end_src
 
-*** Image size
+*** COMMENT Image size
 
 #+begin_src sh
 
@@ -3914,7 +3914,7 @@ Neofetch config
 
 #+end_src
 
-*** Image offsets
+*** COMMENT Image offsets
 
 #+begin_src sh
 
@@ -3929,7 +3929,7 @@ Neofetch config
 
 #+end_src
 
-*** Image background color
+*** COMMENT Image background color
 
 #+begin_src sh
 
@@ -3942,7 +3942,7 @@ Neofetch config
 
 #+end_src
 
-** Misc Options
+** COMMENT Misc Options
 
 #+begin_src sh
 
