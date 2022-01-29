@@ -12,6 +12,8 @@ ICON_MUTED=""
 row=1
 options="$ICON_MUTED\n$ICON_UP\n$ICON_DOWN"
 
+xdotool key Mode_switch
+
 while
     MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')
     if [[ $MUTE == *"off"* ]]; then

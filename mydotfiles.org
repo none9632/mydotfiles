@@ -9386,6 +9386,8 @@ Configuration based on https://github.com/adi1090x/rofi
       exit 1
   fi
 
+  xdotool key Mode_switch
+
   row=1
   options="$ICON_UP\n$ICON_OPT\n$ICON_DOWN"
   while
@@ -10060,6 +10062,8 @@ Configuration based on https://github.com/adi1090x/rofi
 
   row=1
   options="$ICON_MUTED\n$ICON_UP\n$ICON_DOWN"
+
+  xdotool key Mode_switch
 
   while
       MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')
