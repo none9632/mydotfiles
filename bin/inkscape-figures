@@ -132,24 +132,7 @@ function move
         return
     fi
 
-    # old_filename=$(basename "$1")
-    # extension="${old_filename##*.}"
-    # new_name="$(input "New img name:")"
-    # img_file_path=$images_path$(echo "${new_name/ /-}.$extension")
-
-    # while [ "$new_name" != "" ] && [ -f $img_file_path ]
-    # do
-    # errormsg "file exists"
-    # new_name="$(input "New img name:")"
-    # img_file_path=$images_path$(echo "${new_name/ /-}.$extension")
-    # done
-
-    # [ "$new_name" = "" ] && return
-
-    # echo -n "image$file_number" | xsel --clipboard --input
-
-    file_number=$(( $(ls $images_path | wc -l)+1 ))
-    new_filename=$(echo -n "image$file_number")
+    new_filename=$(md5sum -b $1 | awk '{print $1}')
     old_filename=$(basename "$1")
     extension="${old_filename##*.}"
     img_file_path=$images_path$(echo "$new_filename.$extension")
