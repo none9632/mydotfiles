@@ -42,7 +42,7 @@
   pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils"
 
   # list of files/folders to symlink in homedir
-  config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar"
+  config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar picom"
 
   bin_files="inkscape-figures update list in pin re"
 
@@ -4870,20 +4870,19 @@ Neofetch config
 ** Background-Blurring
 
 #+begin_src conf
-	
-  blur: {
-      method = "dual_kawase";
-      strength = 8;
-  }
+
+  # blur: {
+  #     method = "dual_kawase";
+  #     strength = 8;
+  # }
 
   # Parameters for background blurring, see the *BLUR* section for more information.
-  # blur-method = "dual_kawase";
-  # blur-strength = 7;
+  blur-method = "dual_kawase";
   # blur-size = 12
   #
   # blur-deviation = false
   #
-  # blur-strength = 5
+  blur-strength = 8
 
   # Blur background of semi-transparent / ARGB windows.
   # Bad in performance, with driver-dependent behavior.
