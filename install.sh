@@ -14,61 +14,96 @@ config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar"
 
 bin_files="inkscape-figures update list in pin re"
 
-error()
+function help
 {
-    printf "error: %s\n" "$1" >&2
-    exit 1
+    echo -e "\
+Usage: install.sh [COMMAND]\n\
+\n\
+By default installs all.
+\n\
+Commands:\n\
+all         Install all.\n\
+bin         Install binary files only.\n\
+config      Install config files only.\n\
+pcakages    Install only the necessary packages.\n\
+help        Show this message and exit."
+    exit 0
 }
 
-if [[ ! "$EUID" = 0 ]]; then
-    sudo ls /root
-fi
+function install_all ()
+{
+    install_packages
+    install_config
+    install_bin
+}
 
-# install the necessary build packages
-sudo pacman --noconfirm --needed -Sy $build_pkgs
+function install_bin ()
+{
+    for file in $bin_files
+    do
+        if [ ! -f $bin_dir/$file ]
+        then
+            echo "Creating symlink to $file in $bin_dir"
+            ln -s $dot_dir/bin/$file $bin_dir/$file
+        fi
+    done
+}
 
-# install yay
-if [[ ! -f /usr/bin/yay ]]
-then
-    cd $(mktemp -d)
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg --noconfirm -scri
-fi
+function install_config ()
+{
+    # create dotfiles_old in homedir
+    [ -d $old_dots_dir ] && rm -rf $old_dots_dir
+    echo "Creating $old_dots_dir for backup of any existing config files"
+    mkdir -p $old_dots_dir
+    mkdir -p $old_dots_dir/.config
 
-# install the necessary packages
-yay --noconfirm --needed -S $pkgs
+    # move any existing dotfiles in homedir to directory, then create symlinks
+    for file in $config_files
+    do
+        if [ -d ~/.config/$file ]
+        then
+            echo "Moving $file from ~/.config to $old_dots_dir/.config"
+            mv ~/.config/$file $old_dots_dir/.config 2> /dev/null
+        fi
+    done
+    for file in $config_files
+    do
+        echo "Creating symlink to $file in home directory."
+        ln -s $dot_dir/.config/$file ~/.config/$file
+    done
 
-# create dotfiles_old in homedir
-[ -d $old_dots_dir ] && rm -rf $old_dots_dir
-echo "Creating $old_dots_dir for backup of any existing config files"
-mkdir -p $old_dots_dir
-mkdir -p $old_dots_dir/.config
+    [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
+    echo "Creating symlink to .bash_profile"
+    ln -s $dot_dir/.bash_profile ~/.bash_profile
+}
 
-# move any existing dotfiles in homedir to directory, then create symlinks
-for file in $config_files
-do
-    if [ -d ~/.config/$file ]
-    then
-        echo "Moving $file from ~/.config to $old_dots_dir/.config"
-        mv ~/.config/$file $old_dots_dir/.config 2> /dev/null
+function install_packages ()
+{
+    if [[ ! "$EUID" = 0 ]]; then
+        sudo ls /root
     fi
-done
-for file in $config_files
-do
-    echo "Creating symlink to $file in home directory."
-    ln -s $dot_dir/.config/$file ~/.config/$file
-done
 
-for file in $bin_files
-do
-    if [ ! -f $bin_dir/$file ]
+    # install the necessary build packages
+    sudo pacman --noconfirm --needed -Sy $build_pkgs
+
+    # install yay
+    if [[ ! -f /usr/bin/yay ]]
     then
-        echo "Creating symlink to $file in $bin_dir"
-        ln -s $dot_dir/bin/$file $bin_dir/$file
+        cd $(mktemp -d)
+        git clone https://aur.archlinux.org/yay.git
+        cd yay
+        makepkg --noconfirm -scri
     fi
-done
 
-[ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
-echo "Creating symlink to .bash_profile"
-ln -s $dot_dir/.bash_profile ~/.bash_profile
+    # install the necessary packages
+    yay --noconfirm --needed -S $pkgs
+}
+
+case "$1" in
+    "")       install_all      ;;
+    all)      install_all      ;;
+    bin)      install_bin      ;;
+    packages) install_packages ;;
+    config)   install_config   ;;
+    help|*)   help             ;;
+esac
