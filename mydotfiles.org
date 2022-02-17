@@ -556,7 +556,6 @@ Install packages using pacman
   zsh-add-plugin "zsh-users/zsh-autosuggestions"
   zsh-add-plugin "hlissner/zsh-autopair"
   zsh-add-plugin "none9632/zsh-sudo"
-  zsh-add-plugin "tom-auger/cmdtime"
   zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
   zsh-add-plugin "djui/alias-tips"
 
@@ -1773,7 +1772,6 @@ defined in.
   filenamePattern=region-%Y%m%d-%H%M%S
   savePath=/home/none9632/Pictures/screenshots
   savePathFixed=false
-  setSaveAsFileExtension=Portable Network Graphic file (PNG) (*.png)
   showDesktopNotification=false
   showHelp=false
   showSidePanelButton=false
@@ -1806,7 +1804,7 @@ defined in.
   TYPE_RESIZE_LEFT=Shift+Left
   TYPE_RESIZE_RIGHT=Shift+Right
   TYPE_RESIZE_UP=Shift+Up
-  TYPE_SAVE=Return
+  TYPE_SAVE=Enter
   TYPE_SELECTION=S
   TYPE_SELECTIONINDICATOR=
   TYPE_SELECT_ALL=Ctrl+A

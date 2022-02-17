@@ -97,7 +97,6 @@ mkdir -p ~/.config/zsh/plugins
 zsh-add-plugin "zsh-users/zsh-autosuggestions"
 zsh-add-plugin "hlissner/zsh-autopair"
 zsh-add-plugin "none9632/zsh-sudo"
-zsh-add-plugin "tom-auger/cmdtime"
 zsh-add-plugin "zsh-users/zsh-syntax-highlighting"
 zsh-add-plugin "djui/alias-tips"
 
