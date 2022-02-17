@@ -396,7 +396,6 @@ Install packages using pacman
 
   cat $pac_cache_file | fzf --bind 'space:toggle' --reverse --multi --preview 'pacman -Si {1}' | xargs -ro pacman -S
 
-
 #+end_src
 
 ** remove package
@@ -7226,6 +7225,11 @@ Include an external file, like module file, etc.
 
   get_total_updates ()
   {
+      while [ $(ping -c 1 -q archlinux.org >&/dev/null; echo $?) -ne 0 ]
+      do
+          sleep 1
+      done
+
       update
       updates=$(yay -Qu 2>/dev/null | wc -l);
   }
@@ -7233,7 +7237,6 @@ Include an external file, like module file, etc.
   while true
   do
       echo " .."
-      sleep 1
       get_total_updates
 
       echo $updates
