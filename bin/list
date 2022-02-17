@@ -1,3 +1,3 @@
 #!/bin/sh
 
-yay -Qu alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom-git polybar zathura linux-zen portmaster-bin awesome bat firefox librewolf-bin tor-browser pacman yay-bin fzf
+yay -Qu alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom polybar zathura linux-zen portmaster-bin awesome bat firefox librewolf-bin tor-browser pacman yay-bin fzf
