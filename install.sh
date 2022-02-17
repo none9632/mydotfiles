@@ -12,7 +12,7 @@ pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom-git zoxide br
 # list of files/folders to symlink in homedir
 config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar"
 
-bin_files="inkscape-figures update in pin re"
+bin_files="inkscape-figures update list in pin re"
 
 error()
 {

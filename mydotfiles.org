@@ -44,7 +44,7 @@
   # list of files/folders to symlink in homedir
   config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar"
 
-  bin_files="inkscape-figures update in pin re"
+  bin_files="inkscape-figures update list in pin re"
 
 #+end_src
 
@@ -347,6 +347,16 @@
   sudo yay -Syy >/dev/null 2>$yay_log_file
   pacman -Slq > $pac_cache_file
   yay -Slq > $yay_cache_file
+
+#+end_src
+
+** update list
+
+#+begin_src sh :tangle ./bin/list :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  yay -Qu alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom-git polybar zathura linux-zen portmaster-bin awesome bat firefox librewolf-bin tor-browser pacman yay-bin fzf
 
 #+end_src
 
