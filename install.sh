@@ -25,7 +25,7 @@ Commands:\n\
 all         Install all.\n\
 bin         Install binary files only.\n\
 config      Install config files only.\n\
-pcakages    Install only the necessary packages.\n\
+packages    Install only the necessary packages.\n\
 help        Show this message and exit."
     exit 0
 }
@@ -100,8 +100,7 @@ function install_packages ()
 }
 
 case "$1" in
-    "")       install_all      ;;
-    all)      install_all      ;;
+    ""|all)   install_all      ;;
     bin)      install_bin      ;;
     packages) install_packages ;;
     config)   install_config   ;;
