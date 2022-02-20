@@ -1,12 +1,6 @@
 # store all plugins to be upgraded
 export -Ua PLUGINS_UPGRADE
 
-# Function to source files if they exist
-function zsh-add-file ()
-{
-    [ -f "$ZDOTDIR/$1" ] && source "$ZDOTDIR/$1"
-}
-
 function zsh-add-plugin ()
 {
     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
@@ -38,22 +32,28 @@ function zsh-upgrade ()
     done
 }
 
-function zsh-add-completion ()
-{
-    PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
-    if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
-        # For completions
-        completion_file_path=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
-        fpath+="$(dirname "${completion_file_path}")"
-        zsh-add-file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh"
-    else
-        git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
-        fpath+=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
-        [ -f $ZDOTDIR/.zccompdump ] && $ZDOTDIR/.zccompdump
-    fi
-    completion_file="$(basename "${completion_file_path}")"
-    if [ "$2" = true ] && compinit "${completion_file:1}"
-}
+# Function to source files if they exist
+# function zsh-add-file ()
+# {
+#     [ -f "$ZDOTDIR/$1" ] && source "$ZDOTDIR/$1"
+# }
+
+# function zsh-add-completion ()
+# {
+#     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
+#     if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
+#         # For completions
+#         completion_file_path=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
+#         fpath+="$(dirname "${completion_file_path}")"
+#         zsh-add-file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh"
+#     else
+#         git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
+#         fpath+=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
+#         [ -f $ZDOTDIR/.zccompdump ] && $ZDOTDIR/.zccompdump
+#     fi
+#     completion_file="$(basename "${completion_file_path}")"
+#     if [ "$2" = true ] && compinit "${completion_file:1}"
+# }
 
 # Unpacking the archive
 function ex ()
