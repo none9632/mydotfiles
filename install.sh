@@ -32,7 +32,7 @@ help        Show this message and exit."
 
 function install_all ()
 {
-    install_packages
+    install_pkgs
     install_config
     install_bin
 }
@@ -77,7 +77,7 @@ function install_config ()
     ln -s $dot_dir/.bash_profile ~/.bash_profile
 }
 
-function install_packages ()
+function install_pkgs ()
 {
     if [[ ! "$EUID" = 0 ]]; then
         sudo ls /root
@@ -100,9 +100,9 @@ function install_packages ()
 }
 
 case "$1" in
-    ""|all)   install_all      ;;
-    bin)      install_bin      ;;
-    packages) install_packages ;;
-    config)   install_config   ;;
-    help|*)   help             ;;
+    ""|all)   install_all    ;;
+    bin)      install_bin    ;;
+    packages) install_pkgs   ;;
+    config)   install_config ;;
+    help|*)   help           ;;
 esac
