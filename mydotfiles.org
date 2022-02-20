@@ -10045,7 +10045,6 @@ Configuration based on https://github.com/adi1090x/rofi
   if [ -n "$scr_name" ]
   then
       tmp_small_image=/tmp/screenshot_tmp
-      echo $scr_dir/$scr_name > /tmp/testfile
       convert $scr_dir/$scr_name -resize 100x60 $tmp_small_image
       notify-send -u normal -i $tmp_small_image \
                   "Screenshot" "Screenshot save as $scr_name"
