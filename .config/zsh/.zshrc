@@ -1,3 +1,6 @@
+# store all plugins to be upgraded
+export -Ua PLUGINS_UPGRADE
+
 # Function to source files if they exist
 function zsh-add-file ()
 {
@@ -11,6 +14,8 @@ function zsh-add-plugin ()
 
     [ ! -d "$PLUGIN_DIR" ] && git clone "https://github.com/$1.git" "$PLUGIN_DIR"
 
+    PLUGINS_UPGRADE+=("${PLUGIN_DIR}")
+
     if   [ "$2" != "" ] && [ -f $PLUGIN_DIR/$2 ];    then source $PLUGIN_DIR/$2
     elif [ -f $PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh ]; then source $PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh
     elif [ -f $PLUGIN_DIR/$PLUGIN_NAME.zsh ];        then source $PLUGIN_DIR/$PLUGIN_NAME.zsh
@@ -21,11 +26,12 @@ function zsh-add-plugin ()
 
 function zsh-upgrade ()
 {
-    local module_dir
-    for module_dir in "${ZIT_MODULES_UPGRADE[@]}"
+    local PLUGIN_DIR
+
+    for PLUGIN_DIR in "${PLUGINS_UPGRADE[@]}"
     do
-        pushd "${module_dir}" > /dev/null || continue
-        printf 'Updating %s\n' "${module_dir}"
+        pushd "${PLUGIN_DIR}" > /dev/null || continue
+        printf 'Updating %s\n' "${PLUGIN_DIR}"
         git pull
         printf '\n'
         popd > /dev/null || continue
