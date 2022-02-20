@@ -390,7 +390,26 @@
 
   #!/bin/sh
 
-  yay -Qu alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom polybar zathura linux-zen portmaster-bin awesome bat firefox librewolf-bin tor-browser pacman yay-bin fzf
+  pkgs="alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom polybar zathura linux-zen awesome bat firefox librewolf-bin tor-browser pacman yay-bin fzf"
+
+  function help
+  {
+      echo -e "\
+  Usage: list [COMMAND]\n\
+  \n\
+  By default shows available updates
+  \n\
+  Commands:\n\
+  install     Install available updates.
+  help        Show this message and exit."
+      exit 0
+  }
+
+  case "$1" in
+      "")       yay -Qu $pkgs ;;
+      install)  yay -S --needed $pkgs  ;;
+      help|*)   help          ;;
+  esac
 
 #+end_src
 
