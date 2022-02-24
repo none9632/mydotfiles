@@ -1061,30 +1061,6 @@ Install packages using pacman
 
 #+end_src
 
-** Wallpaper
-
-#+begin_src lua
-
-  screen.connect_signal("request::wallpaper", function(s)
-                           awful.wallpaper {
-                              screen = s,
-                              widget = {
-                                 {
-                                    image     = beautiful.wallpaper,
-                                    upscale   = true,
-                                    downscale = true,
-                                    widget    = wibox.widget.imagebox,
-                                 },
-                                 valign = "center",
-                                 halign = "center",
-                                 tiled  = false,
-                                 widget = wibox.container.tile,
-                              }
-                           }
-  end)
-
-#+end_src
-
 ** Wibar
 
 #+begin_src lua
