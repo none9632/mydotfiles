@@ -529,7 +529,8 @@ naughty.connect_signal("request::display", function(n)
     naughty.layout.box { notification = n }
 end)
 
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:activate { context = "mouse_enter", raise = false }
-end)
+-- awful.spawn.with_shell("emacs --daemon")
+awful.spawn.with_shell("lf -server")
+awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
+awful.spawn.with_shell("$POLYBAR_LAUNCH")
+awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
