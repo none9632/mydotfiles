@@ -90,12 +90,6 @@ awful.screen.connect_for_each_screen(function(s)
       awful.tag({ "1", "2", "3", "4", "5", "6", "7" }, s, awful.layout.layouts[1])
 end)
 
-awful.mouse.append_global_mousebindings({
-      awful.button({ }, 3, function () mymainmenu:toggle() end),
-      awful.button({ }, 4, awful.tag.viewprev),
-      awful.button({ }, 5, awful.tag.viewnext),
-})
-
 -- General Awesome keys
 awful.keyboard.append_global_keybindings({
       awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,

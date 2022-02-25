@@ -1066,18 +1066,6 @@ Install packages using pacman
 
 #+end_src
 
-** Mouse bindings
-
-#+begin_src lua
-
-  awful.mouse.append_global_mousebindings({
-        awful.button({ }, 3, function () mymainmenu:toggle() end),
-        awful.button({ }, 4, awful.tag.viewprev),
-        awful.button({ }, 5, awful.tag.viewnext),
-  })
-
-#+end_src
-
 ** Key bindings
 
 #+begin_src lua
