@@ -385,7 +385,10 @@ naughty.connect_signal("request::display", function(n)
     naughty.layout.box { notification = n }
 end)
 
--- awful.spawn.with_shell("emacs --daemon")
+-- Theme
+beautiful.init("/home/none9632/.config/awesome/theme.lua")
+
+-- autostart
 awful.spawn.with_shell("lf -server")
 awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
 awful.spawn.with_shell("$POLYBAR_LAUNCH")
