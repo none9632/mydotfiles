@@ -35,7 +35,7 @@ end)
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+terminal = "alacritty"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -69,7 +69,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Table of layouts to cover with awful.layout.inc, order matters.
 tag.connect_signal("request::default_layouts", function()
                       awful.layout.append_default_layouts({
-                            awful.layout.suit.floating,
+                            -- awful.layout.suit.floating,
                             awful.layout.suit.tile,
                             awful.layout.suit.tile.left,
                             awful.layout.suit.tile.bottom,
@@ -85,9 +85,9 @@ tag.connect_signal("request::default_layouts", function()
                       })
 end)
 
-screen.connect_signal("request::desktop_decoration", function(s)
-                         -- Each screen has its own tag table.
-                         awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+-- Each screen has its own tag table.
+awful.screen.connect_for_each_screen(function(s)
+      awful.tag({ "1", "2", "3", "4", "5", "6", "7" }, s, awful.layout.layouts[1])
 end)
 
 awful.mouse.append_global_mousebindings({
@@ -100,8 +100,6 @@ awful.mouse.append_global_mousebindings({
 awful.keyboard.append_global_keybindings({
       awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
          {description="show help", group="awesome"}),
-      awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-         {description = "show main menu", group = "awesome"}),
       awful.key({ modkey, "Control" }, "r", awesome.restart,
          {description = "reload awesome", group = "awesome"}),
       awful.key({ modkey, "Shift"   }, "q", awesome.quit,
@@ -183,9 +181,9 @@ awful.keyboard.append_global_keybindings({
 
 -- My keybinding
 awful.keyboard.append_global_keybindings({
-      awful.key({ modkey,           }, "Return", function () awful.util.spawn("appsmenu") end,
+      awful.key({ modkey }, "Return", function () awful.util.spawn("appsmenu") end,
          {description = "open a apps menu", group = "launcher"}),
-      awful.key({ modkey },            "d", function () awful.util.spawn("appslauncher") end,
+      awful.key({ modkey }, "d", function () awful.util.spawn("appslauncher") end,
          {description = "run rofi launcher", group = "launcher"}),
       awful.key({ modkey }, "p", function() awful.util.spawn("powermenu") end,
          {description = "power menu", group = "launcher"}),
