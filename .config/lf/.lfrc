@@ -14,10 +14,7 @@ lfcd ()
 alias lf="lfcd"
 
 export LFCP="/tmp/lfcp"
-export LF_COLORS="\
-.*/=34:\
-*.*/=34\
-"
+
 export LF_ICONS="\
 tw= :\
 st= :\

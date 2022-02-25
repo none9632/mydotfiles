@@ -10,7 +10,7 @@ build_pkgs="base-devel git gcc make cmake"
 pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty flameshot lf neofetch nvim rofi zathura zsh polybar picom"
+config_files="alacritty awesome flameshot lf neofetch nvim rofi zathura zsh polybar picom"
 
 bin_files="inkscape-figures update list in pin re"
 
