@@ -961,6 +961,7 @@ Install packages using pacman
   local wibox = require("wibox")
   -- Theme handling library
   local beautiful = require("beautiful")
+  local dpi = require('beautiful').xresources.apply_dpi
   -- Notification library
   local naughty = require("naughty")
   -- Declarative object management
@@ -1330,33 +1331,32 @@ Install packages using pacman
 
 #+begin_src lua
 
-  ruled.notification.connect_signal('request::rules', function()
-                                       -- All notifications will match this rule.
-                                       ruled.notification.append_rule {
-                                          rule       = { },
-                                          properties = {
-                                             screen           = awful.screen.preferred,
-                                             implicit_timeout = 5,
-                                          }
-                                       }
-  end)
+  -- Naughty presets
+  naughty.config.padding = 13
+  naughty.config.spacing = 8
 
-  naughty.connect_signal("request::display", function(n)
-      naughty.layout.box { notification = n }
-  end)
+  naughty.config.defaults.timeout = 5
+  naughty.config.defaults.screen = 1
+  naughty.config.defaults.position = 'top_right'
+  naughty.config.defaults.margin = dpi(16)
+  naughty.config.defaults.ontop = true
+  naughty.config.defaults.font = 'Roboto Regular 10'
+  naughty.config.defaults.icon = nil
+  naughty.config.defaults.icon_size = dpi(32)
+  naughty.config.defaults.shape = gears.shape.rectangle
+  naughty.config.defaults.border_width = 0
+  naughty.config.defaults.hover_timeout = nil
+
+  naughty.notification.bg = "#1c252abb"
 
 #+end_src
 
 ** Theme
-:PROPERTIES:
-:header-args: :tangle ./.config/awesome/theme.lua
-:END:
 
 #+begin_src lua
 
   local theme_assets = require("beautiful.theme_assets")
   local xresources = require("beautiful.xresources")
-  local dpi = xresources.apply_dpi
 
   local gfs = require("gears.filesystem")
   local themes_path = gfs.get_themes_dir()
@@ -1404,12 +1404,6 @@ Install packages using pacman
      taglist_square_size, theme.fg_normal
   )
 
-  -- Variables set for theming notifications:
-  -- notification_font
-  -- notification_[bg|fg]
-  -- notification_[width|height|margin]
-  -- notification_[border_color|border_width|shape|opacity]
-
   -- Variables set for theming the menu:
   -- menu_[bg|fg]_[normal|focus]
   -- menu_[border_color|border_width]
@@ -1423,22 +1417,22 @@ Install packages using pacman
   --theme.bg_widget = "#cc0000"
 
   -- You can use your own layout icons like this:
-  theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
-  theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
-  theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
-  theme.layout_magnifier = themes_path.."default/layouts/magnifierw.png"
-  theme.layout_max = themes_path.."default/layouts/maxw.png"
-  theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
-  theme.layout_tilebottom = themes_path.."default/layouts/tilebottomw.png"
-  theme.layout_tileleft   = themes_path.."default/layouts/tileleftw.png"
-  theme.layout_tile = themes_path.."default/layouts/tilew.png"
-  theme.layout_tiletop = themes_path.."default/layouts/tiletopw.png"
-  theme.layout_spiral  = themes_path.."default/layouts/spiralw.png"
-  theme.layout_dwindle = themes_path.."default/layouts/dwindlew.png"
-  theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
-  theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
-  theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
-  theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+  theme.layout_fairh         = themes_path .. "default/layouts/fairhw.png"
+  theme.layout_fairv         = themes_path .. "default/layouts/fairvw.png"
+  theme.layout_floating      = themes_path .. "default/layouts/floatingw.png"
+  theme.layout_magnifier     = themes_path .. "default/layouts/magnifierw.png"
+  theme.layout_max           = themes_path .. "default/layouts/maxw.png"
+  theme.layout_fullscreen    = themes_path .. "default/layouts/fullscreenw.png"
+  theme.layout_tilebottom    = themes_path .. "default/layouts/tilebottomw.png"
+  theme.layout_tileleft      = themes_path .. "default/layouts/tileleftw.png"
+  theme.layout_tile          = themes_path .. "default/layouts/tilew.png"
+  theme.layout_tiletop       = themes_path .. "default/layouts/tiletopw.png"
+  theme.layout_spiral        = themes_path .. "default/layouts/spiralw.png"
+  theme.layout_dwindle       = themes_path .. "default/layouts/dwindlew.png"
+  theme.layout_cornernw      = themes_path .. "default/layouts/cornernww.png"
+  theme.layout_cornerne      = themes_path .. "default/layouts/cornernew.png"
+  theme.layout_cornersw      = themes_path .. "default/layouts/cornersww.png"
+  theme.layout_cornerse      = themes_path .. "default/layouts/cornersew.png"
 
   -- Generate Awesome icon:
   theme.awesome_icon = theme_assets.awesome_icon(
@@ -1449,7 +1443,7 @@ Install packages using pacman
   -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
   theme.icon_theme = nil
 
-  return theme
+  beautiful.init(theme)
 
 #+end_src
 
@@ -1457,10 +1451,6 @@ Install packages using pacman
 
 #+begin_src lua
 
-  -- Theme
-  beautiful.init("/home/none9632/.config/awesome/theme.lua")
-
-  -- autostart
   awful.spawn.with_shell("lf -server")
   awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
   awful.spawn.with_shell("$POLYBAR_LAUNCH")
