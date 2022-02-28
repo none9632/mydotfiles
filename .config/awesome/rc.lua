@@ -13,7 +13,11 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local dpi = require('beautiful').xresources.apply_dpi
 -- Notification library
+local old_dbus = dbus
+dbus = nil
 local naughty = require("naughty")
+dbus = old_dbus
+package.loaded["naughty.dbus"] = {}
 -- Declarative object management
 local ruled = require("ruled")
 -- local menubar = require("menubar")
@@ -345,26 +349,7 @@ ruled.client.connect_signal("request::rules", function()
     -- }
 end)
 
--- Naughty presets
-naughty.config.padding = 13
-naughty.config.spacing = 8
-
-naughty.config.defaults.timeout = 5
-naughty.config.defaults.screen = 1
-naughty.config.defaults.position = 'top_right'
-naughty.config.defaults.margin = dpi(16)
-naughty.config.defaults.ontop = true
-naughty.config.defaults.font = 'Roboto Regular 10'
-naughty.config.defaults.icon = nil
-naughty.config.defaults.icon_size = dpi(32)
-naughty.config.defaults.shape = gears.shape.rectangle
-naughty.config.defaults.border_width = 0
-naughty.config.defaults.hover_timeout = nil
-
-naughty.notification.bg = "#1c252abb"
-
 local theme_assets = require("beautiful.theme_assets")
-local xresources = require("beautiful.xresources")
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
