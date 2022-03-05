@@ -182,10 +182,10 @@ function find_file ()
 }
 zle -N find_file
 
-bindkey "^h^h" fzf-cd-widget
-bindkey -M vicmd "R" fzf-history-widget
 bindkey -M vicmd "T" fzf-file-widget
-bindkey "^f" find_file
+bindkey "^h^h" fzf-cd-widget
+bindkey "^[r"  fzf-history-widget
+bindkey "^f"   find_file
 
 autoload -U compinit && compinit
 

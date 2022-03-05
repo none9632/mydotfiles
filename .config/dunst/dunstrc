@@ -205,6 +205,10 @@
     # Maximum amount of notifications kept in history
     history_length = 20
 
+    # Redisplay last message(s). Equivalent dunstctl command:
+    # dunstctl history-pop
+    history = mod4+n
+
     ### Misc/Advanced ###
 
     # dmenu path.
@@ -285,7 +289,6 @@
     # using the resolution and physical size. This might be useful in setups
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
-
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.

@@ -727,10 +727,10 @@ Install packages using pacman
   }
   zle -N find_file
 
-  bindkey "^h^h" fzf-cd-widget
-  bindkey -M vicmd "R" fzf-history-widget
   bindkey -M vicmd "T" fzf-file-widget
-  bindkey "^f" find_file
+  bindkey "^h^h" fzf-cd-widget
+  bindkey "^[r"  fzf-history-widget
+  bindkey "^f"   find_file
 
 #+end_src
 
@@ -11008,6 +11008,10 @@ Configuration based on https://github.com/adi1090x/rofi
       # Maximum amount of notifications kept in history
       history_length = 20
 
+      # Redisplay last message(s). Equivalent dunstctl command:
+      # dunstctl history-pop
+      history = mod4+n
+
       ### Misc/Advanced ###
 
       # dmenu path.
@@ -11088,7 +11092,6 @@ Configuration based on https://github.com/adi1090x/rofi
       # using the resolution and physical size. This might be useful in setups
       # where there are multiple screens with very different dpi values.
       per_monitor_dpi = false
-
 
   [urgency_low]
       # IMPORTANT: colors have to be defined in quotation marks.
