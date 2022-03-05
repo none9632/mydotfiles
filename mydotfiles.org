@@ -1141,9 +1141,9 @@ Install packages using pacman
         awful.key({ modkey }, "p", function() awful.util.spawn("powermenu") end,
            {description = "power menu", group = "launcher"}),
         awful.key({ modkey }, "z", function() awful.util.spawn("brightness") end,
-           {description = "power menu", group = "launcher"}),
+           {description = "brightness menu", group = "launcher"}),
         awful.key({ modkey }, "x", function() awful.util.spawn("volume") end,
-           {description = "power menu", group = "launcher"}),
+           {description = "volume menu", group = "launcher"}),
         awful.key({ modkey }, "w", function() awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers") end,
            {description = "wallpaper change", group = "launcher"}),
         awful.key({        }, "Print", function() awful.util.spawn("screenshot") end,
@@ -5877,8 +5877,8 @@ Include an external file, like module file, etc.
   [bar/tray]
   inherit = bar/main
   fixed-center = false
-  modules-right = mycpu temperature mymemory battery keyboard updates date
   modules-left =
+  modules-right = mycpu temperature mymemory battery keyboard updates date
   width = 764px
   offset-x = 1142
 
