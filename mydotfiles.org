@@ -320,7 +320,7 @@
       extension="${old_filename##*.}"
       img_file_path=$images_path$(echo "$new_filename.$extension")
 
-      cp $1 $img_file_path
+      mv $1 $img_file_path
       if [ ! -f $img_file_path ]
       then
           errormsg "Can't create image file"
