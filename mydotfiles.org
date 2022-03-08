@@ -3338,1115 +3338,6 @@ defined in.
 
 #+end_src
 
-* Neofetch
-:PROPERTIES:
-:header-args: :tangle ./.config/neofetch/config.conf
-:END:
-
-Neofetch config
-
-** Print information
-
-#+begin_src sh
-
-  print_info()
-  {
-      prin "${cl17}──────────\n Hardware Information \n──────────"
-      info " ​ ​ Host\n \n " model
-      # the original cpu info is too long
-      # info " ​ ​  " cpu
-      prin " ​ ​ ${cl17}CPU\n \n \n \n \n ${cl0}AMD Ryzen 5 3500U (8) @ 2.1GHz"
-      # the original gpu info is too long
-      # info " ​ ​ GPU\n \n \n " gpu
-      prin " ​ ​ ${cl17}CPU\n \n \n \n \n ${cl0}AMD ATI Radeon Vega Series"
-      info " ​ ​ Mem\n \n \n " memory
-      info " ​ ​ Res\n \n \n " resolution
-      prin "${cl17}──────────\n Software Information \n──────────"
-      info " ​ ​ OS\n \n \n \n " distro
-      info " ​ ​ Kernel" kernel
-      info " ​ ​ DE/WM\n " wm
-      info " ​ ​ Shell\n " shell
-      info " ​ ​ Term\n \n " term
-      info " ​ ​ Font\n \n " term_font
-      info " ​ ​ Pkgs\n \n " packages
-      info " ​ ​ IP\n \n \n \n " local_ip
-      prin "${cl17}─────────────────\n Colors \n─────────────────"
-      prin
-      prin "\n \n \n \n \n ${cl1}\n \n \n \n \n${cl2}\n \n \n \n \n${cl3}\n \n \n \n \n${cl4}\n \n \n \n \n${cl5}\n \n \n \n \n${cl6}\n \n \n \n \n${cl7}\n \n \n \n \n${cl8}\n \n \n \n \n"
-      prin "\n \n \n \n \n ${cl9}\n \n \n \n \n${cl10}\n \n \n \n \n${cl11}\n \n \n \n \n${cl12}\n \n \n \n \n${cl13}\n \n \n \n \n${cl14}\n \n \n \n \n${cl15}\n \n \n \n \n${cl16}\n \n \n \n \n"
-  }
-
-#+end_src
-
-** Colors for custom colorblocks
-
-#+begin_src sh
-
-  reset="\033[0m"
-  black="\033[1;40m"
-  red="\033[1;41m"
-  green="\033[1;42m"
-  yellow="\033[1;43m"
-  blue="\033[1;44m"
-  magenta="\033[1;45m"
-  cyan="\033[1;46m"
-  white="\033[1;47m"
-  bblack="\033[1;100m"
-  bred="\033[1;101m"
-  bgreen="\033[1;102m"
-  byellow="\033[1;103m"
-  bblue="\033[1;104m"
-  bmagenta="\033[1;105m"
-  bcyan="\033[1;106m"
-  bwhite="\033[1;107m"
-  cl0="${reset}"
-  cl1="${black}"
-  cl2="${red}"
-  cl3="${green}"
-  cl4="${yellow}"
-  cl5="${blue}"
-  cl6="${magenta}"
-  cl7="${cyan}"
-  cl8="${white}"
-  cl9="${bblack}"
-  cl10="${bred}"
-  cl11="${bgreen}"
-  cl12="${byellow}"
-  cl13="${bblue}"
-  cl14="${bmagenta}"
-  cl15="${bcyan}"
-  cl16="${bwhite}"
-  cl17="\033[1;36m"
-
-#+end_src
-
-** COMMENT Title
-
-#+begin_src sh
-
-  # Hide/Show Fully qualified domain name.
-  #
-  # Default: 'off'
-  # Values:  'on', 'off'
-  # Flag:    --title_fqdn
-  title_fqdn="off"
-
-#+end_src
-
-** COMMENT Kernel
-
-#+begin_src sh
-
-  # Shorten the output of the kernel function.
-  #
-  # Default:  'on'
-  # Values:   'on', 'off'
-  # Flag:     --kernel_shorthand
-  # Supports: Everything except *BSDs (except PacBSD and PC-BSD)
-  #
-  # Example:
-  # on:  '4.8.9-1-ARCH'
-  # off: 'Linux 4.8.9-1-ARCH'
-  kernel_shorthand="on"
-
-#+end_src
-
-** Distro
-*** COMMENT Shorten the output of the distro function
-
-#+begin_src sh
-
-  # Default:  'off'
-  # Values:   'on', 'tiny', 'off'
-  # Flag:     --distro_shorthand
-  # Supports: Everything except Windows and Haiku
-  distro_shorthand="off"
-
-#+end_src
-
-*** Show/Hide OS architecture
-
-#+begin_src sh
-
-  # Show 'x86_64', 'x86' and etc in 'Distro:' output.
-  #
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --os_arch
-  #
-  # Example:
-  # on:  'Arch Linux x86_64'
-  # off: 'Arch Linux'
-  os_arch="off"
-
-#+end_src
-
-** COMMENT Uptime
-
-#+begin_src sh
-
-  # Shorten the output of the uptime function
-  #
-  # Default: 'on'
-  # Values:  'on', 'tiny', 'off'
-  # Flag:    --uptime_shorthand
-  #
-  # Example:
-  # on:   '2 days, 10 hours, 3 mins'
-  # tiny: '2d 10h 3m'
-  # off:  '2 days, 10 hours, 3 minutes'
-  uptime_shorthand="on"
-
-#+end_src
-
-** Memory
-*** Show memory pecentage in output
-
-#+begin_src sh
-
-  # Default: 'off'
-  # Values:  'on', 'off'
-  # Flag:    --memory_percent
-  #
-  # Example:
-  # on:   '1801MiB / 7881MiB (22%)'
-  # off:  '1801MiB / 7881MiB'
-  memory_percent="on"
-
-#+end_src
-
-*** COMMENT Change memory output unit
-
-#+begin_src sh
-
-  # Default: 'mib'
-  # Values:  'kib', 'mib', 'gib'
-  # Flag:    --memory_unit
-  #
-  # Example:
-  # kib  '1020928KiB / 7117824KiB'
-  # mib  '1042MiB / 6951MiB'
-  # gib: ' 0.98GiB / 6.79GiB'
-  memory_unit="mib"
-
-#+end_src
-
-** Packages
-
-#+begin_src sh
-
-  # Show/Hide Package Manager names.
-  #
-  # Default: 'tiny'
-  # Values:  'on', 'tiny' 'off'
-  # Flag:    --package_managers
-  #
-  # Example:
-  # on:   '998 (pacman), 8 (flatpak), 4 (snap)'
-  # tiny: '908 (pacman, flatpak, snap)'
-  # off:  '908'
-  package_managers="on"
-
-#+end_src
-
-** COMMENT Shell
-*** Show the path to $SHELL
-
-#+begin_src sh
-
-  # Default: 'off'
-  # Values:  'on', 'off'
-  # Flag:    --shell_path
-  #
-  # Example:
-  # on:  '/bin/bash'
-  # off: 'bash'
-  shell_path="off"
-
-#+end_src
-
-*** Show $SHELL version
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --shell_version
-  #
-  # Example:
-  # on:  'bash 4.4.5'
-  # off: 'bash'
-  shell_version="on"
-
-#+end_src
-
-** CPU
-*** COMMENT CPU speed type
-
-#+begin_src sh
-
-  # Default:  'bios_limit'
-  # Values:   'scaling_cur_freq', 'scaling_min_freq', 'scaling_max_freq', 'bios_limit'.
-  # Flag:     --speed_type
-  # Supports: Linux with 'cpufreq'
-  # NOTE: Any file in '/sys/devices/system/cpu/cpu0/cpufreq' can be used as a value.
-  speed_type="bios_limit"
-
-#+end_src
-
-*** CPU speed shorthand
-
-#+begin_src sh
-
-  # Default: 'off'
-  # Values:  'on', 'off'.
-  # Flag:    --speed_shorthand
-  # NOTE: This flag is not supported in systems with CPU speed less than 1 GHz
-  #
-  # Example:
-  # on:    'i7-6500U (4) @ 3.1GHz'
-  # off:   'i7-6500U (4) @ 3.100GHz'
-  speed_shorthand="on"
-
-#+end_src
-
-*** COMMENT Enable/Disable CPU brand in output
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --cpu_brand
-  #
-  # Example:
-  # on:   'Intel i7-6500U'
-  # off:  'i7-6500U (4)'
-  cpu_brand="on"
-
-#+end_src
-
-*** COMMENT CPU Speed
-
-#+begin_src sh
-
-  # Hide/Show CPU speed.
-  #
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --cpu_speed
-  #
-  # Example:
-  # on:  'Intel i7-6500U (4) @ 3.1GHz'
-  # off: 'Intel i7-6500U (4)'
-  cpu_speed="on"
-
-#+end_src
-
-*** COMMENT CPU Cores
-
-#+begin_src sh
-
-  # Display CPU cores in output
-  #
-  # Default: 'logical'
-  # Values:  'logical', 'physical', 'off'
-  # Flag:    --cpu_cores
-  # Support: 'physical' doesn't work on BSD.
-  #
-  # Example:
-  # logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores)
-  # physical: 'Intel i7-6500U (2) @ 3.1GHz' (All physical cores)
-  # off:      'Intel i7-6500U @ 3.1GHz'
-  cpu_cores="logical"
-
-#+end_src
-
-*** COMMENT CPU Temperature
-
-#+begin_src sh
-
-  # Hide/Show CPU temperature.
-  # Note the temperature is added to the regular CPU function.
-  #
-  # Default:  'off'
-  # Values:   'C', 'F', 'off'
-  # Flag:     --cpu_temp
-  # Supports: Linux, BSD
-  # NOTE: For FreeBSD and NetBSD-based systems, you'll need to enable
-  #       coretemp kernel module. This only supports newer Intel processors.
-  #
-  # Example:
-  # C:   'Intel i7-6500U (4) @ 3.1GHz [27.2°C]'
-  # F:   'Intel i7-6500U (4) @ 3.1GHz [82.0°F]'
-  # off: 'Intel i7-6500U (4) @ 3.1GHz'
-  cpu_temp="off"
-
-#+end_src
-
-** COMMENT GPU
-*** Enable/Disable GPU brand
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --gpu_brand
-  #
-  # Example:
-  # on:  'AMD HD 7950'
-  # off: 'HD 7950'
-  gpu_brand="on"
-
-#+end_src
-
-*** Which GPU to display
-
-#+begin_src sh
-
-  # Default:  'all'
-  # Values:   'all', 'dedicated', 'integrated'
-  # Flag:     --gpu_type
-  # Supports: Linux
-  #
-  # Example:
-  # all:
-  #   GPU1: AMD HD 7950
-  #   GPU2: Intel Integrated Graphics
-  #
-  # dedicated:
-  #   GPU1: AMD HD 7950
-  #
-  # integrated:
-  #   GPU1: Intel Integrated Graphics
-  gpu_type="all"
-
-#+end_src
-
-** Resolution
-
-#+begin_src sh
-
-  # Display refresh rate next to each monitor
-  #
-  # Default:  'off'
-  # Values:   'on', 'off'
-  # Flag:     --refresh_rate
-  # Supports: Doesn't work on Windows.
-  #
-  # Example:
-  # on:  '1920x1080 @ 60Hz'
-  # off: '1920x1080'
-  refresh_rate="on"
-
-#+end_src
-
-** COMMENT GTK Theme / Icons / Font
-*** Shorten output of GTK
-
-#+begin_src sh
-
-  # Default: 'off'
-  # Values:  'on', 'off'
-  # Flag:    --gtk_shorthand
-  #
-  # Example:
-  # on:  'Numix, Adwaita'
-  # off: 'Numix [GTK2], Adwaita [GTK3]'
-  gtk_shorthand="off"
-
-#+end_src
-
-*** Enable/Disable GTK2
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --gtk2
-  #
-  # Example:
-  # on:  'Numix [GTK2], Adwaita [GTK3]'
-  # off: 'Adwaita [GTK3]'
-  gtk2="on"
-
-#+end_src
-
-*** Enable/Disable GTK3
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --gtk3
-  #
-  # Example:
-  # on:  'Numix [GTK2], Adwaita [GTK3]'
-  # off: 'Numix [GTK2]'
-  gtk3="on"
-
-#+end_src
-
-** COMMENT IP address
-*** Website to ping for the public IP
-
-#+begin_src sh
-
-  # Default: 'http://ident.me'
-  # Values:  'url'
-  # Flag:    --ip_host
-  public_ip_host="http://ident.me"
-
-#+end_src
-
-*** Public IP timeout
-
-#+begin_src sh
-
-  # Default: '2'
-  # Values:  'int'
-  # Flag:    --ip_timeout
-  public_ip_timeout=2
-
-#+end_src
-
-** COMMENT Desktop evironment
-
-#+begin_src sh
-
-  # Show Desktop Environment version
-  #
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --de_version
-  de_version="on"
-
-#+end_src
-
-** COMMENT Disk
-*** Which disks to display
-
-#+begin_src sh
-
-  # The values can be any /dev/sdXX, mount point or directory.
-  # NOTE: By default we only show the disk info for '/'.
-  #
-  # Default: '/'
-  # Values:  '/', '/dev/sdXX', '/path/to/drive'.
-  # Flag:    --disk_show
-  #
-  # Example:
-  # disk_show=('/' '/dev/sdb1'):
-  #      'Disk (/): 74G / 118G (66%)'
-  #      'Disk (/mnt/Videos): 823G / 893G (93%)'
-  #
-  # disk_show=('/'):
-  #      'Disk (/): 74G / 118G (66%)'
-  disk_show=('/')
-
-#+end_src
-
-*** Disk subtitle
-
-#+begin_src sh
-
-  # What to append to the Disk subtitle.
-  #
-  # Default: 'mount'
-  # Values:  'mount', 'name', 'dir', 'none'
-  # Flag:    --disk_subtitle
-  #
-  # Example:
-  # name:   'Disk (/dev/sda1): 74G / 118G (66%)'
-  #         'Disk (/dev/sdb2): 74G / 118G (66%)'
-  #
-  # mount:  'Disk (/): 74G / 118G (66%)'
-  #         'Disk (/mnt/Local Disk): 74G / 118G (66%)'
-  #         'Disk (/mnt/Videos): 74G / 118G (66%)'
-  #
-  # dir:    'Disk (/): 74G / 118G (66%)'
-  #         'Disk (Local Disk): 74G / 118G (66%)'
-  #         'Disk (Videos): 74G / 118G (66%)'
-  #
-  # none:   'Disk: 74G / 118G (66%)'
-  #         'Disk: 74G / 118G (66%)'
-  #         'Disk: 74G / 118G (66%)'
-  disk_subtitle="mount"
-
-#+end_src
-
-*** Disk percent
-
-#+begin_src sh
-
-  # Show/Hide disk percent.
-  #
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --disk_percent
-  #
-  # Example:
-  # on:  'Disk (/): 74G / 118G (66%)'
-  # off: 'Disk (/): 74G / 118G'
-  disk_percent="on"
-
-#+end_src
-
-** COMMENT Song
-*** Manually specify a music player
-
-#+begin_src sh
-
-  # Default: 'auto'
-  # Values:  'auto', 'player-name'
-  # Flag:    --music_player
-  #
-  # Available values for 'player-name':
-  #
-  # amarok
-  # audacious
-  # banshee
-  # bluemindo
-  # clementine
-  # cmus
-  # deadbeef
-  # deepin-music
-  # dragon
-  # elisa
-  # exaile
-  # gnome-music
-  # gmusicbrowser
-  # gogglesmm
-  # guayadeque
-  # io.elementary.music
-  # iTunes
-  # juk
-  # lollypop
-  # mocp
-  # mopidy
-  # mpd
-  # muine
-  # netease-cloud-music
-  # olivia
-  # playerctl
-  # pogo
-  # pragha
-  # qmmp
-  # quodlibet
-  # rhythmbox
-  # sayonara
-  # smplayer
-  # spotify
-  # strawberry
-  # tauonmb
-  # tomahawk
-  # vlc
-  # xmms2d
-  # xnoise
-  # yarock
-  music_player="auto"
-
-#+end_src
-
-*** Format to display song information
-
-#+begin_src sh
-
-  # Default: '%artist% - %album% - %title%'
-  # Values:  '%artist%', '%album%', '%title%'
-  # Flag:    --song_format
-  #
-  # Example:
-  # default: 'Song: Jet - Get Born - Sgt Major'
-  song_format="%artist% - %title%"
-
-#+end_src
-
-*** Print the Artist, Album and Title on separate lines
-
-#+begin_src sh
-
-  # Default: 'off'
-  # Values:  'on', 'off'
-  # Flag:    --song_shorthand
-  #
-  # Example:
-  # on:  'Artist: The Fratellis'
-  #      'Album: Costello Music'
-  #      'Song: Chelsea Dagger'
-  #
-  # off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
-  song_shorthand="off"
-
-#+end_src
-
-*** 'mpc' arguments 
-
-#+begin_src sh
-
-  # Default: ''
-  # Example: mpc_args=(-h HOST -P PASSWORD)
-  mpc_args=()
-
-#+end_src
-
-** COMMENT Text colors
-
-#+begin_src sh
-
-  # Default: 'distro'
-  # Values:  'distro', 'num' 'num' 'num' 'num' 'num' 'num'
-  # Flag:    --colors
-  #
-  # Each number represents a different part of the text in
-  # this order: 'title', '@', 'underline', 'subtitle', 'colon', 'info'
-  #
-  # Example:
-  # colors=(distro)      - Text is colored based on Distro colors.
-  # colors=(4 6 1 8 8 6) - Text is colored in the order above.
-  colors=(distro)
-
-#+end_src
-
-** Text options
-*** COMMENT Toggle bold text
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --bold
-  bold="on"
-
-#+end_src
-
-*** COMMENT Enable/Disable Underline
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --underline
-  underline_enabled="on"
-
-#+end_src
-
-*** COMMENT Underline character
-
-#+begin_src sh
-
-  # Default: '-'
-  # Values:  'string'
-  # Flag:    --underline_char
-  underline_char="-"
-
-#+end_src
-
-*** Info Separator
-
-#+begin_src sh
-
-  # Replace the default separator with the specified string.
-  #
-  # Default: ':'
-  # Flag:    --separator
-  #
-  # Example:
-  # separator="->":   'Shell-> bash'
-  # separator=" =":   'WM = dwm'
-  # separator="  "
-  separator=" "
-
-#+end_src
-
-** COMMENT Color blocks
-*** Color block range
-
-#+begin_src sh
-
-  # The range of colors to print.
-  #
-  # Default: '0', '15'
-  # Values:  'num'
-  # Flag:    --block_range
-  #
-  # Example:
-  #
-  # Display colors 0-7 in the blocks.  (8 colors)
-  # neofetch --block_range 0 7
-  #
-  # Display colors 0-15 in the blocks. (16 colors)
-  # neofetch --block_range 0 15
-  block_range=(0 15)
-
-#+end_src
-
-*** Toggle color blocks
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --color_blocks
-  color_blocks="on"
-
-#+end_src
-
-*** Color block width in spaces
-
-#+begin_src sh
-
-  # Default: '3'
-  # Values:  'num'
-  # Flag:    --block_width
-  block_width=3
-
-#+end_src
-
-*** Color block height in lines
-
-#+begin_src sh
-
-  # Default: '1'
-  # Values:  'num'
-  # Flag:    --block_height
-  block_height=1
-
-#+end_src
-
-*** Color Alignment
-
-#+begin_src sh
-
-  # Default: 'auto'
-  # Values:  'auto', 'num'
-  # Flag:    --col_offset
-  #
-  # Number specifies how far from the left side of the terminal (in spaces) to
-  # begin printing the columns, in case you want to e.g. center them under your
-  # text.
-  # Example:
-  # col_offset="auto" - Default behavior of neofetch
-  # col_offset=7      - Leave 7 spaces then print the colors
-  col_offset="auto"
-
-#+end_src
-
-** COMMENT Progress bar
-*** Bar characters
-
-#+begin_src sh
-
-  # Default: '-', '='
-  # Values:  'string', 'string'
-  # Flag:    --bar_char
-  #
-  # Example:
-  # neofetch --bar_char 'elapsed' 'total'
-  # neofetch --bar_char '-' '='
-  bar_char_elapsed="-"
-  bar_char_total="="
-
-#+end_src
-
-*** Toggle Bar border
-
-#+begin_src sh
-
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --bar_border
-  bar_border="on"
-
-#+end_src
-
-*** Progress bar length in spaces
-
-#+begin_src sh
-
-  # Number of chars long to make the progress bars.
-  #
-  # Default: '15'
-  # Values:  'num'
-  # Flag:    --bar_length
-  bar_length=15
-
-#+end_src
-
-*** Progress bar colors
-
-#+begin_src sh
-
-  # When set to distro, uses your distro's logo colors.
-  #
-  # Default: 'distro', 'distro'
-  # Values:  'distro', 'num'
-  # Flag:    --bar_colors
-  #
-  # Example:
-  # neofetch --bar_colors 3 4
-  # neofetch --bar_colors distro 5
-  bar_color_elapsed="distro"
-  bar_color_total="distro"
-
-#+end_src
-
-*** Info display
-
-#+begin_src sh
-
-  # Display a bar with the info.
-  #
-  # Default: 'off'
-  # Values:  'bar', 'infobar', 'barinfo', 'off'
-  # Flags:   --cpu_display
-  #          --memory_display
-  #          --battery_display
-  #          --disk_display
-  #
-  # Example:
-  # bar:     '[---=======]'
-  # infobar: 'info [---=======]'
-  # barinfo: '[---=======] info'
-  # off:     'info'
-  cpu_display="on"
-  memory_display="on"
-  battery_display="on"
-  disk_display="on"
-
-#+end_src
-
-** COMMENT Backend settings
-*** Image backend
-
-#+begin_src sh
-
-  # Default: 'ascii'
-  # Values:  'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'off',
-  #          'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
-  # Flag:    --backend
-  image_backend="ascii"
-
-#+end_src
-
-*** Image source
-
-#+begin_src sh
-
-  # Which image or ascii file to display.
-  #
-  # Default: 'auto'
-  # Values:  'auto', 'ascii', 'wallpaper', '/path/to/img', '/path/to/ascii', '/path/to/dir/'
-  #          'command output (neofetch --ascii "$(fortune | cowsay -W 30)")'
-  # Flag:    --source
-  #
-  # NOTE: 'auto' will pick the best image source for whatever image backend is used.
-  #       In ascii mode, distro ascii art will be used and in an image mode, your
-  #       wallpaper will be used.
-  image_source="auto"
-
-#+end_src
-
-** COMMENT Ascii options
-*** Ascii distro
-
-#+begin_src sh
-
-  # Which distro's ascii art to display.
-  #
-  # Default: 'auto'
-  # Values:  'auto', 'distro_name'
-  # Flag:    --ascii_distro
-  # NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
-  #       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs,
-  #       ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya, Bedrock,
-  #       Bitrig, BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
-  #       BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
-  #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover,
-  #       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
-  #       DesaOS, Devuan, DracOS, DarkOs, DragonFly, Drauger, Elementary,
-  #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
-  #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
-  #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
-  #       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
-  #       Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
-  #       LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
-  #       Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
-  #       Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner,
-  #       NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana, openmamba,
-  #       OpenMandriva, OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD,
-  #       Parabola, Pardus, Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint,
-  #       popos, Porteus, PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix,
-  #       Raspbian, Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan,
-  #       Regata, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific,
-  #       Septor, SereneLinux, SharkLinux, Siduction, Slackware, SliTaz,
-  #       SmartOS, Solus, Source_Mage, Sparky, Star, SteamOS, SunOS,
-  #       openSUSE_Leap, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails,
-  #       Trisquel, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio,
-  #       Ubuntu, Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin,
-  #       and IRIX have ascii logos
-  # NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
-  #       Use '{distro name}_old' to use the old logos.
-  # NOTE: Ubuntu has flavor variants.
-  #       Change this to Lubuntu, Kubuntu, Xubuntu, Ubuntu-GNOME,
-  #       Ubuntu-Studio, Ubuntu-Mate  or Ubuntu-Budgie to use the flavors.
-  # NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
-  #       CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
-  #       Antrix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
-  #       Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
-  #       Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
-  #       postmarketOS, and Void have a smaller logo variant.
-  #       Use '{distro name}_small' to use the small variants.
-  ascii_distro="auto"
-
-#+end_src
-
-*** Ascii colors
-
-#+begin_src sh
-
-  # Default: 'distro'
-  # Values:  'distro', 'num' 'num' 'num' 'num' 'num' 'num'
-  # Flag:    --ascii_colors
-  #
-  # Example:
-  # ascii_colors=(distro)      - Ascii is colored based on Distro colors.
-  # ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors.
-  ascii_colors=(distro)
-
-#+end_src
-
-*** Bold ascii logo
-
-#+begin_src sh
-
-  # Whether or not to bold the ascii logo.
-  #
-  # Default: 'on'
-  # Values:  'on', 'off'
-  # Flag:    --ascii_bold
-  ascii_bold="on"
-
-#+end_src
-
-** Image options
-*** COMMENT Image loop
-
-#+begin_src sh
-
-  # Setting this to on will make neofetch redraw the image constantly until
-  # Ctrl+C is pressed. This fixes display issues in some terminal emulators.
-  #
-  # Default: 'off'
-  # Values:  'on', 'off'
-  # Flag:    --loop
-  image_loop="off"
-
-#+end_src
-
-*** COMMENT Thumbnail directory
-
-#+begin_src sh
-
-  # Default: '~/.cache/thumbnails/neofetch'
-  # Values:  'dir'
-  thumbnail_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch"
-
-#+end_src
-
-*** COMMENT Crop mode
-
-#+begin_src sh
-
-  # Default: 'normal'
-  # Values:  'normal', 'fit', 'fill'
-  # Flag:    --crop_mode
-  #
-  # See this wiki page to learn about the fit and fill options.
-  # https://github.com/dylanaraps/neofetch/wiki/What-is-Waifu-Crop%3F
-  crop_mode="normal"
-
-#+end_src
-
-*** COMMENT Crop offset
-
-#+begin_src sh
-
-  # Note: Only affects 'normal' crop mode.
-  #
-  # Default: 'center'
-  # Values:  'northwest', 'north', 'northeast', 'west', 'center'
-  #          'east', 'southwest', 'south', 'southeast'
-  # Flag:    --crop_offset
-  crop_offset="center"
-
-#+end_src
-
-*** COMMENT Image size
-
-#+begin_src sh
-
-  # The image is half the terminal width by default.
-  #
-  # Default: 'auto'
-  # Values:  'auto', '00px', '00%', 'none'
-  # Flags:   --image_size
-  #          --size
-  image_size="auto"
-
-#+end_src
-
-*** Gap between image and text
-
-#+begin_src sh
-
-  # Default: '3'
-  # Values:  'num', '-num'
-  # Flag:    --gap
-  gap=2
-
-#+end_src
-
-*** COMMENT Image offsets
-
-#+begin_src sh
-
-  # Only works with the w3m backend.
-  #
-  # Default: '0'
-  # Values:  'px'
-  # Flags:   --xoffset
-  #          --yoffset
-  yoffset=0
-  xoffset=0
-
-#+end_src
-
-*** COMMENT Image background color
-
-#+begin_src sh
-
-  # Only works with the w3m backend.
-  #
-  # Default: ''
-  # Values:  'color', 'blue'
-  # Flag:    --bg_color
-  background_color=
-
-#+end_src
-
-** COMMENT Misc Options
-
-#+begin_src sh
-
-  # Stdout mode
-  # Turn off all colors and disables image backend (ASCII/Image).
-  # Useful for piping into another command.
-  # Default: 'off'
-  # Values: 'on', 'off'
-  stdout="off"
-
-#+end_src
-
 * Neovim
 ** init.vim
 :PROPERTIES:
@@ -5903,8 +4794,8 @@ Include an external file, like module file, etc.
   ; just care about the last one. But if we wait too long for events to swallow
   ; the bar would appear sluggish so we continue if timeout
   ; expires or limit is reached.
-  throttle-output = 5
-  throttle-output-for = 10
+  ; throttle-output = 5
+  ; throttle-output-for = 10
 
   ; Time in milliseconds that the input handler will wait between processing events
   ;throttle-input-for = 30
@@ -8134,6 +7025,7 @@ Configuration based on https://github.com/adi1090x/rofi
   ,* {
       accent:           #51afef;
       background:       #141c21;
+      background-trans: #141c21dd;
       background-light: #1c252a;
       background-focus: #253137;
       foreground:       #93a1a1;
@@ -8714,19 +7606,18 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** COMMENT Network
+**** Network
 
 #+begin_src css :tangle ./.config/rofi/themes/menu/network.rasi
 
   configuration {
-      font:                           "Comfortaa 14";
+      show-icons:                     false;
+      font:                           "SauceCodePro Nerd Font Semibold 14";
       disable-history:                false;
-      fullscreen:                     false;
-      hide-scrollbar:                 true;
       sidebar-mode:                   false;
   }
 
-  @import "../../../styles/colors.rasi"
+  @import "../../colors.rasi"
 
   ,* {
       background-color:               @background;
@@ -8747,7 +7638,8 @@ Configuration based on https://github.com/adi1090x/rofi
       padding:                        10px;
       background-color:               @background-light;
       text-color:                     @accent;
-      border:                         2px 2px 2px 2px;
+      /* border:                         2px 2px 4px 2px; */
+      border:                         2px;
       border-radius:                  0px;
       border-color:                   @accent;
   }
@@ -8798,11 +7690,13 @@ Configuration based on https://github.com/adi1090x/rofi
   }
 
   element-text {
+      background-color:               inherit;
+      text-color:                     inherit;
       font:                           "feather 32";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0;
-      margin:                         25px 0px 65px 0px;
+      vertical-align:                 0.5;
+      margin:                         40px 0px 40px 0px;
   }
 
   element normal.urgent,
@@ -10264,16 +9158,15 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** COMMENT Network
+**** Network
 
-#+begin_src sh :tangle ./.config/rofi/scripts/network.sh
+#+begin_src sh :tangle ./.config/rofi/scripts/network
 
-  #!/usr/bin/env bash
+  #!/bin/sh
 
-  style="$($HOME/.config/rofi/applets/menu/style.sh)"
-
-  dir="$HOME/.config/rofi/applets/menu/configs/$style"
-  rofi_command="rofi -theme $dir/network.rasi"
+  rofi_command="rofi -kb-move-char-back Left,h\
+                     -kb-move-char-forward Right,l\
+                     -theme $HOME/.config/rofi/themes/menu/network.rasi"
 
   ## Get info
   IFACE="$(nmcli | grep -i interface | awk '/interface/ {print $2}')"
@@ -10311,14 +9204,14 @@ Configuration based on https://github.com/adi1090x/rofi
   options="$connected\n$bmon\n$launch_cli\n$launch"
 
   ## Main
-  chosen="$(echo -e "$options" | $rofi_command -p "$SSID  :  $PIP" -dmenu $active $urgent -selected-row 1)"
+  chosen="$(echo -e "$options" | $rofi_command -p " $SSID | $PIP " -dmenu $active $urgent -selected-row 1)"
   case $chosen in
       $connected)
           if [[ $STATUS == *"enable"* ]]; then
               nmcli radio wifi off
           else
               nmcli radio wifi on
-          fi 
+          fi
           ;;
       $bmon)
           termite -e bmon
@@ -10602,6 +9495,10 @@ Configuration based on https://github.com/adi1090x/rofi
   nmcli -t d wifi rescan
   LIST=$(nmcli --fields SSID,SECURITY,BARS device wifi list | sed '/^--/d' | sed 1d | sed -E "s/WPA*.?\S/~~/g" | sed "s/~~ ~~/~~/g;s/802\.1X//g;s/--/~~/g;s/  *~/~/g;s/~  */~/g;s/_/ /g" | column -t -s '~')
 
+  echo "$LIST" > /tmp/testfile
+  # LIST=$(cat /tmp/testfile | column -t -s '~')
+  # echo $LIST
+
   # get current connection status
   CONSTATE=$(nmcli -fields WIFI g)
   if [[ "$CONSTATE" =~ "enabled" ]]; then
@@ -10612,7 +9509,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
   # display menu; store user choice
   # CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row 1 -config "./theme.rasi")
-  CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row 1 -config "../themes/menu/wifi.rasi")
+  CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -no-show-icon -selected-row 1 -theme "../themes/menu/wifi.rasi")
   # store selected SSID
   CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
 
@@ -10636,7 +9533,8 @@ Configuration based on https://github.com/adi1090x/rofi
           nmcli con up "$CHSSID"
       else
           if [[ "$CHENTRY" =~ "" ]]; then
-              WIFIPASS=$(echo " Press Enter if network is saved" | rofi -dmenu -p " WiFi Password: " -lines 1 )
+              # WIFIPASS=$(rofi -dmenu -p " WiFi Password: " -lines 1 )
+              WIFIPASS=$(input "Password:")
           fi
           if nmcli dev wifi con "$CHSSID" password "$WIFIPASS"
           then
@@ -11246,6 +10144,1115 @@ Configuration based on https://github.com/adi1090x/rofi
   #    set_stack_tag = "volume"
   #
   # vim: ft=cfg
+
+#+end_src
+
+** Neofetch
+:PROPERTIES:
+:header-args: :tangle ./.config/neofetch/config.conf
+:END:
+
+Neofetch config
+
+*** Print information
+
+#+begin_src sh
+
+  print_info()
+  {
+      prin "${cl17}──────────\n Hardware Information \n──────────"
+      info " ​ ​ Host\n \n " model
+      # the original cpu info is too long
+      # info " ​ ​  " cpu
+      prin " ​ ​ ${cl17}CPU\n \n \n \n \n ${cl0}AMD Ryzen 5 3500U (8) @ 2.1GHz"
+      # the original gpu info is too long
+      # info " ​ ​ GPU\n \n \n " gpu
+      prin " ​ ​ ${cl17}CPU\n \n \n \n \n ${cl0}AMD ATI Radeon Vega Series"
+      info " ​ ​ Mem\n \n \n " memory
+      info " ​ ​ Res\n \n \n " resolution
+      prin "${cl17}──────────\n Software Information \n──────────"
+      info " ​ ​ OS\n \n \n \n " distro
+      info " ​ ​ Kernel" kernel
+      info " ​ ​ DE/WM\n " wm
+      info " ​ ​ Shell\n " shell
+      info " ​ ​ Term\n \n " term
+      info " ​ ​ Font\n \n " term_font
+      info " ​ ​ Pkgs\n \n " packages
+      info " ​ ​ IP\n \n \n \n " local_ip
+      prin "${cl17}─────────────────\n Colors \n─────────────────"
+      prin
+      prin "\n \n \n \n \n ${cl1}\n \n \n \n \n${cl2}\n \n \n \n \n${cl3}\n \n \n \n \n${cl4}\n \n \n \n \n${cl5}\n \n \n \n \n${cl6}\n \n \n \n \n${cl7}\n \n \n \n \n${cl8}\n \n \n \n \n"
+      prin "\n \n \n \n \n ${cl9}\n \n \n \n \n${cl10}\n \n \n \n \n${cl11}\n \n \n \n \n${cl12}\n \n \n \n \n${cl13}\n \n \n \n \n${cl14}\n \n \n \n \n${cl15}\n \n \n \n \n${cl16}\n \n \n \n \n"
+  }
+
+#+end_src
+
+*** Colors for custom colorblocks
+
+#+begin_src sh
+
+  reset="\033[0m"
+  black="\033[1;40m"
+  red="\033[1;41m"
+  green="\033[1;42m"
+  yellow="\033[1;43m"
+  blue="\033[1;44m"
+  magenta="\033[1;45m"
+  cyan="\033[1;46m"
+  white="\033[1;47m"
+  bblack="\033[1;100m"
+  bred="\033[1;101m"
+  bgreen="\033[1;102m"
+  byellow="\033[1;103m"
+  bblue="\033[1;104m"
+  bmagenta="\033[1;105m"
+  bcyan="\033[1;106m"
+  bwhite="\033[1;107m"
+  cl0="${reset}"
+  cl1="${black}"
+  cl2="${red}"
+  cl3="${green}"
+  cl4="${yellow}"
+  cl5="${blue}"
+  cl6="${magenta}"
+  cl7="${cyan}"
+  cl8="${white}"
+  cl9="${bblack}"
+  cl10="${bred}"
+  cl11="${bgreen}"
+  cl12="${byellow}"
+  cl13="${bblue}"
+  cl14="${bmagenta}"
+  cl15="${bcyan}"
+  cl16="${bwhite}"
+  cl17="\033[1;36m"
+
+#+end_src
+
+*** COMMENT Title
+
+#+begin_src sh
+
+  # Hide/Show Fully qualified domain name.
+  #
+  # Default: 'off'
+  # Values:  'on', 'off'
+  # Flag:    --title_fqdn
+  title_fqdn="off"
+
+#+end_src
+
+*** COMMENT Kernel
+
+#+begin_src sh
+
+  # Shorten the output of the kernel function.
+  #
+  # Default:  'on'
+  # Values:   'on', 'off'
+  # Flag:     --kernel_shorthand
+  # Supports: Everything except *BSDs (except PacBSD and PC-BSD)
+  #
+  # Example:
+  # on:  '4.8.9-1-ARCH'
+  # off: 'Linux 4.8.9-1-ARCH'
+  kernel_shorthand="on"
+
+#+end_src
+
+*** Distro
+**** COMMENT Shorten the output of the distro function
+
+#+begin_src sh
+
+  # Default:  'off'
+  # Values:   'on', 'tiny', 'off'
+  # Flag:     --distro_shorthand
+  # Supports: Everything except Windows and Haiku
+  distro_shorthand="off"
+
+#+end_src
+
+**** Show/Hide OS architecture
+
+#+begin_src sh
+
+  # Show 'x86_64', 'x86' and etc in 'Distro:' output.
+  #
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --os_arch
+  #
+  # Example:
+  # on:  'Arch Linux x86_64'
+  # off: 'Arch Linux'
+  os_arch="off"
+
+#+end_src
+
+*** COMMENT Uptime
+
+#+begin_src sh
+
+  # Shorten the output of the uptime function
+  #
+  # Default: 'on'
+  # Values:  'on', 'tiny', 'off'
+  # Flag:    --uptime_shorthand
+  #
+  # Example:
+  # on:   '2 days, 10 hours, 3 mins'
+  # tiny: '2d 10h 3m'
+  # off:  '2 days, 10 hours, 3 minutes'
+  uptime_shorthand="on"
+
+#+end_src
+
+*** Memory
+**** Show memory pecentage in output
+
+#+begin_src sh
+
+  # Default: 'off'
+  # Values:  'on', 'off'
+  # Flag:    --memory_percent
+  #
+  # Example:
+  # on:   '1801MiB / 7881MiB (22%)'
+  # off:  '1801MiB / 7881MiB'
+  memory_percent="on"
+
+#+end_src
+
+**** COMMENT Change memory output unit
+
+#+begin_src sh
+
+  # Default: 'mib'
+  # Values:  'kib', 'mib', 'gib'
+  # Flag:    --memory_unit
+  #
+  # Example:
+  # kib  '1020928KiB / 7117824KiB'
+  # mib  '1042MiB / 6951MiB'
+  # gib: ' 0.98GiB / 6.79GiB'
+  memory_unit="mib"
+
+#+end_src
+
+*** Packages
+
+#+begin_src sh
+
+  # Show/Hide Package Manager names.
+  #
+  # Default: 'tiny'
+  # Values:  'on', 'tiny' 'off'
+  # Flag:    --package_managers
+  #
+  # Example:
+  # on:   '998 (pacman), 8 (flatpak), 4 (snap)'
+  # tiny: '908 (pacman, flatpak, snap)'
+  # off:  '908'
+  package_managers="on"
+
+#+end_src
+
+*** COMMENT Shell
+**** Show the path to $SHELL
+
+#+begin_src sh
+
+  # Default: 'off'
+  # Values:  'on', 'off'
+  # Flag:    --shell_path
+  #
+  # Example:
+  # on:  '/bin/bash'
+  # off: 'bash'
+  shell_path="off"
+
+#+end_src
+
+**** Show $SHELL version
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --shell_version
+  #
+  # Example:
+  # on:  'bash 4.4.5'
+  # off: 'bash'
+  shell_version="on"
+
+#+end_src
+
+*** CPU
+**** COMMENT CPU speed type
+
+#+begin_src sh
+
+  # Default:  'bios_limit'
+  # Values:   'scaling_cur_freq', 'scaling_min_freq', 'scaling_max_freq', 'bios_limit'.
+  # Flag:     --speed_type
+  # Supports: Linux with 'cpufreq'
+  # NOTE: Any file in '/sys/devices/system/cpu/cpu0/cpufreq' can be used as a value.
+  speed_type="bios_limit"
+
+#+end_src
+
+**** CPU speed shorthand
+
+#+begin_src sh
+
+  # Default: 'off'
+  # Values:  'on', 'off'.
+  # Flag:    --speed_shorthand
+  # NOTE: This flag is not supported in systems with CPU speed less than 1 GHz
+  #
+  # Example:
+  # on:    'i7-6500U (4) @ 3.1GHz'
+  # off:   'i7-6500U (4) @ 3.100GHz'
+  speed_shorthand="on"
+
+#+end_src
+
+**** COMMENT Enable/Disable CPU brand in output
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --cpu_brand
+  #
+  # Example:
+  # on:   'Intel i7-6500U'
+  # off:  'i7-6500U (4)'
+  cpu_brand="on"
+
+#+end_src
+
+**** COMMENT CPU Speed
+
+#+begin_src sh
+
+  # Hide/Show CPU speed.
+  #
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --cpu_speed
+  #
+  # Example:
+  # on:  'Intel i7-6500U (4) @ 3.1GHz'
+  # off: 'Intel i7-6500U (4)'
+  cpu_speed="on"
+
+#+end_src
+
+**** COMMENT CPU Cores
+
+#+begin_src sh
+
+  # Display CPU cores in output
+  #
+  # Default: 'logical'
+  # Values:  'logical', 'physical', 'off'
+  # Flag:    --cpu_cores
+  # Support: 'physical' doesn't work on BSD.
+  #
+  # Example:
+  # logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores)
+  # physical: 'Intel i7-6500U (2) @ 3.1GHz' (All physical cores)
+  # off:      'Intel i7-6500U @ 3.1GHz'
+  cpu_cores="logical"
+
+#+end_src
+
+**** COMMENT CPU Temperature
+
+#+begin_src sh
+
+  # Hide/Show CPU temperature.
+  # Note the temperature is added to the regular CPU function.
+  #
+  # Default:  'off'
+  # Values:   'C', 'F', 'off'
+  # Flag:     --cpu_temp
+  # Supports: Linux, BSD
+  # NOTE: For FreeBSD and NetBSD-based systems, you'll need to enable
+  #       coretemp kernel module. This only supports newer Intel processors.
+  #
+  # Example:
+  # C:   'Intel i7-6500U (4) @ 3.1GHz [27.2°C]'
+  # F:   'Intel i7-6500U (4) @ 3.1GHz [82.0°F]'
+  # off: 'Intel i7-6500U (4) @ 3.1GHz'
+  cpu_temp="off"
+
+#+end_src
+
+*** COMMENT GPU
+**** Enable/Disable GPU brand
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --gpu_brand
+  #
+  # Example:
+  # on:  'AMD HD 7950'
+  # off: 'HD 7950'
+  gpu_brand="on"
+
+#+end_src
+
+**** Which GPU to display
+
+#+begin_src sh
+
+  # Default:  'all'
+  # Values:   'all', 'dedicated', 'integrated'
+  # Flag:     --gpu_type
+  # Supports: Linux
+  #
+  # Example:
+  # all:
+  #   GPU1: AMD HD 7950
+  #   GPU2: Intel Integrated Graphics
+  #
+  # dedicated:
+  #   GPU1: AMD HD 7950
+  #
+  # integrated:
+  #   GPU1: Intel Integrated Graphics
+  gpu_type="all"
+
+#+end_src
+
+*** Resolution
+
+#+begin_src sh
+
+  # Display refresh rate next to each monitor
+  #
+  # Default:  'off'
+  # Values:   'on', 'off'
+  # Flag:     --refresh_rate
+  # Supports: Doesn't work on Windows.
+  #
+  # Example:
+  # on:  '1920x1080 @ 60Hz'
+  # off: '1920x1080'
+  refresh_rate="on"
+
+#+end_src
+
+*** COMMENT GTK Theme / Icons / Font
+**** Shorten output of GTK
+
+#+begin_src sh
+
+  # Default: 'off'
+  # Values:  'on', 'off'
+  # Flag:    --gtk_shorthand
+  #
+  # Example:
+  # on:  'Numix, Adwaita'
+  # off: 'Numix [GTK2], Adwaita [GTK3]'
+  gtk_shorthand="off"
+
+#+end_src
+
+**** Enable/Disable GTK2
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --gtk2
+  #
+  # Example:
+  # on:  'Numix [GTK2], Adwaita [GTK3]'
+  # off: 'Adwaita [GTK3]'
+  gtk2="on"
+
+#+end_src
+
+**** Enable/Disable GTK3
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --gtk3
+  #
+  # Example:
+  # on:  'Numix [GTK2], Adwaita [GTK3]'
+  # off: 'Numix [GTK2]'
+  gtk3="on"
+
+#+end_src
+
+*** COMMENT IP address
+**** Website to ping for the public IP
+
+#+begin_src sh
+
+  # Default: 'http://ident.me'
+  # Values:  'url'
+  # Flag:    --ip_host
+  public_ip_host="http://ident.me"
+
+#+end_src
+
+**** Public IP timeout
+
+#+begin_src sh
+
+  # Default: '2'
+  # Values:  'int'
+  # Flag:    --ip_timeout
+  public_ip_timeout=2
+
+#+end_src
+
+*** COMMENT Desktop evironment
+
+#+begin_src sh
+
+  # Show Desktop Environment version
+  #
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --de_version
+  de_version="on"
+
+#+end_src
+
+*** COMMENT Disk
+**** Which disks to display
+
+#+begin_src sh
+
+  # The values can be any /dev/sdXX, mount point or directory.
+  # NOTE: By default we only show the disk info for '/'.
+  #
+  # Default: '/'
+  # Values:  '/', '/dev/sdXX', '/path/to/drive'.
+  # Flag:    --disk_show
+  #
+  # Example:
+  # disk_show=('/' '/dev/sdb1'):
+  #      'Disk (/): 74G / 118G (66%)'
+  #      'Disk (/mnt/Videos): 823G / 893G (93%)'
+  #
+  # disk_show=('/'):
+  #      'Disk (/): 74G / 118G (66%)'
+  disk_show=('/')
+
+#+end_src
+
+**** Disk subtitle
+
+#+begin_src sh
+
+  # What to append to the Disk subtitle.
+  #
+  # Default: 'mount'
+  # Values:  'mount', 'name', 'dir', 'none'
+  # Flag:    --disk_subtitle
+  #
+  # Example:
+  # name:   'Disk (/dev/sda1): 74G / 118G (66%)'
+  #         'Disk (/dev/sdb2): 74G / 118G (66%)'
+  #
+  # mount:  'Disk (/): 74G / 118G (66%)'
+  #         'Disk (/mnt/Local Disk): 74G / 118G (66%)'
+  #         'Disk (/mnt/Videos): 74G / 118G (66%)'
+  #
+  # dir:    'Disk (/): 74G / 118G (66%)'
+  #         'Disk (Local Disk): 74G / 118G (66%)'
+  #         'Disk (Videos): 74G / 118G (66%)'
+  #
+  # none:   'Disk: 74G / 118G (66%)'
+  #         'Disk: 74G / 118G (66%)'
+  #         'Disk: 74G / 118G (66%)'
+  disk_subtitle="mount"
+
+#+end_src
+
+**** Disk percent
+
+#+begin_src sh
+
+  # Show/Hide disk percent.
+  #
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --disk_percent
+  #
+  # Example:
+  # on:  'Disk (/): 74G / 118G (66%)'
+  # off: 'Disk (/): 74G / 118G'
+  disk_percent="on"
+
+#+end_src
+
+*** COMMENT Song
+**** Manually specify a music player
+
+#+begin_src sh
+
+  # Default: 'auto'
+  # Values:  'auto', 'player-name'
+  # Flag:    --music_player
+  #
+  # Available values for 'player-name':
+  #
+  # amarok
+  # audacious
+  # banshee
+  # bluemindo
+  # clementine
+  # cmus
+  # deadbeef
+  # deepin-music
+  # dragon
+  # elisa
+  # exaile
+  # gnome-music
+  # gmusicbrowser
+  # gogglesmm
+  # guayadeque
+  # io.elementary.music
+  # iTunes
+  # juk
+  # lollypop
+  # mocp
+  # mopidy
+  # mpd
+  # muine
+  # netease-cloud-music
+  # olivia
+  # playerctl
+  # pogo
+  # pragha
+  # qmmp
+  # quodlibet
+  # rhythmbox
+  # sayonara
+  # smplayer
+  # spotify
+  # strawberry
+  # tauonmb
+  # tomahawk
+  # vlc
+  # xmms2d
+  # xnoise
+  # yarock
+  music_player="auto"
+
+#+end_src
+
+**** Format to display song information
+
+#+begin_src sh
+
+  # Default: '%artist% - %album% - %title%'
+  # Values:  '%artist%', '%album%', '%title%'
+  # Flag:    --song_format
+  #
+  # Example:
+  # default: 'Song: Jet - Get Born - Sgt Major'
+  song_format="%artist% - %title%"
+
+#+end_src
+
+**** Print the Artist, Album and Title on separate lines
+
+#+begin_src sh
+
+  # Default: 'off'
+  # Values:  'on', 'off'
+  # Flag:    --song_shorthand
+  #
+  # Example:
+  # on:  'Artist: The Fratellis'
+  #      'Album: Costello Music'
+  #      'Song: Chelsea Dagger'
+  #
+  # off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
+  song_shorthand="off"
+
+#+end_src
+
+**** 'mpc' arguments 
+
+#+begin_src sh
+
+  # Default: ''
+  # Example: mpc_args=(-h HOST -P PASSWORD)
+  mpc_args=()
+
+#+end_src
+
+*** COMMENT Text colors
+
+#+begin_src sh
+
+  # Default: 'distro'
+  # Values:  'distro', 'num' 'num' 'num' 'num' 'num' 'num'
+  # Flag:    --colors
+  #
+  # Each number represents a different part of the text in
+  # this order: 'title', '@', 'underline', 'subtitle', 'colon', 'info'
+  #
+  # Example:
+  # colors=(distro)      - Text is colored based on Distro colors.
+  # colors=(4 6 1 8 8 6) - Text is colored in the order above.
+  colors=(distro)
+
+#+end_src
+
+*** Text options
+**** COMMENT Toggle bold text
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --bold
+  bold="on"
+
+#+end_src
+
+**** COMMENT Enable/Disable Underline
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --underline
+  underline_enabled="on"
+
+#+end_src
+
+**** COMMENT Underline character
+
+#+begin_src sh
+
+  # Default: '-'
+  # Values:  'string'
+  # Flag:    --underline_char
+  underline_char="-"
+
+#+end_src
+
+**** Info Separator
+
+#+begin_src sh
+
+  # Replace the default separator with the specified string.
+  #
+  # Default: ':'
+  # Flag:    --separator
+  #
+  # Example:
+  # separator="->":   'Shell-> bash'
+  # separator=" =":   'WM = dwm'
+  # separator="  "
+  separator=" "
+
+#+end_src
+
+*** COMMENT Color blocks
+**** Color block range
+
+#+begin_src sh
+
+  # The range of colors to print.
+  #
+  # Default: '0', '15'
+  # Values:  'num'
+  # Flag:    --block_range
+  #
+  # Example:
+  #
+  # Display colors 0-7 in the blocks.  (8 colors)
+  # neofetch --block_range 0 7
+  #
+  # Display colors 0-15 in the blocks. (16 colors)
+  # neofetch --block_range 0 15
+  block_range=(0 15)
+
+#+end_src
+
+**** Toggle color blocks
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --color_blocks
+  color_blocks="on"
+
+#+end_src
+
+**** Color block width in spaces
+
+#+begin_src sh
+
+  # Default: '3'
+  # Values:  'num'
+  # Flag:    --block_width
+  block_width=3
+
+#+end_src
+
+**** Color block height in lines
+
+#+begin_src sh
+
+  # Default: '1'
+  # Values:  'num'
+  # Flag:    --block_height
+  block_height=1
+
+#+end_src
+
+**** Color Alignment
+
+#+begin_src sh
+
+  # Default: 'auto'
+  # Values:  'auto', 'num'
+  # Flag:    --col_offset
+  #
+  # Number specifies how far from the left side of the terminal (in spaces) to
+  # begin printing the columns, in case you want to e.g. center them under your
+  # text.
+  # Example:
+  # col_offset="auto" - Default behavior of neofetch
+  # col_offset=7      - Leave 7 spaces then print the colors
+  col_offset="auto"
+
+#+end_src
+
+*** COMMENT Progress bar
+**** Bar characters
+
+#+begin_src sh
+
+  # Default: '-', '='
+  # Values:  'string', 'string'
+  # Flag:    --bar_char
+  #
+  # Example:
+  # neofetch --bar_char 'elapsed' 'total'
+  # neofetch --bar_char '-' '='
+  bar_char_elapsed="-"
+  bar_char_total="="
+
+#+end_src
+
+**** Toggle Bar border
+
+#+begin_src sh
+
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --bar_border
+  bar_border="on"
+
+#+end_src
+
+**** Progress bar length in spaces
+
+#+begin_src sh
+
+  # Number of chars long to make the progress bars.
+  #
+  # Default: '15'
+  # Values:  'num'
+  # Flag:    --bar_length
+  bar_length=15
+
+#+end_src
+
+**** Progress bar colors
+
+#+begin_src sh
+
+  # When set to distro, uses your distro's logo colors.
+  #
+  # Default: 'distro', 'distro'
+  # Values:  'distro', 'num'
+  # Flag:    --bar_colors
+  #
+  # Example:
+  # neofetch --bar_colors 3 4
+  # neofetch --bar_colors distro 5
+  bar_color_elapsed="distro"
+  bar_color_total="distro"
+
+#+end_src
+
+**** Info display
+
+#+begin_src sh
+
+  # Display a bar with the info.
+  #
+  # Default: 'off'
+  # Values:  'bar', 'infobar', 'barinfo', 'off'
+  # Flags:   --cpu_display
+  #          --memory_display
+  #          --battery_display
+  #          --disk_display
+  #
+  # Example:
+  # bar:     '[---=======]'
+  # infobar: 'info [---=======]'
+  # barinfo: '[---=======] info'
+  # off:     'info'
+  cpu_display="on"
+  memory_display="on"
+  battery_display="on"
+  disk_display="on"
+
+#+end_src
+
+*** COMMENT Backend settings
+**** Image backend
+
+#+begin_src sh
+
+  # Default: 'ascii'
+  # Values:  'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'off',
+  #          'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
+  # Flag:    --backend
+  image_backend="ascii"
+
+#+end_src
+
+**** Image source
+
+#+begin_src sh
+
+  # Which image or ascii file to display.
+  #
+  # Default: 'auto'
+  # Values:  'auto', 'ascii', 'wallpaper', '/path/to/img', '/path/to/ascii', '/path/to/dir/'
+  #          'command output (neofetch --ascii "$(fortune | cowsay -W 30)")'
+  # Flag:    --source
+  #
+  # NOTE: 'auto' will pick the best image source for whatever image backend is used.
+  #       In ascii mode, distro ascii art will be used and in an image mode, your
+  #       wallpaper will be used.
+  image_source="auto"
+
+#+end_src
+
+*** COMMENT Ascii options
+**** Ascii distro
+
+#+begin_src sh
+
+  # Which distro's ascii art to display.
+  #
+  # Default: 'auto'
+  # Values:  'auto', 'distro_name'
+  # Flag:    --ascii_distro
+  # NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
+  #       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs,
+  #       ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya, Bedrock,
+  #       Bitrig, BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
+  #       BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
+  #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover,
+  #       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
+  #       DesaOS, Devuan, DracOS, DarkOs, DragonFly, Drauger, Elementary,
+  #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
+  #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
+  #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
+  #       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
+  #       Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
+  #       LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
+  #       Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
+  #       Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner,
+  #       NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana, openmamba,
+  #       OpenMandriva, OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD,
+  #       Parabola, Pardus, Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint,
+  #       popos, Porteus, PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix,
+  #       Raspbian, Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan,
+  #       Regata, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific,
+  #       Septor, SereneLinux, SharkLinux, Siduction, Slackware, SliTaz,
+  #       SmartOS, Solus, Source_Mage, Sparky, Star, SteamOS, SunOS,
+  #       openSUSE_Leap, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails,
+  #       Trisquel, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio,
+  #       Ubuntu, Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin,
+  #       and IRIX have ascii logos
+  # NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
+  #       Use '{distro name}_old' to use the old logos.
+  # NOTE: Ubuntu has flavor variants.
+  #       Change this to Lubuntu, Kubuntu, Xubuntu, Ubuntu-GNOME,
+  #       Ubuntu-Studio, Ubuntu-Mate  or Ubuntu-Budgie to use the flavors.
+  # NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
+  #       CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
+  #       Antrix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
+  #       Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
+  #       Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
+  #       postmarketOS, and Void have a smaller logo variant.
+  #       Use '{distro name}_small' to use the small variants.
+  ascii_distro="auto"
+
+#+end_src
+
+**** Ascii colors
+
+#+begin_src sh
+
+  # Default: 'distro'
+  # Values:  'distro', 'num' 'num' 'num' 'num' 'num' 'num'
+  # Flag:    --ascii_colors
+  #
+  # Example:
+  # ascii_colors=(distro)      - Ascii is colored based on Distro colors.
+  # ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors.
+  ascii_colors=(distro)
+
+#+end_src
+
+**** Bold ascii logo
+
+#+begin_src sh
+
+  # Whether or not to bold the ascii logo.
+  #
+  # Default: 'on'
+  # Values:  'on', 'off'
+  # Flag:    --ascii_bold
+  ascii_bold="on"
+
+#+end_src
+
+*** Image options
+**** COMMENT Image loop
+
+#+begin_src sh
+
+  # Setting this to on will make neofetch redraw the image constantly until
+  # Ctrl+C is pressed. This fixes display issues in some terminal emulators.
+  #
+  # Default: 'off'
+  # Values:  'on', 'off'
+  # Flag:    --loop
+  image_loop="off"
+
+#+end_src
+
+**** COMMENT Thumbnail directory
+
+#+begin_src sh
+
+  # Default: '~/.cache/thumbnails/neofetch'
+  # Values:  'dir'
+  thumbnail_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch"
+
+#+end_src
+
+**** COMMENT Crop mode
+
+#+begin_src sh
+
+  # Default: 'normal'
+  # Values:  'normal', 'fit', 'fill'
+  # Flag:    --crop_mode
+  #
+  # See this wiki page to learn about the fit and fill options.
+  # https://github.com/dylanaraps/neofetch/wiki/What-is-Waifu-Crop%3F
+  crop_mode="normal"
+
+#+end_src
+
+**** COMMENT Crop offset
+
+#+begin_src sh
+
+  # Note: Only affects 'normal' crop mode.
+  #
+  # Default: 'center'
+  # Values:  'northwest', 'north', 'northeast', 'west', 'center'
+  #          'east', 'southwest', 'south', 'southeast'
+  # Flag:    --crop_offset
+  crop_offset="center"
+
+#+end_src
+
+**** COMMENT Image size
+
+#+begin_src sh
+
+  # The image is half the terminal width by default.
+  #
+  # Default: 'auto'
+  # Values:  'auto', '00px', '00%', 'none'
+  # Flags:   --image_size
+  #          --size
+  image_size="auto"
+
+#+end_src
+
+**** Gap between image and text
+
+#+begin_src sh
+
+  # Default: '3'
+  # Values:  'num', '-num'
+  # Flag:    --gap
+  gap=2
+
+#+end_src
+
+**** COMMENT Image offsets
+
+#+begin_src sh
+
+  # Only works with the w3m backend.
+  #
+  # Default: '0'
+  # Values:  'px'
+  # Flags:   --xoffset
+  #          --yoffset
+  yoffset=0
+  xoffset=0
+
+#+end_src
+
+**** COMMENT Image background color
+
+#+begin_src sh
+
+  # Only works with the w3m backend.
+  #
+  # Default: ''
+  # Values:  'color', 'blue'
+  # Flag:    --bg_color
+  background_color=
+
+#+end_src
+
+*** COMMENT Misc Options
+
+#+begin_src sh
+
+  # Stdout mode
+  # Turn off all colors and disables image backend (ASCII/Image).
+  # Useful for piping into another command.
+  # Default: 'off'
+  # Values: 'on', 'off'
+  stdout="off"
 
 #+end_src
 
