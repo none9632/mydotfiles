@@ -354,4 +354,4 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 . $HOME/.config/lf/.lfrc
 
 # Run neofetch
-[[ -f /usr/bin/neofetch ]] && echo "" && neofetch
+[[ $run_neofetch ]] && echo "" && neofetch

@@ -173,7 +173,11 @@ awful.keyboard.append_global_keybindings({
       awful.key({ modkey }, "w", function() awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers") end,
          {description = "wallpaper change", group = "launcher"}),
       awful.key({        }, "Print", function() awful.util.spawn("screenshot") end,
-         {description = "take a screenshot", group = "launcher"})
+         {description = "take a screenshot", group = "launcher"}),
+      awful.key({ modkey }, "`", function() toggle_splash() end,
+         {description = "toggle splash terminal", group = "launcher"}),
+      awful.key({ modkey }, "u", function() toggle_splash_height() end,
+         {description = "resize splash terminal", group = "launcher"})
 })
 
 awful.keyboard.append_global_keybindings({
@@ -347,6 +351,82 @@ ruled.client.connect_signal("request::rules", function()
     --     rule       = { class = "Firefox"     },
     --     properties = { screen = 1, tag = "2" }
     -- }
+end)
+
+local app = 'test_var=true; alacritty'
+-- local app = 'alacritty -e nvim'
+-- local app = 'alacritty -e lf'
+
+local screen = awful.screen.focused()
+
+local splash_id = 'notnil'
+local splash_client
+local opened = false
+
+function create_shell()
+   splash_id = awful.spawn.with_shell(app)
+end
+
+-- Dirty hack to prevent splash from showing up in occupied tags
+function _splash_to_current_tag()
+   if splash_client then
+      splash_client:move_to_tag(screen.selected_tag)
+   end
+end
+
+function open_splash()
+   splash_client.hidden = false
+end
+
+function close_splash()
+   splash_client.hidden = true
+end
+
+toggle_splash_height = function()
+   if splash_client and opened then
+      splash_client.maximized_vertical = not splash_client.maximized_vertical
+   end
+end
+
+toggle_splash = function()
+   opened = not opened
+   if not splash_client then
+      create_shell()
+   else
+      if opened then
+         open_splash()
+         client.focus = splash_client
+         splash_client:raise()
+      else
+         close_splash()
+      end
+   end
+end
+
+client.connect_signal('manage', function(c)
+                         if (c.pid == splash_id) then
+                            splash_client = c
+                            c.x = c.screen.geometry.x
+                            c.height = (c.screen.geometry.height / 5) * 3
+                            c.y = c.screen.geometry.height - c.height - beautiful.border_width - dpi(16)
+                            c.floating = true
+                            c.skip_decoration = true
+                            c.ontop = true
+                            c.floating = true
+                            c.above = true
+                            c.sticky = true
+                            c.type = 'splash'
+                            c.hidden = not opened
+                            c.border_width = beautiful.border_width
+                            c.maximized_horizontal = true
+                         end
+end)
+
+client.connect_signal('unmanage', function(c)
+                         if (c.pid == splash_id) then
+                            opened = false
+                            splash_client = nil
+                         end
 end)
 
 local theme_assets = require("beautiful.theme_assets")

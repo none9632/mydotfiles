@@ -27,7 +27,7 @@ xdotool key Mode_switch
 chosen="$(echo -e "$options" | $rofi_command -p " Most Used " -dmenu -selected-row 2)"
 case $chosen in
     $terminal)
-        $term &
+        $term -o env.run_neofetch=yes &
         ;;
     $files)
         if [[ -f /usr/bin/lf ]]; then
