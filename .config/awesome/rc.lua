@@ -174,8 +174,10 @@ awful.keyboard.append_global_keybindings({
          {description = "wallpaper change", group = "launcher"}),
       awful.key({        }, "Print", function() awful.util.spawn("screenshot") end,
          {description = "take a screenshot", group = "launcher"}),
-      awful.key({ modkey }, "`", function() toggle_splash() end,
+      awful.key({ modkey }, "`", function() toggle_terminal() end,
          {description = "toggle splash terminal", group = "launcher"}),
+      awful.key({ modkey }, "b", function() toggle_filemanager() end,
+         {description = "toggle splash file manager", group = "launcher"}),
       awful.key({ modkey }, "u", function() toggle_splash_height() end,
          {description = "resize splash terminal", group = "launcher"})
 })
@@ -353,79 +355,104 @@ ruled.client.connect_signal("request::rules", function()
     -- }
 end)
 
-local app = 'test_var=true; alacritty'
--- local app = 'alacritty -e nvim'
--- local app = 'alacritty -e lf'
-
 local screen = awful.screen.focused()
 
-local splash_id = 'notnil'
-local splash_client
-local opened = false
+local terminal_id = 'notnil'
+local terminal_client
+local terminal_opened = false
+local filemanager_id = 'notnil'
+local filemanager_client
+local filemanager_opened = false
 
-function create_shell()
-   splash_id = awful.spawn.with_shell(app)
+function create_terminal()
+   terminal_id = awful.spawn.with_shell("alacritty")
+end
+
+function create_filemanager()
+   filemanager_id = awful.spawn.with_shell("alacritty -e lf")
 end
 
 -- Dirty hack to prevent splash from showing up in occupied tags
-function _splash_to_current_tag()
-   if splash_client then
-      splash_client:move_to_tag(screen.selected_tag)
-   end
+-- function _splash_to_current_tag()
+--    if splash_client then
+--       splash_client:move_to_tag(screen.selected_tag)
+--    end
+-- end
+
+function open_splash(client)
+   client.hidden = false
 end
 
-function open_splash()
-   splash_client.hidden = false
+function close_splash(client)
+   client.hidden = true
 end
 
-function close_splash()
-   splash_client.hidden = true
-end
-
-toggle_splash_height = function()
-   if splash_client and opened then
-      splash_client.maximized_vertical = not splash_client.maximized_vertical
-   end
-end
-
-toggle_splash = function()
-   opened = not opened
-   if not splash_client then
-      create_shell()
+function toggle_terminal()
+   terminal_opened = not terminal_opened
+   if not terminal_client then
+      create_terminal()
    else
-      if opened then
-         open_splash()
-         client.focus = splash_client
-         splash_client:raise()
+      if terminal_opened then
+         open_splash(terminal_client)
+         client.focus = terminal_client
+         terminal_client:raise()
       else
-         close_splash()
+         close_splash(terminal_client)
+      end
+   end
+end
+
+function toggle_filemanager()
+   filemanager_opened = not filemanager_opened
+   if not filemanager_client then
+      create_filemanager()
+   else
+      if filemanager_opened then
+         open_splash(filemanager_client)
+         client.focus = filemanager_client
+         filemanager_client:raise()
+      else
+         close_splash(filemanager_client)
       end
    end
 end
 
 client.connect_signal('manage', function(c)
-                         if (c.pid == splash_id) then
-                            splash_client = c
-                            c.x = c.screen.geometry.x
-                            c.height = (c.screen.geometry.height / 5) * 3
-                            c.y = c.screen.geometry.height - c.height - beautiful.border_width - dpi(16)
-                            c.floating = true
+                         if (c.pid == terminal_id or c.pid == filemanager_id) then
+                            if c.pid == terminal_id then
+                               terminal_client = c
+                            elseif c.pid == filemanager_id then
+                               filemanager_client = c
+                            end
                             c.skip_decoration = true
                             c.ontop = true
                             c.floating = true
                             c.above = true
                             c.sticky = true
                             c.type = 'splash'
-                            c.hidden = not opened
+                            if c.pid == terminal_id then
+                               c.hidden = not terminal_opened
+                            elseif c.pid == filemanager_id then
+                               c.hidden = not filemanager_opened
+                            end
                             c.border_width = beautiful.border_width
-                            c.maximized_horizontal = true
+                            c.maximized = true
+                            -- c.maximized_horizontal = true
+                            -- c.maximized_vertical = true
+                            -- c.x = c.screen.geometry.x
+                            -- c.height = (c.screen.geometry.height / 5) * 3
+                            -- c.y = c.screen.geometry.height - c.height - beautiful.border_width - dpi(16)
                          end
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if (c.pid == splash_id) then
-                            opened = false
-                            splash_client = nil
+                         if (c.pid == terminal_id) then
+                            terminal_opened = false
+                            terminal_client = nil
+                         end
+                         if (c.pid == filemanager_id) then
+                            filemanager_opened = false
+                            filemanager_client = nil
                          end
 end)
 
