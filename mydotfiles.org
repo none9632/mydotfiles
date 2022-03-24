@@ -1309,33 +1309,45 @@ Install packages using pacman
       }
 
       -- Floating clients.
+      -- ruled.client.append_rule {
+      --    id       = "floating",
+      --    rule_any = {
+      -- 	  instance = { "copyq", "pinentry" },
+      -- 	  class    = {
+      -- 		 "Arandr", "Blueman-manager", "Kruler", "Sxiv",
+      -- 		 "Wpa_gui", "veromix", "xtightvncviewer"
+      -- 	  },
+      -- 	  -- Note that the name property shown in xprop might be set slightly after creation of the client
+      -- 	  -- and the name shown there might not match defined rules here.
+      -- 	  name    = {
+      -- 		 "Event Tester",  -- xev.
+      -- 	  },
+      -- 	  role    = {
+      -- 		 "AlarmWindow",    -- Thunderbird's calendar.
+      -- 		 "ConfigManager",  -- Thunderbird's about:config.
+      -- 		 "pop-up",         -- e.g. Google Chrome's (detached) Developer Tools.
+      -- 	  }
+      --    },
+      --    properties = { floating = true }
+      -- }
+
       ruled.client.append_rule {
-          id       = "floating",
-          rule_any = {
-              instance = { "copyq", "pinentry" },
-              class    = {
-                  "Arandr", "Blueman-manager", "Gpick", "Kruler", "Sxiv",
-                  "Tor Browser", "Wpa_gui", "veromix", "xtightvncviewer"
-              },
-              -- Note that the name property shown in xprop might be set slightly after creation of the client
-              -- and the name shown there might not match defined rules here.
-              name    = {
-                  "Event Tester",  -- xev.
-              },
-              role    = {
-                  "AlarmWindow",    -- Thunderbird's calendar.
-                  "ConfigManager",  -- Thunderbird's about:config.
-                  "pop-up",         -- e.g. Google Chrome's (detached) Developer Tools.
-              }
-          },
-          properties = { floating = true }
+         rule       = { class = "firefox"     },
+         properties = { screen = 1, tag = " 7 " }
       }
 
-      -- Set Firefox to always map on the tag named "2" on screen 1.
-      -- ruled.client.append_rule {
-      --     rule       = { class = "Firefox"     },
-      --     properties = { screen = 1, tag = "2" }
-      -- }
+      ruled.client.append_rule {
+         rule_any   = {
+            class = {
+               "Rofi",
+               "Gpick"
+            }
+         },
+         properties = {
+            floating = true,
+            ontop    = true,
+         }
+      }
   end)
 
 #+end_src
@@ -9911,7 +9923,7 @@ Configuration based on https://github.com/adi1090x/rofi
   #!/bin/sh
 
   options=""
-  rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/themes/other/errormsg.rasi"
+  rofi_command="rofi -monitor -2 -normal-window -theme $HOME/.config/rofi/themes/other/errormsg.rasi"
   $(echo -e "$options" | $rofi_command -p " $1 " -dmenu)
 
 #+end_src
@@ -9927,6 +9939,7 @@ Configuration based on https://github.com/adi1090x/rofi
                      -fixed-num-lines\
                      -monitor -2\
                      -p \" $1 \"\
+                     -normal-window\
                      -theme $HOME/.config/rofi/themes/other/input.rasi\
                      -kb-secondary-paste    Control+p,Control+k,Up\
                      -kb-clear-line         Control+d,Down\
@@ -9953,6 +9966,7 @@ Configuration based on https://github.com/adi1090x/rofi
                      -fixed-num-lines\
                      -monitor -2\
                      -p \" $1 \"\
+                     -normal-window\
                      -theme $HOME/.config/rofi/themes/other/longinput.rasi\
                      -kb-secondary-paste    Control+p,Control+k,Up\
                      -kb-clear-line         Control+d,Down\

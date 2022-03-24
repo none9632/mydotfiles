@@ -1,5 +1,5 @@
 #!/bin/sh
 
 options=""
-rofi_command="rofi -monitor -2 -theme $HOME/.config/rofi/themes/other/errormsg.rasi"
+rofi_command="rofi -monitor -2 -normal-window -theme $HOME/.config/rofi/themes/other/errormsg.rasi"
 $(echo -e "$options" | $rofi_command -p " $1 " -dmenu)
