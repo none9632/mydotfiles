@@ -36,9 +36,6 @@ naughty.connect_signal("request::display_error", function(message, startup)
                           }
 end)
 
--- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
 editor = os.getenv("EDITOR") or "nano"
@@ -72,7 +69,7 @@ end)
 
 -- Each screen has its own tag table.
 awful.screen.connect_for_each_screen(function(s)
-      awful.tag({ "1", "2", "3", "4", "5", "6", "7" }, s, awful.layout.layouts[1])
+      awful.tag({ " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 " }, s, awful.layout.layouts[1])
 end)
 
 -- General Awesome keys
@@ -463,7 +460,7 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "SauceCodePro Nerd Font Mono 10"
+theme.font          = "Iosevka Nerd Font 13"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
@@ -471,7 +468,7 @@ theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
+theme.fg_normal     = "#cad0da"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
@@ -492,22 +489,18 @@ theme.border_marked = "#91231c"
 -- mouse_finder_[color|timeout|animate_timeout|radius|factor]
 -- prompt_[fg|bg|fg_cursor|bg_cursor|font]
 -- hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
--- Example:
---theme.taglist_bg_focus = "#ff0000"
 
--- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-   taglist_square_size, theme.fg_normal
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-   taglist_square_size, theme.fg_normal
-)
+theme.taglist_bg_focus = "#51afef"
+theme.taglist_fg_focus = "#1c252a"
+
+theme.taglist_fg_occupied = "#51afef"
+
+theme.taglist_fg_empty = "#cad0da"
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_submenu_icon = themes_path.."default/submenu.png"
+theme.menu_submenu_icon = themes_path .. "default/submenu.png"
 theme.menu_height = dpi(15)
 theme.menu_width  = dpi(100)
 
@@ -545,7 +538,251 @@ theme.icon_theme = nil
 
 beautiful.init(theme)
 
+mycpu = wibox.widget {
+   align  = "center",
+   valign = "center",
+   widget = wibox.widget.textbox
+}
+
+mycputemp = wibox.widget {
+   align  = "center",
+   valign = "center",
+   widget = wibox.widget.textbox
+}
+
+myram = wibox.widget {
+   align  = "center",
+   valign = "center",
+   widget = wibox.widget.textbox
+}
+
+mybattery = wibox.widget {
+   align  = "center",
+   valign = "center",
+   widget = wibox.widget.textbox
+}
+
+myupdates = wibox.widget {
+   markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> . ",
+   align  = "center",
+   valign = "center",
+   widget = wibox.widget.textbox
+}
+
+mykeyboardlayout = awful.widget.keyboardlayout()
+mykeyboardlayout_icon = wibox.widget {
+   markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'></span>",
+   align  = "center",
+   valign = "center",
+   widget = wibox.widget.textbox
+}
+
+mytextclock = wibox.widget {
+   format = ' %H:%M ',
+   widget = wibox.widget.textclock
+}
+mytextclock_icon = wibox.widget {
+   markup = " <span font='MyFont' size='16.5pt' foreground='#51afef'></span>",
+   align  = "center",
+   valign = "center",
+   widget = wibox.widget.textbox
+}
+
+awful.screen.connect_for_each_screen(function(s)
+      -- Create a taglist widget
+      s.mytaglist = awful.widget.taglist {
+         screen  = s,
+         filter  = awful.widget.taglist.filter.all,
+         buttons = {
+            awful.button({ }, 1, function(t) t:view_only() end),
+            awful.button({ modkey }, 1, function(t)
+                  if client.focus then
+                     client.focus:move_to_tag(t)
+                  end
+            end),
+            awful.button({ }, 3, awful.tag.viewtoggle),
+            awful.button({ modkey }, 3, function(t)
+                     if client.focus then
+                        client.focus:toggle_tag(t)
+                     end
+               end),
+               awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
+               awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end),
+            }
+         }
+
+         local sgeo = s.geometry
+         local gap = beautiful.useless_gap
+
+         local args = {
+            x 	   	 = sgeo.x + gap * 2,
+            y 	   	 = sgeo.y + gap * 2,
+            screen  = s,
+            width   = 245,
+            height  = 42,
+            visible = true,
+            bg = "#1c252acc",
+         }
+
+         s.tagbar = wibox(args)
+
+         s.tagbar:setup {
+            {
+               layout = wibox.layout.fixed.horizontal,
+               expand = "none",
+
+               s.mytaglist,
+            },
+
+            widget = wibox.container.margin
+         }
+
+         s.tagbar:struts({left = dpi(0), top = dpi(56)})
+
+         s.mywibox = awful.wibar {
+            screen  = s,
+            align   = "right",
+            margins = {
+               top   = 14,
+               right = 14
+            },
+            width   = 577,
+            height  = 42,
+            bg      = "#00000000",
+            window  = testname,
+            widget  = {
+               {
+                  layout = wibox.layout.fixed.horizontal,
+                  expand = "none",
+
+                  wibox.widget {
+                     {
+                        widget = mycpu,
+                     },
+                     bg     = "#364852bb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = mycputemp,
+                     },
+                     bg     = "#32424bbb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = myram,
+                     },
+                     bg     = "#2e3c44bb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = mybattery,
+                     },
+                     bg     = "#29363ebb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = myupdates,
+                     },
+                     bg     = "#253137bb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = mykeyboardlayout_icon,
+                     },
+                     bg     = "#202b31bb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = mykeyboardlayout,
+                     },
+                     bg     = "#202b31bb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = mytextclock_icon,
+                     },
+                     bg     = "#1c252abb",
+                     widget = wibox.container.background
+                  },
+                  wibox.widget {
+                     {
+                        widget = mytextclock,
+                     },
+                     bg     = "#1c252abb",
+                     widget = wibox.container.background
+                  },
+               },
+               widget = wibox.container.margin
+            }
+         }
+end)
+
+cpu_width = 0
+ram_width = 0
+bat_width = 0
+
+gears.timer {
+   timeout   = 1.5,
+   call_now  = true,
+   autostart = true,
+   callback  = function()
+      awful.spawn.easy_async_with_shell("cpu",
+                                        function(out)
+                                           if #out <= 3 then
+                                              cpu_width = 0
+                                           elseif #out == 4 then
+                                              cpu_width = 9
+                                           else
+                                              cpu_width = 18
+                                           end
+                                           cpu_out = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
+                                              out:gsub("%\n", "") .. " "
+      end)
+      awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
+                                        function(out)
+                                           mycputemp.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'></span> " ..
+                                              math.floor(tonumber(out)/1000+0.5) .. "°C "
+      end)
+      awful.spawn.easy_async_with_shell("ram",
+                                        function(out)
+                                           if #out == 11 then
+                                              ram_width=0
+                                           else
+                                              ram_width=9
+                                           end
+                                           ram_out = " <span font='Myfont' size='16.5pt' foreground='#98be65'></span> " ..
+                                              out:gsub("%\n", "") .. " "
+      end)
+      awful.spawn.easy_async_with_shell("cat /sys/class/power_supply/BAT1/capacity",
+                                        function(out)
+                                           if #out == 2 then
+                                              bat_width = 0
+                                           elseif #out == 3 then
+                                              bat_width = 9
+                                           else
+                                              bat_width = 18
+                                           end
+                                           bat_out = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'></span> " ..
+                                              out:gsub("%\n", "") .. "% "
+      end)
+
+      awful.screen.connect_for_each_screen(function(s)
+            mycpu.markup     = cpu_out
+            myram.markup     = ram_out
+            mybattery.markup = bat_out
+            s.mywibox.width  = 577 + cpu_width + ram_width + bat_width
+      end)
+   end
+}
+
 awful.spawn.with_shell("lf -server")
 awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
-awful.spawn.with_shell("$POLYBAR_LAUNCH")
+-- awful.spawn.with_shell("$POLYBAR_LAUNCH")
 awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
