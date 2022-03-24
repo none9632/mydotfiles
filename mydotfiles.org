@@ -4884,23 +4884,23 @@ Configuration based on https://github.com/adi1090x/rofi
 #+begin_src css :tangle ./.config/rofi/config.rasi
 
   configuration {
-      show-icons:           true;
-      /* icon-theme:           "Papirus"; */
-      icon-theme:           "myIcons";
-      modi:                 "window,run,ssh,drun";
+      show-icons:             true;
+      /* icon-theme:             "Papirus"; */
+      icon-theme:             "myIcons";
+      modi:                   "window,run,ssh,drun";
 
-      terminal:             "alacritty";
-      run-command:          "{cmd}";
-      run-shell-command:    "{terminal} -e {cmd}";
-      drun-match-fields:    "name";
-      drun-display-format:  "{name}";
-      cycle:                false;
-      case-sensitive:       false;
-      monitor:              "-1";
-      cache-dir:            "/home/none9632/.cache/rofi";
+      terminal:               "alacritty";
+      run-command:            "{cmd}";
+      run-shell-command:      "{terminal} -e {cmd}";
+      drun-match-fields:      "name";
+      drun-display-format:    "{name}";
+      cycle:                  false;
+      case-sensitive:         false;
+      monitor:                "-1";
+      cache-dir:              "/home/none9632/.cache/rofi";
 
-      display-run:          "Run";
-      display-drun:         "Run";
+      display-run:            "Run";
+      display-drun:           "Run";
 
       kb-mode-complete:       "";
       kb-remove-to-eol:       "";
