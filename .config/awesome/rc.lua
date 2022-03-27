@@ -646,7 +646,7 @@ awful.screen.connect_for_each_screen(function(s)
                top   = 14,
                right = 14
             },
-            width   = 577,
+            width   = 595,
             height  = 42,
             bg      = "#00000000",
             window  = testname,
@@ -725,7 +725,6 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 
 cpu_width = 0
-ram_width = 0
 bat_width = 0
 
 gears.timer {
@@ -735,12 +734,10 @@ gears.timer {
    callback  = function()
       awful.spawn.easy_async_with_shell("cpu",
                                         function(out)
-                                           if #out <= 3 then
+                                           if #out <= 4 then
                                               cpu_width = 0
-                                           elseif #out == 4 then
-                                              cpu_width = 9
                                            else
-                                              cpu_width = 18
+                                              cpu_width = 9
                                            end
                                            cpu_out = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
                                               out:gsub("%\n", "") .. " "
@@ -752,11 +749,6 @@ gears.timer {
       end)
       awful.spawn.easy_async_with_shell("ram",
                                         function(out)
-                                           if #out == 11 then
-                                              ram_width=0
-                                           else
-                                              ram_width=9
-                                           end
                                            ram_out = " <span font='Myfont' size='16.5pt' foreground='#98be65'></span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
@@ -777,7 +769,7 @@ gears.timer {
             mycpu.markup     = cpu_out
             myram.markup     = ram_out
             mybattery.markup = bat_out
-            s.mywibox.width  = 577 + cpu_width + ram_width + bat_width
+            s.mywibox.width  = 595 + cpu_width + bat_width
       end)
    end
 }
