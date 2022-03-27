@@ -1,3 +1,5 @@
 .config/nvim/bundle
 .config/zsh/.zcompdump
 .config/zsh/plugins
+bin/bar/cpu
+bin/bar/ram

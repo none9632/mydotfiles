@@ -13,6 +13,8 @@ pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide bright
 config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zathura zsh picom"
 
 bin_files="inkscape-figures update list in pin re"
+bar_c_files="cpu ram"
+bar_bin_files="$bar_c_files updates"
 
 function help
 {
@@ -51,6 +53,26 @@ function install_bin ()
     do
         echo "Creating symlink to $file in $bin_dir"
         ln -s $dot_dir/bin/$file $bin_dir/$file
+    done
+
+    for file in $bar_c_files
+    do
+        echo "Compilation $file file"
+        gcc -Wall -O3 $dot_dir/bin/bar/$file.c -o $dot_dir/bin/bar/$file
+    done
+
+    for file in $bar_bin_files
+    do
+        if [ -e $bin_dir/$file ]
+        then
+            echo "Moving $file from ~/.local/bin/ to $old_dots_dir/.local/bin"
+            mv ~/.local/bin/$file $old_dots_dir/.local/bin
+        fi
+    done
+    for file in $bar_bin_files
+    do
+        echo "Creating symlink to $file in $bin_dir"
+        ln -s $dot_dir/bin/bar/$file $bin_dir/$file
     done
 }
 
