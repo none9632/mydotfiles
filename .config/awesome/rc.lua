@@ -171,6 +171,8 @@ awful.keyboard.append_global_keybindings({
          {description = "wallpaper change", group = "launcher"}),
       awful.key({        }, "Print", function() awful.util.spawn("screenshot") end,
          {description = "take a screenshot", group = "launcher"}),
+      awful.key({        }, "F11", function() awful.util.spawn("screenshot") end,
+         {description = "take a screenshot", group = "launcher"}),
       awful.key({ modkey }, "`", function() toggle_terminal() end,
          {description = "toggle splash terminal", group = "launcher"}),
       awful.key({ modkey }, "b", function() toggle_filemanager() end,
@@ -551,41 +553,29 @@ theme.icon_theme = nil
 beautiful.init(theme)
 
 mycpu = wibox.widget {
-   align  = "center",
-   valign = "center",
    widget = wibox.widget.textbox
 }
 
 mycputemp = wibox.widget {
-   align  = "center",
-   valign = "center",
    widget = wibox.widget.textbox
 }
 
 myram = wibox.widget {
-   align  = "center",
-   valign = "center",
    widget = wibox.widget.textbox
 }
 
 mybattery = wibox.widget {
-   align  = "center",
-   valign = "center",
    widget = wibox.widget.textbox
 }
 
 myupdates = wibox.widget {
    markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> . ",
-   align  = "center",
-   valign = "center",
    widget = wibox.widget.textbox
 }
 
 mykeyboardlayout = awful.widget.keyboardlayout()
 mykeyboardlayout_icon = wibox.widget {
    markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'></span>",
-   align  = "center",
-   valign = "center",
    widget = wibox.widget.textbox
 }
 
@@ -595,8 +585,6 @@ mytextclock = wibox.widget {
 }
 mytextclock_icon = wibox.widget {
    markup = " <span font='MyFont' size='16.5pt' foreground='#51afef'></span>",
-   align  = "center",
-   valign = "center",
    widget = wibox.widget.textbox
 }
 
