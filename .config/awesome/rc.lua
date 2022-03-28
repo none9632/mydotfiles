@@ -591,17 +591,15 @@ awful.screen.connect_for_each_screen(function(s)
       local sgeo = s.geometry
       local gap = beautiful.useless_gap
 
-      local args = {
-         x 	  	= sgeo.x + gap * 2,
-         y 	  	= sgeo.y + gap * 2,
-         screen  = s,
-         width   = 245,
-         height  = 42,
-         visible = true,
-         bg      = "#1c252acc",
-      }
-
-      s.tagbar = wibox(args)
+      s.tagbar = wibox({
+            x 	  	= sgeo.x + gap * 2,
+            y 	  	= sgeo.y + gap * 2,
+            screen  = s,
+            width   = 245,
+            height  = 42,
+            visible = true,
+            bg      = "#1c252acc",
+      })
 
       s.tagbar:setup {
          {
