@@ -353,6 +353,19 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+       rule       = { class = "Evince"     },
+       properties = { floating = true },
+       callback = function(c)
+          awful.screen.connect_for_each_screen(function(s)
+                c.x = beautiful.useless_gap * 2
+                c.y = s.mywibox.height + beautiful.useless_gap * 4
+                c.width = s.geometry.width - beautiful.useless_gap * 4
+                c.height = s.geometry.height - s.mywibox.height - beautiful.useless_gap * 6
+          end)
+       end
+    }
+
+    ruled.client.append_rule {
        rule_any   = {
           class = {
              "Rofi",

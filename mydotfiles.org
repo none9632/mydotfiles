@@ -1542,6 +1542,19 @@ Install packages using pacman
       }
 
       ruled.client.append_rule {
+         rule       = { class = "Evince"     },
+         properties = { floating = true },
+         callback = function(c)
+            awful.screen.connect_for_each_screen(function(s)
+                  c.x = beautiful.useless_gap * 2
+                  c.y = s.mywibox.height + beautiful.useless_gap * 4
+                  c.width = s.geometry.width - beautiful.useless_gap * 4
+                  c.height = s.geometry.height - s.mywibox.height - beautiful.useless_gap * 6
+            end)
+         end
+      }
+
+      ruled.client.append_rule {
          rule_any   = {
             class = {
                "Rofi",
@@ -3502,7 +3515,7 @@ defined in.
               fix_f="$(echo $f | sed 's/\ /\\\ /g')"
               lf -remote "send $id my_cd $fix_f" ;;
           application/pdf | image/vnd.djvu)
-              zathura $f ;;
+              evince $f ;;
           ,*)
               for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done ;;
       esac
@@ -4768,7 +4781,6 @@ defined in.
   # focus-exclude = []
   focus-exclude = [
       "class_g = 'Cairo-clock'",
-      "class_g = 'Zathura'"
   ];
 
   # Use fixed inactive dim value, instead of adjusting according to window opacity.
