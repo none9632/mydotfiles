@@ -615,13 +615,13 @@ awful.screen.connect_for_each_screen(function(s)
          local gap = beautiful.useless_gap
 
          local args = {
-            x 	   	 = sgeo.x + gap * 2,
-            y 	   	 = sgeo.y + gap * 2,
+            x 	  	= sgeo.x + gap * 2,
+            y 	  	= sgeo.y + gap * 2,
             screen  = s,
             width   = 245,
             height  = 42,
             visible = true,
-            bg = "#1c252acc",
+            bg      = "#1c252acc",
          }
 
          s.tagbar = wibox(args)
@@ -649,7 +649,6 @@ awful.screen.connect_for_each_screen(function(s)
             width   = 595,
             height  = 42,
             bg      = "#00000000",
-            window  = testname,
             widget  = {
                {
                   layout = wibox.layout.fixed.horizontal,
@@ -739,8 +738,11 @@ gears.timer {
                                            else
                                               cpu_width = 9
                                            end
-                                           cpu_out = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
+                                           mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
                                               out:gsub("%\n", "") .. " "
+                                           awful.screen.connect_for_each_screen(function(s)
+                                                 s.mywibox.width = 595 + cpu_width + bat_width
+                                           end)
       end)
       awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
                                         function(out)
@@ -749,7 +751,7 @@ gears.timer {
       end)
       awful.spawn.easy_async_with_shell("ram",
                                         function(out)
-                                           ram_out = " <span font='Myfont' size='16.5pt' foreground='#98be65'></span> " ..
+                                           myram.markup = " <span font='Myfont' size='16.5pt' foreground='#98be65'></span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
       awful.spawn.easy_async_with_shell("cat /sys/class/power_supply/BAT1/capacity",
@@ -761,15 +763,11 @@ gears.timer {
                                            else
                                               bat_width = 18
                                            end
-                                           bat_out = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'></span> " ..
+                                           mybattery.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'></span> " ..
                                               out:gsub("%\n", "") .. "% "
-      end)
-
-      awful.screen.connect_for_each_screen(function(s)
-            mycpu.markup     = cpu_out
-            myram.markup     = ram_out
-            mybattery.markup = bat_out
-            s.mywibox.width  = 595 + cpu_width + bat_width
+                                           awful.screen.connect_for_each_screen(function(s)
+                                                 s.mywibox.width = 595 + cpu_width + bat_width
+                                           end)
       end)
    end
 }
