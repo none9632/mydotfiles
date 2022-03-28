@@ -588,138 +588,133 @@ mytextclock_icon = wibox.widget {
 }
 
 awful.screen.connect_for_each_screen(function(s)
-      -- Create a taglist widget
-      s.mytaglist = awful.widget.taglist {
+      local sgeo = s.geometry
+      local gap = beautiful.useless_gap
+
+      local args = {
+         x 	  	= sgeo.x + gap * 2,
+         y 	  	= sgeo.y + gap * 2,
          screen  = s,
-         filter  = awful.widget.taglist.filter.all,
-         buttons = {
-            awful.button({ }, 1, function(t) t:view_only() end),
-            awful.button({ modkey }, 1, function(t)
-                  if client.focus then
-                     client.focus:move_to_tag(t)
-                  end
-            end),
-            awful.button({ }, 3, awful.tag.viewtoggle),
-            awful.button({ modkey }, 3, function(t)
-                     if client.focus then
-                        client.focus:toggle_tag(t)
-                     end
-               end),
-               awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
-               awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end),
+         width   = 245,
+         height  = 42,
+         visible = true,
+         bg      = "#1c252acc",
+      }
+
+      s.tagbar = wibox(args)
+
+      s.tagbar:setup {
+         {
+            layout = wibox.layout.fixed.horizontal,
+            expand = "none",
+
+            awful.widget.taglist {
+               screen  = s,
+               filter  = awful.widget.taglist.filter.all,
+               buttons = {
+                  awful.button({ }, 1, function(t) t:view_only() end),
+                  awful.button({ modkey }, 1, function(t)
+                        if client.focus then
+                           client.focus:move_to_tag(t)
+                        end
+                  end),
+                  awful.button({ }, 3, awful.tag.viewtoggle),
+                  awful.button({ modkey }, 3, function(t)
+                        if client.focus then
+                           client.focus:toggle_tag(t)
+                        end
+                  end),
+                  awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
+                  awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end),
+               }
             }
-         }
+         },
 
-         local sgeo = s.geometry
-         local gap = beautiful.useless_gap
+         widget = wibox.container.margin
+      }
 
-         local args = {
-            x 	  	= sgeo.x + gap * 2,
-            y 	  	= sgeo.y + gap * 2,
-            screen  = s,
-            width   = 245,
-            height  = 42,
-            visible = true,
-            bg      = "#1c252acc",
-         }
-
-         s.tagbar = wibox(args)
-
-         s.tagbar:setup {
+      s.mywibox = awful.wibar {
+         screen  = s,
+         align   = "right",
+         margins = {
+            top   = 14,
+            right = 14
+         },
+         width   = 595,
+         height  = 42,
+         bg      = "#00000000",
+         widget  = {
             {
                layout = wibox.layout.fixed.horizontal,
                expand = "none",
 
-               s.mytaglist,
+               wibox.widget {
+                  {
+                     widget = mycpu,
+                  },
+                  bg     = "#364852bb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = mycputemp,
+                  },
+                  bg     = "#32424bbb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = myram,
+                  },
+                  bg     = "#2e3c44bb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = mybattery,
+                  },
+                  bg     = "#29363ebb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = myupdates,
+                  },
+                  bg     = "#253137bb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = mykeyboardlayout_icon,
+                  },
+                  bg     = "#202b31bb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = mykeyboardlayout,
+                  },
+                  bg     = "#202b31bb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = mytextclock_icon,
+                  },
+                  bg     = "#1c252abb",
+                  widget = wibox.container.background
+               },
+               wibox.widget {
+                  {
+                     widget = mytextclock,
+                  },
+                  bg     = "#1c252abb",
+                  widget = wibox.container.background
+               },
             },
-
             widget = wibox.container.margin
          }
-
-         s.tagbar:struts({left = dpi(0), top = dpi(56)})
-
-         s.mywibox = awful.wibar {
-            screen  = s,
-            align   = "right",
-            margins = {
-               top   = 14,
-               right = 14
-            },
-            width   = 595,
-            height  = 42,
-            bg      = "#00000000",
-            widget  = {
-               {
-                  layout = wibox.layout.fixed.horizontal,
-                  expand = "none",
-
-                  wibox.widget {
-                     {
-                        widget = mycpu,
-                     },
-                     bg     = "#364852bb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = mycputemp,
-                     },
-                     bg     = "#32424bbb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = myram,
-                     },
-                     bg     = "#2e3c44bb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = mybattery,
-                     },
-                     bg     = "#29363ebb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = myupdates,
-                     },
-                     bg     = "#253137bb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = mykeyboardlayout_icon,
-                     },
-                     bg     = "#202b31bb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = mykeyboardlayout,
-                     },
-                     bg     = "#202b31bb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = mytextclock_icon,
-                     },
-                     bg     = "#1c252abb",
-                     widget = wibox.container.background
-                  },
-                  wibox.widget {
-                     {
-                        widget = mytextclock,
-                     },
-                     bg     = "#1c252abb",
-                     widget = wibox.container.background
-                  },
-               },
-               widget = wibox.container.margin
-            }
-         }
+      }
 end)
 
 cpu_width = 0
@@ -780,7 +775,7 @@ gears.timer {
    call_now  = true,
    autostart = true,
    callback  = function()
-      awful.spawn.easy_async_with_shell("updates_",
+      awful.spawn.easy_async_with_shell("updates",
                                         function(out)
                                            if #out == 2 then
                                               updates_width = 0
