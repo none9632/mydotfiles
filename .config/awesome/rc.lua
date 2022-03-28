@@ -569,7 +569,6 @@ mybattery = wibox.widget {
 }
 
 myupdates = wibox.widget {
-   markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> . ",
    widget = wibox.widget.textbox
 }
 
@@ -725,6 +724,7 @@ end)
 
 cpu_width = 0
 bat_width = 0
+updates_width = 9
 
 gears.timer {
    timeout   = 1.5,
@@ -741,7 +741,7 @@ gears.timer {
                                            mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
                                               out:gsub("%\n", "") .. " "
                                            awful.screen.connect_for_each_screen(function(s)
-                                                 s.mywibox.width = 595 + cpu_width + bat_width
+                                                 s.mywibox.width = 595 + cpu_width + bat_width + updates_width
                                            end)
       end)
       awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
@@ -766,7 +766,40 @@ gears.timer {
                                            mybattery.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'></span> " ..
                                               out:gsub("%\n", "") .. "% "
                                            awful.screen.connect_for_each_screen(function(s)
-                                                 s.mywibox.width = 595 + cpu_width + bat_width
+                                                 s.mywibox.width = 595 + cpu_width + bat_width + updates_width
+                                           end)
+      end)
+   end
+}
+
+myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> .. "
+updates_prev = 0
+
+gears.timer {
+   timeout   = 1000,
+   call_now  = true,
+   autostart = true,
+   callback  = function()
+      awful.spawn.easy_async_with_shell("updates_",
+                                        function(out)
+                                           if #out == 2 then
+                                              updates_width = 0
+                                           elseif #out == 3 then
+                                              updates_width = 9
+                                           else
+                                              updates_width = 18
+                                           end
+
+                                           if updates_prev == 0 then
+                                              awful.spawn.with_shell("notify-send -u normal \"You should update soon\" \"" ..
+                                                                     out:gsub("%\n", "") .. " new updates\"")
+                                           end
+                                           updates_prev = tonumber(out)
+
+                                           myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> " ..
+                                              out:gsub("%\n", "") .. " "
+                                           awful.screen.connect_for_each_screen(function(s)
+                                                 s.mywibox.width = 595 + cpu_width + bat_width + updates_width
                                            end)
       end)
    end
