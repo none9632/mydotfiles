@@ -7,10 +7,10 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 # list of the build packages
 build_pkgs="base-devel git gcc make cmake"
 # list of packages that will be installed
-pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils dunst"
+pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils dunst evince"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zathura zsh picom"
+config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
 
 bin_files="inkscape-figures update list in pin re"
 bar_c_files="cpu ram"
