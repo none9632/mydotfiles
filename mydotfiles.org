@@ -1851,87 +1851,87 @@ Install packages using pacman
            widget = wibox.container.margin
         }
 
-        s.tagbar:struts({left = dpi(0), top = s.tagbar.height + gap * 2})
+        s.tagbar:struts({ top = s.tagbar.height + gap * 2 })
 
         s.mywibox = awful.popup {
            screen = s,
-              placement = function(c)
-                 return awful.placement.top_right(c, { margins = gap * 2 })
-              end,
-              minimum_height  = 42,
-              bg = "#00000000",
-              widget  = {
-                 {
-                    layout = wibox.layout.fixed.horizontal,
-                    expand = "none",
+           placement = function(c)
+              return awful.placement.top_right(c, { margins = gap * 2 })
+           end,
+           minimum_height = 42,
+           bg = "#00000000",
+           widget  = {
+              {
+                 layout = wibox.layout.fixed.horizontal,
+                 expand = "none",
 
-                    wibox.widget {
-                       {
-                          widget = mycpu,
-                       },
-                       bg     = "#364852bb",
-                       widget = wibox.container.background
+                 wibox.widget {
+                    {
+                       widget = mycpu,
                     },
-                    wibox.widget {
-                       {
-                          widget = mycputemp,
-                       },
-                       bg     = "#32424bbb",
-                       widget = wibox.container.background
+                    bg     = "#364852bb",
+                    widget = wibox.container.background
                     },
-                    wibox.widget {
-                       {
-                          widget = myram,
-                       },
-                       bg     = "#2e3c44bb",
-                       widget = wibox.container.background
+                 wibox.widget {
+                    {
+                       widget = mycputemp,
                     },
-                    wibox.widget {
-                       {
-                          widget = mybattery,
-                       },
-                       bg     = "#29363ebb",
-                       widget = wibox.container.background
-                    },
-                    wibox.widget {
-                       {
-                          widget = myupdates,
-                       },
-                       bg     = "#253137bb",
-                       widget = wibox.container.background
-                    },
-                    wibox.widget {
-                       {
-                          widget = mykeyboardlayout_icon,
-                       },
-                       bg     = "#202b31bb",
-                       widget = wibox.container.background
-                    },
-                    wibox.widget {
-                       {
-                          widget = mykeyboardlayout,
-                       },
-                       bg     = "#202b31bb",
-                       widget = wibox.container.background
-                    },
-                    wibox.widget {
-                       {
-                          widget = mytextclock_icon,
-                       },
-                       bg     = "#1c252abb",
-                       widget = wibox.container.background
-                    },
-                    wibox.widget {
-                       {
-                          widget = mytextclock,
-                       },
-                       bg     = "#1c252abb",
-                       widget = wibox.container.background
-                    },
+                    bg     = "#32424bbb",
+                    widget = wibox.container.background
                  },
-                 widget = wibox.container.margin
-              }
+                 wibox.widget {
+                    {
+                       widget = myram,
+                    },
+                    bg     = "#2e3c44bb",
+                    widget = wibox.container.background
+                 },
+                 wibox.widget {
+                    {
+                       widget = mybattery,
+                    },
+                    bg     = "#29363ebb",
+                    widget = wibox.container.background
+                 },
+                 wibox.widget {
+                    {
+                       widget = myupdates,
+                    },
+                    bg     = "#253137bb",
+                    widget = wibox.container.background
+                 },
+                 wibox.widget {
+                    {
+                       widget = mykeyboardlayout_icon,
+                    },
+                    bg     = "#202b31bb",
+                    widget = wibox.container.background
+                 },
+                 wibox.widget {
+                    {
+                       widget = mykeyboardlayout,
+                    },
+                    bg     = "#202b31bb",
+                    widget = wibox.container.background
+                 },
+                 wibox.widget {
+                    {
+                       widget = mytextclock_icon,
+                    },
+                    bg     = "#1c252abb",
+                    widget = wibox.container.background
+                 },
+                 wibox.widget {
+                    {
+                       widget = mytextclock,
+                    },
+                    bg     = "#1c252abb",
+                    widget = wibox.container.background
+                 },
+              },
+              widget = wibox.container.margin
            }
+        }
   end)
 
   gears.timer {
