@@ -732,7 +732,7 @@ gears.timer {
    call_now  = true,
    autostart = true,
    callback  = function()
-      awful.spawn.easy_async_with_shell("testcpu",
+      awful.spawn.easy_async_with_shell("cpu",
                                         function(out)
                                            mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
                                               out:gsub("%\n", "") .. " "

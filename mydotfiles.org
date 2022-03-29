@@ -534,10 +534,7 @@ Install packages using pacman
       delta = ((b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6]) - (a[0] + a[1] + a[2] + a[3] + a[4] + a[5] + a[6]));
       used  = (delta - (b[3] - a[3])) / delta * 100;
 
-      if (used <= 9)
-          printf(" %i%%", used);
-      else
-          printf("%i%%", used);
+      printf("%i%%", used);
 
       return 0;
   }
@@ -639,10 +636,7 @@ Install packages using pacman
     double used_M = used / 1024;
 
     if (used_M < 1024)
-      if (used_M < 1000)
-        printf(" %iM/%.2lfG", (int)used_M, total_M / 1024);
-      else
-        printf("%iM/%.2lfG", (int)used_M, total_M / 1024);
+      printf("%iM/%.2lfG", (int)used_M, total_M / 1024);
     else
       printf("%.2lfG/%.2lfG", used_M / 1024, total_M / 1024);
 
@@ -1939,7 +1933,7 @@ Install packages using pacman
      call_now  = true,
      autostart = true,
      callback  = function()
-        awful.spawn.easy_async_with_shell("testcpu",
+        awful.spawn.easy_async_with_shell("cpu",
                                           function(out)
                                              mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
                                                 out:gsub("%\n", "") .. " "

@@ -89,10 +89,7 @@ int main(void)
   double used_M = used / 1024;
 
   if (used_M < 1024)
-    if (used_M < 1000)
-      printf(" %iM/%.2lfG", (int)used_M, total_M / 1024);
-    else
-      printf("%iM/%.2lfG", (int)used_M, total_M / 1024);
+    printf("%iM/%.2lfG", (int)used_M, total_M / 1024);
   else
     printf("%.2lfG/%.2lfG", used_M / 1024, total_M / 1024);
 
