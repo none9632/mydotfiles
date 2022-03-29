@@ -1507,29 +1507,6 @@ Install packages using pacman
           }
       }
 
-      -- Floating clients.
-      -- ruled.client.append_rule {
-      --    id       = "floating",
-      --    rule_any = {
-      -- 	  instance = { "copyq", "pinentry" },
-      -- 	  class    = {
-      -- 		 "Arandr", "Blueman-manager", "Kruler", "Sxiv",
-      -- 		 "Wpa_gui", "veromix", "xtightvncviewer"
-      -- 	  },
-      -- 	  -- Note that the name property shown in xprop might be set slightly after creation of the client
-      -- 	  -- and the name shown there might not match defined rules here.
-      -- 	  name    = {
-      -- 		 "Event Tester",  -- xev.
-      -- 	  },
-      -- 	  role    = {
-      -- 		 "AlarmWindow",    -- Thunderbird's calendar.
-      -- 		 "ConfigManager",  -- Thunderbird's about:config.
-      -- 		 "pop-up",         -- e.g. Google Chrome's (detached) Developer Tools.
-      -- 	  }
-      --    },
-      --    properties = { floating = true }
-      -- }
-
       ruled.client.append_rule {
          rule       = { class = "firefox"     },
          properties = { screen = 1, tag = " 7 " }
@@ -1539,12 +1516,7 @@ Install packages using pacman
          rule       = { class = "Evince"     },
          properties = { floating = true },
          callback = function(c)
-            awful.screen.connect_for_each_screen(function(s)
-                  c.x = beautiful.useless_gap * 2
-                  c.y = s.mywibox.height + beautiful.useless_gap * 4
-                  c.width = s.geometry.width - beautiful.useless_gap * 4
-                  c.height = s.geometry.height - s.mywibox.height - beautiful.useless_gap * 6
-            end)
+            awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
          end
       }
 
