@@ -1851,111 +1851,98 @@ Install packages using pacman
            widget = wibox.container.margin
         }
 
-        s.mywibox = awful.wibar {
-           screen  = s,
-           align   = "right",
-           margins = {
-              top   = 14,
-              right = 14
-           },
-           width   = 595,
-           height  = 42,
-           bg      = "#00000000",
-           widget  = {
-              {
-                 layout = wibox.layout.fixed.horizontal,
-                 expand = "none",
+        s.tagbar:struts({left = dpi(0), top = s.tagbar.height + gap * 2})
 
-                 wibox.widget {
-                    {
-                       widget = mycpu,
+        s.mywibox = awful.popup {
+           screen = s,
+              placement = function(c)
+                 return awful.placement.top_right(c, { margins = gap * 2 })
+              end,
+              minimum_height  = 42,
+              bg = "#00000000",
+              widget  = {
+                 {
+                    layout = wibox.layout.fixed.horizontal,
+                    expand = "none",
+
+                    wibox.widget {
+                       {
+                          widget = mycpu,
+                       },
+                       bg     = "#364852bb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#364852bb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = mycputemp,
+                    wibox.widget {
+                       {
+                          widget = mycputemp,
+                       },
+                       bg     = "#32424bbb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#32424bbb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = myram,
+                    wibox.widget {
+                       {
+                          widget = myram,
+                       },
+                       bg     = "#2e3c44bb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#2e3c44bb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = mybattery,
+                    wibox.widget {
+                       {
+                          widget = mybattery,
+                       },
+                       bg     = "#29363ebb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#29363ebb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = myupdates,
+                    wibox.widget {
+                       {
+                          widget = myupdates,
+                       },
+                       bg     = "#253137bb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#253137bb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = mykeyboardlayout_icon,
+                    wibox.widget {
+                       {
+                          widget = mykeyboardlayout_icon,
+                       },
+                       bg     = "#202b31bb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#202b31bb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = mykeyboardlayout,
+                    wibox.widget {
+                       {
+                          widget = mykeyboardlayout,
+                       },
+                       bg     = "#202b31bb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#202b31bb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = mytextclock_icon,
+                    wibox.widget {
+                       {
+                          widget = mytextclock_icon,
+                       },
+                       bg     = "#1c252abb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#1c252abb",
-                    widget = wibox.container.background
-                 },
-                 wibox.widget {
-                    {
-                       widget = mytextclock,
+                    wibox.widget {
+                       {
+                          widget = mytextclock,
+                       },
+                       bg     = "#1c252abb",
+                       widget = wibox.container.background
                     },
-                    bg     = "#1c252abb",
-                    widget = wibox.container.background
                  },
-              },
-              widget = wibox.container.margin
+                 widget = wibox.container.margin
+              }
            }
-        }
   end)
-
-  cpu_width = 0
-  bat_width = 0
-  updates_width = 9
 
   gears.timer {
      timeout   = 1.5,
      call_now  = true,
      autostart = true,
      callback  = function()
-        awful.spawn.easy_async_with_shell("cpu",
+        awful.spawn.easy_async_with_shell("testcpu",
                                           function(out)
-                                             if #out <= 4 then
-                                                cpu_width = 0
-                                             else
-                                                cpu_width = 9
-                                             end
                                              mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
                                                 out:gsub("%\n", "") .. " "
-                                             awful.screen.connect_for_each_screen(function(s)
-                                                   s.mywibox.width = 595 + cpu_width + bat_width + updates_width
-                                             end)
         end)
         awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
                                           function(out)
@@ -1969,18 +1956,8 @@ Install packages using pacman
         end)
         awful.spawn.easy_async_with_shell("cat /sys/class/power_supply/BAT1/capacity",
                                           function(out)
-                                             if #out == 2 then
-                                                bat_width = 0
-                                             elseif #out == 3 then
-                                                bat_width = 9
-                                             else
-                                                bat_width = 18
-                                             end
                                              mybattery.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'></span> " ..
                                                 out:gsub("%\n", "") .. "% "
-                                             awful.screen.connect_for_each_screen(function(s)
-                                                   s.mywibox.width = 595 + cpu_width + bat_width + updates_width
-                                             end)
         end)
      end
   }
@@ -1995,14 +1972,6 @@ Install packages using pacman
      callback  = function()
         awful.spawn.easy_async_with_shell("updates",
                                           function(out)
-                                             if #out == 2 then
-                                                updates_width = 0
-                                             elseif #out == 3 then
-                                                updates_width = 9
-                                             else
-                                                updates_width = 18
-                                             end
-
                                              if updates_prev == 0 then
                                                 awful.spawn.with_shell("notify-send -u normal \"You should update soon\" \"" ..
                                                                        out:gsub("%\n", "") .. " new updates\"")
@@ -2011,9 +1980,6 @@ Install packages using pacman
 
                                              myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> " ..
                                                 out:gsub("%\n", "") .. " "
-                                             awful.screen.connect_for_each_screen(function(s)
-                                                   s.mywibox.width = 595 + cpu_width + bat_width + updates_width
-                                             end)
         end)
      end
   }
