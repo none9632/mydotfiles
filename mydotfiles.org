@@ -4638,7 +4638,9 @@ defined in.
       "class_g = 'Conky'",
       "class_g ?= 'Notify-osd'",
       "class_g = 'Cairo-clock'",
-      "_GTK_FRAME_EXTENTS@:c"
+      "_GTK_FRAME_EXTENTS@:c",
+      "class_g = 'LibreWolf' && !focused",
+      "class_g = 'firefox' && !focused"
   ];
 
   # Specify a list of conditions of windows that should have no shadow painted over, such as a dock window.
@@ -4726,7 +4728,7 @@ defined in.
   #    opacity-rule = [ "80:class_g = 'URxvt'" ];
   #
   opacity-rule = [
-      "80:class_g = 'LibreWolf' && !focused"
+      "100:class_g = 'LibreWolf' && !focused"
   ]
 
 #+end_src
@@ -4751,11 +4753,6 @@ defined in.
 ** Background-Blurring
 
 #+begin_src conf
-
-  # blur: {
-  #     method = "dual_kawase";
-  #     strength = 8;
-  # }
 
   # Parameters for background blurring, see the *BLUR* section for more information.
   blur-method = "dual_kawase";
@@ -4794,7 +4791,9 @@ defined in.
       "class_g = 'slop'",
       "name = 'main-dock'",
       "window_type = 'desktop'",
-      "_GTK_FRAME_EXTENTS@:c"
+      "_GTK_FRAME_EXTENTS@:c",
+      "class_g = 'LibreWolf' && !focused",
+      "class_g = 'firefox' && !focused"
   ];
 
 #+end_src
