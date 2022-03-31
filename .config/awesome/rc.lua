@@ -325,12 +325,12 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
-       rule       = { class = "firefox"     },
+       rule       = { class = "firefox" },
        properties = { screen = 1, tag = " 7 " }
     }
 
     ruled.client.append_rule {
-       rule       = { class = "Evince"     },
+       rule       = { class = "Evince" },
        properties = { floating = true },
        callback = function(c)
           awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
@@ -349,6 +349,20 @@ ruled.client.connect_signal("request::rules", function()
           ontop    = true,
        }
     }
+
+    ruled.client.append_rule {
+       rule       = { class = "Gpick" },
+       callback = function(c)
+          awful.spawn.with_shell("killall picom")
+          gpick_client = c
+       end
+    }
+end)
+
+client.connect_signal('unmanage', function(c)
+                         if (c == gpick_client) then
+                            awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
+                         end
 end)
 
 local screen = awful.screen.focused()
