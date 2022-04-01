@@ -177,8 +177,8 @@ awful.keyboard.append_global_keybindings({
          {description = "toggle splash terminal", group = "launcher"}),
       awful.key({ modkey }, "b", function() toggle_filemanager() end,
          {description = "toggle splash file manager", group = "launcher"}),
-      awful.key({ modkey }, "u", function() toggle_splash_height() end,
-         {description = "resize splash terminal", group = "launcher"})
+      awful.key({ modkey }, "m", function() toggle_splash_height() end,
+         {description = "resize splash app", group = "launcher"})
 })
 
 awful.keyboard.append_global_keybindings({
@@ -289,12 +289,6 @@ client.connect_signal("request::default_keybindings", function()
                                      c.minimized = true
                                   end ,
                                   {description = "minimize", group = "client"}),
-                               awful.key({ modkey,           }, "m",
-                                  function (c)
-                                     c.maximized = not c.maximized
-                                     c:raise()
-                                  end ,
-                                  {description = "(un)maximize", group = "client"}),
                                awful.key({ modkey, "Control" }, "m",
                                   function (c)
                                      c.maximized_vertical = not c.maximized_vertical
