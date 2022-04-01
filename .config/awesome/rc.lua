@@ -381,13 +381,14 @@ end
 function toggle_splash_height()
    c = client.focus
    if c.pid == terminal_id or c.pid == filemanager_id then
-      if c.width == 1200 then
+      if c.width <= 1400 then
          awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
       else
-         c.width = 1200
          if c.pid == terminal_id then
+            c.width = 1200
             c.height = 700
          else
+            c.width = 1400
             c.height = 800
          end
          awful.placement.centered(c)
@@ -444,7 +445,7 @@ client.connect_signal('manage', function(c)
                             c.sticky = true
                             c.type = 'splash'
                             c.hidden = not filemanager_opened
-                            c.width = 1200
+                            c.width = 1400
                             c.height = 800
                             awful.placement.centered(c)
                          end
