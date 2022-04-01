@@ -349,18 +349,16 @@ ruled.client.connect_signal("request::rules", function()
           ontop    = true,
        }
     }
+end)
 
-    ruled.client.append_rule {
-       rule       = { class = "Gpick" },
-       callback = function(c)
-          awful.spawn.with_shell("killall picom")
-          gpick_client = c
-       end
-    }
+client.connect_signal('manage', function(c)
+                         if (c.class == "Gpick") then
+                            awful.spawn.with_shell("killall picom")
+                         end
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if (c == gpick_client) then
+                         if (c.class == "Gpick") then
                             awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
                          end
 end)
