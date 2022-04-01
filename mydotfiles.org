@@ -676,9 +676,9 @@ Install packages using pacman
 
 #+end_src
 
-** lf
+** lfcd
 
-#+begin_src sh :tangle ./bin/lf :tangle-mode (identity #o755)
+#+begin_src sh :tangle ./bin/lfcd :tangle-mode (identity #o755)
 
   #!/bin/sh
 
@@ -923,7 +923,7 @@ Install packages using pacman
   if [ -f "$tmp" ]; then
       dir="$(cat "$tmp")"
       rm -f "$tmp"
-      [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+      [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && echo "$dir"
   fi
 
 #+end_src
@@ -1323,7 +1323,7 @@ Install packages using pacman
   alias stmem="stress -vm 2 --vm-bytes"
 
   alias ls="exa -la --color=always --group-directories-first"
-  alias lf="lfcd"
+  alias lf="cd \`lfcd\`"
   alias cat="bat"
   alias vim="nvim"
   alias rm="rm -r"
