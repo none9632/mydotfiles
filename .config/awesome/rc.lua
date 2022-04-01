@@ -375,7 +375,7 @@ function create_terminal()
 end
 
 function create_filemanager()
-   filemanager_id = awful.spawn.with_shell("alacritty -e lf")
+   filemanager_id = awful.spawn.with_shell("alacritty -e lfcd")
 end
 
 function toggle_splash_height()

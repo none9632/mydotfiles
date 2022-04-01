@@ -44,7 +44,7 @@
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
 
-  bin_files="inkscape-figures update list in pin re lf"
+  bin_files="inkscape-figures update list in pin re lfcd"
   bar_c_files="cpu ram"
   bar_bin_files="$bar_c_files updates"
 
@@ -1323,6 +1323,7 @@ Install packages using pacman
   alias stmem="stress -vm 2 --vm-bytes"
 
   alias ls="exa -la --color=always --group-directories-first"
+  alias lf="lfcd"
   alias cat="bat"
   alias vim="nvim"
   alias rm="rm -r"
@@ -1813,7 +1814,7 @@ Install packages using pacman
   end
 
   function create_filemanager()
-     filemanager_id = awful.spawn.with_shell("alacritty -e lf")
+     filemanager_id = awful.spawn.with_shell("alacritty -e lfcd")
   end
 
   function toggle_splash_height()
@@ -3384,7 +3385,7 @@ defined in.
           mkdir -p "$HOME/.cache/lf"
       fi
 
-      /usr/bin/lf "$@" 3>&-
+      lf "$@" 3>&-
   else
       exec "$@"
   fi

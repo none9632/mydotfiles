@@ -293,6 +293,7 @@ alias stcpu="stress -c 8"
 alias stmem="stress -vm 2 --vm-bytes"
 
 alias ls="exa -la --color=always --group-directories-first"
+alias lf="lfcd"
 alias cat="bat"
 alias vim="nvim"
 alias rm="rm -r"

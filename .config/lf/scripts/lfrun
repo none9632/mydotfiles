@@ -19,7 +19,7 @@ if [ -n "$DISPLAY" ]; then
         mkdir -p "$HOME/.cache/lf"
     fi
 
-    /usr/bin/lf "$@" 3>&-
+    lf "$@" 3>&-
 else
     exec "$@"
 fi
