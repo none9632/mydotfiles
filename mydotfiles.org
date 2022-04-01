@@ -4651,9 +4651,8 @@ defined in.
       "class_g = 'Conky'",
       "class_g ?= 'Notify-osd'",
       "class_g = 'Cairo-clock'",
+      "window_type = 'utility'",
       "_GTK_FRAME_EXTENTS@:c",
-      "class_g = 'LibreWolf' && !focused",
-      "class_g = 'firefox' && !focused"
   ];
 
   # Specify a list of conditions of windows that should have no shadow painted over, such as a dock window.
@@ -4740,9 +4739,7 @@ defined in.
   # example:
   #    opacity-rule = [ "80:class_g = 'URxvt'" ];
   #
-  opacity-rule = [
-      "100:class_g = 'LibreWolf' && !focused"
-  ]
+  # opacity-rule = []
 
 #+end_src
 
@@ -4805,8 +4802,7 @@ defined in.
       "name = 'main-dock'",
       "window_type = 'desktop'",
       "_GTK_FRAME_EXTENTS@:c",
-      "class_g = 'LibreWolf' && !focused",
-      "class_g = 'firefox' && !focused"
+      "window_type = 'utility'",
   ];
 
 #+end_src
