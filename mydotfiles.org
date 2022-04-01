@@ -1548,11 +1548,9 @@ Install packages using pacman
 
 #+end_src
 
-** Splash screen
+** Splash apps
 
 #+begin_src lua
-
-  local screen = awful.screen.focused()
 
   local terminal_id = 'notnil'
   local terminal_client
@@ -1569,19 +1567,21 @@ Install packages using pacman
      filemanager_id = awful.spawn.with_shell("alacritty -e lf")
   end
 
-  -- Dirty hack to prevent splash from showing up in occupied tags
-  -- function _splash_to_current_tag()
-  --    if splash_client then
-  --       splash_client:move_to_tag(screen.selected_tag)
-  --    end
-  -- end
-
-  function open_splash(client)
-     client.hidden = false
-  end
-
-  function close_splash(client)
-     client.hidden = true
+  function toggle_splash_height()
+     c = client.focus
+     if c.pid == terminal_id or c.pid == filemanager_id then
+        if c.width == 1200 then
+           awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+        else
+           c.width = 1200
+           if c.pid == terminal_id then
+              c.height = 700
+           else
+              c.height = 800
+           end
+           awful.placement.centered(c)
+        end
+     end
   end
 
   function toggle_terminal()
@@ -1590,11 +1590,11 @@ Install packages using pacman
         create_terminal()
      else
         if terminal_opened then
-           open_splash(terminal_client)
+           terminal_client.hidden = false
            client.focus = terminal_client
            terminal_client:raise()
         else
-           close_splash(terminal_client)
+           terminal_client.hidden = true
         end
      end
   end
@@ -1605,49 +1605,46 @@ Install packages using pacman
         create_filemanager()
      else
         if filemanager_opened then
-           open_splash(filemanager_client)
+           filemanager_client.hidden = false
            client.focus = filemanager_client
            filemanager_client:raise()
         else
-           close_splash(filemanager_client)
+           filemanager_client.hidden = true
         end
      end
   end
 
   client.connect_signal('manage', function(c)
-                           if (c.pid == terminal_id or c.pid == filemanager_id) then
-                              if c.pid == terminal_id then
-                                 terminal_client = c
-                              elseif c.pid == filemanager_id then
-                                 filemanager_client = c
-                              end
-                              c.skip_decoration = true
+                           if c.pid == terminal_id then
+                              terminal_client = c
                               c.ontop = true
                               c.floating = true
-                              c.above = true
                               c.sticky = true
                               c.type = 'splash'
-                              if c.pid == terminal_id then
-                                 c.hidden = not terminal_opened
-                              elseif c.pid == filemanager_id then
-                                 c.hidden = not filemanager_opened
-                              end
-                              c.border_width = beautiful.border_width
-                              c.maximized = true
-                              -- c.maximized_horizontal = true
-                              -- c.maximized_vertical = true
-                              -- c.x = c.screen.geometry.x
-                              -- c.height = (c.screen.geometry.height / 5) * 3
-                              -- c.y = c.screen.geometry.height - c.height - beautiful.border_width - dpi(16)
+                              c.hidden = not terminal_opened
+                              c.width = 1200
+                              c.height = 700
+                              awful.placement.centered(c)
+                           end
+                           if c.pid == filemanager_id then
+                              filemanager_client = c
+                              c.ontop = true
+                              c.floating = true
+                              c.sticky = true
+                              c.type = 'splash'
+                              c.hidden = not filemanager_opened
+                              c.width = 1200
+                              c.height = 800
+                              awful.placement.centered(c)
                            end
   end)
 
   client.connect_signal('unmanage', function(c)
-                           if (c.pid == terminal_id) then
+                           if c.pid == terminal_id then
                               terminal_opened = false
                               terminal_client = nil
                            end
-                           if (c.pid == filemanager_id) then
+                           if c.pid == filemanager_id then
                               filemanager_opened = false
                               filemanager_client = nil
                            end
