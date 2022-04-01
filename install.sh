@@ -12,7 +12,7 @@ pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide bright
 # list of files/folders to symlink in homedir
 config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
 
-bin_files="inkscape-figures update list in pin re"
+bin_files="inkscape-figures update list in pin re lf"
 bar_c_files="cpu ram"
 bar_bin_files="$bar_c_files updates"
 

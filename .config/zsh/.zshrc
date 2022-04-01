@@ -350,8 +350,5 @@ add-zsh-hook -Uz precmd reset_broken_terminal
 
 source /usr/share/doc/pkgfile/command-not-found.zsh
 
-# lf
-. $HOME/.config/lf/.lfrc
-
 # Run neofetch
 [[ $run_neofetch ]] && echo "" && neofetch

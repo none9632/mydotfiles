@@ -44,7 +44,7 @@
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
 
-  bin_files="inkscape-figures update list in pin re"
+  bin_files="inkscape-figures update list in pin re lf"
   bar_c_files="cpu ram"
   bar_bin_files="$bar_c_files updates"
 
@@ -676,6 +676,258 @@ Install packages using pacman
 
 #+end_src
 
+** lf
+
+#+begin_src sh :tangle ./bin/lf :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  export LFCP="/tmp/lfcp"
+
+  export LF_ICONS="\
+  tw= :\
+  st= :\
+  ow= :\
+  dt= :\
+  di= :\
+  fi= :\
+  ln= :\
+  or= :\
+  ex= :\
+  Makefile*= :\
+  makefile*= :\
+  README*= :\
+  CMakeLists.txt*= :\
+  TAGS*= :\
+  TODO*= :\
+  LICENSE*= :\
+  Dockerfile*= :\
+  dockerfile*= :\
+  .gitignore*= :\
+  .vimrc*= :\
+  .viminfo*= :\
+  vimrc*= :\
+  .zshrc*= :\
+  .zprofile*= :\
+  .zshenv*= :\
+  .bashrc*= :\
+  .bash_logout*= :\
+  .bash_profile*= :\
+  .profile*= :\
+  .xinitrc*= :\
+  .xprofile*= :\
+  ,*.asm= :\
+  ,*.b= :\
+  ,*.c= :\
+  ,*.cc= :\
+  ,*.clj= :\
+  ,*.cljc= :\
+  ,*.cmake= :\
+  ,*.conf= :\
+  ,*.coffee= :\
+  ,*.cpp= :\
+  ,*.cs= :\
+  ,*.css= :\
+  ,*.d= :\
+  ,*.dart= :\
+  ,*.db= :\
+  ,*.djvu= :\
+  ,*.doc= :\
+  ,*.dockerfile= :\
+  ,*.docx= :\
+  ,*.eex= :\
+  ,*.el= :\
+  ,*.elc= :\
+  ,*.elm= :\
+  ,*.erl= :\
+  ,*.ex= :\
+  ,*.exs= :\
+  ,*.fs= :\
+  ,*.go= :\
+  ,*.h= :\
+  ,*.hh= :\
+  ,*.hpp= :\
+  ,*.hs= :\
+  ,*.html= :\
+  ,*.ino= :\
+  ,*.iso= :\
+  ,*.java= :\
+  ,*.jl= :\
+  ,*.js= :\
+  ,*.jsx= :\
+  ,*.json= :\
+  ,*.key= :\
+  ,*.kt= :\
+  ,*.kts= :\
+  ,*.less= :\
+  ,*.log= :\
+  ,*.lua= :\
+  ,*.md= :\
+  ,*.nasm= :\
+  ,*.ods= :\
+  ,*.org= :\
+  ,*.pdf= :\
+  ,*.pem= :\
+  ,*.php= :\
+  ,*.pl= :\
+  ,*.ppt= :\
+  ,*.pptx= :\
+  ,*.py= :\
+  ,*.rb= :\
+  ,*.rs= :\
+  ,*.S= :\
+  ,*.s= :\
+  ,*.scala= :\
+  ,*.sql= :\
+  ,*.sqlite= :\
+  ,*.swift= :\
+  ,*.tex= :\
+  ,*.torrent= :\
+  ,*.ts= :\
+  ,*.vim= :\
+  ,*.xls= :\
+  ,*.xlsx= :\
+  ,*.xml= :\
+  ,*.yml= :\
+  ,*.ttf= :\
+  ,*.ttc= :\
+  ,*.otf= :\
+  ,*.woff= :\
+  ,*.o= :\
+  ,*.obj= :\
+  ,*.exe= :\
+  ,*.bin= :\
+  ,*.elf= :\
+  ,*.cmd= :\
+  ,*.ps1= :\
+  ,*.sh= :\
+  ,*.bash= :\
+  ,*.zsh= :\
+  ,*.fish= :\
+  ,*.mp4= :\
+  ,*.webm= :\
+  ,*.mkv= :\
+  ,*.flv= :\
+  ,*.vob= :\
+  ,*.ogv= :\
+  ,*.ogm= :\
+  ,*.gifv= :\
+  ,*.mpg= :\
+  ,*.mpeg= :\
+  ,*.mp4v= :\
+  ,*.wmv= :\
+  ,*.qt= :\
+  ,*.yuv= :\
+  ,*.rm= :\
+  ,*.rmvb= :\
+  ,*.viv= :\
+  ,*.asf= :\
+  ,*.m4v= :\
+  ,*.avi= :\
+  ,*.mov= :\
+  ,*.m2v= :\
+  ,*.nuv= :\
+  ,*.flc= :\
+  ,*.fli= :\
+  ,*.gl= :\
+  ,*.ogx= :\
+  ,*.mp3= :\
+  ,*.aac= :\
+  ,*.m4a= :\
+  ,*.oga= :\
+  ,*.spx= :\
+  ,*.au= :\
+  ,*.wav= :\
+  ,*.opus= :\
+  ,*.ra= :\
+  ,*.flac= :\
+  ,*.mid= :\
+  ,*.midi= :\
+  ,*.mka= :\
+  ,*.mpc= :\
+  ,*.xspf= :\
+  ,*.jpg= :\
+  ,*.jpeg= :\
+  ,*.mjpg= :\
+  ,*.mjpeg= :\
+  ,*.ico= :\
+  ,*.gif= :\
+  ,*.bmp= :\
+  ,*.pbm= :\
+  ,*.pgm= :\
+  ,*.ppm= :\
+  ,*.tga= :\
+  ,*.xbm= :\
+  ,*.xpm= :\
+  ,*.tif= :\
+  ,*.tiff= :\
+  ,*.png= :\
+  ,*.svg= :\
+  ,*.svgz= :\
+  ,*.mng= :\
+  ,*.pcx= :\
+  ,*.xcf= :\
+  ,*.xwd= :\
+  ,*.cgm= :\
+  ,*.emf= :\
+  ,*.tar= :\
+  ,*.tgz= :\
+  ,*.arc= :\
+  ,*.arj= :\
+  ,*.taz= :\
+  ,*.lha= :\
+  ,*.lz4= :\
+  ,*.lzh= :\
+  ,*.lzma= :\
+  ,*.tlz= :\
+  ,*.txz= :\
+  ,*.tzo= :\
+  ,*.t7z= :\
+  ,*.zip= :\
+  ,*.z= :\
+  ,*.dz= :\
+  ,*.gz= :\
+  ,*.lrz= :\
+  ,*.lz= :\
+  ,*.lzo= :\
+  ,*.xz= :\
+  ,*.zst= :\
+  ,*.tzst= :\
+  ,*.bz2= :\
+  ,*.bz= :\
+  ,*.tbz= :\
+  ,*.tbz2= :\
+  ,*.tz= :\
+  ,*.deb= :\
+  ,*.rpm= :\
+  ,*.jar= :\
+  ,*.war= :\
+  ,*.ear= :\
+  ,*.sar= :\
+  ,*.rar= :\
+  ,*.alz= :\
+  ,*.ace= :\
+  ,*.zoo= :\
+  ,*.cpio= :\
+  ,*.7z= :\
+  ,*.rz= :\
+  ,*.cab= :\
+  ,*.wim= :\
+  ,*.swm= :\
+  ,*.dwm= :\
+  ,*.esd= :\
+  "
+
+  tmp="$(mktemp)"
+  lfrun -last-dir-path="$tmp" "$@"
+  if [ -f "$tmp" ]; then
+      dir="$(cat "$tmp")"
+      rm -f "$tmp"
+      [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+  fi
+
+#+end_src
+
 * Bash
 ** .bash_profile
 :PROPERTIES:
@@ -1133,9 +1385,6 @@ Install packages using pacman
   add-zsh-hook -Uz precmd reset_broken_terminal
 
   source /usr/share/doc/pkgfile/command-not-found.zsh
-
-  # lf
-  . $HOME/.config/lf/.lfrc
 
   # Run neofetch
   [[ $run_neofetch ]] && echo "" && neofetch
@@ -3134,267 +3383,10 @@ defined in.
           mkdir -p "$HOME/.cache/lf"
       fi
 
-      lf "$@" 3>&-
+      /usr/bin/lf "$@" 3>&-
   else
       exec "$@"
   fi
-
-#+end_src
-
-** lf startup configuration
-
-#+begin_src sh :tangle ./.config/lf/.lfrc :tangle-mode (identity #o755)
-
-  #!/bin/sh
-
-  lfcd ()
-  {
-      tmp="$(mktemp)"
-      lfrun -last-dir-path="$tmp" "$@"
-      if [ -f "$tmp" ]; then
-          dir="$(cat "$tmp")"
-          rm -f "$tmp"
-          [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-      fi
-  }
-
-  alias lf="lfcd"
-
-  export LFCP="/tmp/lfcp"
-
-  export LF_ICONS="\
-  tw= :\
-  st= :\
-  ow= :\
-  dt= :\
-  di= :\
-  fi= :\
-  ln= :\
-  or= :\
-  ex= :\
-  Makefile*= :\
-  makefile*= :\
-  README*= :\
-  CMakeLists.txt*= :\
-  TAGS*= :\
-  TODO*= :\
-  LICENSE*= :\
-  Dockerfile*= :\
-  dockerfile*= :\
-  .gitignore*= :\
-  .vimrc*= :\
-  .viminfo*= :\
-  vimrc*= :\
-  .zshrc*= :\
-  .zprofile*= :\
-  .zshenv*= :\
-  .bashrc*= :\
-  .bash_logout*= :\
-  .bash_profile*= :\
-  .profile*= :\
-  .xinitrc*= :\
-  .xprofile*= :\
-  ,*.asm= :\
-  ,*.b= :\
-  ,*.c= :\
-  ,*.cc= :\
-  ,*.clj= :\
-  ,*.cljc= :\
-  ,*.cmake= :\
-  ,*.conf= :\
-  ,*.coffee= :\
-  ,*.cpp= :\
-  ,*.cs= :\
-  ,*.css= :\
-  ,*.d= :\
-  ,*.dart= :\
-  ,*.db= :\
-  ,*.djvu= :\
-  ,*.doc= :\
-  ,*.dockerfile= :\
-  ,*.docx= :\
-  ,*.eex= :\
-  ,*.el= :\
-  ,*.elc= :\
-  ,*.elm= :\
-  ,*.erl= :\
-  ,*.ex= :\
-  ,*.exs= :\
-  ,*.fs= :\
-  ,*.go= :\
-  ,*.h= :\
-  ,*.hh= :\
-  ,*.hpp= :\
-  ,*.hs= :\
-  ,*.html= :\
-  ,*.ino= :\
-  ,*.iso= :\
-  ,*.java= :\
-  ,*.jl= :\
-  ,*.js= :\
-  ,*.jsx= :\
-  ,*.json= :\
-  ,*.key= :\
-  ,*.kt= :\
-  ,*.kts= :\
-  ,*.less= :\
-  ,*.log= :\
-  ,*.lua= :\
-  ,*.md= :\
-  ,*.nasm= :\
-  ,*.ods= :\
-  ,*.org= :\
-  ,*.pdf= :\
-  ,*.pem= :\
-  ,*.php= :\
-  ,*.pl= :\
-  ,*.ppt= :\
-  ,*.pptx= :\
-  ,*.py= :\
-  ,*.rb= :\
-  ,*.rs= :\
-  ,*.S= :\
-  ,*.s= :\
-  ,*.scala= :\
-  ,*.sql= :\
-  ,*.sqlite= :\
-  ,*.swift= :\
-  ,*.tex= :\
-  ,*.torrent= :\
-  ,*.ts= :\
-  ,*.vim= :\
-  ,*.xls= :\
-  ,*.xlsx= :\
-  ,*.xml= :\
-  ,*.yml= :\
-  ,*.ttf= :\
-  ,*.ttc= :\
-  ,*.otf= :\
-  ,*.woff= :\
-  ,*.o= :\
-  ,*.obj= :\
-  ,*.exe= :\
-  ,*.bin= :\
-  ,*.elf= :\
-  ,*.cmd= :\
-  ,*.ps1= :\
-  ,*.sh= :\
-  ,*.bash= :\
-  ,*.zsh= :\
-  ,*.fish= :\
-  ,*.mp4= :\
-  ,*.webm= :\
-  ,*.mkv= :\
-  ,*.flv= :\
-  ,*.vob= :\
-  ,*.ogv= :\
-  ,*.ogm= :\
-  ,*.gifv= :\
-  ,*.mpg= :\
-  ,*.mpeg= :\
-  ,*.mp4v= :\
-  ,*.wmv= :\
-  ,*.qt= :\
-  ,*.yuv= :\
-  ,*.rm= :\
-  ,*.rmvb= :\
-  ,*.viv= :\
-  ,*.asf= :\
-  ,*.m4v= :\
-  ,*.avi= :\
-  ,*.mov= :\
-  ,*.m2v= :\
-  ,*.nuv= :\
-  ,*.flc= :\
-  ,*.fli= :\
-  ,*.gl= :\
-  ,*.ogx= :\
-  ,*.mp3= :\
-  ,*.aac= :\
-  ,*.m4a= :\
-  ,*.oga= :\
-  ,*.spx= :\
-  ,*.au= :\
-  ,*.wav= :\
-  ,*.opus= :\
-  ,*.ra= :\
-  ,*.flac= :\
-  ,*.mid= :\
-  ,*.midi= :\
-  ,*.mka= :\
-  ,*.mpc= :\
-  ,*.xspf= :\
-  ,*.jpg= :\
-  ,*.jpeg= :\
-  ,*.mjpg= :\
-  ,*.mjpeg= :\
-  ,*.ico= :\
-  ,*.gif= :\
-  ,*.bmp= :\
-  ,*.pbm= :\
-  ,*.pgm= :\
-  ,*.ppm= :\
-  ,*.tga= :\
-  ,*.xbm= :\
-  ,*.xpm= :\
-  ,*.tif= :\
-  ,*.tiff= :\
-  ,*.png= :\
-  ,*.svg= :\
-  ,*.svgz= :\
-  ,*.mng= :\
-  ,*.pcx= :\
-  ,*.xcf= :\
-  ,*.xwd= :\
-  ,*.cgm= :\
-  ,*.emf= :\
-  ,*.tar= :\
-  ,*.tgz= :\
-  ,*.arc= :\
-  ,*.arj= :\
-  ,*.taz= :\
-  ,*.lha= :\
-  ,*.lz4= :\
-  ,*.lzh= :\
-  ,*.lzma= :\
-  ,*.tlz= :\
-  ,*.txz= :\
-  ,*.tzo= :\
-  ,*.t7z= :\
-  ,*.zip= :\
-  ,*.z= :\
-  ,*.dz= :\
-  ,*.gz= :\
-  ,*.lrz= :\
-  ,*.lz= :\
-  ,*.lzo= :\
-  ,*.xz= :\
-  ,*.zst= :\
-  ,*.tzst= :\
-  ,*.bz2= :\
-  ,*.bz= :\
-  ,*.tbz= :\
-  ,*.tbz2= :\
-  ,*.tz= :\
-  ,*.deb= :\
-  ,*.rpm= :\
-  ,*.jar= :\
-  ,*.war= :\
-  ,*.ear= :\
-  ,*.sar= :\
-  ,*.rar= :\
-  ,*.alz= :\
-  ,*.ace= :\
-  ,*.zoo= :\
-  ,*.cpio= :\
-  ,*.7z= :\
-  ,*.rz= :\
-  ,*.cab= :\
-  ,*.wim= :\
-  ,*.swm= :\
-  ,*.dwm= :\
-  ,*.esd= :\
-  "
 
 #+end_src
 
