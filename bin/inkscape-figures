@@ -125,10 +125,10 @@ function create
 function move
 {
     [ ! -d $images_path ] && mkdir -p $images_path
-    if [ ! -d $images_path ]
+    if [ ! -d $images_path ] || [ ! -f $1 ]
     then
         errormsg "Can't create images path"
-        echo ""
+        echo -n ""
         return
     fi
 
@@ -141,7 +141,7 @@ function move
     if [ ! -f $img_file_path ]
     then
         errormsg "Can't create image file"
-        echo ""
+        echo -n ""
         return
     fi
 

@@ -330,10 +330,10 @@
   function move
   {
       [ ! -d $images_path ] && mkdir -p $images_path
-      if [ ! -d $images_path ]
+      if [ ! -d $images_path ] || [ ! -f $1 ]
       then
           errormsg "Can't create images path"
-          echo ""
+          echo -n ""
           return
       fi
 
@@ -346,7 +346,7 @@
       if [ ! -f $img_file_path ]
       then
           errormsg "Can't create image file"
-          echo ""
+          echo -n ""
           return
       fi
 
@@ -918,7 +918,7 @@ Install packages using pacman
   ,*.esd= :\
   "
 
-  lfrun "$1"
+  lfrun "$@"
 
 #+end_src
 
@@ -1898,6 +1898,39 @@ Install packages using pacman
                               filemanager_client = nil
                            end
   end)
+
+#+end_src
+
+** Splash apps for emacs
+
+#+begin_src lua
+
+  local emacs_fm_id = 'notnil'
+
+  function create_emacs_fm()
+     emacs_fm_id = awful.spawn.with_shell("alacritty -e mylf " ..
+                                          "-command \"cd ~/Pictures/screenshots\" " ..
+                                          "-command \"map <enter> quit_for_emacs\"")
+  end
+
+  client.connect_signal('manage', function(c)
+                           if c.pid == emacs_fm_id then
+                              c.ontop = true
+                              c.floating = true
+                              c.type = 'splash'
+                              c.hidden = false
+                              c.width = 1400
+                              c.height = 800
+                              awful.placement.centered(c)
+                           end
+  end)
+
+  client.connect_signal('unmanage', function(c)
+                           if c.pid == emacs_fm_id then
+                              awful.spawn.with_shell("echo -n \"cancel\" > ~/.cache/emacs/img-path")
+                           end
+  end)
+
 
 #+end_src
 
@@ -3742,6 +3775,17 @@ defined in.
 
   cmd my_quit ${{
       rm /tmp/lfundo_$id
+      lf -remote "send $id quit"
+  }}
+
+  cmd quit_for_emacs ${{
+      rm /tmp/lfundo_$id
+      if [ "$f" = "" ]
+      then
+          echo -n "cancel" > ~/.cache/emacs/img-path
+      else
+          echo -n $f > ~/.cache/emacs/img-path
+      fi
       lf -remote "send $id quit"
   }}
 

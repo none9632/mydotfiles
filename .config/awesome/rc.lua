@@ -454,6 +454,32 @@ client.connect_signal('unmanage', function(c)
                          end
 end)
 
+local emacs_fm_id = 'notnil'
+
+function create_emacs_fm()
+   emacs_fm_id = awful.spawn.with_shell("alacritty -e mylf " ..
+                                        "-command \"cd ~/Pictures/screenshots\" " ..
+                                        "-command \"map <enter> quit_for_emacs\"")
+end
+
+client.connect_signal('manage', function(c)
+                         if c.pid == emacs_fm_id then
+                            c.ontop = true
+                            c.floating = true
+                            c.type = 'splash'
+                            c.hidden = false
+                            c.width = 1400
+                            c.height = 800
+                            awful.placement.centered(c)
+                         end
+end)
+
+client.connect_signal('unmanage', function(c)
+                         if c.pid == emacs_fm_id then
+                            awful.spawn.with_shell("echo -n \"cancel\" > ~/.cache/emacs/img-path")
+                         end
+end)
+
 local theme_assets = require("beautiful.theme_assets")
 
 local gfs = require("gears.filesystem")

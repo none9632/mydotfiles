@@ -338,6 +338,17 @@ cmd my_quit ${{
     lf -remote "send $id quit"
 }}
 
+cmd quit_for_emacs ${{
+    rm /tmp/lfundo_$id
+    if [ "$f" = "" ]
+    then
+        echo -n "cancel" > ~/.cache/emacs/img-path
+    else
+        echo -n $f > ~/.cache/emacs/img-path
+    fi
+    lf -remote "send $id quit"
+}}
+
 # Remove some defaults
 map m
 map c
