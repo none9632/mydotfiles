@@ -44,7 +44,7 @@
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
 
-  bin_files="inkscape-figures update list in pin re lfcd"
+  bin_files="inkscape-figures update list in pin re mylf"
   bar_c_files="cpu ram"
   bar_bin_files="$bar_c_files updates"
 
@@ -676,9 +676,9 @@ Install packages using pacman
 
 #+end_src
 
-** lfcd
+** mylf
 
-#+begin_src sh :tangle ./bin/lfcd :tangle-mode (identity #o755)
+#+begin_src sh :tangle ./bin/mylf :tangle-mode (identity #o755)
 
   #!/bin/sh
 
@@ -918,13 +918,7 @@ Install packages using pacman
   ,*.esd= :\
   "
 
-  tmp="$(mktemp)"
-  lfrun -last-dir-path="$tmp" "$@"
-  if [ -f "$tmp" ]; then
-      dir="$(cat "$tmp")"
-      rm -f "$tmp"
-      [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && echo "$dir"
-  fi
+  lfrun "$1"
 
 #+end_src
 
@@ -1323,7 +1317,6 @@ Install packages using pacman
   alias stmem="stress -vm 2 --vm-bytes"
 
   alias ls="exa -la --color=always --group-directories-first"
-  alias lf="cd \`lfcd\`"
   alias cat="bat"
   alias vim="nvim"
   alias rm="rm -r"
@@ -1386,6 +1379,19 @@ Install packages using pacman
   add-zsh-hook -Uz precmd reset_broken_terminal
 
   source /usr/share/doc/pkgfile/command-not-found.zsh
+
+  # lf
+  function lfcd()
+  {
+      tmp="$(mktemp)"
+      mylf -last-dir-path="$tmp" "$@"
+      if [ -f "$tmp" ]; then
+          dir="$(cat "$tmp")"
+          rm -f "$tmp"
+          [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+      fi
+  }
+  alias lf="lfcd"
 
   # Run neofetch
   [[ $run_neofetch ]] && echo "" && neofetch
@@ -1505,8 +1511,6 @@ Install packages using pacman
            {description="show help", group="awesome"}),
         awful.key({ modkey, "Control" }, "r", awesome.restart,
            {description = "reload awesome", group = "awesome"}),
-        awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-           {description = "quit awesome", group = "awesome"}),
   })
 
   -- Tags related keybindings
@@ -1808,7 +1812,7 @@ Install packages using pacman
   end
 
   function create_filemanager()
-     filemanager_id = awful.spawn.with_shell("alacritty -e lfcd")
+     filemanager_id = awful.spawn.with_shell("alacritty -e mylf")
   end
 
   function toggle_splash_height()

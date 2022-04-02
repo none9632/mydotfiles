@@ -78,8 +78,6 @@ awful.keyboard.append_global_keybindings({
          {description="show help", group="awesome"}),
       awful.key({ modkey, "Control" }, "r", awesome.restart,
          {description = "reload awesome", group = "awesome"}),
-      awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-         {description = "quit awesome", group = "awesome"}),
 })
 
 -- Tags related keybindings
@@ -369,7 +367,7 @@ function create_terminal()
 end
 
 function create_filemanager()
-   filemanager_id = awful.spawn.with_shell("alacritty -e lfcd")
+   filemanager_id = awful.spawn.with_shell("alacritty -e mylf")
 end
 
 function toggle_splash_height()
