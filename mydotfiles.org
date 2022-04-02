@@ -1561,6 +1561,7 @@ Install packages using pacman
 #+end_src
 
 ** Splash apps
+*** Terminal
 
 #+begin_src lua
 
@@ -1623,7 +1624,7 @@ Install packages using pacman
 
 #+end_src
 
-** Splash apps for emacs
+*** Apps for emacs
 
 #+begin_src lua
 
