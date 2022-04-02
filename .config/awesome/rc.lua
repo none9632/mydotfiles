@@ -241,12 +241,6 @@ client.connect_signal('manage', function(c)
                          end
 end)
 
-client.connect_signal('unmanage', function(c)
-                         if c.pid == emacs_fm_id then
-                            awful.spawn.with_shell("echo -n \"cancel\" > ~/.cache/emacs/img-path")
-                         end
-end)
-
 local theme_assets = require("beautiful.theme_assets")
 
 local gfs = require("gears.filesystem")
@@ -751,6 +745,9 @@ client.connect_signal("request::default_keybindings", function()
                                   function (c)
                                      if c.pid == terminal_id then
                                         toggle_terminal()
+                                     elseif c.pid == terminal_id then
+                                        awful.spawn.with_shell("echo -n \"cancel\" > ~/.cache/emacs/img-path")
+                                        c:kill()
                                      else
                                         c:kill()
                                      end

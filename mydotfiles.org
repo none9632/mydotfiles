@@ -1693,13 +1693,6 @@ Install packages using pacman
                            end
   end)
 
-  client.connect_signal('unmanage', function(c)
-                           if c.pid == emacs_fm_id then
-                              awful.spawn.with_shell("echo -n \"cancel\" > ~/.cache/emacs/img-path")
-                           end
-  end)
-
-
 #+end_src
 
 ** Theme
@@ -2222,6 +2215,9 @@ Install packages using pacman
                                     function (c)
                                        if c.pid == terminal_id then
                                           toggle_terminal()
+                                       elseif c.pid == terminal_id then
+                                          awful.spawn.with_shell("echo -n \"cancel\" > ~/.cache/emacs/img-path")
+                                          c:kill()
                                        else
                                           c:kill()
                                        end
