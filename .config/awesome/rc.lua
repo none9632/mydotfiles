@@ -87,11 +87,6 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
-       rule       = { class = "firefox" },
-       properties = { screen = 1, tag = " 7 " }
-    }
-
-    ruled.client.append_rule {
        rule       = { class = "Evince" },
        properties = { floating = true },
        callback = function(c)
@@ -179,6 +174,50 @@ client.connect_signal('unmanage', function(c)
                          if c.pid == terminal_id then
                             terminal_opened = false
                             terminal_client = nil
+                         end
+end)
+
+local firefox_id = 'notnil'
+local firefox_client
+local firefox_opened = false
+
+function create_firefox()
+   firefox_id = awful.spawn.with_shell("firefox")
+end
+
+function toggle_firefox()
+   firefox_opened = not firefox_opened
+   if not firefox_client then
+      create_firefox()
+   else
+      if firefox_opened then
+         firefox_client.hidden = false
+         client.focus = firefox_client
+         firefox_client:raise()
+      else
+         firefox_client.hidden = true
+      end
+   end
+end
+
+client.connect_signal('manage', function(c)
+                         if c.pid == firefox_id then
+                            firefox_client = c
+                            c.ontop = true
+                            c.floating = true
+                            c.sticky = true
+                            c.type = 'splash'
+                            c.hidden = not firefox_opened
+                            c.width = 1350
+                            c.height = 800
+                            awful.placement.centered(c, { margins = { top = 56 }})
+                         end
+end)
+
+client.connect_signal('unmanage', function(c)
+                         if c.pid == firefox_id then
+                            firefox_opened = false
+                            firefox_client = nil
                          end
 end)
 
@@ -611,8 +650,8 @@ awful.keyboard.append_global_keybindings({
          {description = "take a screenshot", group = "launcher"}),
       awful.key({ modkey }, "`", function() toggle_terminal() end,
          {description = "toggle splash terminal", group = "launcher"}),
-      awful.key({ modkey }, "b", function() toggle_filemanager() end,
-         {description = "toggle splash file manager", group = "launcher"}),
+      awful.key({ modkey }, "b", function() toggle_firefox() end,
+         {description = "toggle splash firefox", group = "launcher"}),
       awful.key({ modkey }, "m", function() toggle_splash_height() end,
          {description = "resize splash app", group = "launcher"})
 })
