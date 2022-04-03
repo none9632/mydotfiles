@@ -69,7 +69,7 @@ end)
 
 -- Each screen has its own tag table.
 awful.screen.connect_for_each_screen(function(s)
-      awful.tag({ " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 " }, s, awful.layout.layouts[1])
+      awful.tag({ " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", "hidden_tag" }, s, awful.layout.layouts[1])
 end)
 
 -- Rules to apply to new clients.
@@ -125,7 +125,7 @@ local terminal_client
 local terminal_opened = false
 
 function create_terminal()
-   terminal_id = awful.spawn.with_shell("alacritty")
+   terminal_id = awful.spawn("alacritty --class Alacritty-splash")
 end
 
 function toggle_splash_height()
@@ -159,10 +159,10 @@ end
 client.connect_signal('manage', function(c)
                          if c.pid == terminal_id then
                             terminal_client = c
+                            client.focus = terminal_client
                             c.ontop = true
                             c.floating = true
                             c.sticky = true
-                            c.type = 'splash'
                             c.hidden = not terminal_opened
                             c.width = 1350
                             c.height = 800
@@ -177,12 +177,19 @@ client.connect_signal('unmanage', function(c)
                          end
 end)
 
+ruled.client.connect_signal("request::rules", function()
+                               ruled.client.append_rule {
+                                  rule       = { instance = "Alacritty-splash" },
+                                  properties = { screen = 1, tag = "hidden_tag" }
+                               }
+end)
+
 local firefox_id = 'notnil'
 local firefox_client
 local firefox_opened = false
 
 function create_firefox()
-   firefox_id = awful.spawn.with_shell("firefox")
+   firefox_id = awful.spawn("firefox")
 end
 
 function toggle_firefox()
@@ -203,6 +210,7 @@ end
 client.connect_signal('manage', function(c)
                          if c.pid == firefox_id then
                             firefox_client = c
+                            client.focus = firefox_client
                             c.ontop = true
                             c.floating = true
                             c.sticky = true
@@ -219,6 +227,13 @@ client.connect_signal('unmanage', function(c)
                             firefox_opened = false
                             firefox_client = nil
                          end
+end)
+
+ruled.client.connect_signal("request::rules", function()
+                               ruled.client.append_rule {
+                                  rule       = { class = "firefox" },
+                                  properties = { screen = 1, tag = "hidden_tag" }
+                               }
 end)
 
 local emacs_fm_id = 'notnil'
@@ -657,10 +672,12 @@ awful.keyboard.append_global_keybindings({
          description = "only view tag",
          group       = "tag",
          on_press    = function (index)
-            local screen = awful.screen.focused()
-            local tag = screen.tags[index]
-            if tag then
-               tag:view_only()
+            if index ~= 8 then
+               local screen = awful.screen.focused()
+               local tag = screen.tags[index]
+               if tag then
+                  tag:view_only()
+               end
             end
          end,
       },
@@ -670,10 +687,12 @@ awful.keyboard.append_global_keybindings({
          description = "toggle tag",
          group       = "tag",
          on_press    = function (index)
-            local screen = awful.screen.focused()
-            local tag = screen.tags[index]
-            if tag then
-               awful.tag.viewtoggle(tag)
+            if index ~= 8 then
+               local screen = awful.screen.focused()
+               local tag = screen.tags[index]
+               if tag then
+                  awful.tag.viewtoggle(tag)
+               end
             end
          end,
       },
@@ -683,7 +702,7 @@ awful.keyboard.append_global_keybindings({
          description = "move focused client to tag",
          group       = "tag",
          on_press    = function (index)
-            if client.focus then
+            if index ~= 8 and client.focus then
                local tag = client.focus.screen.tags[index]
                if tag then
                   client.focus:move_to_tag(tag)
@@ -697,7 +716,7 @@ awful.keyboard.append_global_keybindings({
          description = "toggle focused client on tag",
          group       = "tag",
          on_press    = function (index)
-            if client.focus then
+            if index ~= 8 and client.focus then
                local tag = client.focus.screen.tags[index]
                if tag then
                   client.focus:toggle_tag(tag)
@@ -711,9 +730,11 @@ awful.keyboard.append_global_keybindings({
          description = "select layout directly",
          group       = "layout",
          on_press    = function (index)
-            local t = awful.screen.focused().selected_tag
-            if t then
-               t.layout = t.layouts[index] or t.layout
+            if index ~= 8 then
+               local t = awful.screen.focused().selected_tag
+               if t then
+                  t.layout = t.layouts[index] or t.layout
+               end
             end
          end,
       }
