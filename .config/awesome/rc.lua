@@ -122,14 +122,14 @@ end)
 
 local terminal_id = 'notnil'
 local terminal_client
-local terminal_opened = false
 
 function create_terminal()
-   terminal_id = awful.spawn("alacritty --class Alacritty-splash")
+   terminal_id = awful.spawn("alacritty")
 end
 
 function toggle_splash_height()
    c = client.focus
+
    if c.pid == terminal_id then
       if c.width <= 1350 then
          awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
@@ -142,16 +142,18 @@ function toggle_splash_height()
 end
 
 function toggle_terminal()
-   terminal_opened = not terminal_opened
+   local t = awful.screen.focused().selected_tag
+   local c = client.focus
+
    if not terminal_client then
       create_terminal()
    else
-      if terminal_opened then
-         terminal_client.hidden = false
+      if c ~= terminal_client then
+         terminal_client:move_to_tag(t)
          client.focus = terminal_client
          terminal_client:raise()
       else
-         terminal_client.hidden = true
+         terminal_client:move_to_tag(awful.screen.focused().tags[8])
       end
    end
 end
@@ -159,50 +161,41 @@ end
 client.connect_signal('manage', function(c)
                          if c.pid == terminal_id then
                             terminal_client = c
-                            client.focus = terminal_client
-                            c.ontop = true
                             c.floating = true
-                            c.sticky = true
-                            c.hidden = not terminal_opened
                             c.width = 1350
                             c.height = 800
+                            c:move_to_tag(awful.screen.focused().selected_tag)
+                            client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
 end)
 
 client.connect_signal('unmanage', function(c)
                          if c.pid == terminal_id then
-                            terminal_opened = false
                             terminal_client = nil
                          end
 end)
 
-ruled.client.connect_signal("request::rules", function()
-                               ruled.client.append_rule {
-                                  rule       = { instance = "Alacritty-splash" },
-                                  properties = { screen = 1, tag = "hidden_tag" }
-                               }
-end)
-
 local firefox_id = 'notnil'
 local firefox_client
-local firefox_opened = false
 
 function create_firefox()
-   firefox_id = awful.spawn("firefox", { screen = 1, tag = "hidden_tag" })
+   firefox_id = awful.spawn("firefox")
 end
 
 function toggle_firefox()
-   firefox_opened = not firefox_opened
+   local t = awful.screen.focused().selected_tag
+   local c = client.focus
+
    if not firefox_client then
       create_firefox()
    else
-      if firefox_opened then
-         firefox_client.hidden = false
+      if c ~= firefox_client then
+         firefox_client:move_to_tag(t)
          client.focus = firefox_client
          firefox_client:raise()
       else
-         firefox_client.hidden = true
+         firefox_client:move_to_tag(awful.screen.focused().tags[8])
       end
    end
 end
@@ -210,21 +203,17 @@ end
 client.connect_signal('manage', function(c)
                          if c.pid == firefox_id then
                             firefox_client = c
-                            client.focus = firefox_client
-                            c.ontop = true
                             c.floating = true
-                            c.sticky = true
-                            c.type = 'splash'
-                            c.hidden = not firefox_opened
                             c.width = 1350
                             c.height = 800
+                            c:move_to_tag(awful.screen.focused().selected_tag)
+                            client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
 end)
 
 client.connect_signal('unmanage', function(c)
                          if c.pid == firefox_id then
-                            firefox_opened = false
                             firefox_client = nil
                          end
 end)
@@ -245,7 +234,7 @@ client.connect_signal('manage', function(c)
                             c.hidden = false
                             c.width = 1400
                             c.height = 800
-                            awful.placement.centered(c)
+                            awful.placement.centered(c, { margins = { top = 56 }})
                          end
 end)
 
