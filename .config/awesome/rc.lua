@@ -189,7 +189,7 @@ local firefox_client
 local firefox_opened = false
 
 function create_firefox()
-   firefox_id = awful.spawn("firefox")
+   firefox_id = awful.spawn("firefox", { screen = 1, tag = "hidden_tag" })
 end
 
 function toggle_firefox()
@@ -229,18 +229,11 @@ client.connect_signal('unmanage', function(c)
                          end
 end)
 
-ruled.client.connect_signal("request::rules", function()
-                               ruled.client.append_rule {
-                                  rule       = { class = "firefox" },
-                                  properties = { screen = 1, tag = "hidden_tag" }
-                               }
-end)
-
 local emacs_fm_id = 'notnil'
 
-function create_emacs_fm()
+function create_emacs_fm(path)
    emacs_fm_id = awful.spawn.with_shell("alacritty -e mylf " ..
-                                        "-command \"cd ~/Pictures/screenshots\" " ..
+                                        "-command \"cd " .. path .. "\" " ..
                                         "-command \"map <enter> quit_for_emacs\"")
 end
 

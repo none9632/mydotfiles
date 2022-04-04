@@ -1635,7 +1635,7 @@ Install packages using pacman
   local firefox_opened = false
 
   function create_firefox()
-     firefox_id = awful.spawn("firefox")
+     firefox_id = awful.spawn("firefox", { screen = 1, tag = "hidden_tag" })
   end
 
   function toggle_firefox()
@@ -1675,13 +1675,6 @@ Install packages using pacman
                            end
   end)
 
-  ruled.client.connect_signal("request::rules", function()
-                                 ruled.client.append_rule {
-                                    rule       = { class = "firefox" },
-                                    properties = { screen = 1, tag = "hidden_tag" }
-                                 }
-  end)
-
 #+end_src
 
 *** lf for emacs
@@ -1690,9 +1683,9 @@ Install packages using pacman
 
   local emacs_fm_id = 'notnil'
 
-  function create_emacs_fm()
+  function create_emacs_fm(path)
      emacs_fm_id = awful.spawn.with_shell("alacritty -e mylf " ..
-                                          "-command \"cd ~/Pictures/screenshots\" " ..
+                                          "-command \"cd " .. path .. "\" " ..
                                           "-command \"map <enter> quit_for_emacs\"")
   end
 
@@ -3815,13 +3808,12 @@ defined in.
       rm /tmp/lfundo_$id
       if [ "$f" = "" ]
       then
-          echo -n "cancel" > ~/.cache/emacs/img-path
+          echo -n "cancel" > ~/.cache/emacs/path
       else
-          echo -n $f > ~/.cache/emacs/img-path
+          echo -n $f > ~/.cache/emacs/path
       fi
       lf -remote "send $id quit"
   }}
-
 #+end_src
 
 *** Keybindings

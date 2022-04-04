@@ -342,9 +342,9 @@ cmd quit_for_emacs ${{
     rm /tmp/lfundo_$id
     if [ "$f" = "" ]
     then
-        echo -n "cancel" > ~/.cache/emacs/img-path
+        echo -n "cancel" > ~/.cache/emacs/path
     else
-        echo -n $f > ~/.cache/emacs/img-path
+        echo -n $f > ~/.cache/emacs/path
     fi
     lf -remote "send $id quit"
 }}
