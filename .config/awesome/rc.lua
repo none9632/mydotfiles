@@ -124,7 +124,21 @@ local terminal_id = 'notnil'
 local terminal_client
 
 function create_terminal()
-   terminal_id = awful.spawn("alacritty")
+   local t = awful.screen.focused().selected_tag
+
+   for _, c in ipairs(client.get()) do
+      if c.instance == "Alacritty-splash" then
+         terminal_id = c.pid
+         terminal_client = c
+         terminal_client:move_to_tag(t)
+         client.focus = terminal_client
+         terminal_client:raise()
+      end
+   end
+
+   if not terminal_client then
+      terminal_id = awful.spawn("alacritty --class Alacritty-splash")
+   end
 end
 
 function toggle_splash_height()
@@ -164,7 +178,6 @@ client.connect_signal('manage', function(c)
                             c.floating = true
                             c.width = 1350
                             c.height = 800
-                            c:move_to_tag(awful.screen.focused().selected_tag)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
@@ -180,7 +193,21 @@ local firefox_id = 'notnil'
 local firefox_client
 
 function create_firefox()
-   firefox_id = awful.spawn("firefox")
+   local t = awful.screen.focused().selected_tag
+
+   for _, c in ipairs(client.get()) do
+      if c.width == 1350 and c.class == "firefox" then
+         firefox_id = c.pid
+         firefox_client = c
+         firefox_client:move_to_tag(t)
+         client.focus = firefox_client
+         firefox_client:raise()
+      end
+   end
+
+   if not firefox_client then
+      firefox_id = awful.spawn("firefox")
+   end
 end
 
 function toggle_firefox()
@@ -206,8 +233,7 @@ client.connect_signal('manage', function(c)
                             c.floating = true
                             c.width = 1350
                             c.height = 800
-                            c:move_to_tag(awful.screen.focused().selected_tag)
-                            client.focus = c
+                            client.focus = firefox_client
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
 end)
@@ -230,8 +256,6 @@ client.connect_signal('manage', function(c)
                          if c.pid == emacs_fm_id then
                             c.ontop = true
                             c.floating = true
-                            c.type = 'splash'
-                            c.hidden = false
                             c.width = 1400
                             c.height = 800
                             awful.placement.centered(c, { margins = { top = 56 }})
@@ -537,7 +561,7 @@ gears.timer {
 
 -- General Awesome keys
 awful.keyboard.append_global_keybindings({
-      awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+      awful.key({ modkey,           }, "s", hotkeys_popup.show_help,
          {description="show help", group="awesome"}),
       awful.key({ modkey, "Control" }, "r", awesome.restart,
          {description = "reload awesome", group = "awesome"}),
