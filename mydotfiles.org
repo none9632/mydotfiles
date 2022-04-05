@@ -1973,6 +1973,8 @@ Install packages using pacman
         }
   end)
 
+  cputemp_icons = { "", "", "", "", "" }
+
   gears.timer {
      timeout   = 1.5,
      call_now  = true,
@@ -1985,9 +1987,21 @@ Install packages using pacman
         end)
         awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
                                           function(out)
-                                             mycputemp.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'></span> " ..
-                                                math.floor(tonumber(out)/1000+0.5) .. "°C "
-        end)
+                                             cputemp = math.floor(tonumber(out) / 1000 + 0.5)
+                                             if cputemp <= 35 then
+                                                icon = cputemp_icons[1]
+                                             elseif cputemp <= 44 then
+                                                icon = cputemp_icons[2]
+                                             elseif cputemp <= 53 then
+                                                icon = cputemp_icons[3]
+                                             elseif cputemp <= 62 then
+                                                icon = cputemp_icons[4]
+                                             else
+                                                icon = cputemp_icons[5]
+                                             end
+                                             mycputemp.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'>" ..
+                                                icon .. "</span> " .. cputemp .. "°C "
+                                             end)
         awful.spawn.easy_async_with_shell("ram",
                                           function(out)
                                              myram.markup = " <span font='Myfont' size='16.5pt' foreground='#98be65'></span> " ..
@@ -2029,7 +2043,7 @@ Install packages using pacman
                                                 bat_notification_count_1 = 1
                                              elseif capacity <= 1 and bat_notification_count_2 == 0 then
                                                 awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"1% battery remaining\"")
-                                                bat_notification_count_1 = 2
+                                                bat_notification_count_2 = 1
                                              end
 
                                              icon_index = 1 + math.floor((capacity - 15) / 25 + 0.96)
