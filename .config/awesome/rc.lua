@@ -509,6 +509,10 @@ awful.screen.connect_for_each_screen(function(s)
       }
 end)
 
+bat_status = ""
+bat_notification_count_1 = 1
+bat_notification_count_2 = 1
+
 gears.timer {
    timeout   = 1.5,
    call_now  = true,
@@ -531,6 +535,24 @@ gears.timer {
       end)
       awful.spawn.easy_async_with_shell("cat /sys/class/power_supply/BAT1/capacity",
                                         function(out)
+                                           awful.spawn.easy_async_with_shell("cat /sys/class/power_supply/BAT1/status",
+                                                                             function(status)
+                                                                                status = status:gsub("%\n", "")
+                                                                                if status ~= bat_status then
+                                                                                   if status == "Discharging" then
+                                                                                      bat_notification_count_1 = 0
+                                                                                      bat_notification_count_2 = 0
+                                                                                   end
+                                                                                   bat_status = status
+                                                                                end
+                                           end)
+                                           if tonumber(out) <= 100 and bat_notification_count_1 == 0 then
+                                              awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"10% battery remaining\"")
+                                              bat_notification_count_1 = 1
+                                           elseif tonumber(out) <= 1 and bat_notification_count_2 == 0 then
+                                              awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"1% battery remaining\"")
+                                              bat_notification_count_1 = 2
+                                           end
                                            mybattery.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'></span> " ..
                                               out:gsub("%\n", "") .. "% "
       end)
