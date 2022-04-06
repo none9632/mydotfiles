@@ -95,6 +95,16 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+       rule       = { class = "Font-viewer" },
+       properties = { floating = true },
+       callback = function(c)
+          c.width = 1000
+          c.height = 600
+          awful.placement.centered(c, { margins = { top = 56 }})
+       end
+    }
+
+    ruled.client.append_rule {
        rule_any   = {
           class = {
              "Rofi",

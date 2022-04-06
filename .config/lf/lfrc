@@ -42,6 +42,8 @@ cmd my_open %{{
             lf -remote "send $id my_cd $fix_f" ;;
         application/pdf | image/vnd.djvu)
             evince $f ;;
+        font/sfnt)
+            font-manager $f ;;
         *)
             for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done ;;
     esac

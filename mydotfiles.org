@@ -39,7 +39,7 @@
   # list of the build packages
   build_pkgs="base-devel git gcc make cmake"
   # list of packages that will be installed
-  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils dunst evince"
+  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils dunst evince font-manager"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
@@ -1528,6 +1528,16 @@ Install packages using pacman
          properties = { floating = true },
          callback = function(c)
             awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+         end
+      }
+
+      ruled.client.append_rule {
+         rule       = { class = "Font-viewer" },
+         properties = { floating = true },
+         callback = function(c)
+            c.width = 1000
+            c.height = 600
+            awful.placement.centered(c, { margins = { top = 56 }})
          end
       }
 
@@ -3585,6 +3595,8 @@ defined in.
               lf -remote "send $id my_cd $fix_f" ;;
           application/pdf | image/vnd.djvu)
               evince $f ;;
+          font/sfnt)
+              font-manager $f ;;
           ,*)
               for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done ;;
       esac
