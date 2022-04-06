@@ -369,7 +369,7 @@ myupdates = wibox.widget {
 
 mykeyboardlayout = awful.widget.keyboardlayout()
 mykeyboardlayout_icon = wibox.widget {
-   markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'></span>",
+   markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'>䂌</span>",
    widget = wibox.widget.textbox
 }
 
@@ -378,7 +378,7 @@ mytextclock = wibox.widget {
    widget = wibox.widget.textclock
 }
 mytextclock_icon = wibox.widget {
-   markup = " <span font='MyFont' size='16.5pt' foreground='#51afef'></span>",
+   markup = " <span font='MyFont' size='16pt' foreground='#51afef'>䂋</span>",
    widget = wibox.widget.textbox
 }
 
@@ -509,7 +509,7 @@ awful.screen.connect_for_each_screen(function(s)
       }
 end)
 
-cputemp_icons = { "", "", "", "", "" }
+cputemp_icons = { "䂓", "䂒", "䂑", "䂐", "䂏" }
 
 gears.timer {
    timeout   = 1.5,
@@ -518,7 +518,7 @@ gears.timer {
    callback  = function()
       awful.spawn.easy_async_with_shell("cpu",
                                         function(out)
-                                           mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'></span> " ..
+                                           mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'>䂄</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
       awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
@@ -540,7 +540,7 @@ gears.timer {
                                            end)
       awful.spawn.easy_async_with_shell("ram",
                                         function(out)
-                                           myram.markup = " <span font='Myfont' size='16.5pt' foreground='#98be65'></span> " ..
+                                           myram.markup = " <span font='Myfont' size='18pt' foreground='#98be65'>䂎</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
    end
@@ -548,7 +548,7 @@ gears.timer {
 
 bat_notification_count_1 = 1
 bat_notification_count_2 = 1
-bat_icons = { "", "", "", "", "" }
+bat_icons = { "䂉", "䂈", "䂇", "䂆", "䂅" }
 bat_prev_status = ""
 bat_prev_index = 0
 
@@ -597,7 +597,7 @@ gears.timer {
    end
 }
 
-myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> .. "
+myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> .. "
 updates_prev = 0
 
 gears.timer {
@@ -613,7 +613,7 @@ gears.timer {
                                            end
                                            updates_prev = tonumber(out)
 
-                                           myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'></span> " ..
+                                           myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
    end

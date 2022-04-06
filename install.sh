@@ -96,6 +96,9 @@ function install_config ()
     [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
     echo "Creating symlink to .bash_profile"
     ln -s $dot_dir/.bash_profile ~/.bash_profile
+
+    echo "Font installation"
+    cp $dot_dir/font/MyFont.ttf ~/.local/share/fonts/
 }
 
 function install_pkgs ()
