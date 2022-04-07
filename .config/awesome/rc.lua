@@ -119,13 +119,17 @@ ruled.client.connect_signal("request::rules", function()
 end)
 
 client.connect_signal('manage', function(c)
-                         if (c.class == "Gpick") then
+                         if c.class == "Gpick" then
                             awful.spawn.with_shell("killall picom")
+                         end
+                         -- Sometimes the rofi is not in the right position
+                         if c.class == "Rofi" and c.x == 0 then
+                            awful.placement.centered(c, { margins = { top = 56 }})
                          end
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if (c.class == "Gpick") then
+                         if c.class == "Gpick" then
                             awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
                          end
 end)
@@ -155,7 +159,7 @@ end
 function toggle_splash_height()
    c = client.focus
 
-   if c.pid == terminal_id then
+   if c.pid == terminal_id or c.class == "firefox" then
       if c.width <= 1350 then
          awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
       else
@@ -192,15 +196,12 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
-                         -- Sometimes the rofi is not in the right position
-                         if c.class == "Rofi" and c.x == 0 then
-                            awful.placement.centered(c, { margins = { top = 56 }})
-                         end
 end)
 
 client.connect_signal('unmanage', function(c)
                          if c.pid == terminal_id then
                             terminal_client = nil
+                            terminal_id = 'notnil'
                          end
 end)
 
@@ -257,6 +258,7 @@ end)
 client.connect_signal('unmanage', function(c)
                          if c.pid == firefox_id then
                             firefox_client = nil
+                            firefox_id = 'notnil'
                          end
 end)
 
