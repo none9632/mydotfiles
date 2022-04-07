@@ -259,6 +259,7 @@ local emacs_fm_id = 'notnil'
 function create_emacs_fm(path)
    emacs_fm_id = awful.spawn.with_shell("alacritty -e mylf " ..
                                         "-command \"cd " .. path .. "\" " ..
+                                        "-command \"map <esc> quit_for_emacs\" " ..
                                         "-command \"map <enter> quit_for_emacs\"")
 end
 
@@ -842,10 +843,7 @@ client.connect_signal("request::default_keybindings", function()
                                   function (c)
                                      if c.pid == terminal_id then
                                         toggle_terminal()
-                                     elseif c.pid == terminal_id then
-                                        awful.spawn.with_shell("echo -n \"cancel\" > ~/.cache/emacs/img-path")
-                                        c:kill()
-                                     else
+                                     elseif c.pid ~= emacs_fm_id then
                                         c:kill()
                                      end
                                   end,
