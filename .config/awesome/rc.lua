@@ -140,6 +140,7 @@ function create_terminal()
       if c.instance == "Alacritty-splash" then
          terminal_id = c.pid
          terminal_client = c
+         awful.placement.centered(c, { margins = { top = 56 }})
          terminal_client:move_to_tag(t)
          client.focus = terminal_client
          terminal_client:raise()
@@ -191,6 +192,10 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
+                         -- Sometimes the rofi is not in the right position
+                         if c.class == "Rofi" and c.x == 0 then
+                            awful.placement.centered(c, { margins = { top = 56 }})
+                         end
 end)
 
 client.connect_signal('unmanage', function(c)
@@ -209,6 +214,7 @@ function create_firefox()
       if c.width == 1350 and c.class == "firefox" then
          firefox_id = c.pid
          firefox_client = c
+         awful.placement.centered(c, { margins = { top = 56 }})
          firefox_client:move_to_tag(t)
          client.focus = firefox_client
          firefox_client:raise()
