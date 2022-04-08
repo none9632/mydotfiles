@@ -154,6 +154,8 @@ function create_terminal()
    if not terminal_client then
       terminal_id = awful.spawn("alacritty --class Alacritty-splash")
    end
+
+   awful.spawn("xdotool key Mode_switch")
 end
 
 function toggle_splash_height()
@@ -181,6 +183,7 @@ function toggle_terminal()
          terminal_client:move_to_tag(t)
          client.focus = terminal_client
          terminal_client:raise()
+         awful.spawn("xdotool key Mode_switch")
       else
          terminal_client:move_to_tag(awful.screen.focused().tags[8])
       end
@@ -367,43 +370,81 @@ theme.icon_theme = nil
 beautiful.init(theme)
 
 mycpu = wibox.widget {
-   widget = wibox.widget.textbox
-}
-
-mycputemp = wibox.widget {
    {
       id = "text",
       widget = wibox.widget.textbox
    },
-   bg = "#32424bbb",
+   bg     = "#364852bb",
+   widget = wibox.container.background
+}
+
+mycputemp = wibox.widget {
+   {
+      id     = "text",
+      widget = wibox.widget.textbox
+   },
+   bg     = "#32424bbb",
    widget = wibox.container.background
 }
 
 myram = wibox.widget {
-   widget = wibox.widget.textbox
+   {
+      id     = "text",
+      widget = wibox.widget.textbox
+   },
+   bg     = "#2e3c44bb",
+   widget = wibox.container.background
 }
 
 mybattery = wibox.widget {
-   widget = wibox.widget.textbox
+   {
+      id     = "text",
+      widget = wibox.widget.textbox
+   },
+   bg     = "#29363ebb",
+   widget = wibox.container.background
 }
 
 myupdates = wibox.widget {
-   widget = wibox.widget.textbox
+   {
+      id     = "text",
+      widget = wibox.widget.textbox
+   },
+   bg     = "#253137bb",
+   widget = wibox.container.background
 }
 
-mykeyboardlayout = awful.widget.keyboardlayout()
-mykeyboardlayout_icon = wibox.widget {
-   markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'>䂌</span>",
-   widget = wibox.widget.textbox
+mykeyboardlayout = wibox.widget {
+   {
+      {
+         markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'>䂌</span>",
+         widget = wibox.widget.textbox
+      },
+      {
+         widget = awful.widget.keyboardlayout
+      },
+      layout = wibox.layout.fixed.horizontal,
+      widget = wibox.container.margin
+   },
+   bg     = "#202b31bb",
+   widget = wibox.container.background
 }
 
 mytextclock = wibox.widget {
-   format = ' %H:%M ',
-   widget = wibox.widget.textclock
-}
-mytextclock_icon = wibox.widget {
-   markup = " <span font='MyFont' size='16pt' foreground='#51afef'>䂋</span>",
-   widget = wibox.widget.textbox
+   {
+      {
+         markup = " <span font='MyFont' size='16pt' foreground='#51afef'>䂋</span>",
+         widget = wibox.widget.textbox
+      },
+      {
+         format = ' %H:%M ',
+         widget = wibox.widget.textclock
+      },
+      layout = wibox.layout.fixed.horizontal,
+      widget = wibox.container.margin
+   },
+   bg     = "#202b31bb",
+   widget = wibox.container.background
 }
 
 awful.screen.connect_for_each_screen(function(s)
@@ -459,71 +500,21 @@ awful.screen.connect_for_each_screen(function(s)
          end,
          minimum_height = 42,
          bg = "#00000000",
-        widget  = {
-           {
-              layout = wibox.layout.fixed.horizontal,
-              expand = "none",
+         widget = {
+            {
+               layout = wibox.layout.fixed.horizontal,
+               expand = "none",
 
-              wibox.widget {
-                 {
-                    widget = mycpu,
-                 },
-                 bg     = "#364852bb",
-                 widget = wibox.container.background
-              },
-              mycputemp,
-              wibox.widget {
-                 {
-                    widget = myram,
-                 },
-                 bg     = "#2e3c44bb",
-                 widget = wibox.container.background
-              },
-              wibox.widget {
-                 {
-                    widget = mybattery,
-                 },
-                 bg     = "#29363ebb",
-                 widget = wibox.container.background
-              },
-              wibox.widget {
-                 {
-                    widget = myupdates,
-                 },
-                 bg     = "#253137bb",
-                 widget = wibox.container.background
-              },
-              wibox.widget {
-                 {
-                    widget = mykeyboardlayout_icon,
-                 },
-                 bg     = "#202b31bb",
-                 widget = wibox.container.background
-              },
-              wibox.widget {
-                 {
-                    widget = mykeyboardlayout,
-                 },
-                 bg     = "#202b31bb",
-                 widget = wibox.container.background
-              },
-              wibox.widget {
-                 {
-                    widget = mytextclock_icon,
-                 },
-                 bg     = "#1c252abb",
-                 widget = wibox.container.background
-              },
-              wibox.widget {
-                 {
-                    widget = mytextclock,
-                 },
-                 bg     = "#1c252abb",
-                 widget = wibox.container.background
-              },
-           },
-           widget = wibox.container.margin
-        }
+               mycpu,
+               mycputemp,
+               myram,
+               mybattery,
+               myupdates,
+               mykeyboardlayout,
+               mytextclock,
+            },
+            widget = wibox.container.margin
+         }
       }
 end)
 
@@ -536,7 +527,7 @@ gears.timer {
    callback  = function()
       awful.spawn.easy_async_with_shell("cpu",
                                         function(out)
-                                           mycpu.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'>䂄</span> " ..
+                                           mycpu.text.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'>䂄</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
       awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
@@ -565,7 +556,7 @@ gears.timer {
       end)
       awful.spawn.easy_async_with_shell("ram",
                                         function(out)
-                                           myram.markup = " <span font='Myfont' size='18pt' foreground='#98be65'>䂎</span> " ..
+                                           myram.text.markup = " <span font='Myfont' size='18pt' foreground='#98be65'>䂎</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
    end
@@ -616,13 +607,13 @@ gears.timer {
                                               icon_index = bat_prev_index
                                            end
 
-                                           mybattery.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'>" ..
+                                           mybattery.text.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'>" ..
                                               bat_icons[icon_index] .. "</span> " .. capacity .. "% "
       end)
    end
 }
 
-myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> .. "
+myupdates.text.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> .. "
 updates_prev = 0
 
 gears.timer {
@@ -638,7 +629,7 @@ gears.timer {
                                            end
                                            updates_prev = tonumber(out)
 
-                                           myupdates.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> " ..
+                                           myupdates.text.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
    end
