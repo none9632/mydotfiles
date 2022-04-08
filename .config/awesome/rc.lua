@@ -371,7 +371,12 @@ mycpu = wibox.widget {
 }
 
 mycputemp = wibox.widget {
-   widget = wibox.widget.textbox
+   {
+      id = "text",
+      widget = wibox.widget.textbox
+   },
+   bg = "#32424bbb",
+   widget = wibox.container.background
 }
 
 myram = wibox.widget {
@@ -454,77 +459,71 @@ awful.screen.connect_for_each_screen(function(s)
          end,
          minimum_height = 42,
          bg = "#00000000",
-         widget  = {
-            {
-               layout = wibox.layout.fixed.horizontal,
-               expand = "none",
+        widget  = {
+           {
+              layout = wibox.layout.fixed.horizontal,
+              expand = "none",
 
-               wibox.widget {
-                  {
-                     widget = mycpu,
-                  },
-                  bg     = "#364852bb",
-                  widget = wibox.container.background
-                  },
-               wibox.widget {
-                  {
-                     widget = mycputemp,
-                  },
-                  bg     = "#32424bbb",
-                  widget = wibox.container.background
-               },
-               wibox.widget {
-                  {
-                     widget = myram,
-                  },
-                  bg     = "#2e3c44bb",
-                  widget = wibox.container.background
-               },
-               wibox.widget {
-                  {
-                     widget = mybattery,
-                  },
-                  bg     = "#29363ebb",
-                  widget = wibox.container.background
-               },
-               wibox.widget {
-                  {
-                     widget = myupdates,
-                  },
-                  bg     = "#253137bb",
-                  widget = wibox.container.background
-               },
-               wibox.widget {
-                  {
-                     widget = mykeyboardlayout_icon,
-                  },
-                  bg     = "#202b31bb",
-                  widget = wibox.container.background
-               },
-               wibox.widget {
-                  {
-                     widget = mykeyboardlayout,
-                  },
-                  bg     = "#202b31bb",
-                  widget = wibox.container.background
-               },
-               wibox.widget {
-                  {
-                     widget = mytextclock_icon,
-                  },
-                  bg     = "#1c252abb",
-                  widget = wibox.container.background
-               },
-               wibox.widget {
-                  {
-                     widget = mytextclock,
-                  },
-                  bg     = "#1c252abb",
-                  widget = wibox.container.background
-               },
-            },
-            widget = wibox.container.margin
-         }
+              wibox.widget {
+                 {
+                    widget = mycpu,
+                 },
+                 bg     = "#364852bb",
+                 widget = wibox.container.background
+              },
+              mycputemp,
+              wibox.widget {
+                 {
+                    widget = myram,
+                 },
+                 bg     = "#2e3c44bb",
+                 widget = wibox.container.background
+              },
+              wibox.widget {
+                 {
+                    widget = mybattery,
+                 },
+                 bg     = "#29363ebb",
+                 widget = wibox.container.background
+              },
+              wibox.widget {
+                 {
+                    widget = myupdates,
+                 },
+                 bg     = "#253137bb",
+                 widget = wibox.container.background
+              },
+              wibox.widget {
+                 {
+                    widget = mykeyboardlayout_icon,
+                 },
+                 bg     = "#202b31bb",
+                 widget = wibox.container.background
+              },
+              wibox.widget {
+                 {
+                    widget = mykeyboardlayout,
+                 },
+                 bg     = "#202b31bb",
+                 widget = wibox.container.background
+              },
+              wibox.widget {
+                 {
+                    widget = mytextclock_icon,
+                 },
+                 bg     = "#1c252abb",
+                 widget = wibox.container.background
+              },
+              wibox.widget {
+                 {
+                    widget = mytextclock,
+                 },
+                 bg     = "#1c252abb",
+                 widget = wibox.container.background
+              },
+           },
+           widget = wibox.container.margin
+        }
       }
 end)
 
@@ -554,9 +553,16 @@ gears.timer {
                                            else
                                               icon = cputemp_icons[5]
                                            end
-                                           mycputemp.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'>" ..
+
+                                           if cputemp > 70 then
+                                              mycputemp.bg = "#ff6c6bbb"
+                                           else
+                                              mycputemp.bg = "#32424bbb"
+                                           end
+
+                                           mycputemp.text.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'>" ..
                                               icon .. "</span> " .. cputemp .. "°C "
-                                           end)
+      end)
       awful.spawn.easy_async_with_shell("ram",
                                         function(out)
                                            myram.markup = " <span font='Myfont' size='18pt' foreground='#98be65'>䂎</span> " ..
