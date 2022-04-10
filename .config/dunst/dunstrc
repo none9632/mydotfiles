@@ -109,7 +109,7 @@
 
     ### Text ###
 
-    font = Roboto Regular 10
+    font = Roboto Regular 11
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.

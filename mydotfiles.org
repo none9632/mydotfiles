@@ -7970,7 +7970,7 @@ Configuration based on https://github.com/adi1090x/rofi
       frame_width = 2
 
       # Defines color of the frame around the notification window.
-      frame_color = "#32424baa"
+      frame_color = "#32424bcc"
 
       # Define a color for the separator.
       # possible values are:
@@ -7992,7 +7992,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
       ### Text ###
 
-      font = Roboto Regular 10
+      font = Roboto Regular 11
 
       # The spacing between lines.  If the height is smaller than the
       # font height, it will get raised to the font height.
@@ -8183,7 +8183,7 @@ Configuration based on https://github.com/adi1090x/rofi
       #default_icon = /path/to/icon
 
   [urgency_normal]
-      background = "#1c252aaa"
+      background = "#1c252acc"
       foreground = "#cad0da"
       timeout = 5
       # Icon for notifications with normal urgency, uncomment to enable
