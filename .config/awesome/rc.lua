@@ -371,10 +371,10 @@ beautiful.init(theme)
 
 mycpu = wibox.widget {
    {
-      id = "text",
+      id     = "text",
       widget = wibox.widget.textbox
    },
-   bg     = "#364852bb",
+   bg     = "#364852cc",
    widget = wibox.container.background
 }
 
@@ -383,7 +383,7 @@ mycputemp = wibox.widget {
       id     = "text",
       widget = wibox.widget.textbox
    },
-   bg     = "#32424bbb",
+   bg     = "#32424bcc",
    widget = wibox.container.background
 }
 
@@ -392,7 +392,7 @@ myram = wibox.widget {
       id     = "text",
       widget = wibox.widget.textbox
    },
-   bg     = "#2e3c44bb",
+   bg     = "#2e3c44cc",
    widget = wibox.container.background
 }
 
@@ -401,7 +401,7 @@ mybattery = wibox.widget {
       id     = "text",
       widget = wibox.widget.textbox
    },
-   bg     = "#29363ebb",
+   bg     = "#29363ecc",
    widget = wibox.container.background
 }
 
@@ -410,7 +410,7 @@ myupdates = wibox.widget {
       id     = "text",
       widget = wibox.widget.textbox
    },
-   bg     = "#253137bb",
+   bg     = "#253137cc",
    widget = wibox.container.background
 }
 
@@ -426,7 +426,7 @@ mykeyboardlayout = wibox.widget {
       layout = wibox.layout.fixed.horizontal,
       widget = wibox.container.margin
    },
-   bg     = "#202b31bb",
+   bg     = "#202b31cc",
    widget = wibox.container.background
 }
 
@@ -443,7 +443,7 @@ mytextclock = wibox.widget {
       layout = wibox.layout.fixed.horizontal,
       widget = wibox.container.margin
    },
-   bg     = "#202b31bb",
+   bg     = "#1c252acc",
    widget = wibox.container.background
 }
 
@@ -546,9 +546,9 @@ gears.timer {
                                            end
 
                                            if cputemp > 70 then
-                                              mycputemp.bg = "#ff6c6bbb"
+                                              mycputemp.bg = "#ff6c6bcc"
                                            else
-                                              mycputemp.bg = "#32424bbb"
+                                              mycputemp.bg = "#32424bcc"
                                            end
 
                                            mycputemp.text.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'>" ..
