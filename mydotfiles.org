@@ -1173,7 +1173,7 @@ Install packages using pacman
   function find_file ()
   {
       res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
+          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e --preview='ls -1A {}')"
       LBUFFER+="$res "
       # Needed in order for the highlighting rules to apply
       zle copy-region-as-kill
@@ -1183,7 +1183,7 @@ Install packages using pacman
   bindkey -M vicmd "T" fzf-file-widget
   bindkey "^h^h" fzf-cd-widget
   bindkey "^[r"  fzf-history-widget
-  bindkey "^f"   find_file
+  bindkey "^[f"  find_file
 
 #+end_src
 
@@ -1736,6 +1736,29 @@ Install packages using pacman
                               c.floating = true
                               c.width = 1400
                               c.height = 800
+                              awful.placement.centered(c, { margins = { top = 56 }})
+                           end
+  end)
+
+#+end_src
+
+*** Terminal for lf
+
+#+begin_src lua
+
+  local lf_terminal_id = 'notnil'
+
+  function create_lf_terminal(command)
+     lf_terminal_id = awful.spawn.with_shell("alacritty -e zsh -c '" .. command .. "'")
+  end
+
+  client.connect_signal('manage', function(c)
+                           if c.pid == lf_terminal_id then
+                              c.ontop = true
+                              c.floating = true
+                              c.width = 1200
+                              c.height = 700
+                              client.focus = c
                               awful.placement.centered(c, { margins = { top = 56 }})
                            end
   end)
@@ -3828,34 +3851,33 @@ defined in.
   }}
 
   cmd fzf_jump ${{
-      res="$(find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
-
-      if [ -d "$res" ]; then
-          cmd="cd"
-      else
-          cmd="select"
+      path="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf --reverse +m -e --preview='ls -1A {}')"
+      if [ "$path" != "" ]
+      then
+          if [ -d "$path" ]
+          then
+              lf -remote "send $id my_cd $path"
+          else
+              lf -remote "send $id select $path"
+          fi
       fi
-
-      lf -remote "send $id $cmd \"$res\""
   }}
 
-  cmd fzf_jump_dot ${{
-      res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-          -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
-
-      if [ -d "$res" ]; then
-          cmd="cd"
-      else
-          cmd="select"
-      fi
-
-      lf -remote "send $id $cmd \"$res\""
-  }}
-
-  cmd fzf_jump_prev ${{
-      dir=$(zoxide query -i)
-      lf -remote "send $id my_cd $dir"
+  cmd fzf_jump_prev &{{
+      tmp_file=$(mktemp)
+      awesome-client "create_lf_terminal(\"export _ZO_FZF_OPTS=\\\"--height 100%\
+                                                                   --reverse\
+                                                                   --preview=\\\\\\\"ls -1A {2..}\\\\\\\"\\\";\
+                                           path=\$(zoxide query -i);\
+                                           if [ \\\"\$path\\\" != \\\"\\\" ]; then\
+                                               echo -n \$path > $tmp_file;\
+                                           else\
+                                               echo -n cancel > $tmp_file;\
+                                           fi\")"
+      while ! [ -s $tmp_file ]; do sleep 0.1; done
+      path="$(cat $tmp_file)"
+      [ "$path" != "cancel" ] && lf -remote "send $id my_cd $path"
   }}
 
   cmd my_search %{{
@@ -3878,12 +3900,15 @@ defined in.
       fi
   }}
 
-  cmd git_clone ${{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
+  cmd git_clone &{{
       link=$(longinput "Link:")
-      git clone $link
+      if [ "$link" != "" ]
+      then
+          awesome-client "create_lf_terminal(\"cd $PWD;\
+                                               git clone $link;\
+                                               printf \\\"%s \\\" \\\"Press enter to continue\\\";\
+                                               read ans\")"
+      fi
   }}
 
   cmd chng_layout %{{
@@ -3978,10 +4003,9 @@ defined in.
   map X $$f
 
   # find files
-  map ff fzf_jump
   map fd fzf_jump_prev
-  map cd fzf_jump_dot
-  map fg :cd /; fzf_jump_dot
+  map cd fzf_jump
+  map fg :cd /; fzf_jump
 
   # Automatic switchover of the Russian layout
   map а chng_layout f

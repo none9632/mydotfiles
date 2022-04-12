@@ -284,6 +284,23 @@ client.connect_signal('manage', function(c)
                          end
 end)
 
+local lf_terminal_id = 'notnil'
+
+function create_lf_terminal(command)
+   lf_terminal_id = awful.spawn.with_shell("alacritty -e zsh -c '" .. command .. "'")
+end
+
+client.connect_signal('manage', function(c)
+                         if c.pid == lf_terminal_id then
+                            c.ontop = true
+                            c.floating = true
+                            c.width = 1200
+                            c.height = 700
+                            client.focus = c
+                            awful.placement.centered(c, { margins = { top = 56 }})
+                         end
+end)
+
 local theme_assets = require("beautiful.theme_assets")
 
 local gfs = require("gears.filesystem")

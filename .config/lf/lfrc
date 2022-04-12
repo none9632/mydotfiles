@@ -272,34 +272,33 @@ cmd trash_empty &{{
 }}
 
 cmd fzf_jump ${{
-    res="$(find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
-
-    if [ -d "$res" ]; then
-        cmd="cd"
-    else
-        cmd="select"
+    path="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf --reverse +m -e --preview='ls -1A {}')"
+    if [ "$path" != "" ]
+    then
+        if [ -d "$path" ]
+        then
+            lf -remote "send $id my_cd $path"
+        else
+            lf -remote "send $id select $path"
+        fi
     fi
-
-    lf -remote "send $id $cmd \"$res\""
 }}
 
-cmd fzf_jump_dot ${{
-    res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
-
-    if [ -d "$res" ]; then
-        cmd="cd"
-    else
-        cmd="select"
-    fi
-
-    lf -remote "send $id $cmd \"$res\""
-}}
-
-cmd fzf_jump_prev ${{
-    dir=$(zoxide query -i)
-    lf -remote "send $id my_cd $dir"
+cmd fzf_jump_prev &{{
+    tmp_file=$(mktemp)
+    awesome-client "create_lf_terminal(\"export _ZO_FZF_OPTS=\\\"--height 100%\
+                                                                 --reverse\
+                                                                 --preview=\\\\\\\"ls -1A {2..}\\\\\\\"\\\";\
+                                         path=\$(zoxide query -i);\
+                                         if [ \\\"\$path\\\" != \\\"\\\" ]; then\
+                                             echo -n \$path > $tmp_file;\
+                                         else\
+                                             echo -n cancel > $tmp_file;\
+                                         fi\")"
+    while ! [ -s $tmp_file ]; do sleep 0.1; done
+    path="$(cat $tmp_file)"
+    [ "$path" != "cancel" ] && lf -remote "send $id my_cd $path"
 }}
 
 cmd my_search %{{
@@ -322,12 +321,15 @@ cmd goto_config %{{
     fi
 }}
 
-cmd git_clone ${{
-    FILE="/tmp/lfundo_$id"
-    lf_prepare_file $FILE
-
+cmd git_clone &{{
     link=$(longinput "Link:")
-    git clone $link
+    if [ "$link" != "" ]
+    then
+        awesome-client "create_lf_terminal(\"cd $PWD;\
+                                             git clone $link;\
+                                             printf \\\"%s \\\" \\\"Press enter to continue\\\";\
+                                             read ans\")"
+    fi
 }}
 
 cmd chng_layout %{{
@@ -416,10 +418,9 @@ map x !$f
 map X $$f
 
 # find files
-map ff fzf_jump
 map fd fzf_jump_prev
-map cd fzf_jump_dot
-map fg :cd /; fzf_jump_dot
+map cd fzf_jump
+map fg :cd /; fzf_jump
 
 # Automatic switchover of the Russian layout
 map а chng_layout f

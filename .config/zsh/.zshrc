@@ -175,7 +175,7 @@ FZF_COMPLETION_TRIGGER='hh'
 function find_file ()
 {
     res="$(find -L . \( -path '*/\*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e)"
+        -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m -e --preview='ls -1A {}')"
     LBUFFER+="$res "
     # Needed in order for the highlighting rules to apply
     zle copy-region-as-kill
@@ -185,7 +185,7 @@ zle -N find_file
 bindkey -M vicmd "T" fzf-file-widget
 bindkey "^h^h" fzf-cd-widget
 bindkey "^[r"  fzf-history-widget
-bindkey "^f"   find_file
+bindkey "^[f"  find_file
 
 autoload -U compinit && compinit
 
