@@ -45,14 +45,7 @@ function install_bin ()
 {
     for file in $bin_files
     do
-        if [ -e $bin_dir/$file ]
-        then
-            echo "Moving $file from ~/.local/bin/ to $old_dots_dir/.local/bin"
-            mv ~/.local/bin/$file $old_dots_dir/.local/bin
-        fi
-    done
-    for file in $bin_files
-    do
+        [ -e $bin_dir/$file ] && mv ~/.local/bin/$file $old_dots_dir/.local/bin
         echo "Creating symlink to $file in $bin_dir"
         ln -s $dot_dir/bin/$file $bin_dir/$file
     done
@@ -64,14 +57,7 @@ function install_bin ()
     done
     for file in $bar_bin_files
     do
-        if [ -e $bin_dir/$file ]
-        then
-            echo "Moving $file from ~/.local/bin/ to $old_dots_dir/.local/bin"
-            mv ~/.local/bin/$file $old_dots_dir/.local/bin
-        fi
-    done
-    for file in $bar_bin_files
-    do
+        [ -e $bin_dir/$file ] && mv $bin_dir/$file $old_dots_dir/.local/bin
         echo "Creating symlink to $file in $bin_dir"
         ln -s $dot_dir/bin/bar/$file $bin_dir/$file
     done
@@ -82,14 +68,7 @@ function install_config ()
     # move any existing dotfiles in homedir to directory, then create symlinks
     for file in $config_files
     do
-        if [ -d ~/.config/$file ]
-        then
-            echo "Moving $file from ~/.config to $old_dots_dir/.config"
-            mv ~/.config/$file $old_dots_dir/.config
-        fi
-    done
-    for file in $config_files
-    do
+        [ -d ~/.config/$file ] && mv ~/.config/$file $old_dots_dir/.config
         echo "Creating symlink to $file in home directory."
         ln -s $dot_dir/.config/$file ~/.config/$file
     done
