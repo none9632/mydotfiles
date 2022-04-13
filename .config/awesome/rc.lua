@@ -294,8 +294,8 @@ client.connect_signal('manage', function(c)
                          if c.pid == lf_terminal_id then
                             c.ontop = true
                             c.floating = true
-                            c.width = 1200
-                            c.height = 700
+                            c.width = 1000
+                            c.height = 600
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end

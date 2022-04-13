@@ -1745,8 +1745,8 @@ Install packages using pacman
                            if c.pid == lf_terminal_id then
                               c.ontop = true
                               c.floating = true
-                              c.width = 1200
-                              c.height = 700
+                              c.width = 1000
+                              c.height = 600
                               client.focus = c
                               awful.placement.centered(c, { margins = { top = 56 }})
                            end
@@ -3601,13 +3601,20 @@ defined in.
 
   cmd my_open %{{
       case $(file --mime-type $f -b) in
-          text/*)
+          text/* | inode/x-empty)
               lf -remote "send $id push e" ;;
-          inode/x-empty)
-              lf -remote "send $id push e" ;;
-          inode/directory | inode/symlink)
+          inode/directory)
               fix_f="$(echo $f | sed 's/\ /\\\ /g')"
               lf -remote "send $id my_cd $fix_f" ;;
+          inode/symlink)
+              if [ -d "$f" ]
+              then
+                  fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+                  lf -remote "send $id my_cd $fix_f"
+              else
+                  lf -remote "send $id push e"
+              fi
+              ;;
           application/pdf | image/vnd.djvu)
               evince $f ;;
           font/sfnt)
@@ -3857,6 +3864,8 @@ defined in.
       tmp_file=$(mktemp)
       awesome-client "create_lf_terminal(\"export _ZO_FZF_OPTS=\\\"--height 100%\
                                                                    --reverse\
+                                                                   --no-sort\
+                                                                   --preview-window right:35%\
                                                                    --preview=\\\\\\\"ls -1A {2..}\\\\\\\"\\\";\
                                            path=\$(zoxide query -i);\
                                            if [ \\\"\$path\\\" != \\\"\\\" ]; then\
