@@ -147,16 +147,16 @@ cmd my_rename &{{
 }}
 
 cmd my_copy &{{
-    echo -e "$fx" > $LFCP
-    sed -i "1s|^|cp\n|" $LFCP
+    echo -e "$fx" > /tmp/lfcp
+    sed -i "1s|^|cp\n|" /tmp/lfcp
 
     lf -remote "send $id copy"
     lf -remote "send $id load"
 }}
 
 cmd my_cut &{{
-    echo -e "$fx" > $LFCP
-    sed -i "1s|^|mv\n|" $LFCP
+    echo -e "$fx" > /tmp/lfcp
+    sed -i "1s|^|mv\n|" /tmp/lfcp
 
     lf -remote "send $id cut"
     lf -remote "send $id load"
@@ -166,8 +166,8 @@ cmd my_paste &{{
     FILE="/tmp/lfundo_$id"
     lf_prepare_file $FILE
 
-    command=$(head -n 1 $LFCP)
-    sed -i '1d' $LFCP
+    command=$(head -n 1 /tmp/lfcp)
+    sed -i '1d' /tmp/lfcp
 
     while read line;
     do
@@ -185,7 +185,7 @@ cmd my_paste &{{
             sed -i "1s|^|$line\n|" $FILE
         fi
         sed -i "1s|^|$(pwd)/$name\n|" $FILE
-    done < $LFCP
+    done < /tmp/lfcp
 
     if [ "$command" = "cp" ]
     then
@@ -194,7 +194,7 @@ cmd my_paste &{{
         sed -i "1s|^|mv\n|" $FILE
     fi
 
-    > $LFCP
+    > /tmp/lfcp
     lf -remote "send $id clear"
     lf -remote "send $id reload"
 }}

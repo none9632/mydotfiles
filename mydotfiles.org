@@ -44,7 +44,7 @@
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
 
-  bin_files="inkscape-figures update list in pin re mylf"
+  bin_files="inkscape-figures update list in pin re"
   bar_c_files="cpu ram"
   bar_bin_files="$bar_c_files updates"
 
@@ -668,253 +668,6 @@ Install packages using pacman
 
 #+end_src
 
-** mylf
-
-#+begin_src sh :tangle ./bin/mylf :tangle-mode (identity #o755)
-
-  #!/bin/sh
-
-  export LFCP="/tmp/lfcp"
-
-  export LF_ICONS="\
-  tw=䀳:\
-  st=䀳:\
-  ow=䀳:\
-  dt=䀳:\
-  di=䀳:\
-  fi=䀵:\
-  ln=䀺:\
-  or=䀺:\
-  ex=䀶:\
-  Makefile*=䁯:\
-  makefile*=䁯:\
-  README*=䁰:\
-  CMakeLists.txt*=䁏:\
-  TAGS*=䁼:\
-  TODO*=䁾:\
-  LICENSE*=䁭:\
-  Dockerfile*=䁘:\
-  dockerfile*=䁘:\
-  .gitignore*=䁢:\
-  .vimrc*=䂁:\
-  .viminfo*=䂁:\
-  vimrc*=䂁:\
-  .zshrc*=䀶:\
-  .zprofile*=䀶:\
-  .zshenv*=䀶:\
-  .bashrc*=䀶:\
-  .bash_logout*=䀶:\
-  .bash_profile*=䀶:\
-  .profile*=䀶:\
-  .xinitrc*=䀶:\
-  .xprofile*=䀶:\
-  ,*.asm=䁇:\
-  ,*.b=䁉:\
-  ,*.c=䁊:\
-  ,*.cc=䁊:\
-  ,*.clj=䁎:\
-  ,*.cljc=䁎:\
-  ,*.cmake=䁏:\
-  ,*.conf=䁁:\
-  ,*.coffee=䁐:\
-  ,*.cpp=䁋:\
-  ,*.cs=䁑:\
-  ,*.css=䁒:\
-  ,*.d=䁕:\
-  ,*.dart=䁔:\
-  ,*.db=䁖:\
-  ,*.djvu=䁈:\
-  ,*.doc=䁞:\
-  ,*.docx=䁞:\
-  ,*.odt=䁞:\
-  ,*.dockerfile=䁘:\
-  ,*.eex=䁚:\
-  ,*.ex=䁚:\
-  ,*.exs=䁚:\
-  ,*.el=䁙:\
-  ,*.elc=䁙:\
-  ,*.elm=䁛:\
-  ,*.erl=䁜:\
-  ,*.fs=䁡:\
-  ,*.go=䁣:\
-  ,*.h=䁌:\
-  ,*.hh=䁌:\
-  ,*.hpp=䁍:\
-  ,*.hs=䁤:\
-  ,*.html=䁓:\
-  ,*.ino=䁆:\
-  ,*.iso=䁥:\
-  ,*.java=䁦:\
-  ,*.jl=䁪:\
-  ,*.js=䁧:\
-  ,*.jsx=䁩:\
-  ,*.json=䁨:\
-  ,*.key=䁫:\
-  ,*.kt=䁬:\
-  ,*.kts=䁬:\
-  ,*.less=䁒:\
-  ,*.log=䁂:\
-  ,*.lua=䁮:\
-  ,*.md=䁰:\
-  ,*.nasm=䁀:\
-  ,*.ods=䁃:\
-  ,*.org=䁲:\
-  ,*.pdf=䀻:\
-  ,*.pem=䁫:\
-  ,*.pl=䁴:\
-  ,*.php=䁵:\
-  ,*.ppt=䁟:\
-  ,*.pptx=䁟:\
-  ,*.py=䁶:\
-  ,*.rb=䁷:\
-  ,*.rs=䁸:\
-  ,*.S=䁇:\
-  ,*.s=䁇:\
-  ,*.scala=䁹:\
-  ,*.sql=䁖:\
-  ,*.sqlite=䁖:\
-  ,*.swift=䁻:\
-  ,*.tex=䁽:\
-  ,*.torrent=䁿:\
-  ,*.ts=䂀:\
-  ,*.vim=䂁:\
-  ,*.xls=䁝:\
-  ,*.xlsx=䁝:\
-  ,*.xml=䂂:\
-  ,*.yml=䂃:\
-  ,*.ttf=䁠:\
-  ,*.ttc=䁠:\
-  ,*.otf=䁠:\
-  ,*.woff=䁠:\
-  ,*.o=䁀:\
-  ,*.obj=䁀:\
-  ,*.exe=䁀:\
-  ,*.bin=䁀:\
-  ,*.elf=䁀:\
-  ,*.cmd=䀶:\
-  ,*.ps1=䀶:\
-  ,*.sh=䀶:\
-  ,*.bash=䀶:\
-  ,*.zsh=䀶:\
-  ,*.fish=䀶:\
-  ,*.mp4=䀸:\
-  ,*.webm=䀸:\
-  ,*.mkv=䀸:\
-  ,*.flv=䀸:\
-  ,*.vob=䀸:\
-  ,*.ogv=䀸:\
-  ,*.ogm=䀸:\
-  ,*.gifv=䀸:\
-  ,*.mpg=䀸:\
-  ,*.mpeg=䀸:\
-  ,*.mp4v=䀸:\
-  ,*.wmv=䀸:\
-  ,*.qt=䀸:\
-  ,*.yuv=䀸:\
-  ,*.rm=䀸:\
-  ,*.rmvb=䀸:\
-  ,*.viv=䀸:\
-  ,*.asf=䀸:\
-  ,*.m4v=䀸:\
-  ,*.avi=䀸:\
-  ,*.mov=䀸:\
-  ,*.m2v=䀸:\
-  ,*.nuv=䀸:\
-  ,*.flc=䀸:\
-  ,*.fli=䀸:\
-  ,*.gl=䀸:\
-  ,*.ogx=䀸:\
-  ,*.mp3=䀹:\
-  ,*.aac=䀹:\
-  ,*.m4a=䀹:\
-  ,*.oga=䀹:\
-  ,*.spx=䀹:\
-  ,*.au=䀹:\
-  ,*.wav=䀹:\
-  ,*.opus=䀹:\
-  ,*.ra=䀹:\
-  ,*.flac=䀹:\
-  ,*.mid=䀹:\
-  ,*.midi=䀹:\
-  ,*.mka=䀹:\
-  ,*.mpc=䀹:\
-  ,*.xspf=䀹:\
-  ,*.jpg=䀷:\
-  ,*.jpeg=䀷:\
-  ,*.mjpg=䀷:\
-  ,*.mjpeg=䀷:\
-  ,*.ico=䀷:\
-  ,*.gif=䀷:\
-  ,*.bmp=䀷:\
-  ,*.pbm=䀷:\
-  ,*.pgm=䀷:\
-  ,*.ppm=䀷:\
-  ,*.tga=䀷:\
-  ,*.xbm=䀷:\
-  ,*.xpm=䀷:\
-  ,*.tif=䀷:\
-  ,*.tiff=䀷:\
-  ,*.png=䀷:\
-  ,*.svg=䀷:\
-  ,*.svgz=䀷:\
-  ,*.mng=䀷:\
-  ,*.pcx=䀷:\
-  ,*.xcf=䀷:\
-  ,*.xwd=䀷:\
-  ,*.cgm=䀷:\
-  ,*.emf=䀷:\
-  ,*.tar=䀿:\
-  ,*.tgz=䀿:\
-  ,*.arc=䀿:\
-  ,*.arj=䀿:\
-  ,*.taz=䀿:\
-  ,*.lha=䀿:\
-  ,*.lz4=䀿:\
-  ,*.lzh=䀿:\
-  ,*.lzma=䀿:\
-  ,*.tlz=䀿:\
-  ,*.txz=䀿:\
-  ,*.tzo=䀿:\
-  ,*.t7z=䀿:\
-  ,*.zip=䀿:\
-  ,*.z=䀿:\
-  ,*.dz=䀿:\
-  ,*.gz=䀿:\
-  ,*.lrz=䀿:\
-  ,*.lz=䀿:\
-  ,*.lzo=䀿:\
-  ,*.xz=䀿:\
-  ,*.zst=䀿:\
-  ,*.tzst=䀿:\
-  ,*.bz2=䀿:\
-  ,*.bz=䀿:\
-  ,*.tbz=䀿:\
-  ,*.tbz2=䀿:\
-  ,*.tz=䀿:\
-  ,*.deb=䀿:\
-  ,*.rpm=䀿:\
-  ,*.jar=䀿:\
-  ,*.war=䀿:\
-  ,*.ear=䀿:\
-  ,*.sar=䀿:\
-  ,*.rar=䀿:\
-  ,*.alz=䀿:\
-  ,*.ace=䀿:\
-  ,*.zoo=䀿:\
-  ,*.cpio=䀿:\
-  ,*.7z=䀿:\
-  ,*.rz=䀿:\
-  ,*.cab=䀿:\
-  ,*.wim=䀿:\
-  ,*.swm=䀿:\
-  ,*.dwm=䀿:\
-  ,*.esd=䀿:\
-  "
-
-  lfrun "$@"
-
-#+end_src
-
 * Bash
 ** .bash_profile
 :PROPERTIES:
@@ -1377,7 +1130,7 @@ Install packages using pacman
   function lfcd()
   {
       tmp="$(mktemp)"
-      mylf -last-dir-path="$tmp" "$@"
+      lfrun -last-dir-path="$tmp" "$@"
       if [ -f "$tmp" ]; then
           dir="$(cat "$tmp")"
           rm -f "$tmp"
@@ -1713,7 +1466,7 @@ Install packages using pacman
   local emacs_fm_id = 'notnil'
 
   function create_emacs_fm(path)
-     emacs_fm_id = awful.spawn.with_shell("alacritty -e mylf " ..
+     emacs_fm_id = awful.spawn.with_shell("alacritty -e lfrun " ..
                                           "-command \"cd " .. path .. "\" " ..
                                           "-command \"map <esc> quit_for_emacs\" " ..
                                           "-command \"map <enter> quit_for_emacs\"")
@@ -3551,6 +3304,317 @@ defined in.
 
 #+end_src
 
+** icons
+
+#+begin_src conf :tangle ./.config/lf/icons
+
+  # file types (with matching order)
+  ln                   䀺      # LINK
+  or                   䀺      # ORPHAN
+  tw                   䀳      # STICKY_OTHER_WRITABLE
+  ow                   䀳      # OTHER_WRITABLE
+  st                   䀳      # STICKY
+  di                   䀳      # DIR
+  pi                   䀵      # FIFO
+  so                   䀵      # SOCK
+  bd                   b       # BLK
+  cd                   c       # CHR
+  su                   u       # SETUID
+  sg                   g       # SETGID
+  ex                   䀶      # EXEC
+  fi                   䀵      # FILE
+
+  # comming soon
+  # *.nix              
+  # *.diff             
+  # *.rss              
+  # *.gitlab-ci.yml    
+
+  # file extensions for programming languages
+  ,*.asm                䁇
+  ,*.nasm               䁇
+  ,*.b                  䁉
+  ,*.c                  䁊
+  ,*.cc                 䁋
+  ,*.cp                 䁋
+  ,*.c++                䁋
+  ,*.cxx                䁋
+  ,*.cpp                䁋
+  ,*.h                  䁌
+  ,*.hh                 䁍
+  ,*.hp                 䁍
+  ,*.h++                䁍
+  ,*.hxx                䁍
+  ,*.hpp                䁍
+  ,*.clj                䁎
+  ,*.cljc               䁎
+  ,*.cljs               䁎
+  ,*.cmake              䁏
+  ,*.conf               䁁
+  ,*.ini                䁁
+  ,*.coffee             䁐
+  ,*.cs                 䁑
+  ,*.css                䁒
+  ,*.d                  䁕
+  ,*.dart               䁔
+  ,*.db                 䁖
+  ,*.dockerfile         䁘
+  ,*.gitignore          䁢
+  ,*.ex                 䁚
+  ,*.eex                䁚
+  ,*.exs                䁚
+  ,*.leex               䁚
+  ,*.heex               䁚
+  ,*.el                 䁙
+  ,*.elc                䁙
+  ,*.elm                䁛
+  ,*.erl                䁜
+  ,*.fs                 䁡
+  ,*.fsx                䁡
+  ,*.fsi                䁡
+  ,*.fsscript           䁡
+  ,*.go                 䁣
+  ,*.hs                 䁤
+  ,*.lhs                䁤
+  ,*.htm                䁓
+  ,*.html               䁓
+  ,*.ino                䁆
+  ,*.java               䁦
+  ,*.jl                 䁪
+  ,*.js                 䁧
+  ,*.mjs                䁧
+  ,*.jsx                䁩
+  ,*.tsx                䁩
+  ,*.json               䁨
+  ,*.kt                 䁬
+  ,*.kts                䁬
+  ,*.less               䁒
+  ,*.lua                䁮
+  ,*.md                 䁰
+  ,*.mdx                䁰
+  ,*.rmd                䁰
+  ,*.markdown           䁰
+  ,*.org                䁲
+  ,*.pl                 䁴
+  ,*.pm                 䁴
+  ,*.t                  䁴
+  ,*.php                䁵
+  ,*.py                 䁶
+  ,*.pyc                䁶
+  ,*.rb                 䁷
+  ,*.ru                 䁷
+  ,*.gemspec            䁷
+  ,*.rake               䁷
+  ,*.rs                 䁸
+  ,*.S                  䁇
+  ,*.s                  䁇
+  ,*.scala              䁹
+  ,*.sql                䁖
+  ,*.sqlite             䁖
+  ,*.swift              䁻
+  ,*.tex                䁽
+  ,*.torrent            䁿
+  ,*.ts                 䂀
+  ,*.vim                䂁
+  ,*.vimrc              䂁
+  ,*._vimrc             䂁
+  ,*.viminfo            䂁
+  ,*.gimrc              䂁
+  ,*._gimrc             䂁
+  ,*.xml                䂂
+  ,*.yml                䂃
+  ,*.yaml               䂃
+  ,*.cmd                䀶
+  ,*.ps1                䀶
+  ,*.sh                 䀶
+  ,*.bash               䀶
+  ,*.zsh                䀶
+  ,*.fish               䀶
+  ,*.bat                䀶
+  ,*.zshrc              䀶
+  ,*.zprofile           䀶
+  ,*.zshenv             䀶
+  ,*.bashrc             䀶
+  ,*.bash_logout        䀶
+  ,*.bash_profile       䀶
+  ,*.profile            䀶
+  ,*.xinitrc            䀶
+  ,*.xprofile           䀶
+  ,*.mk                 䁯
+  ,*.TODO               䁾
+  ,*.todo               䁾
+
+  # file names
+  .gitconfig*          䁢
+  .gitattributes*      䁢
+  Makefile*            䁯
+  makefile*            䁯
+  Rakefile*            䁷
+  rakefile*            䁷
+  README*              䁰
+  readme*              䁰
+  CMakeLists.txt*      䁏
+  cmakelists.txt*      䁏
+  TAGS*                䁼
+  TODO*                䁾
+  LICENSE*             䁭
+  license*             䁭
+  Dockerfile*          䁘
+  dockerfile*          䁘
+  Docker-compose.yml*  䁘
+  docker-compose.yml*  䁘
+  vimrc*               䂁
+  gvimrc*              䂁
+
+  # archives or compressed
+  ,*.tar                䀿
+  ,*.tgz                䀿
+  ,*.arc                䀿
+  ,*.arj                䀿
+  ,*.taz                䀿
+  ,*.lha                䀿
+  ,*.lz4                䀿
+  ,*.lzh                䀿
+  ,*.lzma               䀿
+  ,*.tlz                䀿
+  ,*.txz                䀿
+  ,*.tzo                䀿
+  ,*.t7z                䀿
+  ,*.zip                䀿
+  ,*.z                  䀿
+  ,*.dz                 䀿
+  ,*.gz                 䀿
+  ,*.lrz                䀿
+  ,*.lz                 䀿
+  ,*.lzo                䀿
+  ,*.xz                 䀿
+  ,*.zst                䀿
+  ,*.tzst               䀿
+  ,*.bz2                䀿
+  ,*.bz                 䀿
+  ,*.tbz                䀿
+  ,*.tbz2               䀿
+  ,*.tz                 䀿
+  ,*.deb                䀿
+  ,*.rpm                䀿
+  ,*.jar                䀿
+  ,*.war                䀿
+  ,*.ear                䀿
+  ,*.sar                䀿
+  ,*.rar                䀿
+  ,*.alz                䀿
+  ,*.ace                䀿
+  ,*.zoo                䀿
+  ,*.cpio               䀿
+  ,*.7z                 䀿
+  ,*.rz                 䀿
+  ,*.cab                䀿
+  ,*.wim                䀿
+  ,*.swm                䀿
+  ,*.dwm                䀿
+  ,*.esd                䀿
+
+  # image formats
+  ,*.jpg                䀷
+  ,*.jpeg               䀷
+  ,*.mjpg               䀷
+  ,*.mjpeg              䀷
+  ,*.ico                䀷
+  ,*.gif                䀷
+  ,*.bmp                䀷
+  ,*.pbm                䀷
+  ,*.pgm                䀷
+  ,*.ppm                䀷
+  ,*.tga                䀷
+  ,*.xbm                䀷
+  ,*.xpm                䀷
+  ,*.tif                䀷
+  ,*.tiff               䀷
+  ,*.png                䀷
+  ,*.svg                䀷
+  ,*.svgz               䀷
+  ,*.mng                䀷
+  ,*.pcx                䀷
+  ,*.xcf                䀷
+  ,*.xwd                䀷
+  ,*.cgm                䀷
+  ,*.emf                䀷
+  ,*.bmp                䀷
+  ,*.webp               䀷
+
+  # audio formats
+  ,*.mp3                䀹
+  ,*.aac                䀹
+  ,*.m4a                䀹
+  ,*.oga                䀹
+  ,*.spx                䀹
+  ,*.au                 䀹
+  ,*.wav                䀹
+  ,*.opus               䀹
+  ,*.ra                 䀹
+  ,*.flac               䀹
+  ,*.mid                䀹
+  ,*.midi               䀹
+  ,*.mka                䀹
+  ,*.mpc                䀹
+  ,*.xspf               䀹
+
+  # video formats
+  ,*.mp4                䀸
+  ,*.webm               䀸
+  ,*.mkv                䀸
+  ,*.flv                䀸
+  ,*.vob                䀸
+  ,*.ogv                䀸
+  ,*.ogm                䀸
+  ,*.gifv               䀸
+  ,*.mpg                䀸
+  ,*.mpeg               䀸
+  ,*.mp4v               䀸
+  ,*.wmv                䀸
+  ,*.qt                 䀸
+  ,*.yuv                䀸
+  ,*.rm                 䀸
+  ,*.rmvb               䀸
+  ,*.viv                䀸
+  ,*.asf                䀸
+  ,*.m4v                䀸
+  ,*.avi                䀸
+  ,*.mov                䀸
+  ,*.m2v                䀸
+  ,*.nuv                䀸
+  ,*.flc                䀸
+  ,*.fli                䀸
+  ,*.gl                 䀸
+  ,*.ogx                䀸
+
+  # other formats
+  ,*.pdf                䀻
+  ,*.djvu               䁈
+  ,*.ttf                䁠
+  ,*.ttc                䁠
+  ,*.otf                䁠
+  ,*.woff               䁠
+  ,*.o                  䁀
+  ,*.obj                䁀
+  ,*.exe                䁀
+  ,*.bin                䁀
+  ,*.elf                䁀
+  ,*.log                䁂
+  ,*.ods                䁃
+  ,*.doc                䁞
+  ,*.docx               䁞
+  ,*.odt                䁞
+  ,*.xls                䁝
+  ,*.xlsx               䁝
+  ,*.ppt                䁟
+  ,*.pptx               䁟
+  ,*.iso                䁥
+  ,*.pem                䁫
+  ,*.key                䁫
+
+#+end_src
+
 ** lf configuration
 :PROPERTIES:
 :header-args: :tangle ./.config/lf/lfrc 
@@ -3715,16 +3779,16 @@ defined in.
   }}
 
   cmd my_copy &{{
-      echo -e "$fx" > $LFCP
-      sed -i "1s|^|cp\n|" $LFCP
+      echo -e "$fx" > /tmp/lfcp
+      sed -i "1s|^|cp\n|" /tmp/lfcp
 
       lf -remote "send $id copy"
       lf -remote "send $id load"
   }}
 
   cmd my_cut &{{
-      echo -e "$fx" > $LFCP
-      sed -i "1s|^|mv\n|" $LFCP
+      echo -e "$fx" > /tmp/lfcp
+      sed -i "1s|^|mv\n|" /tmp/lfcp
 
       lf -remote "send $id cut"
       lf -remote "send $id load"
@@ -3734,8 +3798,8 @@ defined in.
       FILE="/tmp/lfundo_$id"
       lf_prepare_file $FILE
 
-      command=$(head -n 1 $LFCP)
-      sed -i '1d' $LFCP
+      command=$(head -n 1 /tmp/lfcp)
+      sed -i '1d' /tmp/lfcp
 
       while read line;
       do
@@ -3753,7 +3817,7 @@ defined in.
               sed -i "1s|^|$line\n|" $FILE
           fi
           sed -i "1s|^|$(pwd)/$name\n|" $FILE
-      done < $LFCP
+      done < /tmp/lfcp
 
       if [ "$command" = "cp" ]
       then
@@ -3762,7 +3826,7 @@ defined in.
           sed -i "1s|^|mv\n|" $FILE
       fi
 
-      > $LFCP
+      > /tmp/lfcp
       lf -remote "send $id clear"
       lf -remote "send $id reload"
   }}

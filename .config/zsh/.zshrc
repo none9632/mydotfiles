@@ -354,7 +354,7 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 function lfcd()
 {
     tmp="$(mktemp)"
-    mylf -last-dir-path="$tmp" "$@"
+    lfrun -last-dir-path="$tmp" "$@"
     if [ -f "$tmp" ]; then
         dir="$(cat "$tmp")"
         rm -f "$tmp"
