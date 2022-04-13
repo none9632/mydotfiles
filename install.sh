@@ -27,6 +27,7 @@ Commands:\n\
 all         Install all.\n\
 bin         Install binary files only.\n\
 config      Install config files only.\n\
+font        Install font only.\n\
 packages    Install only the necessary packages.\n\
 help        Show this message and exit."
     exit 0
@@ -36,6 +37,7 @@ function install_all ()
 {
     install_pkgs
     install_config
+    install_font
     install_bin
 }
 
@@ -60,7 +62,6 @@ function install_bin ()
         echo "Compilation $file file"
         gcc -Wall -O3 $dot_dir/bin/bar/$file.c -o $dot_dir/bin/bar/$file
     done
-
     for file in $bar_bin_files
     do
         if [ -e $bin_dir/$file ]
@@ -96,9 +97,16 @@ function install_config ()
     [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
     echo "Creating symlink to .bash_profile"
     ln -s $dot_dir/.bash_profile ~/.bash_profile
+}
 
+function install_font ()
+{
+    font_path=~/.local/share/fonts
+    font_file=MyFont.ttf
+
+    [ -f $font_path/$font_file ] && mv $font_path/$font_file $old_dots_dir/.local/share/fonts
     echo "Font installation"
-    cp $dot_dir/font/MyFont.ttf ~/.local/share/fonts/
+    cp $dot_dir/font/$font_file $font_path
 }
 
 function install_pkgs ()
@@ -129,11 +137,13 @@ echo "Creating $old_dots_dir for backup of any existing config files"
 mkdir -p $old_dots_dir
 mkdir -p $old_dots_dir/.config
 mkdir -p $old_dots_dir/.local/bin
+mkdir -p $old_dots_dir/.local/share/fonts
 
 case "$1" in
     ""|all)   install_all    ;;
     bin)      install_bin    ;;
-    packages) install_pkgs   ;;
     config)   install_config ;;
+    font)     install_font   ;;
+    packages) install_pkgs   ;;
     help|*)   help           ;;
 esac
