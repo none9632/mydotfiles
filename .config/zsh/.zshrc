@@ -251,6 +251,7 @@ bindkey -sM vicmd "/" ""
 
 bindkey -M viins "jj" vi-cmd-mode
 bindkey -M viins "^?" backward-delete-char
+bindkey -M viins "^[^?" backward-kill-word
 bindkey -M viins "^l" autosuggest-accept
 
 function clip-paste ()
