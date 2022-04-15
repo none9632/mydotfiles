@@ -155,7 +155,7 @@ function create_terminal()
       terminal_id = awful.spawn("alacritty --class Alacritty-splash")
    end
 
-   awful.spawn("xdotool key Mode_switch")
+   awful.spawn.with_shell("xdotool key Mode_switch")
 end
 
 function toggle_splash_height()
@@ -183,7 +183,7 @@ function toggle_terminal()
          terminal_client:move_to_tag(t)
          client.focus = terminal_client
          terminal_client:raise()
-         awful.spawn("xdotool key Mode_switch")
+         awful.spawn.with_shell("xdotool key Mode_switch")
       else
          terminal_client:move_to_tag(awful.screen.focused().tags[8])
       end
