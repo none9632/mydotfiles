@@ -304,7 +304,7 @@ cmd fzf_jump_prev &{{
                                              echo -n \$path > $tmp_file;\
                                          else\
                                              echo -n cancel > $tmp_file;\
-                                         fi\")"
+                                         fi\", 1100, 600)"
     while ! [ -s $tmp_file ]; do sleep 0.1; done
     path="$(cat $tmp_file)"
     [ "$path" != "cancel" ] && lf -remote "send $id my_cd $path"
@@ -337,7 +337,7 @@ cmd git_clone &{{
         awesome-client "create_lf_terminal(\"cd $PWD;\
                                              git clone $link;\
                                              printf \\\"%s \\\" \\\"Press enter to continue\\\";\
-                                             read ans\")"
+                                             read ans\", 900, 210)"
     fi
 }}
 

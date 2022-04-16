@@ -285,8 +285,12 @@ client.connect_signal('manage', function(c)
 end)
 
 local lf_terminal_id = 'notnil'
+local lf_terminal_width = 0
+local lf_terminal_height = 0
 
-function create_lf_terminal(command)
+function create_lf_terminal(command, width, height)
+   lf_terminal_width = width
+   lf_terminal_height = height
    lf_terminal_id = awful.spawn.with_shell("alacritty -e zsh -c '" .. command .. "'")
 end
 
@@ -294,8 +298,8 @@ client.connect_signal('manage', function(c)
                          if c.pid == lf_terminal_id then
                             c.ontop = true
                             c.floating = true
-                            c.width = 1000
-                            c.height = 600
+                            c.width = lf_terminal_width
+                            c.height = lf_terminal_height
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end

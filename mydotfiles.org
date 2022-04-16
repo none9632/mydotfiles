@@ -1490,8 +1490,12 @@ Install packages using pacman
 #+begin_src lua
 
   local lf_terminal_id = 'notnil'
+  local lf_terminal_width = 0
+  local lf_terminal_height = 0
 
-  function create_lf_terminal(command)
+  function create_lf_terminal(command, width, height)
+     lf_terminal_width = width
+     lf_terminal_height = height
      lf_terminal_id = awful.spawn.with_shell("alacritty -e zsh -c '" .. command .. "'")
   end
 
@@ -1499,8 +1503,8 @@ Install packages using pacman
                            if c.pid == lf_terminal_id then
                               c.ontop = true
                               c.floating = true
-                              c.width = 1000
-                              c.height = 600
+                              c.width = lf_terminal_width
+                              c.height = lf_terminal_height
                               client.focus = c
                               awful.placement.centered(c, { margins = { top = 56 }})
                            end
@@ -1825,7 +1829,7 @@ Install packages using pacman
                                              end
 
                                              if capacity <= 10 and bat_notification_count_1 == 0 then
-                                                awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"10% battery remaining\"")
+                                                awful.spawn.with_shell("notify-send -t 0 -i ~/Downloads/icons/low-battery.png -u normal \"Battery is low\" \"10% battery remaining\"")
                                                 bat_notification_count_1 = 1
                                              elseif capacity <= 1 and bat_notification_count_2 == 0 then
                                                 awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"1% battery remaining\"")
@@ -3948,7 +3952,7 @@ And optionally:
                                                echo -n \$path > $tmp_file;\
                                            else\
                                                echo -n cancel > $tmp_file;\
-                                           fi\")"
+                                           fi\", 1100, 600)"
       while ! [ -s $tmp_file ]; do sleep 0.1; done
       path="$(cat $tmp_file)"
       [ "$path" != "cancel" ] && lf -remote "send $id my_cd $path"
@@ -3981,7 +3985,7 @@ And optionally:
           awesome-client "create_lf_terminal(\"cd $PWD;\
                                                git clone $link;\
                                                printf \\\"%s \\\" \\\"Press enter to continue\\\";\
-                                               read ans\")"
+                                               read ans\", 900, 210)"
       fi
   }}
 
