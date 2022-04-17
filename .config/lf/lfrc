@@ -297,6 +297,8 @@ cmd fzf_jump_prev &{{
     awesome-client "create_lf_terminal(\"export _ZO_FZF_OPTS=\\\"--height 100%\
                                                                  --reverse\
                                                                  --no-sort\
+                                                                 --bind tab:down\
+                                                                 --bind btab:up\
                                                                  --preview-window right:35%\
                                                                  --preview=\\\\\\\"ls -1A {2..}\\\\\\\"\\\";\
                                          path=\$(zoxide query -i);\

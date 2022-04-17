@@ -160,7 +160,7 @@ setopt SHARE_HISTORY
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
 
 export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
-export FZF_DEFAULT_OPTS="--bind 'alt-j:down' --bind 'alt-k:up'"
+export FZF_DEFAULT_OPTS="--bind tab:down --bind btab:up"
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
