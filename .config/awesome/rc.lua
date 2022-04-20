@@ -291,7 +291,7 @@ local lf_terminal_height = 0
 function create_lf_terminal(command, width, height)
    lf_terminal_width = width
    lf_terminal_height = height
-   lf_terminal_id = awful.spawn.with_shell("alacritty -e zsh -c 'tput civis;" .. command .. "'")
+   lf_terminal_id = awful.spawn.with_shell("alacritty -e sh -c 'tput civis;" .. command .. "'")
 end
 
 client.connect_signal('manage', function(c)

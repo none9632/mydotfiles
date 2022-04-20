@@ -224,9 +224,9 @@ function zle-keymap-select()
 {
     # change cursor style in vi-mode
     case $KEYMAP in
-        vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;
-        viins|main) print -n -- "\E]50;CursorShape=1\C-G";;
-        vivis)      print -n -- "\E]50;CursorShape=0\C-G";;
+        vicmd)      print -n -- "\e[1 q" ;;
+        viins|main) print -n -- "\e[5 q" ;;
+        vivis)      print -n -- "\e[1 q" ;;
     esac
 
     zle reset-prompt
