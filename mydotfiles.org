@@ -3737,9 +3737,6 @@ And optionally:
   }}
 
   cmd mkdir &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
       dir_name=$(input "Dir name:")
       while [ -e $dir_name ] && [ "$dir_name" != "" ]
       do
@@ -3750,17 +3747,11 @@ And optionally:
       if [ "$dir_name" != "" ]
       then
           mkdir $dir_name
-          sed -i "1s|^|$(pwd)/$dir_name\n|" $FILE
-          sed -i "1s|^|del\n|" $FILE
-
           lf -remote "send $id load"
       fi
   }}
 
   cmd mkfile &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
-
       file_name=$(input "File name:")
       while [ -e $file_name ] && [ "$file_name" != "" ]
       do
@@ -3771,9 +3762,6 @@ And optionally:
       if [ "$file_name" != "" ]
       then
           touch $file_name
-          sed -i "1s|^|$(pwd)/$file_name\n|" $FILE
-          sed -i "1s|^|del\n|" $FILE
-
           lf -remote "send $id load"
       fi
   }}
@@ -3802,57 +3790,54 @@ And optionally:
       fi
   }}
 
-  cmd my_copy &{{
-      echo -e "$fx" > /tmp/lfcp
-      sed -i "1s|^|cp\n|" /tmp/lfcp
-
-      lf -remote "send $id copy"
-      lf -remote "send $id load"
-  }}
-
-  cmd my_cut &{{
-      echo -e "$fx" > /tmp/lfcp
-      sed -i "1s|^|mv\n|" /tmp/lfcp
-
-      lf -remote "send $id cut"
-      lf -remote "send $id load"
-  }}
-
   cmd my_paste &{{
-      FILE="/tmp/lfundo_$id"
-      lf_prepare_file $FILE
+      set -- $(cat ~/.local/share/lf/files)
+      mode="$1"
+      shift
+      has_dir=0
+      output=$(timeout 0.2 du -acb "$@" || echo "toobig")
+      total_size=$(echo "$output" | tail -n 1 | awk '{print $1}')
+      total_files=$(echo "$output" | wc -l)
 
-      command=$(head -n 1 /tmp/lfcp)
-      sed -i '1d' /tmp/lfcp
-
-      while read line;
-      do
-          name=$(basename $line)
-          while [ -e ./$name ]
+      if [[ "$total_size" = "toobig" ]] ||
+         [[ $total_size -ge 314572800 ]] ||
+         [[ $total_files -ge 2500 && $total_size -ge 52428800 ]]
+      then
+          files="$@"
+          if [ "$mode" = "move" ]
+          then
+              awesome-client "create_lf_terminal(\"cd $PWD;\
+                                                   vcp -cRH $files .;\
+                                                   rm -rf $files;\
+                                                   lf -remote \\\"send reload\\\"\", 800, 400)"
+          else
+              awesome-client "create_lf_terminal(\"cd $PWD;\
+                                                   vcp -cRH $files .;\
+                                                   lf -remote \\\"send reload\\\"\", 800, 400)"
+          fi
+      else
+          for file in "$@"
           do
-              name=$name"_"
+              [ -d "$file" ] && has_dir=1
+
+              name=$(basename $file)
+              while [ -e ./$name ]
+              do
+                  name=$name"_"
+              done
+
+              cp -r $file ./$name
           done
 
-          if [ "$command" = "cp" ]
+          if [ "$mode" = "move" ]
           then
-              cp -r $line ./$name
-          else
-              mv $line ./$name
-              sed -i "1s|^|$line\n|" $FILE
+              rm -rf "$files"
           fi
-          sed -i "1s|^|$(pwd)/$name\n|" $FILE
-      done < /tmp/lfcp
-
-      if [ "$command" = "cp" ]
-      then
-          sed -i "1s|^|del\n|" $FILE
-      else
-          sed -i "1s|^|mv\n|" $FILE
       fi
 
-      > /tmp/lfcp
-      lf -remote "send $id clear"
-      lf -remote "send $id reload"
+      rm ~/.local/share/lf/files
+      lf -remote "send clear"
+      [[ $has_dir -eq 1 ]] && lf -remote "send reload"
   }}
 
   cmd undo &{{
@@ -3872,22 +3857,6 @@ And optionally:
       then
           mv $(head -n 2 $FILE)
           sed -i '2d' $FILE
-      elif [ "$command" = "del" ]
-      then
-          while read line;
-          do
-              [[ -z "$line" ]] && break
-              rm -rf $(head -n 1 $FILE)
-              sed -i '1d' $FILE
-          done < $FILE
-      elif [ "$command" = "mv" ]
-      then
-          while read line;
-          do
-              [[ -z "$line" ]] && break
-              mv $(head -n 2 $FILE)
-              sed -i '2d' $FILE
-          done < $FILE
       elif [ "$command" = "cd" ]
       then
           lf -remote "send $id cd $(head -n 1 $FILE)"
@@ -4031,8 +4000,6 @@ And optionally:
   map c
   map d
   map t
-  map y
-  map p
   map f
   map x
 
@@ -4076,9 +4043,8 @@ And optionally:
   map md mkdir
   map mf mkfile
   map cw my_rename
-  map y my_copy
   map p my_paste
-  map s my_cut
+  map s cut
   map d trash
   map D delete
   map u undo
@@ -7073,11 +7039,7 @@ Configuration based on https://github.com/adi1090x/rofi
           fi
           ;;
       $settings)
-          if [[ -f /usr/bin/xfce4-settings-manager ]]; then
-              xfce4-settings-manager &
-          else
-              errormsg "No suitable settings manager found!"
-          fi
+          ~/Desktop/st/st -e zsh &
           ;;
   esac
 
