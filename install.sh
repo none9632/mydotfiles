@@ -98,7 +98,7 @@ function install_pkgs ()
     sudo pacman --noconfirm --needed -Sy $build_pkgs
 
     # install yay
-    if [[ ! -f /usr/bin/yay ]]
+    if [[ ! -f $(which yay) ]]
     then
         cd $(mktemp -d)
         git clone https://aur.archlinux.org/yay.git
@@ -108,6 +108,15 @@ function install_pkgs ()
 
     # install the necessary packages
     yay --noconfirm --needed -S $pkgs
+
+    if [[ ! -f $(which vcp) ]]
+    then
+        cd $(mktemp -d)
+        git clone https://github.com/none9632/VCP
+        cd VCP
+        make
+        sudo make install
+    fi
 }
 
 # create dotfiles_old in homedir
