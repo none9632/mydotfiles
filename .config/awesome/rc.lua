@@ -142,28 +142,25 @@ client.connect_signal('unmanage', function(c)
                          end
 end)
 
-local terminal_id = 'notnil'
-local terminal_client
+function create_blurbg(pid_path)
+   return awful.spawn("rofi " ..
+                      "-pid " .. pid_path .. " " ..
+                      "-replace " ..
+                      "-normal-window " ..
+                      "-theme /home/none9632/.config/rofi/themes/other/blurbg.rasi " ..
+                      "-p \"\" " ..
+                      "-dmenu", {
+                         ontop = false,
+                         focus = false,
+                         above = true,
+   })
+end
 
-function create_terminal()
+function raise_client(rclient)
    local t = awful.screen.focused().selected_tag
-
-   for _, c in ipairs(client.get()) do
-      if c.instance == "Alacritty-splash" then
-         terminal_id = c.pid
-         terminal_client = c
-         awful.placement.centered(c, { margins = { top = 56 }})
-         terminal_client:move_to_tag(t)
-         client.focus = terminal_client
-         terminal_client:raise()
-      end
-   end
-
-   if not terminal_client then
-      terminal_id = awful.spawn("alacritty --class Alacritty-splash")
-   end
-
-   awful.spawn.with_shell("xdotool key Mode_switch")
+   rclient:move_to_tag(t)
+   rclient:raise()
+   client.focus = rclient
 end
 
 function toggle_splash_height()
@@ -180,21 +177,44 @@ function toggle_splash_height()
    end
 end
 
+local terminal_id = 'notnil'
+local terminal_client
+local terminal_blurbg_id = 'notnil'
+local terminal_blurbg_client
+
+function create_terminal()
+   for _, c in ipairs(client.get()) do
+      if c.instance == "Alacritty-splash" then
+         terminal_id = c.pid
+         terminal_client = c
+         c.ontop = true
+         awful.placement.centered(c, { margins = { top = 56 }})
+         raise_client(terminal_client)
+      end
+   end
+
+   if not terminal_blurbg_client then
+      terminal_blurbg_id = create_blurbg("/run/user/1000/rofi-terminal.pid")
+   end
+
+   if not terminal_client then
+      terminal_id = awful.spawn("alacritty --class Alacritty-splash")
+   end
+end
+
 function toggle_terminal()
-   local t = awful.screen.focused().selected_tag
+   local s = awful.screen.focused()
    local c = client.focus
+   awful.spawn.with_shell("xdotool key Mode_switch")
 
    if not terminal_client then
       create_terminal()
+   elseif c ~= terminal_client then
+      raise_client(terminal_client)
+      terminal_blurbg_client:move_to_tag(s.selected_tag)
    else
-      if c ~= terminal_client then
-         terminal_client:move_to_tag(t)
-         client.focus = terminal_client
-         terminal_client:raise()
-         awful.spawn.with_shell("xdotool key Mode_switch")
-      else
-         terminal_client:move_to_tag(awful.screen.focused().tags[8])
-      end
+      terminal_client:move_to_tag(s.tags[8])
+      terminal_blurbg_client:move_to_tag(s.tags[8])
    end
 end
 
@@ -202,10 +222,15 @@ client.connect_signal('manage', function(c)
                          if c.pid == terminal_id then
                             terminal_client = c
                             c.floating = true
+                            c.ontop = true
                             c.width = 1350
                             c.height = 800
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
+                         end
+                         if c.pid == terminal_blurbg_id then
+                            terminal_blurbg_client = c
+                            awful.placement.centered(c)
                          end
 end)
 
@@ -213,24 +238,30 @@ client.connect_signal('unmanage', function(c)
                          if c.pid == terminal_id then
                             terminal_client = nil
                             terminal_id = 'notnil'
+                            terminal_blurbg_client:kill()
+                            terminal_blurbg_client = nil
+                            terminal_blurbg_id = 'notnil'
                          end
 end)
 
 local firefox_id = 'notnil'
 local firefox_client
+local firefox_blurbg_id = 'notnil'
+local firefox_blurbg_client
 
 function create_firefox()
-   local t = awful.screen.focused().selected_tag
-
    for _, c in ipairs(client.get()) do
       if c.width == 1350 and c.class == "firefox" then
          firefox_id = c.pid
          firefox_client = c
+         c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
-         firefox_client:move_to_tag(t)
-         client.focus = firefox_client
-         firefox_client:raise()
+         raise_client(firefox_client)
       end
+   end
+
+   if not firefox_blurbg_client then
+      firefox_blurbg_id = create_blurbg("/run/user/1000/rofi-firefox.pid")
    end
 
    if not firefox_client then
@@ -239,19 +270,17 @@ function create_firefox()
 end
 
 function toggle_firefox()
-   local t = awful.screen.focused().selected_tag
+   local s = awful.screen.focused()
    local c = client.focus
 
    if not firefox_client then
       create_firefox()
+   elseif c ~= firefox_client then
+      raise_client(firefox_client)
+      firefox_blurbg_client:move_to_tag(s.selected_tag)
    else
-      if c ~= firefox_client then
-         firefox_client:move_to_tag(t)
-         client.focus = firefox_client
-         firefox_client:raise()
-      else
-         firefox_client:move_to_tag(awful.screen.focused().tags[8])
-      end
+      firefox_client:move_to_tag(s.tags[8])
+      firefox_blurbg_client:move_to_tag(s.tags[8])
    end
 end
 
@@ -259,10 +288,15 @@ client.connect_signal('manage', function(c)
                          if c.pid == firefox_id then
                             firefox_client = c
                             c.floating = true
+                            c.ontop = true
                             c.width = 1350
                             c.height = 800
-                            client.focus = firefox_client
+                            client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
+                         end
+                         if c.pid == firefox_blurbg_id then
+                            firefox_blurbg_client = c
+                            awful.placement.centered(c)
                          end
 end)
 
@@ -270,6 +304,9 @@ client.connect_signal('unmanage', function(c)
                          if c.pid == firefox_id then
                             firefox_client = nil
                             firefox_id = 'notnil'
+                            firefox_blurbg_client:kill()
+                            firefox_blurbg_client = nil
+                            firefox_blurbg_id = 'notnil'
                          end
 end)
 
@@ -486,6 +523,7 @@ awful.screen.connect_for_each_screen(function(s)
             screen  = s,
             width   = 245,
             height  = 42,
+            ontop   = true,
             visible = true,
             bg      = "#1c252acc",
       })
@@ -529,6 +567,7 @@ awful.screen.connect_for_each_screen(function(s)
          end,
          minimum_height = 42,
          bg = "#00000000",
+         ontop = true,
          widget = {
             {
                layout = wibox.layout.fixed.horizontal,
