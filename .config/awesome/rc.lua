@@ -315,7 +315,7 @@ local emacs_fm_id = 'notnil'
 function create_emacs_fm(path)
    emacs_fm_id = awful.spawn.with_shell("alacritty -e lfrun " ..
                                         "-command \"cd " .. path .. "\" " ..
-                                        "-command \"map <esc> quit_for_emacs\" " ..
+                                        "-command \"map <esc> quit_for_emacs cancel\" " ..
                                         "-command \"map <enter> quit_for_emacs\"")
 end
 

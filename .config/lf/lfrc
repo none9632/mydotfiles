@@ -129,7 +129,6 @@ cmd my_rename &{{
         sed -i "1s|^|$f\n|" $FILE
         sed -i "1s|^|$(dirname $f)/$new_name\n|" $FILE
         sed -i "1s|^|name_restore\n|" $FILE
-
         lf -remote "send $id load"
     fi
 }}
@@ -324,7 +323,7 @@ cmd my_quit ${{
 
 cmd quit_for_emacs ${{
     rm /tmp/lfundo_$id
-    if [ "$f" = "" ]
+    if [ "$f" = "" ] || [ "$1" = "cancel" ]
     then
         echo -n "cancel" > ~/.cache/emacs/path
     else
