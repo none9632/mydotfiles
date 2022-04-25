@@ -3,7 +3,8 @@
 pwd=$1
 ls_command="exa -a --color=never --group-directories-first $pwd"
 rofi_command="rofi -scroll-method 1\
-                   -i
+                   -i\
+                   -replace\
                    -theme $HOME/.config/rofi/themes/menu/filesearch.rasi"
 list=$(LC_COLLATE=C ls -A --group-directories-first $pwd)
 

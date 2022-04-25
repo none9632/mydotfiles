@@ -6,6 +6,8 @@ rofi_command="rofi -dmenu\
                    -monitor -2\
                    -p \" $1 \"\
                    -normal-window\
+                   -pid /run/user/1000/rofi-input.pid\
+                   -replace\
                    -theme $HOME/.config/rofi/themes/other/input.rasi\
                    -kb-secondary-paste    Control+p,Control+k,Up\
                    -kb-clear-line         Control+d,Down\

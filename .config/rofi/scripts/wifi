@@ -4,6 +4,10 @@
 nmcli -t d wifi rescan
 LIST=$(nmcli --fields SSID,SECURITY,BARS device wifi list | sed '/^--/d' | sed 1d | sed -E "s/WPA*.?\S/~~/g" | sed "s/~~ ~~/~~/g;s/802\.1X//g;s/--/~~/g;s/  *~/~/g;s/~  */~/g;s/_/ /g" | column -t -s '~')
 
+echo "$LIST" > /tmp/testfile
+# LIST=$(cat /tmp/testfile | column -t -s '~')
+# echo $LIST
+
 # get current connection status
 CONSTATE=$(nmcli -fields WIFI g)
 if [[ "$CONSTATE" =~ "enabled" ]]; then
@@ -14,7 +18,7 @@ fi
 
 # display menu; store user choice
 # CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row 1 -config "./theme.rasi")
-CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row 1 -config "../themes/menu/wifi.rasi")
+CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -no-show-icon -selected-row 1 -theme "../themes/menu/wifi.rasi")
 # store selected SSID
 CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
 
@@ -38,7 +42,8 @@ else
         nmcli con up "$CHSSID"
     else
         if [[ "$CHENTRY" =~ "" ]]; then
-            WIFIPASS=$(echo " Press Enter if network is saved" | rofi -dmenu -p " WiFi Password: " -lines 1 )
+            # WIFIPASS=$(rofi -dmenu -p " WiFi Password: " -lines 1 )
+            WIFIPASS=$(input "Password:")
         fi
         if nmcli dev wifi con "$CHSSID" password "$WIFIPASS"
         then

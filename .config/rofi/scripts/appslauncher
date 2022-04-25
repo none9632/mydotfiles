@@ -3,5 +3,6 @@
 xdotool key Mode_switch
 
 rofi -show drun\
+     -replace\
      -theme $HOME/.config/rofi/themes/menu/appslauncher.rasi\
-     -scroll-method 1\
+     -scroll-method 1
