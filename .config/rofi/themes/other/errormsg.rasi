@@ -1,58 +1,40 @@
-configuration {
-    font:                           "SauceCodePro Nerd Font Semibold 14";
-    disable-history:                false;
-    sidebar-mode:                   false;
-}
-
 @import "../../colors.rasi"
 
 * {
+    font:                           "SauceCodePro Nerd Font Semibold 14";
     background-color:               @background;
-    text-color:                     @foreground;
 }
 
 window {
-    transparency:                   "real";
-    border-radius:                  0px;
-    location:                       center;
-    width:                          550px;
-    x-offset:                       0px;
-    y-offset:                       0px;
+    width:                          530px;
+    height:                         53px;
 }
 
 prompt {
     enabled:                        true;
-    padding:                        10px 0px 10px 0px;
+    padding:                        14px 11px 14px 9px;
     background-color:               @background;
     text-color:                     @accent;
 }
 
 textbox-prompt-colon {
     expand:                         false;
-    str:                            " Error:";
-    background-color:               @background;
-    text-color:                     @off;
-    padding:                        10px 0px 0px 0px;
+    str:                            " Error ";
+    background-color:               @off;
+    text-color:                     @background;
+    padding:                        14px 11px 9px 11px;
 }
 
 inputbar {
     children:                       [ textbox-prompt-colon, prompt ];
-    spacing:                        0px;
-    background-color:               @background;
-    text-color:                     @foreground;
     expand:                         false;
-    margin:                         0px;
-    padding:                        0px;
-    position:                       center;
 }
 
 listview {
-    enabled: false;
+    enabled:                        false;
 }
 
 mainbox {
     background-color:               @background;
     children:                       [ inputbar, listview ];
-    spacing:                        0px;
-    margin:                         14px;
 }

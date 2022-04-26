@@ -98,12 +98,12 @@ function create
         return
     fi
 
-    title="$(input "Figure name:")"
+    title="$(input "Figure name")"
     fig_file_path=$figures_path$(echo "${title/ /-}.svg")
     while [ "$title" != "" ] && [ -f $fig_file_path ]
     do
         errormsg "file exists"
-        title="$(input "Figure name:")"
+        title="$(input "Figure name")"
         fig_file_path=$figures_path$(echo "${title/ /-}.svg")
     done
 

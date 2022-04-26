@@ -1,25 +1,34 @@
 @import "../../colors.rasi"
 
 * {
-    background-color:               @background;
-    text-color:                     @foreground;
     font:                           "SauceCodePro Nerd Font Semibold 14";
 }
 
 window {
-    width:                          660px;
-    padding:                        24px 23px 23px 23px;
-    border:                         0px;
-    border-radius:                  0px;
-    location:                       center;
-    y-offset:                       -28px;
+    width:                          700px;
+    height:                         53px;
+}
+
+inputbar, prompt, textbox-prompt-colon, entry {
+    background-color:               @background;
+}
+
+inputbar {
+    children:                       [ prompt, textbox-prompt-colon, entry ];
+}
+
+prompt {
+    padding:                        14px 11px 14px 11px;
+    background-color:               @accent;
+    text-color:                     @background;
+}
+
+textbox-prompt-colon {
+    expand:                         false;
+    padding:                        9px;
 }
 
 entry {
-    expand:                         true;
     text-color:                     @accent;
-}
-
-listview {
-    padding:                        -202px;
+    padding:                        14px 23px 14px 0px;
 }

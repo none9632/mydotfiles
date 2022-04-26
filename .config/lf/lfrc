@@ -81,11 +81,11 @@ cmd my_updir %{{
 }}
 
 cmd mkdir &{{
-    dir_name=$(input "Dir name:")
+    dir_name=$(input "Dir name")
     while [ -e $dir_name ] && [ "$dir_name" != "" ]
     do
         errormsg "directory exists"
-        dir_name=$(input "Dir name:")
+        dir_name=$(input "Dir name")
     done
 
     if [ "$dir_name" != "" ]
@@ -96,11 +96,11 @@ cmd mkdir &{{
 }}
 
 cmd mkfile &{{
-    file_name=$(input "File name:")
+    file_name=$(input "File name")
     while [ -e $file_name ] && [ "$file_name" != "" ]
     do
         errormsg "file exists"
-        file_name=$(input "File name:")
+        file_name=$(input "File name")
     done
 
     if [ "$file_name" != "" ]
@@ -116,11 +116,11 @@ cmd my_rename &{{
 
     echo "${f##*/}" | xclip -selection clipboard
 
-    new_name=$(input "New name:")
+    new_name=$(input "New name")
     while [ -e $new_name ] && [ "$new_name" != "" ]
     do
         errormsg "file exists"
-        new_name=$(input "New name:")
+        new_name=$(input "New name")
     done
 
     if [ "$new_name" != "" ]
@@ -301,7 +301,7 @@ cmd goto_config %{{
 }}
 
 cmd git_clone &{{
-    link=$(longinput "Link:")
+    link=$(longinput "Link")
     if [ "$link" != "" ]
     then
         awesome-client "create_lf_terminal(\"cd $PWD;\

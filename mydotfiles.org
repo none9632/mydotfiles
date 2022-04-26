@@ -304,12 +304,12 @@
           return
       fi
 
-      title="$(input "Figure name:")"
+      title="$(input "Figure name")"
       fig_file_path=$figures_path$(echo "${title/ /-}.svg")
       while [ "$title" != "" ] && [ -f $fig_file_path ]
       do
           errormsg "file exists"
-          title="$(input "Figure name:")"
+          title="$(input "Figure name")"
           fig_file_path=$figures_path$(echo "${title/ /-}.svg")
       done
 
@@ -3791,11 +3791,11 @@ And optionally:
   }}
 
   cmd mkdir &{{
-      dir_name=$(input "Dir name:")
+      dir_name=$(input "Dir name")
       while [ -e $dir_name ] && [ "$dir_name" != "" ]
       do
           errormsg "directory exists"
-          dir_name=$(input "Dir name:")
+          dir_name=$(input "Dir name")
       done
 
       if [ "$dir_name" != "" ]
@@ -3806,11 +3806,11 @@ And optionally:
   }}
 
   cmd mkfile &{{
-      file_name=$(input "File name:")
+      file_name=$(input "File name")
       while [ -e $file_name ] && [ "$file_name" != "" ]
       do
           errormsg "file exists"
-          file_name=$(input "File name:")
+          file_name=$(input "File name")
       done
 
       if [ "$file_name" != "" ]
@@ -3826,11 +3826,11 @@ And optionally:
 
       echo "${f##*/}" | xclip -selection clipboard
 
-      new_name=$(input "New name:")
+      new_name=$(input "New name")
       while [ -e $new_name ] && [ "$new_name" != "" ]
       do
           errormsg "file exists"
-          new_name=$(input "New name:")
+          new_name=$(input "New name")
       done
 
       if [ "$new_name" != "" ]
@@ -4011,7 +4011,7 @@ And optionally:
   }}
 
   cmd git_clone &{{
-      link=$(longinput "Link:")
+      link=$(longinput "Link")
       if [ "$link" != "" ]
       then
           awesome-client "create_lf_terminal(\"cd $PWD;\
@@ -6873,63 +6873,45 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+begin_src css :tangle ./.config/rofi/themes/other/errormsg.rasi
 
-  configuration {
-      font:                           "SauceCodePro Nerd Font Semibold 14";
-      disable-history:                false;
-      sidebar-mode:                   false;
-  }
-
   @import "../../colors.rasi"
 
   ,* {
+      font:                           "SauceCodePro Nerd Font Semibold 14";
       background-color:               @background;
-      text-color:                     @foreground;
   }
 
   window {
-      transparency:                   "real";
-      border-radius:                  0px;
-      location:                       center;
-      width:                          550px;
-      x-offset:                       0px;
-      y-offset:                       0px;
+      width:                          530px;
+      height:                         53px;
   }
 
   prompt {
       enabled:                        true;
-      padding:                        10px 0px 10px 0px;
+      padding:                        14px 11px 14px 9px;
       background-color:               @background;
       text-color:                     @accent;
   }
 
   textbox-prompt-colon {
       expand:                         false;
-      str:                            " Error:";
-      background-color:               @background;
-      text-color:                     @off;
-      padding:                        10px 0px 0px 0px;
+      str:                            " Error ";
+      background-color:               @off;
+      text-color:                     @background;
+      padding:                        14px 11px 9px 11px;
   }
 
   inputbar {
       children:                       [ textbox-prompt-colon, prompt ];
-      spacing:                        0px;
-      background-color:               @background;
-      text-color:                     @foreground;
       expand:                         false;
-      margin:                         0px;
-      padding:                        0px;
-      position:                       center;
   }
 
   listview {
-      enabled: false;
+      enabled:                        false;
   }
 
   mainbox {
       background-color:               @background;
       children:                       [ inputbar, listview ];
-      spacing:                        0px;
-      margin:                         14px;
   }
 
 #+end_src
@@ -6941,27 +6923,36 @@ Configuration based on https://github.com/adi1090x/rofi
   @import "../../colors.rasi"
 
   ,* {
-      background-color:               @background;
-      text-color:                     @foreground;
       font:                           "SauceCodePro Nerd Font Semibold 14";
   }
 
   window {
-      width:                          530px;
-      padding:                        24px 23px 23px 23px;
-      border:                         0px;
-      border-radius:                  0px;
-      location:                       center;
-      y-offset:                       -28px;
+      width:                          550px;
+      height:                         53px;
+  }
+
+  inputbar, prompt, textbox-prompt-colon, entry {
+      background-color:               @background;
+  }
+
+  inputbar {
+      children:                       [ prompt, textbox-prompt-colon, entry ];
+  }
+
+  prompt {
+      padding:                        14px 11px 14px 11px;
+      background-color:               @accent;
+      text-color:                     @background;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      padding:                        9px;
   }
 
   entry {
-      expand:                         true;
       text-color:                     @accent;
-  }
-
-  listview {
-      padding:                        -202px;
+      padding:                        14px 23px 14px 0px;
   }
 
 #+end_src
@@ -6973,27 +6964,36 @@ Configuration based on https://github.com/adi1090x/rofi
   @import "../../colors.rasi"
 
   ,* {
-      background-color:               @background;
-      text-color:                     @foreground;
       font:                           "SauceCodePro Nerd Font Semibold 14";
   }
 
   window {
-      width:                          660px;
-      padding:                        24px 23px 23px 23px;
-      border:                         0px;
-      border-radius:                  0px;
-      location:                       center;
-      y-offset:                       -28px;
+      width:                          700px;
+      height:                         53px;
+  }
+
+  inputbar, prompt, textbox-prompt-colon, entry {
+      background-color:               @background;
+  }
+
+  inputbar {
+      children:                       [ prompt, textbox-prompt-colon, entry ];
+  }
+
+  prompt {
+      padding:                        14px 11px 14px 11px;
+      background-color:               @accent;
+      text-color:                     @background;
+  }
+
+  textbox-prompt-colon {
+      expand:                         false;
+      padding:                        9px;
   }
 
   entry {
-      expand:                         true;
       text-color:                     @accent;
-  }
-
-  listview {
-      padding:                        -202px;
+      padding:                        14px 23px 14px 0px;
   }
 
 #+end_src
@@ -7929,6 +7929,7 @@ Configuration based on https://github.com/adi1090x/rofi
                      -fixed-num-lines\
                      -monitor -2\
                      -p \" $1 \"\
+                     -normal-window\
                      -pid /run/user/1000/rofi-longinput.pid\
                      -replace\
                      -theme $HOME/.config/rofi/themes/other/longinput.rasi\
