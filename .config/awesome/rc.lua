@@ -142,17 +142,20 @@ client.connect_signal('unmanage', function(c)
                          end
 end)
 
-function create_blurbg(pid_path)
+function create_blurbg(pid_file)
+   local s = awful.screen.focused()
    return awful.spawn("rofi " ..
-                      "-pid " .. pid_path .. " " ..
+                      "-pid /run/user/1000/" .. pid_file .. " " ..
                       "-replace " ..
                       "-normal-window " ..
                       "-theme /home/none9632/.config/rofi/themes/other/blurbg.rasi " ..
                       "-p \"\" " ..
                       "-dmenu", {
-                         ontop = false,
-                         focus = false,
-                         above = true,
+                         ontop  = false,
+                         focus  = false,
+                         above  = true,
+                         width  = s.geometry.width,
+                         height = s.geometry.height,
    })
 end
 
@@ -194,7 +197,7 @@ function create_terminal()
    end
 
    if not terminal_blurbg_client then
-      terminal_blurbg_id = create_blurbg("/run/user/1000/rofi-terminal.pid")
+      terminal_blurbg_id = create_blurbg("rofi-terminal.pid")
    end
 
    if not terminal_client then
@@ -261,7 +264,7 @@ function create_firefox()
    end
 
    if not firefox_blurbg_client then
-      firefox_blurbg_id = create_blurbg("/run/user/1000/rofi-firefox.pid")
+      firefox_blurbg_id = create_blurbg("rofi-firefox.pid")
    end
 
    if not firefox_client then
@@ -326,6 +329,12 @@ client.connect_signal('manage', function(c)
                             c.width = 1400
                             c.height = 800
                             awful.placement.centered(c, { margins = { top = 56 }})
+                         end
+end)
+
+client.connect_signal('unmanage', function(c)
+                         if c.pid == emacs_fm_id then
+                            emacs_fm_id = 'notnil'
                          end
 end)
 
