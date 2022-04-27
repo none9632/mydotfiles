@@ -321,14 +321,21 @@ cmd my_quit ${{
     lf -remote "send $id quit"
 }}
 
-cmd quit_for_emacs ${{
+cmd select_for_emacs ${{
     rm /tmp/lfundo_$id
-    if [ "$f" = "" ] || [ "$1" = "cancel" ]
+    echo "test" > /tmp/testfile
+    if [ "$f" = "" ]
     then
         echo -n "cancel" > ~/.cache/emacs/path
     else
         echo -n $f > ~/.cache/emacs/path
     fi
+    lf -remote "send $id quit"
+}}
+
+cmd quit_for_emacs ${{
+    rm /tmp/lfundo_$id
+    echo -n "cancel" > ~/.cache/emacs/path
     lf -remote "send $id quit"
 }}
 

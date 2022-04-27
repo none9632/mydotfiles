@@ -1347,8 +1347,6 @@ Install packages using pacman
                         "-theme /home/none9632/.config/rofi/themes/other/blurbg.rasi " ..
                         "-p \"\" " ..
                         "-dmenu", {
-                           ontop  = false,
-                           focus  = false,
                            above  = true,
                            width  = s.geometry.width,
                            height = s.geometry.height,
@@ -1415,8 +1413,9 @@ Install packages using pacman
      if not terminal_client then
         create_terminal()
      elseif c ~= terminal_client then
-        raise_client(terminal_client)
         terminal_blurbg_client:move_to_tag(s.selected_tag)
+        terminal_blurbg_client:raise()
+        raise_client(terminal_client)
      else
         terminal_client:move_to_tag(s.tags[8])
         terminal_blurbg_client:move_to_tag(s.tags[8])
@@ -1487,8 +1486,9 @@ Install packages using pacman
      if not firefox_client then
         create_firefox()
      elseif c ~= firefox_client then
-        raise_client(firefox_client)
         firefox_blurbg_client:move_to_tag(s.selected_tag)
+        firefox_blurbg_client:raise()
+        raise_client(firefox_client)
      else
         firefox_client:move_to_tag(s.tags[8])
         firefox_blurbg_client:move_to_tag(s.tags[8])
@@ -1532,8 +1532,9 @@ Install packages using pacman
   function create_emacs_fm(path)
      emacs_fm_id = awful.spawn.with_shell("alacritty -e lfrun " ..
                                           "-command \"cd " .. path .. "\" " ..
-                                          "-command \"map <esc> quit_for_emacs cancel\" " ..
-                                          "-command \"map <enter> quit_for_emacs\"")
+                                          "-command \"map <esc> quit_for_emacs\" " ..
+                                          "-command \"map q quit_for_emacs\" " ..
+                                          "-command \"map <enter> select_for_emacs\"")
   end
 
   client.connect_signal('manage', function(c)
@@ -1673,6 +1674,7 @@ Install packages using pacman
 #+end_src
 
 ** Wibar
+*** Widgets
 
 #+begin_src lua
 
@@ -1754,6 +1756,12 @@ Install packages using pacman
      widget = wibox.container.background
   }
 
+#+end_src
+
+*** Wibox
+
+#+begin_src lua
+
   awful.screen.connect_for_each_screen(function(s)
         local sgeo = s.geometry
         local gap = beautiful.useless_gap
@@ -1826,6 +1834,12 @@ Install packages using pacman
            }
         }
   end)
+
+#+end_src
+
+*** Timers
+
+#+begin_src lua
 
   cputemp_icons = { "䂓", "䂒", "䂑", "䂐", "䂏" }
 
@@ -1944,6 +1958,22 @@ Install packages using pacman
      end
   }
 
+#+end_src
+
+*** Fullscreen rule
+
+#+begin_src lua
+
+  client.connect_signal("property::fullscreen", function(c)
+                           local s = awful.screen.focused()
+                           if c.width == s.geometry.width and c.class ~= "Rofi" then
+                              s.mywibox.ontop = false
+                              s.tagbar.ontop = false
+                           elseif c.class ~= "Rofi" then
+                              s.mywibox.ontop = true
+                              s.tagbar.ontop = true
+                           end
+  end)
 #+end_src
 
 ** Key bindings
@@ -2072,7 +2102,22 @@ Install packages using pacman
               if index ~= 8 then
                  local screen = awful.screen.focused()
                  local tag = screen.tags[index]
+                 local has_fullscreen = false
+
                  if tag then
+                    for _, c in ipairs(tag:clients()) do
+                       if c.width == screen.geometry.width and c.class ~= "Rofi" then
+                          has_fullscreen = true
+                          break
+                       end
+                    end
+                    if has_fullscreen then
+                       screen.mywibox.ontop = false
+                       screen.tagbar.ontop = false
+                    else
+                       screen.mywibox.ontop = true
+                       screen.tagbar.ontop = true
+                    end
                     tag:view_only()
                  end
               end
@@ -4040,14 +4085,21 @@ And optionally:
       lf -remote "send $id quit"
   }}
 
-  cmd quit_for_emacs ${{
+  cmd select_for_emacs ${{
       rm /tmp/lfundo_$id
-      if [ "$f" = "" ] || [ "$1" = "cancel" ]
+      echo "test" > /tmp/testfile
+      if [ "$f" = "" ]
       then
           echo -n "cancel" > ~/.cache/emacs/path
       else
           echo -n $f > ~/.cache/emacs/path
       fi
+      lf -remote "send $id quit"
+  }}
+
+  cmd quit_for_emacs ${{
+      rm /tmp/lfundo_$id
+      echo -n "cancel" > ~/.cache/emacs/path
       lf -remote "send $id quit"
   }}
 
@@ -5345,7 +5397,6 @@ Configuration based on https://github.com/adi1090x/rofi
   ,* {
       accent:           #51afef;
       background:       #141c21;
-      background-trans: #141c21dd;
       background-light: #1c252a;
       background-focus: #253137;
       foreground:       #93a1a1;

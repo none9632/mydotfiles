@@ -151,8 +151,6 @@ function create_blurbg(pid_file)
                       "-theme /home/none9632/.config/rofi/themes/other/blurbg.rasi " ..
                       "-p \"\" " ..
                       "-dmenu", {
-                         ontop  = false,
-                         focus  = false,
                          above  = true,
                          width  = s.geometry.width,
                          height = s.geometry.height,
@@ -213,8 +211,9 @@ function toggle_terminal()
    if not terminal_client then
       create_terminal()
    elseif c ~= terminal_client then
-      raise_client(terminal_client)
       terminal_blurbg_client:move_to_tag(s.selected_tag)
+      terminal_blurbg_client:raise()
+      raise_client(terminal_client)
    else
       terminal_client:move_to_tag(s.tags[8])
       terminal_blurbg_client:move_to_tag(s.tags[8])
@@ -279,8 +278,9 @@ function toggle_firefox()
    if not firefox_client then
       create_firefox()
    elseif c ~= firefox_client then
-      raise_client(firefox_client)
       firefox_blurbg_client:move_to_tag(s.selected_tag)
+      firefox_blurbg_client:raise()
+      raise_client(firefox_client)
    else
       firefox_client:move_to_tag(s.tags[8])
       firefox_blurbg_client:move_to_tag(s.tags[8])
@@ -318,8 +318,9 @@ local emacs_fm_id = 'notnil'
 function create_emacs_fm(path)
    emacs_fm_id = awful.spawn.with_shell("alacritty -e lfrun " ..
                                         "-command \"cd " .. path .. "\" " ..
-                                        "-command \"map <esc> quit_for_emacs cancel\" " ..
-                                        "-command \"map <enter> quit_for_emacs\"")
+                                        "-command \"map <esc> quit_for_emacs\" " ..
+                                        "-command \"map q quit_for_emacs\" " ..
+                                        "-command \"map <enter> select_for_emacs\"")
 end
 
 client.connect_signal('manage', function(c)
@@ -712,6 +713,17 @@ gears.timer {
    end
 }
 
+client.connect_signal("property::fullscreen", function(c)
+                         local s = awful.screen.focused()
+                         if c.width == s.geometry.width and c.class ~= "Rofi" then
+                            s.mywibox.ontop = false
+                            s.tagbar.ontop = false
+                         elseif c.class ~= "Rofi" then
+                            s.mywibox.ontop = true
+                            s.tagbar.ontop = true
+                         end
+end)
+
 -- General Awesome keys
 awful.keyboard.append_global_keybindings({
       awful.key({ modkey,           }, "s", hotkeys_popup.show_help,
@@ -834,7 +846,22 @@ awful.keyboard.append_global_keybindings({
             if index ~= 8 then
                local screen = awful.screen.focused()
                local tag = screen.tags[index]
+               local has_fullscreen = false
+
                if tag then
+                  for _, c in ipairs(tag:clients()) do
+                     if c.width == screen.geometry.width and c.class ~= "Rofi" then
+                        has_fullscreen = true
+                        break
+                     end
+                  end
+                  if has_fullscreen then
+                     screen.mywibox.ontop = false
+                     screen.tagbar.ontop = false
+                  else
+                     screen.mywibox.ontop = true
+                     screen.tagbar.ontop = true
+                  end
                   tag:view_only()
                end
             end
