@@ -1347,6 +1347,7 @@ Install packages using pacman
                         "-theme /home/none9632/.config/rofi/themes/other/blurbg.rasi " ..
                         "-p \"\" " ..
                         "-dmenu", {
+                           focus  = false,
                            above  = true,
                            width  = s.geometry.width,
                            height = s.geometry.height,
@@ -1569,6 +1570,14 @@ Install packages using pacman
      lf_terminal_id = awful.spawn.with_shell("alacritty -e sh -c 'tput civis;" .. command .. "'")
   end
 
+  function get_lfterm_width (term_pid)
+     for _, c in ipairs(client.get()) do
+        if c.pid == term_pid then
+           return c.width
+        end
+     end
+  end
+
   client.connect_signal('manage', function(c)
                            if c.pid == lf_terminal_id then
                               c.ontop = true
@@ -1578,6 +1587,10 @@ Install packages using pacman
                               client.focus = c
                               awful.placement.centered(c, { margins = { top = 56 }})
                            end
+  end)
+
+  client.connect_signal('property::width', function(c)
+                           awful.spawn.with_shell("lf -remote \"send recol\"")
   end)
 
 #+end_src
@@ -3400,8 +3413,6 @@ And optionally:
   \033[3;1m%f\033[0m\
   \033[38;5;8m]\033[0m\""
 
-  lf -remote "send recol"
-
 #+end_src
 
 *** lfrun
@@ -3433,6 +3444,22 @@ And optionally:
   else
       exec "$@"
   fi
+
+#+end_src
+
+*** Get pid
+
+#+begin_src sh :tangle ./.config/lf/scripts/lf_getpid
+
+  #!/bin/sh
+
+  pid=$1
+  while [[ "$(ps -q $pid -o comm=)" != "alacritty" ]]
+  do
+      pid="$(ps -o ppid= -p $pid)"
+  done
+
+  echo -n $pid
 
 #+end_src
 
@@ -3786,13 +3813,14 @@ And optionally:
   }}
 
   cmd recol &{{
-      # w=$(tput cols)
-      # if [ $w -le 100 ]; then
-      #     lf -remote "send $id set ratios 2:3"
-      # else
-      #     lf -remote "send $id set ratios 1:2:3"
-      # fi
-      lf -remote "send $id set ratios 1:2:3"
+      term_pid="$(lf_getpid $id)"
+      w=$(awesome-client "return get_lfterm_width($term_pid)" | awk '{print $2}')
+      if [ $w -le 1000 ]
+      then
+          lf -remote "send $id set ratios 2:3"
+      else
+          lf -remote "send $id set ratios 1:2:3"
+      fi
   }}
 
   cmd my_open %{{

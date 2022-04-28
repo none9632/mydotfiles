@@ -151,6 +151,7 @@ function create_blurbg(pid_file)
                       "-theme /home/none9632/.config/rofi/themes/other/blurbg.rasi " ..
                       "-p \"\" " ..
                       "-dmenu", {
+                         focus  = false,
                          above  = true,
                          width  = s.geometry.width,
                          height = s.geometry.height,
@@ -349,6 +350,14 @@ function create_lf_terminal(command, width, height)
    lf_terminal_id = awful.spawn.with_shell("alacritty -e sh -c 'tput civis;" .. command .. "'")
 end
 
+function get_lfterm_width (term_pid)
+   for _, c in ipairs(client.get()) do
+      if c.pid == term_pid then
+         return c.width
+      end
+   end
+end
+
 client.connect_signal('manage', function(c)
                          if c.pid == lf_terminal_id then
                             c.ontop = true
@@ -358,6 +367,10 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
+end)
+
+client.connect_signal('property::width', function(c)
+                         awful.spawn.with_shell("lf -remote \"send recol\"")
 end)
 
 local theme_assets = require("beautiful.theme_assets")

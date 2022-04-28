@@ -1,0 +1,9 @@
+#!/bin/sh
+
+pid=$1
+while [[ "$(ps -q $pid -o comm=)" != "alacritty" ]]
+do
+    pid="$(ps -o ppid= -p $pid)"
+done
+
+echo -n $pid
