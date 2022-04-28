@@ -19,6 +19,7 @@ set cleaner ~/.config/lf/scripts/lf_cleaner
 %{{
     touch /tmp/lfundo_$id
     lf_update . $id
+    lf -remote "send $id recol"
 }}
 
 cmd recol &{{
@@ -148,16 +149,19 @@ cmd my_paste &{{
        [[ $total_files -ge 2500 && $total_size -ge 52428800 ]]
     then
         files="$@"
+        term_pid=$(lf_getpid $id)
         if [ "$mode" = "move" ]
         then
             awesome-client "create_lf_terminal(\"cd $PWD;\
                                                  vcp -cRH $files .;\
                                                  rm -rf $files;\
-                                                 lf -remote \\\"send reload\\\"\", 800, 400)"
+                                                 lf -remote \\\"send reload\\\"\",\
+                                                 800, 400, false, $term_pid)"
         else
             awesome-client "create_lf_terminal(\"cd $PWD;\
                                                  vcp -cRH $files .;\
-                                                 lf -remote \\\"send reload\\\"\", 800, 400)"
+                                                 lf -remote \\\"send reload\\\"\",\
+                                                 800, 400, false, $term_pid)"
         fi
     else
         for file in "$@"
@@ -275,7 +279,7 @@ cmd fzf_jump_prev &{{
                                              echo -n \$path > $tmp_file;\
                                          else\
                                              echo -n cancel > $tmp_file;\
-                                         fi\", 1100, 600)"
+                                         fi\", 1100, 600, true, nil)"
     while ! [ -s $tmp_file ]; do sleep 0.1; done
     path="$(cat $tmp_file)"
     [ "$path" != "cancel" ] && lf -remote "send $id my_cd $path"
@@ -303,12 +307,14 @@ cmd goto_config %{{
 
 cmd git_clone &{{
     link=$(longinput "Link")
+    term_pid=$(lf_getpid $id)
     if [ "$link" != "" ]
     then
         awesome-client "create_lf_terminal(\"cd $PWD;\
                                              git clone $link;\
                                              printf \\\"%s \\\" \\\"Press enter to continue\\\";\
-                                             read ans\", 900, 210)"
+                                             read ans\",\
+                                             900, 210, false, $term_pid)"
     fi
 }}
 

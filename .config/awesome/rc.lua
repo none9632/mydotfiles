@@ -343,19 +343,15 @@ end)
 local lf_terminal_id = 'notnil'
 local lf_terminal_width = 0
 local lf_terminal_height = 0
+local lf_terminal_centered = true
+local lf_pid = nil
 
-function create_lf_terminal(command, width, height)
+function create_lf_terminal(command, width, height, centered, term_pid)
    lf_terminal_width = width
    lf_terminal_height = height
+   lf_terminal_centered = centered
+   lf_pid = term_pid
    lf_terminal_id = awful.spawn.with_shell("alacritty -e sh -c 'tput civis;" .. command .. "'")
-end
-
-function get_lfterm_width (term_pid)
-   for _, c in ipairs(client.get()) do
-      if c.pid == term_pid then
-         return c.width
-      end
-   end
 end
 
 client.connect_signal('manage', function(c)
@@ -364,13 +360,15 @@ client.connect_signal('manage', function(c)
                             c.floating = true
                             c.width = lf_terminal_width
                             c.height = lf_terminal_height
+                            if lf_terminal_centered == true then
+                               awful.placement.centered(c, { margins = { top = 56 }})
+                            else
+                               local lf_client = get_client(lf_pid)
+                               c.x = lf_client.x + lf_client.width/2 - c.width/2
+                               c.y = lf_client.y + lf_client.height/2 - c.height/2
+                            end
                             client.focus = c
-                            awful.placement.centered(c, { margins = { top = 56 }})
                          end
-end)
-
-client.connect_signal('property::width', function(c)
-                         awful.spawn.with_shell("lf -remote \"send recol\"")
 end)
 
 local theme_assets = require("beautiful.theme_assets")
@@ -735,6 +733,23 @@ client.connect_signal("property::fullscreen", function(c)
                             s.mywibox.ontop = true
                             s.tagbar.ontop = true
                          end
+end)
+
+function get_client(pid)
+   for _, c in ipairs(client.get()) do
+      if c.pid == pid then
+         return c
+      end
+   end
+end
+
+function get_lfterm_width (term_pid)
+   local term_client = get_client(term_pid)
+   return term_client.width
+end
+
+client.connect_signal('property::width', function(c)
+                         awful.spawn.with_shell("lf -remote \"send recol\"")
 end)
 
 -- General Awesome keys

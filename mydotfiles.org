@@ -1563,19 +1563,15 @@ Install packages using pacman
   local lf_terminal_id = 'notnil'
   local lf_terminal_width = 0
   local lf_terminal_height = 0
+  local lf_terminal_centered = true
+  local lf_pid = nil
 
-  function create_lf_terminal(command, width, height)
+  function create_lf_terminal(command, width, height, centered, term_pid)
      lf_terminal_width = width
      lf_terminal_height = height
+     lf_terminal_centered = centered
+     lf_pid = term_pid
      lf_terminal_id = awful.spawn.with_shell("alacritty -e sh -c 'tput civis;" .. command .. "'")
-  end
-
-  function get_lfterm_width (term_pid)
-     for _, c in ipairs(client.get()) do
-        if c.pid == term_pid then
-           return c.width
-        end
-     end
   end
 
   client.connect_signal('manage', function(c)
@@ -1584,13 +1580,15 @@ Install packages using pacman
                               c.floating = true
                               c.width = lf_terminal_width
                               c.height = lf_terminal_height
+                              if lf_terminal_centered == true then
+                                 awful.placement.centered(c, { margins = { top = 56 }})
+                              else
+                                 local lf_client = get_client(lf_pid)
+                                 c.x = lf_client.x + lf_client.width/2 - c.width/2
+                                 c.y = lf_client.y + lf_client.height/2 - c.height/2
+                              end
                               client.focus = c
-                              awful.placement.centered(c, { margins = { top = 56 }})
                            end
-  end)
-
-  client.connect_signal('property::width', function(c)
-                           awful.spawn.with_shell("lf -remote \"send recol\"")
   end)
 
 #+end_src
@@ -1987,6 +1985,29 @@ Install packages using pacman
                               s.tagbar.ontop = true
                            end
   end)
+#+end_src
+
+** Misc
+
+#+begin_src lua
+
+  function get_client(pid)
+     for _, c in ipairs(client.get()) do
+        if c.pid == pid then
+           return c
+        end
+     end
+  end
+
+  function get_lfterm_width (term_pid)
+     local term_client = get_client(term_pid)
+     return term_client.width
+  end
+
+  client.connect_signal('property::width', function(c)
+                           awful.spawn.with_shell("lf -remote \"send recol\"")
+  end)
+
 #+end_src
 
 ** Key bindings
@@ -3810,6 +3831,7 @@ And optionally:
   %{{
       touch /tmp/lfundo_$id
       lf_update . $id
+      lf -remote "send $id recol"
   }}
 
   cmd recol &{{
@@ -3939,16 +3961,19 @@ And optionally:
          [[ $total_files -ge 2500 && $total_size -ge 52428800 ]]
       then
           files="$@"
+          term_pid=$(lf_getpid $id)
           if [ "$mode" = "move" ]
           then
               awesome-client "create_lf_terminal(\"cd $PWD;\
                                                    vcp -cRH $files .;\
                                                    rm -rf $files;\
-                                                   lf -remote \\\"send reload\\\"\", 800, 400)"
+                                                   lf -remote \\\"send reload\\\"\",\
+                                                   800, 400, false, $term_pid)"
           else
               awesome-client "create_lf_terminal(\"cd $PWD;\
                                                    vcp -cRH $files .;\
-                                                   lf -remote \\\"send reload\\\"\", 800, 400)"
+                                                   lf -remote \\\"send reload\\\"\",\
+                                                   800, 400, false, $term_pid)"
           fi
       else
           for file in "$@"
@@ -4066,7 +4091,7 @@ And optionally:
                                                echo -n \$path > $tmp_file;\
                                            else\
                                                echo -n cancel > $tmp_file;\
-                                           fi\", 1100, 600)"
+                                           fi\", 1100, 600, true, nil)"
       while ! [ -s $tmp_file ]; do sleep 0.1; done
       path="$(cat $tmp_file)"
       [ "$path" != "cancel" ] && lf -remote "send $id my_cd $path"
@@ -4094,12 +4119,14 @@ And optionally:
 
   cmd git_clone &{{
       link=$(longinput "Link")
+      term_pid=$(lf_getpid $id)
       if [ "$link" != "" ]
       then
           awesome-client "create_lf_terminal(\"cd $PWD;\
                                                git clone $link;\
                                                printf \\\"%s \\\" \\\"Press enter to continue\\\";\
-                                               read ans\", 900, 210)"
+                                               read ans\",\
+                                               900, 210, false, $term_pid)"
       fi
   }}
 
