@@ -207,7 +207,7 @@
 
     # Redisplay last message(s). Equivalent dunstctl command:
     # dunstctl history-pop
-    history = mod4+n
+    # history = mod4+n
 
     ### Misc/Advanced ###
 

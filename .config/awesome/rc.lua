@@ -761,11 +761,27 @@ awful.keyboard.append_global_keybindings({
 })
 
 awful.keyboard.append_global_keybindings({
-      awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
-         {description = "view previous", group = "tag"}),
-      awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
-         {description = "view next", group = "tag"}),
-      awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+      awful.key({ modkey,           }, "l", function ()
+            local s = awful.screen.focused()
+            local t = s.selected_tag
+            if t.index == 7 then
+               s.tags[1]:view_only()
+            else
+               awful.tag.viewnext()
+            end
+      end,
+         {description = "view next tag", group = "tag"}),
+      awful.key({ modkey,           }, "h", function ()
+            local s = awful.screen.focused()
+            local t = s.selected_tag
+            if t.index == 1 then
+               s.tags[7]:view_only()
+            else
+               awful.tag.viewprev()
+            end
+      end,
+         {description = "view previous tag", group = "tag"}),
+      awful.key({ modkey,           }, "n", awful.tag.history.restore,
          {description = "go back", group = "tag"}),
       awful.key {
          modifiers   = { modkey },
@@ -798,21 +814,6 @@ awful.keyboard.append_global_keybindings({
          end,
       },
       awful.key {
-         modifiers   = { modkey, "Control" },
-         keygroup    = "numrow",
-         description = "toggle tag",
-         group       = "tag",
-         on_press    = function (index)
-            if index ~= 8 then
-               local screen = awful.screen.focused()
-               local tag = screen.tags[index]
-               if tag then
-                  awful.tag.viewtoggle(tag)
-               end
-            end
-         end,
-      },
-      awful.key {
          modifiers = { modkey, "Shift" },
          keygroup    = "numrow",
          description = "move focused client to tag",
@@ -826,34 +827,6 @@ awful.keyboard.append_global_keybindings({
             end
          end,
       },
-      awful.key {
-         modifiers   = { modkey, "Control", "Shift" },
-         keygroup    = "numrow",
-         description = "toggle focused client on tag",
-         group       = "tag",
-         on_press    = function (index)
-            if index ~= 8 and client.focus then
-               local tag = client.focus.screen.tags[index]
-               if tag then
-                  client.focus:toggle_tag(tag)
-               end
-            end
-         end,
-      },
-      awful.key {
-         modifiers   = { modkey },
-         keygroup    = "numpad",
-         description = "select layout directly",
-         group       = "layout",
-         on_press    = function (index)
-            if index ~= 8 then
-               local t = awful.screen.focused().selected_tag
-               if t then
-                  t.layout = t.layouts[index] or t.layout
-               end
-            end
-         end,
-      }
 })
 
 awful.keyboard.append_global_keybindings({
@@ -881,15 +854,15 @@ awful.keyboard.append_global_keybindings({
          {description = "focus the next screen", group = "screen"}),
       awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
          {description = "focus the previous screen", group = "screen"}),
-      awful.key({ modkey, "Control" }, "n",
-         function ()
-            local c = awful.client.restore()
-            -- Focus restored client
-            if c then
-               c:activate { raise = true, context = "key.unminimize" }
-            end
-         end,
-         {description = "restore minimized", group = "client"}),
+      -- awful.key({ modkey, "Control" }, "n",
+      --    function ()
+      --       local c = awful.client.restore()
+      --       -- Focus restored client
+      --       if c then
+      --          c:activate { raise = true, context = "key.unminimize" }
+      --       end
+      --    end,
+      --    {description = "restore minimized", group = "client"}),
 })
 
 awful.keyboard.append_global_keybindings({
@@ -899,14 +872,14 @@ awful.keyboard.append_global_keybindings({
          {description = "swap with previous client by index", group = "client"}),
       awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
          {description = "jump to urgent client", group = "client"}),
-      awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+      awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incmwfact( 0.05)          end,
          {description = "increase master width factor", group = "layout"}),
-      awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+      awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incmwfact(-0.05)          end,
          {description = "decrease master width factor", group = "layout"}),
-      awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
-         {description = "increase the number of master clients", group = "layout"}),
-      awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
-         {description = "decrease the number of master clients", group = "layout"}),
+      -- awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+      --    {description = "increase the number of master clients", group = "layout"}),
+      -- awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+      -- {description = "decrease the number of master clients", group = "layout"}),
       awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
          {description = "increase the number of columns", group = "layout"}),
       awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
@@ -947,96 +920,6 @@ awful.keyboard.append_global_keybindings({
          {description = "resize splash app", group = "launcher"})
 })
 
-awful.keyboard.append_global_keybindings({
-      awful.key {
-         modifiers   = { modkey },
-         keygroup    = "numrow",
-         description = "only view tag",
-         group       = "tag",
-         on_press    = function (index)
-            if index ~= 8 then
-               local screen = awful.screen.focused()
-               local tag = screen.tags[index]
-               local has_fullscreen = false
-
-               if tag then
-                  for _, c in ipairs(tag:clients()) do
-                     if c.width == screen.geometry.width and c.class ~= "Rofi" then
-                        has_fullscreen = true
-                        break
-                     end
-                  end
-                  if has_fullscreen then
-                     screen.mywibox.ontop = false
-                     screen.tagbar.ontop = false
-                  else
-                     screen.mywibox.ontop = true
-                     screen.tagbar.ontop = true
-                  end
-                  tag:view_only()
-               end
-            end
-         end,
-      },
-      awful.key {
-         modifiers   = { modkey, "Control" },
-         keygroup    = "numrow",
-         description = "toggle tag",
-         group       = "tag",
-         on_press    = function (index)
-            if index ~= 8 then
-               local screen = awful.screen.focused()
-               local tag = screen.tags[index]
-               if tag then
-                  awful.tag.viewtoggle(tag)
-               end
-            end
-         end,
-      },
-            awful.key {
-               modifiers = { modkey, "Shift" },
-               keygroup    = "numrow",
-               description = "move focused client to tag",
-               group       = "tag",
-               on_press    = function (index)
-                  if index ~= 8 and client.focus then
-                     local tag = client.focus.screen.tags[index]
-                     if tag then
-                        client.focus:move_to_tag(tag)
-                     end
-                  end
-               end,
-            },
-            awful.key {
-               modifiers   = { modkey, "Control", "Shift" },
-               keygroup    = "numrow",
-               description = "toggle focused client on tag",
-               group       = "tag",
-               on_press    = function (index)
-                  if index ~= 8 and client.focus then
-                     local tag = client.focus.screen.tags[index]
-                     if tag then
-                        client.focus:toggle_tag(tag)
-                     end
-                  end
-               end,
-            },
-            awful.key {
-               modifiers   = { modkey },
-               keygroup    = "numpad",
-               description = "select layout directly",
-               group       = "layout",
-               on_press    = function (index)
-                  if index ~= 8 then
-                     local t = awful.screen.focused().selected_tag
-                     if t then
-                        t.layout = t.layouts[index] or t.layout
-                     end
-                  end
-               end,
-            }
-      })
-
 client.connect_signal("request::default_mousebindings", function()
                          awful.mouse.append_client_mousebindings({
                                awful.button({ }, 1, function (c)
@@ -1076,90 +959,13 @@ client.connect_signal("request::default_keybindings", function()
                                   {description = "move to master", group = "client"}),
                                awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
                                   {description = "move to screen", group = "client"}),
-                               awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-                                  {description = "toggle keep on top", group = "client"}),
-                               awful.key({ modkey,           }, "n",
-                                  function (c)
-                                     -- The client currently has the input focus, so it cannot be
-                                     -- minimized, since minimized clients can't have the focus.
-                                     c.minimized = true
-                                  end ,
-                                  {description = "minimize", group = "client"}),
-                               awful.key({ modkey, "Control" }, "m",
-                                  function (c)
-                                     c.maximized_vertical = not c.maximized_vertical
-                                     c:raise()
-                                  end ,
-                                  {description = "(un)maximize vertically", group = "client"}),
-                               awful.key({ modkey, "Shift"   }, "m",
-                                  function (c)
-                                     c.maximized_horizontal = not c.maximized_horizontal
-                                     c:raise()
-                                  end ,
-                                  {description = "(un)maximize horizontally", group = "client"}),
-                         })
-end)
-
-client.connect_signal("request::default_mousebindings", function()
-                         awful.mouse.append_client_mousebindings({
-                               awful.button({ }, 1, function (c)
-                                     c:activate { context = "mouse_click" }
-                               end),
-                               awful.button({ modkey }, 1, function (c)
-                                     c:activate { context = "mouse_click", action = "mouse_move"  }
-                               end),
-                               awful.button({ modkey }, 3, function (c)
-                                     c:activate { context = "mouse_click", action = "mouse_resize"}
-                               end),
-                         })
-end)
-
-client.connect_signal("request::default_keybindings", function()
-                         awful.keyboard.append_client_keybindings({
-                               awful.key({ modkey,           }, "f",
-                                  function (c)
-                                     c.fullscreen = not c.fullscreen
-                                     c:raise()
-                                  end,
-                                  {description = "toggle fullscreen", group = "client"}),
-                               awful.key({ modkey,           }, "q",
-                                  function (c)
-                                     if c.pid == terminal_id then
-                                        toggle_terminal()
-                                     elseif c.pid ~= emacs_fm_id
-                                        and c.pid ~= terminal_blurbg_id
-                                        and c.pid ~= firefox_blurbg_id then
-                                        c:kill()
-                                     end
-                                  end,
-                                  {description = "close", group = "client"}),
-                               awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
-                                  {description = "toggle floating", group = "client"}),
-                               awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-                                  {description = "move to master", group = "client"}),
-                               awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-                                  {description = "move to screen", group = "client"}),
-                               awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-                                  {description = "toggle keep on top", group = "client"}),
-                               awful.key({ modkey,           }, "n",
-                                  function (c)
-                                     -- The client currently has the input focus, so it cannot be
-                                     -- minimized, since minimized clients can't have the focus.
-                                     c.minimized = true
-                                  end ,
-                                  {description = "minimize", group = "client"}),
-                               awful.key({ modkey, "Control" }, "m",
-                                  function (c)
-                                     c.maximized_vertical = not c.maximized_vertical
-                                     c:raise()
-                                  end ,
-                                  {description = "(un)maximize vertically", group = "client"}),
-                               awful.key({ modkey, "Shift"   }, "m",
-                                  function (c)
-                                     c.maximized_horizontal = not c.maximized_horizontal
-                                     c:raise()
-                                  end ,
-                                  {description = "(un)maximize horizontally", group = "client"}),
+                               -- awful.key({ modkey,           }, "n",
+                               --    function (c)
+                               --       -- The client currently has the input focus, so it cannot be
+                               --       -- minimized, since minimized clients can't have the focus.
+                               --       c.minimized = true
+                               --    end,
+                               --    {description = "minimize", group = "client"}),
                          })
 end)
 
