@@ -213,6 +213,7 @@ function toggle_terminal()
       create_terminal()
    elseif c ~= terminal_client then
       terminal_blurbg_client:move_to_tag(s.selected_tag)
+      terminal_blurbg_client:raise()
       raise_client(terminal_client)
    else
       terminal_client:move_to_tag(s.tags[8])
@@ -280,6 +281,7 @@ function toggle_firefox()
       create_firefox()
    elseif c ~= firefox_client then
       firefox_blurbg_client:move_to_tag(s.selected_tag)
+      firefox_blurbg_client:raise()
       raise_client(firefox_client)
    else
       firefox_client:move_to_tag(s.tags[8])
