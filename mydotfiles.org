@@ -39,7 +39,7 @@
   # list of the build packages
   build_pkgs="base-devel git gcc make cmake"
   # list of packages that will be installed
-  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils dunst evince font-manager fzf"
+  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils dunst evince font-manager fzf rm-improved"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
@@ -689,6 +689,7 @@ Install packages using pacman
 
   export PATH=$HOME/.config/rofi/scripts:$HOME/.config/lf/scripts:$HOME/.local/bin:$PATH
   export ZDOTDIR="$HOME/.config/zsh"
+  export TPATH="$HOME/.local/share/my-trash"
 
   export SHELL="/bin/bash"
   export EDITOR="/bin/nvim"
@@ -700,6 +701,7 @@ Install packages using pacman
 
 #+begin_src sh
 
+  [[ ! -d $TPATH ]] && mkdir -p $TPATH
   [[ -f /usr/bin/udiskie ]] && udiskie &
 
   xset r rate 300 24
@@ -4010,10 +4012,11 @@ And optionally:
 
       if [ "$command" = "trash_restore" ]
       then
+          rip --graveyard $TPATH -u
           while read line;
           do
               [[ -z "$line" ]] && break
-              gio trash --restore $line
+              rip --graveyard $TPATH -u
               sed -i '1d' $FILE
           done < $FILE
       elif [ "$command" = "name_restore" ]
@@ -4042,28 +4045,45 @@ And optionally:
       FILE="/tmp/lfundo_$id"
       lf_prepare_file $FILE
 
-      for filename in $fx
+      for file in $fx
       do
-          gio trash $filename
-          filename="${filename##*/}"
-          sed -i "1s|^|trash:///$filename\n|" $FILE
+          rip --graveyard $TPATH $file
+          sed -i "1s|^|trash_restore\n|" $FILE
       done
-      sed -i "1s|^|trash_restore\n|" $FILE
 
       lf -remote "send $id load"
   }}
 
   cmd trash_restore &{{
-      for file in $fx
+      tmp_file=$(mktemp)
+      term_pid=$(lf_getpid $id)
+      lines="$(cat $TPATH/.record)"
+      res=""
+      for line in $lines
       do
-          gio trash --restore trash:///$(basename $file)
+          file=$(echo "$line" | awk 'BEGIN{FS="\t"} {print $3}' | sed "s|$TPATH||g" | sed "s|$HOME|~|g")
+          res="$res$file\n"
       done
-      lf -remote "send $id reload"
+      awesome-client "create_lf_terminal(\"path=\$(echo -en \\\"$res\\\" | fzf --reverse --bind tab:down --bind btab:up);\
+                                           if [ \\\"\$path\\\" != \\\"\\\" ]; then\
+                                               echo -n \$path > $tmp_file;\
+                                           else\
+                                               echo -n cancel > $tmp_file;\
+                                           fi\",\
+                                           800, 400, false, $term_pid)"
+      while ! [ -s $tmp_file ]; do sleep 0.1; done
+      path=$(cat $tmp_file | sed "s|~|$HOME|g")
+      if [ "$path" != "cancel" ]
+      then
+          rip --graveyard $TPATH -u "$TPATH$path"
+          lf -remote "send reload"
+      fi
   }}
 
-  cmd trash_empty &{{
-      gio trash --empty
-      lf -remote "send $id reload"
+  cmd trash_empty ${{
+      rm -rf $TPATH/*
+      echo -n "" > $TPATH/.record
+      lf -remote "send reload"
   }}
 
   cmd fzf_jump ${{
@@ -4196,7 +4216,7 @@ And optionally:
   map gd my_cd ~/Documents
   map gD my_cd ~/Downloads
   map g/ my_cd /
-  map gt my_cd ~/.local/share/Trash/files
+  map gt my_cd /tmp
   map ge my_cd /etc
   map gm my_cd /run/media
   map gM my_cd /mnt
