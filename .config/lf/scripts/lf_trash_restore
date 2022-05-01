@@ -1,0 +1,9 @@
+#!/bin/sh
+
+tmp_file=$2
+path=$(echo -en "$1" | fzf --reverse --bind tab:down --bind btab:up)
+if [ "$path" != "" ]; then
+    echo -n $path > $tmp_file;
+else
+    echo -n cancel > $tmp_file;
+fi

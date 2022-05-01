@@ -1,0 +1,16 @@
+#!/bin/sh
+
+tmp_file=$1
+export _ZO_FZF_OPTS="--height 100%\
+                     --reverse\
+                     --no-sort\
+                     --bind tab:down\
+                     --bind btab:up\
+                     --preview-window right:35%\
+                     --preview=\"ls -1A {2..}\""
+path=$(zoxide query -i)
+if [ "$path" != "" ]; then
+    echo -n $path > $tmp_file
+else
+    echo -n cancel > $tmp_file
+fi
