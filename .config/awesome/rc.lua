@@ -168,7 +168,7 @@ end
 function toggle_splash_height()
    c = client.focus
 
-   if c.pid == terminal_id or c.class == "firefox" then
+   if c.pid == terminal_pid or c.class == "firefox" then
       if c.width <= 1350 then
          awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
       else
@@ -179,15 +179,15 @@ function toggle_splash_height()
    end
 end
 
-local terminal_id = 'notnil'
+local terminal_pid = 'notnil'
 local terminal_client
-local terminal_blurbg_id = 'notnil'
+local terminal_blurbg_pid = 'notnil'
 local terminal_blurbg_client
 
 function create_terminal()
    for _, c in ipairs(client.get()) do
       if c.instance == "Alacritty-splash" then
-         terminal_id = c.pid
+         terminal_pid = c.pid
          terminal_client = c
          c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
@@ -196,11 +196,11 @@ function create_terminal()
    end
 
    if not terminal_blurbg_client then
-      terminal_blurbg_id = create_blurbg("rofi-terminal.pid")
+      terminal_blurbg_pid = create_blurbg("rofi-terminal.pid")
    end
 
    if not terminal_client then
-      terminal_id = awful.spawn("alacritty --class Alacritty-splash")
+      terminal_pid = awful.spawn("alacritty --class Alacritty-splash")
    end
 end
 
@@ -222,7 +222,7 @@ function toggle_terminal()
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == terminal_id then
+                         if c.pid == terminal_pid then
                             terminal_client = c
                             c.floating = true
                             c.ontop = true
@@ -231,7 +231,7 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
-                         if c.pid == terminal_blurbg_id then
+                         if c.pid == terminal_blurbg_pid then
                             terminal_blurbg_client = c
                             c:lower()
                             awful.placement.centered(c)
@@ -239,24 +239,24 @@ client.connect_signal('manage', function(c)
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if c.pid == terminal_id then
+                         if c.pid == terminal_pid then
                             terminal_client = nil
-                            terminal_id = 'notnil'
+                            terminal_pid = 'notnil'
                             terminal_blurbg_client:kill()
                             terminal_blurbg_client = nil
-                            terminal_blurbg_id = 'notnil'
+                            terminal_blurbg_pid = 'notnil'
                          end
 end)
 
-local firefox_id = 'notnil'
+local firefox_pid = 'notnil'
 local firefox_client
-local firefox_blurbg_id = 'notnil'
+local firefox_blurbg_pid = 'notnil'
 local firefox_blurbg_client
 
 function create_firefox()
    for _, c in ipairs(client.get()) do
       if c.width == 1350 and c.class == "firefox" then
-         firefox_id = c.pid
+         firefox_pid = c.pid
          firefox_client = c
          c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
@@ -265,11 +265,11 @@ function create_firefox()
    end
 
    if not firefox_blurbg_client then
-      firefox_blurbg_id = create_blurbg("rofi-firefox.pid")
+      firefox_blurbg_pid = create_blurbg("rofi-firefox.pid")
    end
 
    if not firefox_client then
-      firefox_id = awful.spawn("firefox")
+      firefox_pid = awful.spawn("firefox")
    end
 end
 
@@ -290,7 +290,7 @@ function toggle_firefox()
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == firefox_id then
+                         if c.pid == firefox_pid then
                             firefox_client = c
                             c.floating = true
                             c.ontop = true
@@ -299,7 +299,7 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
-                         if c.pid == firefox_blurbg_id then
+                         if c.pid == firefox_blurbg_pid then
                             firefox_blurbg_client = c
                             c:lower()
                             awful.placement.centered(c)
@@ -307,27 +307,27 @@ client.connect_signal('manage', function(c)
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if c.pid == firefox_id then
+                         if c.pid == firefox_pid then
                             firefox_client = nil
-                            firefox_id = 'notnil'
+                            firefox_pid = 'notnil'
                             firefox_blurbg_client:kill()
                             firefox_blurbg_client = nil
-                            firefox_blurbg_id = 'notnil'
+                            firefox_blurbg_pid = 'notnil'
                          end
 end)
 
-local emacs_fm_id = 'notnil'
+local emacs_fm_pid = 'notnil'
 
 function create_emacs_fm(path)
-   emacs_fm_id = awful.spawn.with_shell("alacritty -e lfrun " ..
-                                        "-command \"cd " .. path .. "\" " ..
+   emacs_fm_pid = awful.spawn.with_shell("alacritty -e lfrun " ..
+                                         "-command \"cd " .. path .. "\" " ..
                                         "-command \"map <esc> quit_for_emacs\" " ..
                                         "-command \"map q quit_for_emacs\" " ..
                                         "-command \"map <enter> select_for_emacs\"")
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == emacs_fm_id then
+                         if c.pid == emacs_fm_pid then
                             c.ontop = true
                             c.floating = true
                             c.width = 1400
@@ -337,12 +337,12 @@ client.connect_signal('manage', function(c)
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if c.pid == emacs_fm_id then
-                            emacs_fm_id = 'notnil'
+                         if c.pid == emacs_fm_pid then
+                            emacs_fm_pid = 'notnil'
                          end
 end)
 
-local lf_terminal_id = 'notnil'
+local lf_terminal_pid = 'notnil'
 local lf_terminal_width = 0
 local lf_terminal_height = 0
 local lf_terminal_centered = true
@@ -353,11 +353,11 @@ function create_lf_terminal(command, width, height, centered, term_pid)
    lf_terminal_height = height
    lf_terminal_centered = centered
    lf_pid = term_pid
-   lf_terminal_id = awful.spawn.with_shell("alacritty -e sh -c 'tput civis;" .. command .. "'")
+   lf_terminal_pid = awful.spawn.with_shell("alacritty -e sh -c 'tput civis;" .. command .. "'")
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == lf_terminal_id then
+                         if c.pid == lf_terminal_pid then
                             c.ontop = true
                             c.floating = true
                             c.width = lf_terminal_width
@@ -682,7 +682,7 @@ gears.timer {
                                            end
 
                                            if capacity <= 10 and bat_notification_count_1 == 0 then
-                                              awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"10% battery remaining\"")
+                                              awful.spawn.with_shell("notify-send -t 0 -i ~/Downloads/icons/low-battery.png -u normal \"Battery is low\" \"10% battery remaining\"")
                                               bat_notification_count_1 = 1
                                            elseif capacity <= 1 and bat_notification_count_2 == 0 then
                                               awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"1% battery remaining\"")
@@ -752,6 +752,16 @@ end
 
 client.connect_signal('property::width', function(c)
                          awful.spawn.with_shell("lf -remote \"send recol\"")
+                         if lf_terminal_centered == false then
+                            for _, c in ipairs(client.get()) do
+                               if c.pid == lf_terminal_pid then
+                                  local lf_client = get_client(lf_pid)
+                                  c.x = lf_client.x + lf_client.width/2 - c.width/2
+                                  c.y = lf_client.y + lf_client.height/2 - c.height/2
+                                  break
+                               end
+                            end
+                         end
 end)
 
 -- General Awesome keys
@@ -946,11 +956,11 @@ client.connect_signal("request::default_keybindings", function()
                                   {description = "toggle fullscreen", group = "client"}),
                                awful.key({ modkey,           }, "q",
                                   function (c)
-                                     if c.pid == terminal_id then
+                                     if c.pid == terminal_pid then
                                         toggle_terminal()
-                                     elseif c.pid ~= emacs_fm_id
-                                        and c.pid ~= terminal_blurbg_id
-                                        and c.pid ~= firefox_blurbg_id then
+                                     elseif c.pid ~= emacs_fm_pid
+                                        and c.pid ~= terminal_blurbg_pid
+                                        and c.pid ~= firefox_blurbg_pid then
                                         c:kill()
                                      end
                                   end,
