@@ -245,25 +245,25 @@ cmd trash_restore &{{
 
     for line in $lines
     do
-        file=$(echo "$line" | awk 'BEGIN{FS="\t"} {print $3}' | sed "s|$TPATH||g" | sed "s|$HOME|~|g")
+        file=$(echo "$line" | awk 'BEGIN{FS="\t"} {print $3}' | sed "s|$TPATH||g")
         res="$res$file\n"
     done
     awesome-client "create_lf_terminal(\"lf_trash_restore \\\"$res\\\" $tmp_file\",\
                                        800, 400, false, $term_pid)"
     while ! [ -s $tmp_file ]; do sleep 0.1; done
 
-    path=$(cat $tmp_file | sed "s|~|$HOME|g")
+    path=$(cat $tmp_file)
     if [ "$path" != "cancel" ]
     then
         rip --graveyard $TPATH -u "$TPATH$path"
-        lf -remote "send reload"
+        lf -remote "send load"
     fi
 }}
 
 cmd trash_empty ${{
     rm -rf $TPATH/*
     echo -n "" > $TPATH/.record
-    lf -remote "send reload"
+    lf -remote "send load"
 }}
 
 cmd fzf_jump ${{
