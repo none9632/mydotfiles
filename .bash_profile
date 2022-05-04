@@ -11,4 +11,19 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 xset r rate 300 24
 syndaemon -t -i 1 -d
-trash-empty 7 &
+
+lines="$(cat $TPATH/.record)"
+IFS='
+'
+for line in $lines
+do
+    date=$(echo "$line" | awk 'BEGIN{FS="\t"} {print $1}' | tr -d '\n')
+    prev=$(date --date="$date" +"%j")
+    today=$(date +%j)
+    number_of_days=$(( ($today - $prev) ))
+    if [ $number_of_days -gt 8 ]
+    then
+        file=$(echo "$line" | awk 'BEGIN{FS="\t"} {print $3}' | tr -d '\n')
+        rip --graveyard $TPATH -u $file
+    fi
+done
