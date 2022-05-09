@@ -212,12 +212,18 @@ function toggle_terminal()
    if not terminal_client then
       create_terminal()
    elseif c ~= terminal_client then
-      terminal_blurbg_client:move_to_tag(s.selected_tag)
-      terminal_blurbg_client:raise()
+      if not terminal_blurbg_client then
+         terminal_blurbg_pid = create_blurbg("rofi-terminal.pid")
+      else
+         terminal_blurbg_client:move_to_tag(s.selected_tag)
+         terminal_blurbg_client:raise()
+      end
       raise_client(terminal_client)
    else
       terminal_client:move_to_tag(s.tags[8])
-      terminal_blurbg_client:move_to_tag(s.tags[8])
+      if terminal_blurbg_client then
+         terminal_blurbg_client:move_to_tag(s.tags[8])
+      end
    end
 end
 
@@ -242,7 +248,11 @@ client.connect_signal('unmanage', function(c)
                          if c.pid == terminal_pid then
                             terminal_client = nil
                             terminal_pid = 'notnil'
-                            terminal_blurbg_client:kill()
+                            if terminal_blurbg_client then
+                               terminal_blurbg_client:kill()
+                            end
+                         end
+                         if c.pid == terminal_blurbg_pid then
                             terminal_blurbg_client = nil
                             terminal_blurbg_pid = 'notnil'
                          end
@@ -280,12 +290,18 @@ function toggle_firefox()
    if not firefox_client then
       create_firefox()
    elseif c ~= firefox_client then
-      firefox_blurbg_client:move_to_tag(s.selected_tag)
-      firefox_blurbg_client:raise()
+      if not firefox_blurbg_client then
+         firefox_blurbg_pid = create_blurbg("rofi-terminal.pid")
+      else
+         firefox_blurbg_client:move_to_tag(s.selected_tag)
+         firefox_blurbg_client:raise()
+      end
       raise_client(firefox_client)
    else
       firefox_client:move_to_tag(s.tags[8])
-      firefox_blurbg_client:move_to_tag(s.tags[8])
+      if firefox_blurbg_client then
+         firefox_blurbg_client:move_to_tag(s.tags[8])
+      end
    end
 end
 
@@ -310,7 +326,11 @@ client.connect_signal('unmanage', function(c)
                          if c.pid == firefox_pid then
                             firefox_client = nil
                             firefox_pid = 'notnil'
-                            firefox_blurbg_client:kill()
+                            if firefox_blurbg_client then
+                               firefox_blurbg_client:kill()
+                            end
+                         end
+                         if c.pid == firefox_blurbg_pid then
                             firefox_blurbg_client = nil
                             firefox_blurbg_pid = 'notnil'
                          end
