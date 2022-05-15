@@ -21,9 +21,12 @@ do
     prev=$(date --date="$date" +"%j")
     today=$(date +%j)
     number_of_days=$(( ($today - $prev) ))
+
     if [ $number_of_days -gt 8 ]
     then
         file=$(echo "$line" | awk 'BEGIN{FS="\t"} {print $3}' | tr -d '\n')
-        rip --graveyard $TPATH -u $file
+        rm -rf $file
+        file=$(echo $file | sed 's|\/|\\\/|g')
+        sed -i "/$file/d" $TPATH/.record
     fi
 done

@@ -90,7 +90,17 @@ ruled.client.connect_signal("request::rules", function()
        rule       = { class = "Evince" },
        properties = { floating = true },
        callback = function(c)
+          prev_x = c.x
+          prev_y = c.y
+          prev_width = c.width
+          prev_height = c.height
           awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+          if c.x == prev_x and
+             c.y == prev_y and
+             c.width == prev_width and
+             c.height == prev_height then
+             awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+          end
        end
     }
 

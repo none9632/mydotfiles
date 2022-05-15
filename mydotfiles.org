@@ -716,10 +716,13 @@ Install packages using pacman
       prev=$(date --date="$date" +"%j")
       today=$(date +%j)
       number_of_days=$(( ($today - $prev) ))
+
       if [ $number_of_days -gt 8 ]
       then
           file=$(echo "$line" | awk 'BEGIN{FS="\t"} {print $3}' | tr -d '\n')
-          rip --graveyard $TPATH -u $file
+          rm -rf $file
+          file=$(echo $file | sed 's|\/|\\\/|g')
+          sed -i "/$file/d" $TPATH/.record
       fi
   done
 
@@ -1296,7 +1299,17 @@ Install packages using pacman
          rule       = { class = "Evince" },
          properties = { floating = true },
          callback = function(c)
+            prev_x = c.x
+            prev_y = c.y
+            prev_width = c.width
+            prev_height = c.height
             awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+            if c.x == prev_x and
+               c.y == prev_y and
+               c.width == prev_width and
+               c.height == prev_height then
+               awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+            end
          end
       }
 
