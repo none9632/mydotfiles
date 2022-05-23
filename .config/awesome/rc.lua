@@ -744,7 +744,7 @@ gears.timer {
    callback  = function()
       awful.spawn.easy_async_with_shell("updates",
                                         function(out)
-                                           if updates_prev == 0 then
+                                           if updates_prev == 0 and tonumber(out) ~= 0 then
                                               awful.spawn.with_shell("notify-send -u normal \"You should update soon\" \"" ..
                                                                      out:gsub("%\n", "") .. " new updates\"")
                                            end
