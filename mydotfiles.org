@@ -486,7 +486,12 @@ Install packages using pacman
       echo "Done"
   fi
 
-  cat $pac_cache_file | fzf --bind 'ctrl-space:toggle' --reverse --multi --preview 'pacman -Si {1}' | xargs -ro pacman -S
+  cat $pac_cache_file | fzf --bind 'ctrl-space:toggle'\
+                            --bind 'tab:down'\
+                            --bind 'btab:up'\
+                            --reverse\
+                            --multi\
+                            --preview 'pacman -Si {1}' | xargs -ro pacman -S
 
 #+end_src
 
