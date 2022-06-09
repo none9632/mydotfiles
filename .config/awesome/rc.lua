@@ -269,6 +269,7 @@ client.connect_signal('unmanage', function(c)
 end)
 
 local firefox_pid = 'notnil'
+local firefox_name
 local firefox_client
 local firefox_blurbg_pid = 'notnil'
 local firefox_blurbg_client
@@ -277,6 +278,7 @@ function create_firefox()
    for _, c in ipairs(client.get()) do
       if c.width == 1350 and c.class == "firefox" then
          firefox_pid = c.pid
+         firefox_name = c.name
          firefox_client = c
          c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
@@ -301,7 +303,7 @@ function toggle_firefox()
       create_firefox()
    elseif c ~= firefox_client then
       if not firefox_blurbg_client then
-         firefox_blurbg_pid = create_blurbg("rofi-terminal.pid")
+         firefox_blurbg_pid = create_blurbg("rofi-firefox.pid")
       else
          firefox_blurbg_client:move_to_tag(s.selected_tag)
          firefox_blurbg_client:raise()
@@ -316,16 +318,18 @@ function toggle_firefox()
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == firefox_pid then
+                         if c.pid == firefox_pid and not firefox_name then
                             firefox_client = c
+                            firefox_name = c.name
                             c.floating = true
                             c.ontop = true
                             c.width = 1350
                             c.height = 800
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
-                         end
-                         if c.pid == firefox_blurbg_pid then
+                         elseif c.pid == firefox_pid and c.name ~= firefox_name then
+                            c.floating = false
+                         elseif c.pid == firefox_blurbg_pid then
                             firefox_blurbg_client = c
                             c:lower()
                             awful.placement.centered(c)
@@ -333,9 +337,10 @@ client.connect_signal('manage', function(c)
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if c.pid == firefox_pid then
-                            firefox_client = nil
+                         if c.pid == firefox_pid and c.name == firefox_name then
                             firefox_pid = 'notnil'
+                            firefox_name = nil
+                            firefox_client = nil
                             if firefox_blurbg_client then
                                firefox_blurbg_client:kill()
                             end
@@ -343,6 +348,92 @@ client.connect_signal('unmanage', function(c)
                          if c.pid == firefox_blurbg_pid then
                             firefox_blurbg_client = nil
                             firefox_blurbg_pid = 'notnil'
+                         end
+end)
+
+local translator_pid = 'notnil'
+local translator_name
+local translator_client
+local translator_blurbg_pid = 'notnil'
+local translator_blurbg_client
+
+function create_translator()
+   for _, c in ipairs(client.get()) do
+      if c.width == 1350 and c.class == "librewolf" then
+         translator_pid = c.pid
+         translator_name = c.name
+         translator_client = c
+         c.ontop = true
+         awful.placement.centered(c, { margins = { top = 56 }})
+         raise_client(translator_client)
+      end
+   end
+
+   if not translator_blurbg_client then
+      translator_blurbg_pid = create_blurbg("rofi-translator.pid")
+   end
+
+   if not translator_client then
+      translator_pid = awful.spawn("librewolf --new-window https://www.deepl.com/translator#en/ru/ ")
+   end
+end
+
+function toggle_translator()
+   local s = awful.screen.focused()
+   local c = client.focus
+
+   if not translator_client then
+      create_translator()
+   elseif c ~= translator_client then
+      if not translator_blurbg_client then
+         translator_blurbg_pid = create_blurbg("rofi-translator.pid")
+      else
+         translator_blurbg_client:move_to_tag(s.selected_tag)
+         translator_blurbg_client:raise()
+      end
+      raise_client(translator_client)
+   else
+      translator_client:move_to_tag(s.tags[8])
+      if translator_blurbg_client then
+         translator_blurbg_client:move_to_tag(s.tags[8])
+      end
+   end
+end
+
+client.connect_signal('manage', function(c)
+                         if c.pid == translator_pid and not translator_name then
+                            translator_client = c
+                            translator_name = c.name
+                            c.floating = true
+                            c.ontop = true
+                            c.width = 1350
+                            c.height = 800
+                            client.focus = c
+                            awful.placement.centered(c, { margins = { top = 56 }})
+                            c:move_to_tag(awful.screen.focused().tags[8])
+                         elseif c.pid == translator_pid and c.name ~= translator_name then
+                            c.floating = false
+                         end
+                         if c.pid == translator_blurbg_pid then
+                            translator_blurbg_client = c
+                            c:lower()
+                            awful.placement.centered(c)
+                            c:move_to_tag(awful.screen.focused().tags[8])
+                         end
+end)
+
+client.connect_signal('unmanage', function(c)
+                         if c.pid == translator_pid and c.name == translator_name then
+                            translator_pid = 'notnil'
+                            translator_name = nil
+                            translator_client = nil
+                            if translator_blurbg_client then
+                               translator_blurbg_client:kill()
+                            end
+                         end
+                         if c.pid == translator_blurbg_pid then
+                            translator_blurbg_client = nil
+                            translator_blurbg_pid = 'notnil'
                          end
 end)
 
@@ -958,6 +1049,8 @@ awful.keyboard.append_global_keybindings({
          {description = "toggle splash terminal", group = "launcher"}),
       awful.key({ modkey }, "b", function() toggle_firefox() end,
          {description = "toggle splash firefox", group = "launcher"}),
+      awful.key({ modkey }, "t", function() toggle_translator() end,
+         {description = "toggle splash translator", group = "launcher"}),
       awful.key({ modkey }, "m", function() toggle_splash_height() end,
          {description = "resize splash app", group = "launcher"})
 })
@@ -1011,6 +1104,7 @@ client.connect_signal("request::default_keybindings", function()
                          })
 end)
 
+create_translator()
 awful.spawn.with_shell("lf -server")
 awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
 awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
