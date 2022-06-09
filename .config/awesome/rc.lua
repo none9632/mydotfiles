@@ -269,7 +269,7 @@ client.connect_signal('unmanage', function(c)
 end)
 
 local firefox_pid = 'notnil'
-local firefox_name
+local firefox_window
 local firefox_client
 local firefox_blurbg_pid = 'notnil'
 local firefox_blurbg_client
@@ -278,7 +278,7 @@ function create_firefox()
    for _, c in ipairs(client.get()) do
       if c.width == 1350 and c.class == "firefox" then
          firefox_pid = c.pid
-         firefox_name = c.name
+         firefox_window = c.window
          firefox_client = c
          c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
@@ -318,16 +318,16 @@ function toggle_firefox()
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == firefox_pid and not firefox_name then
+                         if c.pid == firefox_pid and not firefox_window then
                             firefox_client = c
-                            firefox_name = c.name
+                            firefox_window = c.window
                             c.floating = true
                             c.ontop = true
                             c.width = 1350
                             c.height = 800
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
-                         elseif c.pid == firefox_pid and c.name ~= firefox_name then
+                         elseif c.pid == firefox_pid and c.window ~= firefox_window then
                             c.floating = false
                          elseif c.pid == firefox_blurbg_pid then
                             firefox_blurbg_client = c
@@ -337,9 +337,9 @@ client.connect_signal('manage', function(c)
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if c.pid == firefox_pid and c.name == firefox_name then
+                         if c.pid == firefox_pid and c.window == firefox_window then
                             firefox_pid = 'notnil'
-                            firefox_name = nil
+                            firefox_window = nil
                             firefox_client = nil
                             if firefox_blurbg_client then
                                firefox_blurbg_client:kill()
@@ -352,7 +352,7 @@ client.connect_signal('unmanage', function(c)
 end)
 
 local translator_pid = 'notnil'
-local translator_name
+local translator_window
 local translator_client
 local translator_blurbg_pid = 'notnil'
 local translator_blurbg_client
@@ -361,7 +361,7 @@ function create_translator()
    for _, c in ipairs(client.get()) do
       if c.width == 1350 and c.class == "librewolf" then
          translator_pid = c.pid
-         translator_name = c.name
+         translator_window = c.window
          translator_client = c
          c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
@@ -401,9 +401,9 @@ function toggle_translator()
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == translator_pid and not translator_name then
+                         if c.pid == translator_pid and not translator_window then
                             translator_client = c
-                            translator_name = c.name
+                            translator_window = c.window
                             c.floating = true
                             c.ontop = true
                             c.width = 1350
@@ -411,7 +411,7 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                             c:move_to_tag(awful.screen.focused().tags[8])
-                         elseif c.pid == translator_pid and c.name ~= translator_name then
+                         elseif c.pid == translator_pid and c.window ~= translator_window then
                             c.floating = false
                          end
                          if c.pid == translator_blurbg_pid then
@@ -423,17 +423,17 @@ client.connect_signal('manage', function(c)
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if c.pid == translator_pid and c.name == translator_name then
+                         if c.pid == translator_pid and c.window == translator_window then
                             translator_pid = 'notnil'
-                            translator_name = nil
+                            translator_window = nil
                             translator_client = nil
                             if translator_blurbg_client then
                                translator_blurbg_client:kill()
                             end
                          end
                          if c.pid == translator_blurbg_pid then
-                            translator_blurbg_client = nil
                             translator_blurbg_pid = 'notnil'
+                            translator_blurbg_client = nil
                          end
 end)
 
@@ -442,9 +442,9 @@ local emacs_fm_pid = 'notnil'
 function create_emacs_fm(path)
    emacs_fm_pid = awful.spawn.with_shell("alacritty -e lfrun " ..
                                          "-command \"cd " .. path .. "\" " ..
-                                        "-command \"map <esc> quit_for_emacs\" " ..
-                                        "-command \"map q quit_for_emacs\" " ..
-                                        "-command \"map <enter> select_for_emacs\"")
+                                         "-command \"map <esc> quit_for_emacs\" " ..
+                                         "-command \"map q quit_for_emacs\" " ..
+                                         "-command \"map <enter> select_for_emacs\"")
 end
 
 client.connect_signal('manage', function(c)
@@ -888,8 +888,14 @@ end)
 -- General Awesome keys
 awful.keyboard.append_global_keybindings({
       awful.key({ modkey,           }, "s", hotkeys_popup.show_help,
-         {description="show help", group="awesome"}),
-      awful.key({ modkey, "Control" }, "r", awesome.restart,
+         {description = "show help", group = "awesome"}),
+      awful.key({ modkey, "Control" }, "r",
+         function ()
+            if translator_client then
+               translator_client:kill()
+            end
+            awesome.restart()
+         end,
          {description = "reload awesome", group = "awesome"}),
 })
 
