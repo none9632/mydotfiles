@@ -23,7 +23,6 @@ Plug 'airblade/vim-rooter'
 Plug 'lervag/vimtex'
 Plug 'sirver/ultisnips'
 Plug 'KeitaNakamura/tex-conceal.vim', { 'for' : 'tex' }
-Plug 'Konfekt/FastFold'
 
 " Plug 'skywind3000/asyncrun.vim'
 
@@ -60,7 +59,7 @@ set showcmd
 let g:auto_save = 1
 let g:auto_save_silent = 1
 
-"Отображение пробелов и табуляции
+"Display spaces and tabs
 set list
 set listchars=tab:→\ ,space:·
 
@@ -116,7 +115,6 @@ map <C-p> "+P
 
 "exit and close
 map <Leader>q :q<CR>
-map <C-x><C-c> :qa<CR>
 
 "vim-plug
 map <Leader>pi :source $HOME/.config/nvim/init.vim<CR>:PlugInstall<CR>
@@ -133,17 +131,9 @@ command! W execute 'SudaWrite' <bar> edit!
 
 " vimtex
 let g:tex_flavor = 'latex'
-" let g:vimtex_compiler_progname = 'nvr'
-let g:vimtex_view_method = 'zathura'
-let g:vimtex_view_forward_search_on_start = 1
 let g:vimtex_quickfix_mode = 0
 let g:vimtex_quickfix_open_on_warning = 0
 let g:vimtex_quickfix_autoclose_after_keystrokes = 3
-let g:vimtex_fold_enabled = 1
-let g:vimtex_fold_types = {
-      \ 'markers' : {'enabled': 0},
-      \ 'sections' : {'parse_levels': 1},
-      \}
 let g:vimtex_complete_enabled = 1
 let g:vimtex_complete_close_braces = 1
 let g:vimtex_complete_ignore_case = 1
@@ -154,32 +144,6 @@ let g:vimtex_format_enabled = 1
 set conceallevel=2
 let g:tex_conceal="abdmg"
 hi Conceal ctermbg=none
-
-" au BufNewFile,BufRead /*.tex VimtexCompile
-map <leader>c :VimtexCompile<CR>
-map <leader>e :VimtexErrors<CR>
-map <leader>f :VimtexView<CR>
-nnoremap <Enter> za
-
-" Close viewers when VimTeX buffers are closed
-function! CloseViewers()
-    " Close viewers on quit
-    if executable('xdotool') && exists('b:vimtex')
-        \ && exists('b:vimtex.viewer') && b:vimtex.viewer.xwin_id > 0
-        call system('xdotool windowclose '. b:vimtex.viewer.xwin_id)
-    endif
-endfunction
-
-let mywindowid=system('xdotool getwindowfocus')
-
-augroup vimtex_event
-    au!
-    " au User VimtexEventInitPost VimtexCompile
-    au User VimtexEventCompileSuccess call system('xdotool windowfocus ' . mywindowid)
-    au User VimtexEventCompileFailed call system('xdotool windowfocus ' . mywindowid)
-    au User VimtexEventView call system('xdotool windowfocus ' . mywindowid)
-    au User VimtexEventQuit call CloseViewers()
-augroup END
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
