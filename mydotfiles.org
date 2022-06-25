@@ -38,7 +38,17 @@
   # list of the build packages
   build_pkgs="base-devel git gcc make cmake"
   # list of packages that will be installed
-  pkgs="alacritty neofetch rofi flameshot lf-bin scrot xdotool picom zoxide brightnessctl alsa-utils dunst evince font-manager fzf rm-improved"
+  pkgs="alacritty neofetch zsh fzf xdotool\
+        rofi flameshot\
+        lf-bin zoxide rm-improved\
+        scrot\
+        picom\
+        brightnessctl\
+        alsa-utils\
+        dunst\
+        evince\
+        font-manager\
+        nextcloud-client libsecret gnome-keyring"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
@@ -1356,11 +1366,16 @@ Install packages using pacman
             class = {
                "Rofi",
                "Gpick",
+               "Gcr-prompter",
+               "Nextcloud",
             }
          },
          properties = {
             floating = true,
             ontop    = true,
+            placement = function(c)
+               return awful.placement.centered(c, { margins = { top = 56 }})
+            end,
          }
       }
   end)
@@ -2454,6 +2469,7 @@ Install packages using pacman
 #+begin_src lua
 
   create_translator()
+  awful.spawn.with_shell("nextcloud --background")
   awful.spawn.with_shell("lf -server")
   awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
   awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")

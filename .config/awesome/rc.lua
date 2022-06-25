@@ -143,11 +143,16 @@ ruled.client.connect_signal("request::rules", function()
           class = {
              "Rofi",
              "Gpick",
+             "Gcr-prompter",
+             "Nextcloud",
           }
        },
        properties = {
           floating = true,
           ontop    = true,
+          placement = function(c)
+             return awful.placement.centered(c, { margins = { top = 56 }})
+          end,
        }
     }
 end)
@@ -1118,6 +1123,7 @@ client.connect_signal("request::default_keybindings", function()
 end)
 
 create_translator()
+awful.spawn.with_shell("nextcloud --background")
 awful.spawn.with_shell("lf -server")
 awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
 awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
