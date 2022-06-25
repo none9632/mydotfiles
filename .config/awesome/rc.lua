@@ -106,20 +106,36 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
        rule       = { class = "Font-viewer" },
-       properties = { floating = true },
-       callback = function(c)
-          c.width = 1000
-          c.height = 600
-          awful.placement.centered(c, { margins = { top = 56 }})
-       end
+       properties = {
+          floating = true,
+          width = 1000,
+          height = 600,
+          placement = function(c)
+             return awful.placement.centered(c, { margins = { top = 56 }})
+          end,
+       }
     }
 
     ruled.client.append_rule {
        rule       = { class = "Codium" },
-       properties = { floating = true },
-       callback = function(c)
-          awful.placement.centered(c, { margins = { top = 56 }})
-       end
+       properties = {
+          floating = true,
+          placement = function(c)
+             return awful.placement.centered(c, { margins = { top = 56 }})
+          end,
+       }
+    }
+
+    ruled.client.append_rule {
+       rule       = { class = "librewolf", instance = "librewolf" },
+       properties = {
+          floating = true,
+          width = 1350,
+          height = 800,
+          placement = function(c)
+             return awful.placement.centered(c, { margins = { top = 56 }})
+          end,
+       },
     }
 
     ruled.client.append_rule {
@@ -358,17 +374,6 @@ local translator_blurbg_pid = 'notnil'
 local translator_blurbg_client
 
 function create_translator()
-   for _, c in ipairs(client.get()) do
-      if c.width == 1350 and c.class == "librewolf" then
-         translator_pid = c.pid
-         translator_window = c.window
-         translator_client = c
-         c.ontop = true
-         awful.placement.centered(c, { margins = { top = 56 }})
-         raise_client(translator_client)
-      end
-   end
-
    if not translator_blurbg_client then
       translator_blurbg_pid = create_blurbg("rofi-translator.pid")
    end
@@ -411,7 +416,9 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                             c:move_to_tag(awful.screen.focused().tags[8])
-                         elseif c.pid == translator_pid and c.window ~= translator_window then
+                         elseif c.pid == translator_pid
+                            and c.window ~= translator_window
+                            and c.instance == "Navigator" then
                             c.floating = false
                          end
                          if c.pid == translator_blurbg_pid then
