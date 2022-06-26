@@ -17,7 +17,11 @@ pkgs="alacritty neofetch zsh fzf xdotool\
       dunst\
       evince\
       font-manager\
-      nextcloud-client libsecret gnome-keyring"
+      nextcloud-client libsecret gnome-keyring\
+      gpick
+      exa
+      bat
+      unrar"
 
 # list of files/folders to symlink in homedir
 config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"

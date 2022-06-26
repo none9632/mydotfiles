@@ -48,7 +48,11 @@
         dunst\
         evince\
         font-manager\
-        nextcloud-client libsecret gnome-keyring"
+        nextcloud-client libsecret gnome-keyring\
+        gpick
+        exa
+        bat
+        unrar"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
@@ -4058,6 +4062,8 @@ And optionally:
       touch /tmp/lfundo_$id
       lf_update . $id
       lf -remote "send $id recol"
+      lf -remote "send $id clear"
+      lf -remote "send $id unselect"
   }}
 
   cmd recol &{{
@@ -5299,7 +5305,7 @@ Configuration based on https://github.com/adi1090x/rofi
       kb-move-word-forward:   "Control+Right";
       kb-move-char-back:      "Left,Alt+h,Control+h";
       kb-move-char-forward:   "Right,Alt+l,Control+l";
-      kb-accept-entry:        ",Return,KP_Enter";
+      kb-accept-entry:        "Return,KP_Enter";
       kb-row-up:              "Up,ISO_Left_Tab,Alt+k";
       kb-row-down:            "Down,Alt+j";
   }

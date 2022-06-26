@@ -20,6 +20,8 @@ set cleaner ~/.config/lf/scripts/lf_cleaner
     touch /tmp/lfundo_$id
     lf_update . $id
     lf -remote "send $id recol"
+    lf -remote "send $id clear"
+    lf -remote "send $id unselect"
 }}
 
 cmd recol &{{
