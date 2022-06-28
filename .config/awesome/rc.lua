@@ -79,28 +79,22 @@ ruled.client.connect_signal("request::rules", function()
         id         = "global",
         rule       = { },
         properties = {
-            focus     = awful.client.focus.filter,
-            raise     = true,
-            screen    = awful.screen.preferred,
-            placement = awful.placement.no_overlap+awful.placement.no_offscreen
+           focus     = awful.client.focus.filter,
+           raise     = true,
+           screen    = awful.screen.preferred,
+           placement = awful.placement.no_overlap+awful.placement.no_offscreen
         }
     }
 
     ruled.client.append_rule {
        rule       = { class = "Evince" },
-       properties = { floating = true },
+       properties = {
+          floating = true,
+          -- This property allows to hide the resizing
+          hidden = true,
+       },
        callback = function(c)
-          prev_x = c.x
-          prev_y = c.y
-          prev_width = c.width
-          prev_height = c.height
-          awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
-          if c.x == prev_x and
-             c.y == prev_y and
-             c.width == prev_width and
-             c.height == prev_height then
-             awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
-          end
+          c:emit_signal('request::geometry')
        end
     }
 
@@ -164,6 +158,14 @@ client.connect_signal('manage', function(c)
                          -- Sometimes the rofi is not in the right position
                          if c.class == "Rofi" and c.x == 0 then
                             awful.placement.centered(c, { margins = { top = 56 }})
+                         end
+end)
+
+client.connect_signal('request::geometry', function(c)
+                         if c.class == "Evince" then
+                            awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+                            c.hidden = false
+                            raise_client(c)
                          end
 end)
 
