@@ -52,7 +52,7 @@
         gpick
         exa
         bat
-        unrar"
+        unrar p7zip"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
@@ -4215,20 +4215,18 @@ And optionally:
           for file in "$@"
           do
               [ -d "$file" ] && has_dir=1
-
               name=$(basename $file)
               while [ -e ./$name ]
               do
                   name=$name"_"
               done
-
               cp -r $file ./$name
           done
-
           if [ "$mode" = "move" ]
           then
-              rm -rf "$files"
+              rm -rf "$@"
           fi
+          lf -remote "send load"
       fi
 
       rm ~/.local/share/lf/files

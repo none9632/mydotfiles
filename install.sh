@@ -21,7 +21,7 @@ pkgs="alacritty neofetch zsh fzf xdotool\
       gpick
       exa
       bat
-      unrar"
+      unrar p7zip"
 
 # list of files/folders to symlink in homedir
 config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
