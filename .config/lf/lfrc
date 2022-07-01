@@ -20,8 +20,6 @@ set cleaner ~/.config/lf/scripts/lf_cleaner
     touch /tmp/lfundo_$id
     lf_update . $id
     lf -remote "send $id recol"
-    lf -remote "send $id clear"
-    lf -remote "send $id unselect"
 }}
 
 cmd recol &{{
@@ -321,6 +319,10 @@ cmd git_clone &{{
     fi
 }}
 
+cmd new_lf &{{
+    alacritty -e lf &
+}}
+
 cmd chng_layout %{{
     xdotool key Mode_switch
     lf -remote "send $id push $1"
@@ -356,6 +358,7 @@ map d
 map t
 map f
 map x
+map n
 
 # basic
 map q my_quit
@@ -414,6 +417,9 @@ map X $$f
 map fd fzf_jump_prev
 map cd fzf_jump
 map fg :cd /; fzf_jump
+
+# New lf window
+map nw new_lf
 
 # Automatic switchover of the Russian layout
 map а chng_layout f
