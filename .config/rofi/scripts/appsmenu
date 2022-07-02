@@ -32,8 +32,7 @@ case $chosen in
         ;;
     $files)
         if [[ -f /usr/bin/lf ]]; then
-            . $HOME/.config/lf/.lfrc
-            $term -e lf &
+            $term -e lfrun &
         else
             errormsg "No suitable file manager found!"
         fi

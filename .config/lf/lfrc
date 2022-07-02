@@ -320,7 +320,7 @@ cmd git_clone &{{
 }}
 
 cmd new_lf &{{
-    alacritty -e lf &
+    alacritty -e lfrun &
 }}
 
 cmd chng_layout %{{

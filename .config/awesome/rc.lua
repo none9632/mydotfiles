@@ -886,7 +886,7 @@ function get_lfterm_width (term_pid)
 end
 
 client.connect_signal('property::width', function(c)
-                         if c.class == "Alacritty" and c ~= terminal_client then
+                         if c.class == "Alacritty" and c.floating == false then
                             awful.spawn.with_shell("lf -remote \"send recol\"")
                             if lf_terminal_centered == false then
                                for _, c in ipairs(client.get()) do

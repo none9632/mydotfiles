@@ -2187,7 +2187,7 @@ Install packages using pacman
   end
 
   client.connect_signal('property::width', function(c)
-                           if c.class == "Alacritty" and c ~= terminal_client then
+                           if c.class == "Alacritty" and c.floating == false then
                               awful.spawn.with_shell("lf -remote \"send recol\"")
                               if lf_terminal_centered == false then
                                  for _, c in ipairs(client.get()) do
@@ -4366,7 +4366,7 @@ And optionally:
   }}
 
   cmd new_lf &{{
-      alacritty -e lf &
+      alacritty -e lfrun &
   }}
 
   cmd chng_layout %{{
@@ -7042,8 +7042,7 @@ Configuration based on https://github.com/adi1090x/rofi
           ;;
       $files)
           if [[ -f /usr/bin/lf ]]; then
-              . $HOME/.config/lf/.lfrc
-              $term -e lf &
+              $term -e lfrun &
           else
               errormsg "No suitable file manager found!"
           fi
