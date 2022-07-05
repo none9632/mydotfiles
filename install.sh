@@ -10,7 +10,6 @@ build_pkgs="base-devel git gcc make cmake"
 pkgs="alacritty neofetch zsh fzf xdotool\
       rofi flameshot\
       lf-bin zoxide rm-improved\
-      scrot\
       picom\
       brightnessctl\
       alsa-utils\

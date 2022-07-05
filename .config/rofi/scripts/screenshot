@@ -13,10 +13,9 @@ getStamp()
     date '+%Y%m%d-%H%M%S'
 }
 
-if [[ ! -f /usr/bin/scrot ]] || [[ ! -f /usr/bin/flameshot ]]
+if [[ ! -f /usr/bin/flameshot ]]
 then
-    [[ -f /usr/bin/scrot ]] && errormsg "Please install 'scrot'"
-    [[ -f /usr/bin/flameshot ]] && errormsg "Please install 'flameshot'"
+    errormsg "Please install 'flameshot'"
     exit 0
 fi
 
@@ -28,16 +27,20 @@ options="$window\n$screen\n$area"
 
 xdotool key Mode_switch
 
-chosen="$(echo -e "$options" | $rofi_command -p ' scrot/flameshot ' -dmenu -selected-row 1)"
-sleep 0.35
+chosen="$(echo -e "$options" | $rofi_command -p ' flameshot ' -dmenu -selected-row 1)"
+sleep 0.25
 case $chosen in
     $screen)
         scr_name=full-$(getStamp).png
-        scrot ${scr_dir}/${scr_name}
+        flameshot full -p ${scr_dir}/${scr_name}
         ;;
     $window)
         scr_name=window-$(getStamp).png
-        scrot -u ${scr_dir}/${scr_name}
+        position="$(xdotool getwindowfocus getwindowgeometry | grep Position | awk '{print $2}')"
+        position_x="$(echo $position | awk 'BEGIN{FS=","} {print $1}')"
+        position_y="$(echo $position | awk 'BEGIN{FS=","} {print $2}')"
+        size="$(xdotool getwindowfocus getwindowgeometry | grep Geometry | awk '{print $2}')"
+        flameshot full --region $(echo "$size+$position_x+$position_y") -p ${scr_dir}/${scr_name}
         ;;
     $area)
         window_focus=$(xdotool getwindowfocus)
