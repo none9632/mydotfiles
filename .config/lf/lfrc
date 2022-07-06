@@ -335,7 +335,6 @@ cmd my_quit ${{
 
 cmd select_for_emacs ${{
     rm /tmp/lfundo_$id
-    echo "test" > /tmp/testfile
     if [ "$f" = "" ]
     then
         echo -n "cancel" > ~/.cache/emacs/path
@@ -343,6 +342,25 @@ cmd select_for_emacs ${{
         echo -n $f > ~/.cache/emacs/path
     fi
     lf -remote "send $id quit"
+}}
+
+cmd open_for_emacs %{{
+    case $(file --mime-type $f -b) in
+        inode/directory)
+            fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+            lf -remote "send $id my_cd $fix_f" ;;
+        inode/symlink)
+            if [ -d "$f" ]
+            then
+                fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+                lf -remote "send $id my_cd $fix_f"
+            else
+                lf -remote "send $id select_for_emacs"
+            fi
+            ;;
+        *)
+            lf -remote "send $id select_for_emacs"
+    esac
 }}
 
 cmd quit_for_emacs ${{

@@ -458,6 +458,7 @@ function create_emacs_fm(path)
                                          "-command \"cd " .. path .. "\" " ..
                                          "-command \"map <esc> quit_for_emacs\" " ..
                                          "-command \"map q quit_for_emacs\" " ..
+                                         "-command \"map l open_for_emacs\" " ..
                                          "-command \"map <enter> select_for_emacs\"")
 end
 
