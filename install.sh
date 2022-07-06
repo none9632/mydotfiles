@@ -9,6 +9,7 @@ build_pkgs="base-devel git gcc make cmake"
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh fzf xdotool\
       rofi flameshot\
+      emacs
       lf-bin zoxide rm-improved\
       picom\
       brightnessctl\

@@ -87,6 +87,16 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+       rule       = { name = "emacsclient" },
+       properties = {
+          floating = true,
+          placement = function(c)
+             return awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+          end,
+       }
+    }
+
+    ruled.client.append_rule {
        rule       = { class = "Evince" },
        properties = {
           floating = true,
@@ -1132,3 +1142,4 @@ awful.spawn.with_shell("nextcloud --background")
 awful.spawn.with_shell("lf -server")
 awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
 awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
+awful.spawn.with_shell("emacs --daemon --name emacsclient")

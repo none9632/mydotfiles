@@ -35,6 +35,8 @@ cmd recol &{{
 
 cmd my_open %{{
     case $(file --mime-type $f -b) in
+        text/x-lisp)
+            emacsclient -c -a emacs $f ;;
         text/* | inode/x-empty)
             lf -remote "send $id push e" ;;
         inode/directory)

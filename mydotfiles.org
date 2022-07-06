@@ -40,6 +40,7 @@
   # list of packages that will be installed
   pkgs="alacritty neofetch zsh fzf xdotool\
         rofi flameshot\
+        emacs
         lf-bin zoxide rm-improved\
         picom\
         brightnessctl\
@@ -1313,6 +1314,16 @@ Install packages using pacman
       }
 
       ruled.client.append_rule {
+         rule       = { name = "emacsclient" },
+         properties = {
+            floating = true,
+            placement = function(c)
+               return awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
+            end,
+         }
+      }
+
+      ruled.client.append_rule {
          rule       = { class = "Evince" },
          properties = {
             floating = true,
@@ -2481,6 +2492,7 @@ Install packages using pacman
   awful.spawn.with_shell("lf -server")
   awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
   awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
+  awful.spawn.with_shell("emacs --daemon --name emacsclient")
 
 #+end_src
 
@@ -4081,6 +4093,8 @@ And optionally:
 
   cmd my_open %{{
       case $(file --mime-type $f -b) in
+          text/x-lisp)
+              emacsclient -c -a emacs $f ;;
           text/* | inode/x-empty)
               lf -remote "send $id push e" ;;
           inode/directory)
