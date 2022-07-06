@@ -53,6 +53,8 @@ cmd my_open %{{
             ;;
         application/pdf | image/vnd.djvu)
             evince $f ;;
+        image/*)
+            eog $f ;;
         font/sfnt)
             font-manager $f ;;
         *)

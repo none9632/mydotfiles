@@ -15,7 +15,7 @@ pkgs="alacritty neofetch zsh fzf xdotool\
       brightnessctl\
       alsa-utils\
       dunst\
-      evince\
+      evince eog\
       font-manager\
       nextcloud-client libsecret gnome-keyring\
       gpick

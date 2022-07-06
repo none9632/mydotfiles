@@ -87,7 +87,10 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
-       rule       = { name = "emacsclient" },
+       rule_any = {
+          name  = { "emacsclient" },
+          class = { "Eog" }
+       },
        properties = {
           floating = true,
           placement = function(c)

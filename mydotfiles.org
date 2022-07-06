@@ -46,7 +46,7 @@
         brightnessctl\
         alsa-utils\
         dunst\
-        evince\
+        evince eog\
         font-manager\
         nextcloud-client libsecret gnome-keyring\
         gpick
@@ -1314,7 +1314,10 @@ Install packages using pacman
       }
 
       ruled.client.append_rule {
-         rule       = { name = "emacsclient" },
+         rule_any = {
+            name  = { "emacsclient" },
+            class = { "Eog" }
+         },
          properties = {
             floating = true,
             placement = function(c)
@@ -4111,6 +4114,8 @@ And optionally:
               ;;
           application/pdf | image/vnd.djvu)
               evince $f ;;
+          image/*)
+              eog $f ;;
           font/sfnt)
               font-manager $f ;;
           ,*)
