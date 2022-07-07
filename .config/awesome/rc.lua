@@ -134,19 +134,7 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
-       rule       = { class = "librewolf", instance = "librewolf" },
-       properties = {
-          floating = true,
-          width = 1350,
-          height = 800,
-          placement = function(c)
-             return awful.placement.centered(c, { margins = { top = 56 }})
-          end,
-       },
-    }
-
-    ruled.client.append_rule {
-       rule_any   = {
+       rule_any = {
           class = {
              "Rofi",
              "Gpick",
@@ -436,9 +424,7 @@ client.connect_signal('manage', function(c)
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                             c:move_to_tag(awful.screen.focused().tags[8])
-                         elseif c.pid == translator_pid
-                            and c.window ~= translator_window
-                            and c.instance == "Navigator" then
+                         elseif c.pid == translator_pid	and c.window ~= translator_window then
                             c.floating = false
                          end
                          if c.pid == translator_blurbg_pid then

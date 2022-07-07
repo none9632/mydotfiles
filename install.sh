@@ -9,8 +9,9 @@ build_pkgs="base-devel git gcc make cmake"
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh fzf xdotool\
       rofi flameshot\
-      emacs
+      emacs\
       lf-bin zoxide rm-improved\
+      librewolf-bin firefox\
       picom\
       brightnessctl\
       alsa-utils\
@@ -18,9 +19,8 @@ pkgs="alacritty neofetch zsh fzf xdotool\
       evince eog\
       font-manager\
       nextcloud-client libsecret gnome-keyring\
-      gpick
-      exa
-      bat
+      gpick\
+      exa bat\
       unrar p7zip"
 
 # list of files/folders to symlink in homedir
