@@ -134,6 +134,18 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+       rule       = { class = "librewolf", instance = "librewolf" },
+       properties = {
+          floating = true,
+          width = 1350,
+          height = 800,
+          placement = function(c)
+             return awful.placement.centered(c, { margins = { top = 56 }})
+          end,
+       },
+    }
+
+    ruled.client.append_rule {
        rule_any = {
           class = {
              "Rofi",
