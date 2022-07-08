@@ -4953,6 +4953,7 @@ And optionally:
       "class_g = 'Conky'",
       "class_g ?= 'Notify-osd'",
       "class_g = 'Cairo-clock'",
+      "class_g = 'TelegramDesktop'",
       "window_type = 'utility'",
       "_GTK_FRAME_EXTENTS@:c",
   ];
@@ -5094,10 +5095,11 @@ And optionally:
   # Exclude conditions for background blur.
   blur-background-exclude = [
       "class_g = 'slop'",
+      "class_g = 'TelegramDesktop'",
       "name = 'main-dock'",
       "window_type = 'desktop'",
-      "_GTK_FRAME_EXTENTS@:c",
       "window_type = 'utility'",
+      "_GTK_FRAME_EXTENTS@:c",
   ];
 
 #+end_src
