@@ -149,3 +149,14 @@ case "$1" in
     packages) install_pkgs   ;;
     help|*)   help           ;;
 esac
+
+mimeapps_dir="$HOME/.local/share/applications"
+mimeapps_file="$mimeapps_dir/mimeapps.list"
+if [[ ! -s $mimeapps_file ]]
+then
+    mkdir -p $mimeapps_dir
+    touch $mimeapps_file
+    echo "[Default Applications]" > $mimeapps_file
+    echo "x-scheme-handler/http=librewolf.desktop" >> $mimeapps_file
+    echo "x-scheme-handler/https=librewolf.desktop" >> $mimeapps_file
+fi
