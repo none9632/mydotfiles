@@ -1699,7 +1699,10 @@ Install packages using pacman
                               client.focus = c
                               awful.placement.centered(c, { margins = { top = 56 }})
                               c:move_to_tag(awful.screen.focused().tags[8])
-                           elseif c.pid == translator_pid	and c.window ~= translator_window then
+                           elseif c.pid == translator_pid
+                              and c.window ~= translator_window
+                              and c.instance == "Navigator"       -- Some windows that have instance "librewolf" must be floating
+                           then
                               c.floating = false
                            end
                            if c.pid == translator_blurbg_pid then
