@@ -1390,6 +1390,12 @@ Install packages using pacman
                "Gpick",
                "Gcr-prompter",
                "Nextcloud",
+            },
+            name = {
+               "Open Image"
+            },
+            instance = {
+               "file-jpeg"
             }
          },
          properties = {

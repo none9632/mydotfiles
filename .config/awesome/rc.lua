@@ -152,6 +152,12 @@ ruled.client.connect_signal("request::rules", function()
              "Gpick",
              "Gcr-prompter",
              "Nextcloud",
+          },
+          name = {
+             "Open Image"
+          },
+          instance = {
+             "file-jpeg"
           }
        },
        properties = {
