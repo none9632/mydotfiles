@@ -4118,10 +4118,14 @@ And optionally:
 
   cmd my_open %{{
       case $(file --mime-type $f -b) in
-          text/x-lisp)
-              emacsclient -c -a emacs $f ;;
           text/* | inode/x-empty)
-              lf -remote "send $id push e" ;;
+              if [ "${f##*.}" == "org" ]
+              then
+                  emacsclient -c -a emacs $f
+              else
+                  lf -remote "send $id push e"
+              fi
+              ;;
           inode/directory)
               fix_f="$(echo $f | sed 's/\ /\\\ /g')"
               lf -remote "send $id my_cd $fix_f" ;;
