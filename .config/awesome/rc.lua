@@ -146,18 +146,22 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+       rule       = { class = "Gimp-2.10", floating = true },
+       properties = {
+          ontop = true,
+          placement = function(c)
+             return awful.placement.centered(c, { margins = { top = 56 }})
+          end,
+       },
+    }
+
+    ruled.client.append_rule {
        rule_any = {
           class = {
              "Rofi",
              "Gpick",
              "Gcr-prompter",
              "Nextcloud",
-          },
-          name = {
-             "Open Image"
-          },
-          instance = {
-             "file-jpeg"
           }
        },
        properties = {
