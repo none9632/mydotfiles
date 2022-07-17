@@ -12,7 +12,7 @@ pkgs="alacritty neofetch zsh fzf xdotool\
       emacs\
       lf-bin zoxide rm-improved\
       librewolf-bin firefox\
-      picom\
+      picom-animations-git\
       brightnessctl\
       alsa-utils\
       dunst\

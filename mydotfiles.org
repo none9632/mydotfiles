@@ -43,7 +43,7 @@
         emacs\
         lf-bin zoxide rm-improved\
         librewolf-bin firefox\
-        picom\
+        picom-animations-git\
         brightnessctl\
         alsa-utils\
         dunst\
@@ -443,7 +443,7 @@
 
   #!/bin/sh
 
-  pkgs="alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom linux-zen awesome bat firefox librewolf-bin tor-browser pacman yay-bin fzf dunst evince"
+  pkgs="alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom-animations-git linux-zen awesome bat firefox librewolf-bin tor-browser pacman yay-bin fzf dunst evince"
 
   function help
   {
@@ -4937,6 +4937,23 @@ And optionally:
 :PROPERTIES:
 :header-args: :tangle ./.config/picom/picom.conf
 :END:
+
+** Animations
+
+#+begin_src conf
+
+  animations = true;
+  animation-stiffness = 600.0;
+  animation-dampening = 30.0;
+  animation-clamping = false;
+  animation-mass = 1;
+  animation-for-open-window = "none";
+  animation-for-menu-window = "slide-down";
+  animation-for-transient-window = "slide-down";
+  animation-for-workspace-switch-in = "none";
+  animation-for-workspace-switch-out = "none";
+
+#+end_src
 
 ** Shadows
 
