@@ -2,6 +2,84 @@
 
 #+TITILE: My dotfiles
 
+* Arch linux installation
+** first install script
+
+#+begin_src sh :tangle ./install1.sh
+
+  #!/bin/sh
+
+  # Use timedatectl to ensure the system clock is accurate
+  timedatectl set-ntp true
+
+  parted --script /dev/sda \
+         mklabel gpt \
+         mkpart "EFI system partition" fat32 1MiB 513MiB \
+         set 1 esp on \
+         mkpart "swap partition" linux-swap 513MiB 4609MiB \
+         mkpart "root partition" ext4 4609MiB 100%
+
+  mkfs.fat -F 32 /dev/sda1
+  mkswap /dev/sda2
+  mkfs.ext4 /dev/sda3
+
+  mount /dev/sda3 /mnt
+  mkdir -p /mnt/boot/efi
+  mount /dev/sda1 /mnt/boot/efi
+  swapon /dev/sda2
+
+  # pacstrap is needed for the specified packages to be installed in the specified directory
+  pacstrap /mnt base base-devel linux linux-firmware amd-ucode
+  # Generate an fstab file
+  genfstab -U /mnt >> /mnt/etc/fstab
+
+  cp ./install2.sh /mnt/home/
+  arch-chroot /mnt sh /home/install2.sh
+
+  rm /mnt/home/install2.sh
+  echo 'Setup Complete!'
+  umount -R /mnt
+  systemctl reboot
+
+#+end_src
+
+** second install script
+
+#+begin_src sh :tangle ./install2.sh
+
+  #!/bin/sh
+
+  # Set the time zone
+  ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+  # Set the Hardware Clock from the System Clock and update the timestamps in /etc/adjtime
+  hwclock --systohc
+
+  sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
+  sed -i -e 's/#ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/g' /etc/locale.gen
+  locale-gen
+  echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+  echo "myPC" > /etc/hostname
+  echo '127.0.0.1 localhost
+  ::1 localhost
+  127.0.1.1   myPC.localdomain   myPC' >> /etc/hosts
+
+  sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
+
+  echo 'Set root password'
+  passwd
+
+  read -p "Enter username: " name
+  useradd -m $name
+  echo "Set password for $name"
+  passwd $name
+  usermod -aG wheel,audio,video,optical,storage $name
+
+  grub-install /dev/sda
+  grub-mkconfig -o /boot/grub/grub.cfg
+
+#+end_src
+
 * Gitignore
 
 #+begin_src text :tangle ./.gitignore
