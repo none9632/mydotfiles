@@ -26,5 +26,5 @@ echo "Set password for $name"
 passwd $name
 usermod -aG wheel,audio,video,optical,storage $name
 
-grub-install /dev/sda
+grub-install --target=i386-pc /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
