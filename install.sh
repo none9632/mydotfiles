@@ -4,8 +4,6 @@ dot_dir=$(pwd)               # dotfiles directory
 bin_dir=~/.local/bin         # bin files directory
 old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
-# list of the build packages
-build_pkgs="base-devel git gcc make cmake"
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh fzf xdotool\
       rofi flameshot\
@@ -107,9 +105,6 @@ function install_pkgs ()
     if [[ ! "$EUID" = 0 ]]; then
         sudo ls /root
     fi
-
-    # install the necessary build packages
-    sudo pacman --noconfirm --needed -Sy $build_pkgs
 
     # install yay
     if [[ ! -f $(which yay) ]]
