@@ -20,7 +20,7 @@ mount /dev/sda1 /mnt/boot/efi
 swapon /dev/sda2
 
 # pacstrap is needed for the specified packages to be installed in the specified directory
-pacstrap /mnt base base-devel linux linux-firmware amd-ucode
+pacstrap /mnt base base-devel linux linux-firmware amd-ucode grub
 # Generate an fstab file
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -30,4 +30,3 @@ arch-chroot /mnt sh /home/install2.sh
 rm /mnt/home/install2.sh
 echo 'Setup Complete!'
 umount -R /mnt
-# systemctl reboot
