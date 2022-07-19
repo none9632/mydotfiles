@@ -30,4 +30,4 @@ arch-chroot /mnt sh /home/install2.sh
 rm /mnt/home/install2.sh
 echo 'Setup Complete!'
 umount -R /mnt
-systemctl reboot
+# systemctl reboot

@@ -5,7 +5,7 @@
 * Arch linux installation
 ** first install script
 
-#+begin_src sh :tangle ./install1.sh
+#+begin_src sh :tangle ./install1.sh :tangle-mode (identity #o755)
 
   #!/bin/sh
 
@@ -39,13 +39,13 @@
   rm /mnt/home/install2.sh
   echo 'Setup Complete!'
   umount -R /mnt
-  systemctl reboot
+  # systemctl reboot
 
 #+end_src
 
 ** second install script
 
-#+begin_src sh :tangle ./install2.sh
+#+begin_src sh :tangle ./install2.sh :tangle-mode (identity #o755)
 
   #!/bin/sh
 
