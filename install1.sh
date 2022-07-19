@@ -5,10 +5,10 @@ timedatectl set-ntp true
 
 parted --script /dev/sda \
        mklabel gpt \
-       mkpart "EFI system partition" fat32 1MiB 513MiB \
+       mkpart EFI-system-partition fat32 1MiB 513MiB \
        set 1 esp on \
-       mkpart "swap partition" linux-swap 513MiB 4609MiB \
-       mkpart "root partition" ext4 4609MiB 100%
+       mkpart swap-partition linux-swap 513MiB 4609MiB \
+       mkpart root-partition ext4 4609MiB 100%
 
 mkfs.fat -F 32 /dev/sda1
 mkswap /dev/sda2
