@@ -4470,14 +4470,9 @@ And optionally:
 
   cmd my_search %{{
       path=$(filesearch $PWD)
-      if [ -d $path ]
+      if [ -d $path ] && [ "$(cd $path 2>&1)" == "" ]
       then
-          if [ "$(cd $path 2>&1)" == "" ]
-          then
-              lf -remote "send $id my_cd $path"
-          else
-              lf -remote "send $id select $path"
-          fi
+          lf -remote "send $id my_cd $path"
       else
           lf -remote "send $id select $path"
       fi
