@@ -1,7 +1,6 @@
 #!/bin/sh
 
-devicelist="$(lsblk -dplnx size -o name | grep -Ev "boot|rpmb|loop" | tac)"
-echo $devicelist
+devicelist="$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)"
 PS3="Select a disk: "
 IFS="
 "
