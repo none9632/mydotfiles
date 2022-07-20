@@ -15,16 +15,21 @@ echo '127.0.0.1 localhost
 ::1 localhost
 127.0.1.1   myPC.localdomain   myPC' >> /etc/hosts
 
-sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
-
 echo 'Set root password'
 passwd
-
 read -p "Enter username: " name
 useradd -m $name
 echo "Set password for $name"
 passwd $name
 usermod -aG wheel,audio,video,optical,storage $name
+
+# sudo configuration
+sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
+echo "$name myPC= NOPASSWD: /usr/bin/yay -Syy,/usr/bin/pacman -Sql" >> /etc/sudoers
+# pacman configuration
+sed -i -e 's/#Color/Color/g' /etc/pacman.conf
+sed -i -e 's/#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
+sed -i -e 's/#ParallelDownloads = 5/ParallelDownloads = 5/g' /etc/pacman.conf
 
 # grub-install --target=i386-pc /dev/sda
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
