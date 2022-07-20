@@ -4472,7 +4472,12 @@ And optionally:
       path=$(filesearch $PWD)
       if [ -d $path ]
       then
-          lf -remote "send $id my_cd $path"
+          if [ "$(cd $path 2>&1)" == "" ]
+          then
+              lf -remote "send $id my_cd $path"
+          else
+              lf -remote "send $id select $path"
+          fi
       else
           lf -remote "send $id select $path"
       fi
