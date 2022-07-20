@@ -9,12 +9,16 @@
 
   #!/bin/sh
 
-  devicelist=$(lsblk -dplnx size -o name | grep -Ev "boot|rpmb|loop" | tac)
+  devicelist="$(lsblk -dplnx size -o name | grep -Ev "boot|rpmb|loop" | tac)"
+  echo $devicelist
   PS3="Select a disk: "
-  select disk in $devicelist
+  IFS="
+  "
+  select device in $devicelist
   do
-      if [ "$disk" != "" ]
+      if [ "$device" != "" ]
       then
+          device=$(echo "$device" | awk '{print $1}')
           break
       fi
       echo "Wrong nuber"
@@ -23,16 +27,16 @@
   # Use timedatectl to ensure the system clock is accurate
   timedatectl set-ntp true
 
-  parted --script $disk \
+  parted --script $device \
          mklabel gpt \
          mkpart EFI-system-partition fat32 1MiB 513MiB \
          set 1 esp on \
          mkpart swap-partition linux-swap 513MiB 4609MiB \
          mkpart root-partition ext4 4609MiB 100%
 
-  boot_partition="$(ls ${disk}* | grep -E "^${disk}p?1$")"
-  swap_partition="$(ls ${disk}* | grep -E "^${disk}p?2$")"
-  root_partition="$(ls ${disk}* | grep -E "^${disk}p?3$")"
+  boot_partition="$(ls ${device}* | grep -E "^${device}p?1$")"
+  swap_partition="$(ls ${device}* | grep -E "^${device}p?2$")"
+  root_partition="$(ls ${device}* | grep -E "^${device}p?3$")"
 
   mkfs.fat -F 32 $boot_partition
   mkswap $swap_partition
