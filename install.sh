@@ -5,11 +5,11 @@ bin_dir=~/.local/bin         # bin files directory
 old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
-pkgs="alacritty neofetch zsh fzf xdotool\
-      awesome\
+pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel\
+      awesome-git xorg\
       rofi flameshot\
       emacs neovim\
-      lf-bin zoxide rm-improved\
+      lf-bin zoxide rm-improved bc ueberzug\
       librewolf-bin firefox\
       picom-animations-git\
       brightnessctl\
