@@ -36,7 +36,7 @@
   old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
   # list of packages that will be installed
-  pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel\
+  pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch\
         awesome-git xorg feh\
         rofi flameshot\
         emacs neovim\
@@ -1520,7 +1520,7 @@ Install packages using pacman
   function toggle_terminal()
      local s = awful.screen.focused()
      local c = client.focus
-     awful.spawn.with_shell("xdotool key Mode_switch")
+     awful.spawn.with_shell("xkb-switch -s us")
 
      if not terminal_client then
         create_terminal()
@@ -4421,7 +4421,7 @@ And optionally:
   }}
 
   cmd chng_layout %{{
-      xdotool key Mode_switch
+      xkb-switch -s us
       lf -remote "send $id push $1"
   }}
 
@@ -7083,7 +7083,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
   #!/bin/sh
 
-  xdotool key Mode_switch
+  xkb-switch -s us
 
   rofi -show drun\
        -replace\
@@ -7121,7 +7121,7 @@ Configuration based on https://github.com/adi1090x/rofi
   # Variable passed to rofi
   options="$files\n$editor\n$terminal\n$browser\n$settings"
 
-  xdotool key Mode_switch
+  xkb-switch -s us
 
   chosen="$(echo -e "$options" | $rofi_command -p " Most Used " -dmenu -selected-row 2)"
   case $chosen in
@@ -7178,7 +7178,7 @@ Configuration based on https://github.com/adi1090x/rofi
       exit 1
   fi
 
-  xdotool key Mode_switch
+  xkb-switch -s us
 
   row=1
   options="$ICON_UP\n$ICON_OPT\n$ICON_DOWN"
@@ -7646,7 +7646,7 @@ Configuration based on https://github.com/adi1090x/rofi
   suspend=""
   logout=""
 
-  xdotool key Mode_switch
+  xkb-switch -s us
 
   # Variable passed to rofi
   options="$lock\n$reboot\n$shutdown\n$suspend\n$logout"
@@ -7771,7 +7771,7 @@ Configuration based on https://github.com/adi1090x/rofi
   area=""
   options="$window\n$screen\n$area"
 
-  xdotool key Mode_switch
+  xkb-switch -s us
 
   chosen="$(echo -e "$options" | $rofi_command -p ' flameshot ' -dmenu -selected-row 1)"
   sleep 0.3
@@ -7855,7 +7855,7 @@ Configuration based on https://github.com/adi1090x/rofi
   row=1
   options="$ICON_MUTED\n$ICON_UP\n$ICON_DOWN"
 
-  xdotool key Mode_switch
+  xkb-switch -s us
 
   while
       MUTE=$(amixer get Master | tail -n 1 | awk -F ' ' '{print $6}' | tr -d '[]%')

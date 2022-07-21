@@ -23,7 +23,7 @@ fi
 # Variable passed to rofi
 options="$files\n$editor\n$terminal\n$browser\n$settings"
 
-xdotool key Mode_switch
+xkb-switch -s us
 
 chosen="$(echo -e "$options" | $rofi_command -p " Most Used " -dmenu -selected-row 2)"
 case $chosen in

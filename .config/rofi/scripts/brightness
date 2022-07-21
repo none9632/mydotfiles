@@ -16,7 +16,7 @@ then
     exit 1
 fi
 
-xdotool key Mode_switch
+xkb-switch -s us
 
 row=1
 options="$ICON_UP\n$ICON_OPT\n$ICON_DOWN"

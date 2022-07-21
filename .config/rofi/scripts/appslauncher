@@ -1,6 +1,6 @@
 #!/bin/sh
 
-xdotool key Mode_switch
+xkb-switch -s us
 
 rofi -show drun\
      -replace\

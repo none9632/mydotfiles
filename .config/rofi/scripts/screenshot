@@ -25,7 +25,7 @@ window=""
 area=""
 options="$window\n$screen\n$area"
 
-xdotool key Mode_switch
+xkb-switch -s us
 
 chosen="$(echo -e "$options" | $rofi_command -p ' flameshot ' -dmenu -selected-row 1)"
 sleep 0.3

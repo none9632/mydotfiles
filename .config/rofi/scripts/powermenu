@@ -14,7 +14,7 @@ lock=""
 suspend=""
 logout=""
 
-xdotool key Mode_switch
+xkb-switch -s us
 
 # Variable passed to rofi
 options="$lock\n$reboot\n$shutdown\n$suspend\n$logout"

@@ -332,7 +332,7 @@ cmd new_lf &{{
 }}
 
 cmd chng_layout %{{
-    xdotool key Mode_switch
+    xkb-switch -s us
     lf -remote "send $id push $1"
 }}
 

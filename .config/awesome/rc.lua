@@ -263,7 +263,7 @@ end
 function toggle_terminal()
    local s = awful.screen.focused()
    local c = client.focus
-   awful.spawn.with_shell("xdotool key Mode_switch")
+   awful.spawn.with_shell("xkb-switch -s us")
 
    if not terminal_client then
       create_terminal()
