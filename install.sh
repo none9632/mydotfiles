@@ -6,12 +6,12 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel\
-      awesome-git xorg\
+      awesome-git xorg feh\
       rofi flameshot\
       emacs neovim\
-      lf-bin zoxide rm-improved bc ueberzug\
+      lf-bin zoxide rm-improved bc ueberzug udiskie\
       librewolf-bin firefox\
-      nerd-fonts-source-code-pro ttf-iosevka-nerd\
+      nerd-fonts-source-code-pro ttf-iosevka-nerd ttf-roboto\
       picom-animations-git\
       brightnessctl\
       alsa-utils\
@@ -22,7 +22,8 @@ pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel\
       gpick\
       exa bat\
       unrar p7zip unzip\
-      udiskie"
+      texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra\
+      texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
 # list of files/folders to symlink in homedir
 config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"

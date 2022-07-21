@@ -9,6 +9,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 [[ ! -d $TPATH ]] && mkdir -p $TPATH
 [[ -f /usr/bin/udiskie ]] && udiskie &
 
+setxkbmap -layout 'us,ru' -option 'grp:caps_toggle'
 xset r rate 300 24
 syndaemon -t -i 1 -d
 

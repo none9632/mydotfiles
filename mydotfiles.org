@@ -37,12 +37,12 @@
 
   # list of packages that will be installed
   pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel\
-        awesome-git xorg\
+        awesome-git xorg feh\
         rofi flameshot\
         emacs neovim\
-        lf-bin zoxide rm-improved bc ueberzug\
+        lf-bin zoxide rm-improved bc ueberzug udiskie\
         librewolf-bin firefox\
-        nerd-fonts-source-code-pro ttf-iosevka-nerd\
+        nerd-fonts-source-code-pro ttf-iosevka-nerd ttf-roboto\
         picom-animations-git\
         brightnessctl\
         alsa-utils\
@@ -53,7 +53,8 @@
         gpick\
         exa bat\
         unrar p7zip unzip\
-        udiskie"
+        texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra\
+        texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
@@ -737,6 +738,7 @@ Install packages using pacman
   [[ ! -d $TPATH ]] && mkdir -p $TPATH
   [[ -f /usr/bin/udiskie ]] && udiskie &
 
+  setxkbmap -layout 'us,ru' -option 'grp:caps_toggle'
   xset r rate 300 24
   syndaemon -t -i 1 -d
 
@@ -10192,7 +10194,7 @@ Include an external file, like module file, etc.
   ;   font-3 = FontAwesome:size=10
   ; See the Fonts wiki page for more details
 
-  font-0 = "Iosevka Nerd Font:pixelsize=13;4"
+  font-0 = "Iosevka Term:pixelsize=13;4"
   font-1 = "MyFont:pixelsize=18;4"
 
   ; Modules are added to one of the available blocks
