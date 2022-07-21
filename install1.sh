@@ -38,7 +38,7 @@ mount $boot_partition /mnt/boot/efi
 swapon $swap_partition
 
 # pacstrap is needed for the specified packages to be installed in the specified directory
-pacstrap /mnt base base-devel linux linux-firmware amd-ucode grub efibootmgr git cmake
+pacstrap /mnt base base-devel linux linux-firmware amd-ucode grub efibootmgr git cmake networkmanager
 # Generate an fstab file
 genfstab -U /mnt >> /mnt/etc/fstab
 

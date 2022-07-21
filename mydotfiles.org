@@ -47,7 +47,7 @@
   swapon $swap_partition
 
   # pacstrap is needed for the specified packages to be installed in the specified directory
-  pacstrap /mnt base base-devel linux linux-firmware amd-ucode grub efibootmgr git cmake
+  pacstrap /mnt base base-devel linux linux-firmware amd-ucode grub efibootmgr git cmake networkmanager
   # Generate an fstab file
   genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -97,6 +97,9 @@
   sed -i -e 's/#Color/Color/g' /etc/pacman.conf
   sed -i -e 's/#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
   sed -i -e 's/#ParallelDownloads = 5/ParallelDownloads = 5/g' /etc/pacman.conf
+
+  # network configuration
+  systemctl enable NetworkManager
 
   # grub-install --target=i386-pc /dev/sda
   grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
