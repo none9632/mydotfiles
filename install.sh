@@ -6,8 +6,9 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh fzf xdotool\
+      awesome\
       rofi flameshot\
-      emacs\
+      emacs neovim\
       lf-bin zoxide rm-improved\
       librewolf-bin firefox\
       picom-animations-git\
@@ -19,7 +20,8 @@ pkgs="alacritty neofetch zsh fzf xdotool\
       nextcloud-client libsecret gnome-keyring\
       gpick\
       exa bat\
-      unrar p7zip"
+      unrar p7zip\
+      udiskie"
 
 # list of files/folders to symlink in homedir
 config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
@@ -55,6 +57,7 @@ function install_all ()
 
 function install_bin ()
 {
+    mkdir -p ~/.local/bin
     for file in $bin_files
     do
         [ -e $bin_dir/$file ] && mv ~/.local/bin/$file $old_dots_dir/.local/bin

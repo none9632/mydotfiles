@@ -28,7 +28,7 @@ options="$window\n$screen\n$area"
 xdotool key Mode_switch
 
 chosen="$(echo -e "$options" | $rofi_command -p ' flameshot ' -dmenu -selected-row 1)"
-sleep 0.25
+sleep 0.3
 case $chosen in
     $screen)
         scr_name=full-$(getStamp).png
