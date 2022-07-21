@@ -104,7 +104,7 @@ function install_font ()
     for file in $font_files
     do
         [ -f $font_path/$file ] && mv $font_path/$file $old_dots_dir/.local/share/fonts
-        cp $dot_dir/font/$font_file $font_path/$font_file
+        cp $dot_dir/font/$file $font_path/$file
     done
 }
 
