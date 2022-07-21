@@ -11,6 +11,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel\
       emacs neovim\
       lf-bin zoxide rm-improved bc ueberzug\
       librewolf-bin firefox\
+      nerd-fonts-source-code-pro ttf-iosevka-nerd\
       picom-animations-git\
       brightnessctl\
       alsa-utils\
@@ -20,7 +21,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel\
       nextcloud-client libsecret gnome-keyring\
       gpick\
       exa bat\
-      unrar p7zip\
+      unrar p7zip unzip\
       udiskie"
 
 # list of files/folders to symlink in homedir

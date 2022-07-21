@@ -42,6 +42,7 @@
         emacs neovim\
         lf-bin zoxide rm-improved bc ueberzug\
         librewolf-bin firefox\
+        nerd-fonts-source-code-pro ttf-iosevka-nerd\
         picom-animations-git\
         brightnessctl\
         alsa-utils\
@@ -51,7 +52,7 @@
         nextcloud-client libsecret gnome-keyring\
         gpick\
         exa bat\
-        unrar p7zip\
+        unrar p7zip unzip\
         udiskie"
 
   # list of files/folders to symlink in homedir
@@ -1824,7 +1825,7 @@ Install packages using pacman
 
   local theme = {}
 
-  theme.font          = "Iosevka Nerd Font 13"
+  theme.font          = "Iosevka Term 13"
 
   theme.bg_normal     = "#222222"
   theme.bg_focus      = "#535d6c"
