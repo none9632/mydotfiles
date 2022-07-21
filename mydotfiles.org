@@ -133,11 +133,16 @@
   function install_font ()
   {
       font_path=~/.local/share/fonts
-      font_file=MyFont.ttf
+      font_files="MyFont.ttf Feather.ttf"
 
-      [ -f $font_path/$font_file ] && mv $font_path/$font_file $old_dots_dir/.local/share/fonts
       echo "Font installation"
-      cp $dot_dir/font/$font_file $font_path
+      [ ! -d $font_path ] && mkdir $font_path
+
+      for file in $font_files
+      do
+          [ -f $font_path/$file ] && mv $font_path/$file $old_dots_dir/.local/share/fonts
+          cp $dot_dir/font/$font_file $font_path/$font_file
+      done
   }
 
   function install_pkgs ()
