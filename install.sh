@@ -22,7 +22,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch\
       gpick\
       exa bat\
       unrar p7zip unzip\
-      texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra\
+      texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra texlive-fontsextra\
       texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
 # list of files/folders to symlink in homedir
@@ -93,6 +93,9 @@ function install_config ()
     [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
     echo "Creating symlink to .bash_profile"
     ln -s $dot_dir/.bash_profile ~/.bash_profile
+
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 }
 
 function install_font ()

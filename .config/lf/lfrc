@@ -404,8 +404,8 @@ map . :set hidden!
 map gh my_cd ~
 map gc goto_config
 map gp my_cd ~/Pictures
-map gd my_cd ~/Documents
-map gD my_cd ~/Downloads
+map gD my_cd ~/Documents
+map gd my_cd ~/Downloads
 map g/ my_cd /
 map gt my_cd /tmp
 map ge my_cd /etc

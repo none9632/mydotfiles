@@ -53,7 +53,7 @@
         gpick\
         exa bat\
         unrar p7zip unzip\
-        texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra\
+        texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra texlive-fontsextra\
         texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
   # list of files/folders to symlink in homedir
@@ -130,6 +130,9 @@
       [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
       echo "Creating symlink to .bash_profile"
       ln -s $dot_dir/.bash_profile ~/.bash_profile
+
+      sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   }
 
   function install_font ()
@@ -4499,8 +4502,8 @@ And optionally:
   map gh my_cd ~
   map gc goto_config
   map gp my_cd ~/Pictures
-  map gd my_cd ~/Documents
-  map gD my_cd ~/Downloads
+  map gD my_cd ~/Documents
+  map gd my_cd ~/Downloads
   map g/ my_cd /
   map gt my_cd /tmp
   map ge my_cd /etc
