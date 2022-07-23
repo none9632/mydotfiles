@@ -6,7 +6,7 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch\
-      awesome-git xorg feh\
+      awesome-git xorg feh ly\
       rofi flameshot\
       emacs neovim\
       lf-bin zoxide rm-improved bc ueberzug udiskie\
@@ -139,6 +139,9 @@ function install_pkgs ()
         make
         sudo make install
     fi
+
+    # Setting display manager
+    sudo systemctl enable ly
 }
 
 # create dotfiles_old in homedir
