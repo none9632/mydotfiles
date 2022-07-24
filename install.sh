@@ -109,7 +109,7 @@ function install_font_and_icons ()
 
     echo "Icons installation"
     [ ! -d $icons_path ] && mkdir $icons_path
-    cp $dot_dir/icons/* $icons_path/
+    cp -r $dot_dir/icons/* $icons_path/
 }
 
 function install_pkgs ()
