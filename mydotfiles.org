@@ -1383,7 +1383,12 @@ Install packages using pacman
       }
 
       ruled.client.append_rule {
-         rule       = { class = "librewolf", instance = "librewolf" },
+         rule_any = {
+            instance = {
+               "Places",
+               "librewolf"
+            }
+         },
          properties = {
             floating = true,
             width = 1350,
@@ -4960,7 +4965,7 @@ And optionally:
   animation-mass = 1;
   animation-for-open-window = "none";
   animation-for-menu-window = "slide-down";
-  animation-for-transient-window = "slide-down";
+  animation-for-transient-window = "none";
   animation-for-workspace-switch-in = "none";
   animation-for-workspace-switch-out = "none";
 

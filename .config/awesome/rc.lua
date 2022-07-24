@@ -134,7 +134,12 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
-       rule       = { class = "librewolf", instance = "librewolf" },
+       rule_any = {
+          instance = {
+             "Places",
+             "librewolf"
+          }
+       },
        properties = {
           floating = true,
           width = 1350,
