@@ -152,12 +152,12 @@ mkdir -p $old_dots_dir/.local/bin
 mkdir -p $old_dots_dir/.local/share/fonts
 
 case "$1" in
-    ""|all)   install_all    ;;
-    bin)      install_bin    ;;
-    config)   install_config ;;
-    font)     install_font   ;;
-    packages) install_pkgs   ;;
-    help|*)   help           ;;
+    ""|all)   install_all            ;;
+    bin)      install_bin            ;;
+    config)   install_config         ;;
+    icons)    install_font_and_icons ;;
+    packages) install_pkgs           ;;
+    help|*)   help                   ;;
 esac
 
 mimeapps_dir="$HOME/.local/share/applications"
