@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="-10 0 1024 1024"
+   id="svg4"
+   sodipodi:docname="package.svg"
+   width="1024"
+   height="1024"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="0.715"
+     inkscape:cx="479"
+     inkscape:cy="500"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <path
+     fill="currentColor"
+     d="m 52,292.27718 q 0,-49.89339 40.298507,-60.44776 L 492.40512,122.44776 h 20.14925 L 911.70149,231.82942 Q 952,241.42431 952,292.27718 v 439.44563 q 0,49.89339 -40.29851,60.44776 L 512.55437,901.55224 H 492.40512 L 92.298507,792.17057 Q 52,782.57569 52,731.72281 Z M 472.25586,831.50959 V 432.36247 L 112.44776,332.57569 V 742.27718 Z M 112.44776,272.12793 502,371.91471 652.63966,332.57569 262.12793,231.82942 Z M 892.51173,742.27718 V 332.57569 L 771.6162,362.31983 V 512 L 652.63966,541.74414 V 392.06396 L 531.74414,432.36247 V 831.50959 Z M 771.6162,301.87207 892.51173,272.12793 502,172.34115 382.06397,202.08529 Z"
+     id="path2"
+     style="stroke-width:0.959488" />
+</svg>

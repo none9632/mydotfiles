@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="-10 0 1034 1024"
+   id="svg6"
+   sodipodi:docname="zip_file.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="0.69824219"
+     inkscape:cx="517"
+     inkscape:cy="512"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4" />
+  <g
+     transform="matrix(1 0 0 -1 0 819)"
+     id="g4">
+    <path
+       fill="currentColor"
+       d="M662.714 757l225 -225v-610.714q0 -64.2861 -64.2852 -64.2861h-642.857q-64.2852 0 -64.2852 64.2861v771.428q0 64.2852 64.2852 64.2852h482.144zM823.429 -78.7139v578.571l-192.856 192.856h-450v-771.428h642.856zM437.65 564.4h-63.9004v63.8994h63.9004v-63.8994 zM502.45 499.6h-64.7998v64.8008h64.7998v-64.8008zM437.65 435.7h-63.9004v63.8994h63.9004v-63.8994zM502.45 371.8h-64.7998v63.9004h64.7998v-63.9004zM502.45 693.1v-64.7998h-64.7998v64.7998zM508.75 283.6l54 -175.5q3.59961 -10.7998 3.59961 -26.0996 q0 -42.2998 -36.4492 -69.2998q-36.4502 -27 -92.25 -27q-55.8008 0 -92.25 27q-36.4502 27 -36.4502 69.2998q0 12.5996 4.5 26.0996q10.7998 31.5 60.2998 198.9v64.7998h63.9004v-64.7998h39.5996q10.7998 0 19.7998 -6.2998t11.7002 -17.1006zM437.65 49.5996 q27 0 45.8994 9.4502q18.9004 9.4502 18.9004 22.9502t-18.9004 22.9502q-18.8994 9.4502 -45.8994 9.4502t-45.4502 -9.4502t-18.4502 -22.9502t18.4502 -22.9502t45.4502 -9.4502z"
+       id="path2"
+       style="fill:#efc84a;fill-opacity:1" />
+  </g>
+</svg>

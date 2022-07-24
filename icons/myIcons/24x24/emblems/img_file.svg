@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="-10 0 1034 1024"
+   id="svg6"
+   sodipodi:docname="img_file.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="0.69824219"
+     inkscape:cx="517"
+     inkscape:cy="512"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" />
+  <g
+     transform="matrix(1 0 0 -1 0 819)"
+     id="g4"
+     style="fill:#fbc02d;fill-opacity:1">
+    <path
+       fill="currentColor"
+       d="M662.714 757l225 -225v-610.714q0 -64.2861 -64.2852 -64.2861h-642.857q-64.2852 0 -64.2852 64.2861v771.428q0 64.2852 64.2852 64.2852h482.144zM823.429 -78.7139v578.571l-192.856 192.856h-450v-771.428h642.856zM758.95 146.8v-161.1h-513.9v96.2998 l96.2998 96.2998l63.9004 -63.8994l193.5 192.6zM341.35 243.1q-39.5996 0 -67.9492 28.3506q-28.3506 28.3496 -28.3506 67.9502q0 39.5996 28.3506 67.9492q28.3496 28.3506 67.9492 28.3506q39.6006 0 67.9502 -28.3506q28.3506 -28.3496 28.3506 -67.9492 q0 -39.6006 -28.3506 -67.9502q-28.3496 -28.3506 -67.9502 -28.3506z"
+       id="path2"
+       style="fill:#fbc02d;fill-opacity:1" />
+  </g>
+</svg>

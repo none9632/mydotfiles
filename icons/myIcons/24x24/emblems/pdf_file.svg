@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="-10 0 1024 1024"
+   id="svg6"
+   sodipodi:docname="pdf_file.svg"
+   width="1024"
+   height="1024"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="0.69824219"
+     inkscape:cx="517"
+     inkscape:cy="512"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4"
+     inkscape:document-rotation="0" />
+  <g
+     transform="matrix(0.94736842,0,0,-0.94736842,88,847.36842)"
+     id="g4">
+    <path
+       fill="currentColor"
+       d="M 607,829 844,592 V -53 q 0,-68 -68,-68 H 98 q -68,0 -68,68 v 814 q 0,68 68,68 z M 98,761 V 128 l 68,45 q 22,11 45,11 0,12 11.5,29 11.5,17 22.5,45 11,28 34,50 l 68,182 q -12,68 -23,124 0,56 11,102 0,22 12,33.5 12,11.5 22,11.5 z M 403,434 335,274 q -34,-79 -45,-78 68,22 130.5,39 62.5,17 118.5,17 -34,22 -56,46 -58,56 -80,136 z M 776,-53 v 203 h -22 q -45,12 -91,23 -46,11 -90,34 Q 517,195 471,196 403,174 369,173 L 347,162 Q 313,150 290,139 244,49 166,-19 143,-41 120,-53 h 12 z m 0,327 V 558 L 573,761 H 403 q 22,0 46,-12 11,-33 10,-67 v -45 q 0,-68 -10,-136 22,-90 78,-159 34,-34 68,-44 46,0 91,10 23,-11 45,-10 23,-12 45,-24 z"
+       id="path2"
+       style="fill:#e74c3c;fill-opacity:1" />
+  </g>
+</svg>

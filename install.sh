@@ -43,7 +43,7 @@ Commands:\n\
 all         Install all.\n\
 bin         Install binary files only.\n\
 config      Install config files only.\n\
-font        Install font only.\n\
+icons       Install font and icons.\n\
 packages    Install only the necessary packages.\n\
 help        Show this message and exit."
     exit 0
@@ -53,7 +53,7 @@ function install_all ()
 {
     install_pkgs
     install_config
-    install_font
+    install_font_and_icons
     install_bin
 }
 
@@ -98,19 +98,18 @@ function install_config ()
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 }
 
-function install_font ()
+function install_font_and_icons ()
 {
     font_path=~/.local/share/fonts
-    font_files="MyFont.ttf Feather.ttf"
+    icons_path=~/.local/share/icons
 
     echo "Font installation"
     [ ! -d $font_path ] && mkdir $font_path
+    cp $dot_dir/font/* $font_path/
 
-    for file in $font_files
-    do
-        [ -f $font_path/$file ] && mv $font_path/$file $old_dots_dir/.local/share/fonts
-        cp $dot_dir/font/$file $font_path/$file
-    done
+    echo "Icons installation"
+    [ ! -d $icons_path ] && mkdir $icons_path
+    cp $dot_dir/icons/* $icons_path/
 }
 
 function install_pkgs ()

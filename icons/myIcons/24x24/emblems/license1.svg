@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="-10 0 1024 1024"
+   id="svg4"
+   sodipodi:docname="license1.svg"
+   width="1024"
+   height="1024"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="0.715"
+     inkscape:cx="469"
+     inkscape:cy="500"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4"
+     inkscape:document-rotation="0" />
+  <path
+     fill="currentColor"
+     d="M 544.42919,491.30283 H 847.6427 v 64.16122 H 544.42919 Z m 0,-107.62527 H 847.6427 v 64.16122 H 544.42919 Z m 0,215.25054 H 847.6427 v 64.16122 H 544.42919 Z M 890.0719,145.66013 H 113.92811 Q 77.708061,147.72985 53.388889,171.53159 29.069717,195.33333 27,232.58823 v 558.82353 q 2.069717,37.25491 26.388889,62.09151 24.319172,24.8366 60.539221,24.8366 H 890.0719 q 36.22004,0 60.53921,-24.8366 Q 974.93028,828.66667 977,791.41176 V 232.58823 q -2.06972,-37.2549 -26.38889,-61.05664 -24.31917,-23.80174 -60.53921,-25.87146 z m 0,645.75163 H 502 V 232.58823 h 388.0719 z"
+     id="path2"
+     style="stroke-width:1.03486;fill:#cbcb41;fill-opacity:1" />
+</svg>
