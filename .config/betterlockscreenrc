@@ -1,0 +1,36 @@
+# options
+display_on=0
+span_image=false
+lock_timeout=300
+# fx_list=(dim blur dimblur pixel dimpixel color)
+fx_list=()
+dim_level=40
+blur_level=1
+pixel_scale=10,1000
+solid_color=333333
+wallpaper_cmd="feh --bg-fill"
+quiet=false
+# i3lockcolor_bin="i3lock-color" # Manually set command for i3lock-color
+
+# theme
+loginbox=00000066
+loginshadow=00000000
+locktext="Type password to unlock"
+font="sans-serif"
+ringcolor=364852dd
+insidecolor=00000000
+separatorcolor=00000000
+ringvercolor=36485200
+insidevercolor=00000000
+ringwrongcolor=ff6c6b88
+insidewrongcolor=ff6c6b10
+timecolor=cad0daff
+time_format="%H:%M"
+greetercolor=cad0daff
+layoutcolor=cad0daff
+keyhlcolor=51afefaa
+bshlcolor=d23c3daa
+verifcolor=ffffff00
+wrongcolor=d23c3d00
+modifcolor=d23c3dff
+bgcolor=000000ff
