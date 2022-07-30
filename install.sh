@@ -101,6 +101,7 @@ function install_config ()
         sudo ls /root
     fi
 
+    # betterlockscreen
     echo "[Unit]
 Description = Lock screen when going to sleep/suspend
 Before=sleep.target
@@ -118,6 +119,10 @@ ExecStartPost=/usr/bin/sleep 1
 WantedBy=sleep.target
 WantedBy=suspend.target" | sudo tee /etc/systemd/system/betterlockscreen@.service
     sudo systemctl enable betterlockscreen@$(whoami).service
+
+    # gnome-keyring
+    echo "auth       optional     pam_gnome_keyring.so
+session    optional     pam_gnome_keyring.so auto_start" | sudo tee -a /etc/pam.d/login
 }
 
 function install_misc ()
