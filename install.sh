@@ -26,7 +26,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch xf86-input-syna
       texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc"
+config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0"
 
 bin_files="inkscape-figures update list in pin re"
 bar_c_files="cpu ram"
@@ -43,7 +43,7 @@ Commands:\n\
 all         Install all.\n\
 bin         Install binary files only.\n\
 config      Install config files only.\n\
-misc        Install font and icons.\n\
+misc        Install fonts, icons and themes.\n\
 packages    Install only the necessary packages.\n\
 help        Show this message and exit."
     exit 0
@@ -122,17 +122,23 @@ WantedBy=suspend.target" | sudo tee /etc/systemd/system/betterlockscreen@.servic
 
 function install_misc ()
 {
-    font_path=~/.local/share/fonts
+    fonts_path=~/.local/share/fonts
     icons_path=~/.local/share/icons
+    themes_path=~/.local/share/themes
 
-    echo -n "Font installation..."
-    [ ! -d $font_path ] && mkdir $font_path
-    cp $dot_dir/font/* $font_path/
+    echo -n "Fonts installation..."
+    [ ! -d $fonts_path ] && mkdir -p $fonts_path
+    cp $dot_dir/fonts/* $fonts_path/
     echo "done"
 
     echo -n "Icons installation..."
-    [ ! -d $icons_path ] && mkdir $icons_path
+    [ ! -d $icons_path ] && mkdir -p $icons_path
     cp -r $dot_dir/icons/* $icons_path/
+    echo "done"
+
+    echo -n "Themes installation..."
+    [ ! -d $themes_path ] && mkdir -p $themes_path
+    cp -r $dot_dir/themes/* $themes_path/
     echo "done"
 }
 
