@@ -37,7 +37,7 @@
 
   # list of packages that will be installed
   pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch\
-        awesome-git xorg feh ly\
+        awesome-git xorg feh ly betterlockscreen\
         rofi flameshot\
         emacs neovim\
         lf-bin zoxide rm-improved bc ueberzug udiskie\
@@ -57,7 +57,7 @@
         texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
   # list of files/folders to symlink in homedir
-  config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
+  config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc"
 
   bin_files="inkscape-figures update list in pin re"
   bar_c_files="cpu ram"
@@ -80,7 +80,7 @@
   all         Install all.\n\
   bin         Install binary files only.\n\
   config      Install config files only.\n\
-  icons       Install font and icons.\n\
+  misc        Install font and icons.\n\
   packages    Install only the necessary packages.\n\
   help        Show this message and exit."
       exit 0
@@ -90,7 +90,7 @@
   {
       install_pkgs
       install_config
-      install_font_and_icons
+      install_misc
       install_bin
   }
 
@@ -122,7 +122,7 @@
       # move any existing dotfiles in homedir to directory, then create symlinks
       for file in $config_files
       do
-          [ -d ~/.config/$file ] && mv ~/.config/$file $old_dots_dir/.config
+          [ -e ~/.config/$file ] && mv ~/.config/$file $old_dots_dir/.config
           echo "Creating symlink to $file in home directory."
           ln -s $dot_dir/.config/$file ~/.config/$file
       done
@@ -132,21 +132,45 @@
       ln -s $dot_dir/.bash_profile ~/.bash_profile
 
       sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+      if [[ ! "$EUID" = 0 ]]; then
+          sudo ls /root
+      fi
+
+      echo "[Unit]
+  Description = Lock screen when going to sleep/suspend
+  Before=sleep.target
+  Before=suspend.target
+
+  [Service]
+  User=%i
+  Type=simple
+  Environment=DISPLAY=:0
+  ExecStart=/usr/bin/betterlockscreen --lock
+  TimeoutSec=infinity
+  ExecStartPost=/usr/bin/sleep 1
+
+  [Install]
+  WantedBy=sleep.target
+  WantedBy=suspend.target" | sudo tee /etc/systemd/system/betterlockscreen@.service
+      sudo systemctl enable betterlockscreen@$(whoami).service
   }
 
-  function install_font_and_icons ()
+  function install_misc ()
   {
       font_path=~/.local/share/fonts
       icons_path=~/.local/share/icons
 
-      echo "Font installation"
+      echo -n "Font installation..."
       [ ! -d $font_path ] && mkdir $font_path
       cp $dot_dir/font/* $font_path/
+      echo "done"
 
-      echo "Icons installation"
+      echo -n "Icons installation..."
       [ ! -d $icons_path ] && mkdir $icons_path
       cp -r $dot_dir/icons/* $icons_path/
+      echo "done"
   }
 
   function install_pkgs ()
@@ -176,7 +200,7 @@
           sudo make install
       fi
 
-      # Setting display manager
+      # setting display manager
       sudo systemctl enable ly
   }
 
@@ -2445,7 +2469,12 @@ Install packages using pacman
            {description = "brightness menu", group = "launcher"}),
         awful.key({ modkey }, "x", function() awful.util.spawn("volume") end,
            {description = "volume menu", group = "launcher"}),
-        awful.key({ modkey }, "w", function() awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers") end,
+        awful.key({ modkey }, "w", function()
+              awful.spawn.with_shell("mkdir -p $HOME/.cache/feh")
+              awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers;\
+                                      ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo \"[a-zA-Z0-9./]+\") $HOME/.cache/feh/wallpaper;\
+                                      betterlockscreen -u $HOME/.cache/feh/wallpaper")
+        end,
            {description = "wallpaper change", group = "launcher"}),
         awful.key({        }, "Print", function() awful.util.spawn("screenshot") end,
            {description = "take a screenshot", group = "launcher"}),
@@ -2532,7 +2561,10 @@ Install packages using pacman
   awful.spawn.with_shell("nextcloud --background")
   awful.spawn.with_shell("lf -server")
   awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
-  awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
+  awful.spawn.with_shell("mkdir -p $HOME/.cache/feh")
+  awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers;\
+                          ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo \"[a-zA-Z0-9./]+\") $HOME/.cache/feh/wallpaper;\
+                          betterlockscreen -u $HOME/.cache/feh/wallpaper")
   awful.spawn.with_shell("emacs --daemon --name emacsclient")
 
 #+end_src
@@ -7669,11 +7701,7 @@ Configuration based on https://github.com/adi1090x/rofi
           systemctl reboot
           ;;
       $lock)
-          if [[ -f /usr/bin/i3lock ]]; then
-              i3lock
-          elif [[ -f /usr/bin/betterlockscreen ]]; then
-              betterlockscreen -l
-          fi
+          betterlockscreen -l
           ;;
       $suspend)
           # mpc -q pause
@@ -8032,7 +8060,7 @@ Configuration based on https://github.com/adi1090x/rofi
 #+end_src
 
 * Misc
-** Flameshot
+** flameshot
 
 #+begin_src conf :tangle ./.config/flameshot/flameshot.ini
 
@@ -8535,7 +8563,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-** Neofetch
+** neofetch
 :PROPERTIES:
 :header-args: :tangle ./.config/neofetch/config.conf
 :END:
@@ -9641,6 +9669,49 @@ Neofetch config
   # Default: 'off'
   # Values: 'on', 'off'
   stdout="off"
+
+#+end_src
+
+** betterlockscreen
+
+#+begin_src conf :tangle ./.config/betterlockscreenrc
+
+  # options
+  display_on=0
+  span_image=false
+  lock_timeout=300
+  # fx_list=(dim blur dimblur pixel dimpixel color)
+  fx_list=()
+  dim_level=40
+  blur_level=1
+  pixel_scale=10,1000
+  solid_color=333333
+  wallpaper_cmd="feh --bg-fill"
+  quiet=false
+  # i3lockcolor_bin="i3lock-color" # Manually set command for i3lock-color
+
+  # theme
+  loginbox=00000066
+  loginshadow=00000000
+  locktext="Type password to unlock"
+  font="sans-serif"
+  ringcolor=364852dd
+  insidecolor=00000000
+  separatorcolor=00000000
+  ringvercolor=36485200
+  insidevercolor=00000000
+  ringwrongcolor=ff6c6b88
+  insidewrongcolor=ff6c6b10
+  timecolor=cad0daff
+  time_format="%H:%M"
+  greetercolor=cad0daff
+  layoutcolor=cad0daff
+  keyhlcolor=51afefaa
+  bshlcolor=d23c3daa
+  verifcolor=ffffff00
+  wrongcolor=d23c3d00
+  modifcolor=d23c3dff
+  bgcolor=000000ff
 
 #+end_src
 

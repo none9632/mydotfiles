@@ -6,7 +6,7 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch\
-      awesome-git xorg feh ly\
+      awesome-git xorg feh ly betterlockscreen\
       rofi flameshot\
       emacs neovim\
       lf-bin zoxide rm-improved bc ueberzug udiskie\
@@ -26,7 +26,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch\
       texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom"
+config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc"
 
 bin_files="inkscape-figures update list in pin re"
 bar_c_files="cpu ram"
@@ -43,7 +43,7 @@ Commands:\n\
 all         Install all.\n\
 bin         Install binary files only.\n\
 config      Install config files only.\n\
-icons       Install font and icons.\n\
+misc        Install font and icons.\n\
 packages    Install only the necessary packages.\n\
 help        Show this message and exit."
     exit 0
@@ -53,7 +53,7 @@ function install_all ()
 {
     install_pkgs
     install_config
-    install_font_and_icons
+    install_misc
     install_bin
 }
 
@@ -85,7 +85,7 @@ function install_config ()
     # move any existing dotfiles in homedir to directory, then create symlinks
     for file in $config_files
     do
-        [ -d ~/.config/$file ] && mv ~/.config/$file $old_dots_dir/.config
+        [ -e ~/.config/$file ] && mv ~/.config/$file $old_dots_dir/.config
         echo "Creating symlink to $file in home directory."
         ln -s $dot_dir/.config/$file ~/.config/$file
     done
@@ -95,21 +95,45 @@ function install_config ()
     ln -s $dot_dir/.bash_profile ~/.bash_profile
 
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+    if [[ ! "$EUID" = 0 ]]; then
+        sudo ls /root
+    fi
+
+    echo "[Unit]
+Description = Lock screen when going to sleep/suspend
+Before=sleep.target
+Before=suspend.target
+
+[Service]
+User=%i
+Type=simple
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/betterlockscreen --lock
+TimeoutSec=infinity
+ExecStartPost=/usr/bin/sleep 1
+
+[Install]
+WantedBy=sleep.target
+WantedBy=suspend.target" | sudo tee /etc/systemd/system/betterlockscreen@.service
+    sudo systemctl enable betterlockscreen@$(whoami).service
 }
 
-function install_font_and_icons ()
+function install_misc ()
 {
     font_path=~/.local/share/fonts
     icons_path=~/.local/share/icons
 
-    echo "Font installation"
+    echo -n "Font installation..."
     [ ! -d $font_path ] && mkdir $font_path
     cp $dot_dir/font/* $font_path/
+    echo "done"
 
-    echo "Icons installation"
+    echo -n "Icons installation..."
     [ ! -d $icons_path ] && mkdir $icons_path
     cp -r $dot_dir/icons/* $icons_path/
+    echo "done"
 }
 
 function install_pkgs ()
@@ -139,7 +163,7 @@ function install_pkgs ()
         sudo make install
     fi
 
-    # Setting display manager
+    # setting display manager
     sudo systemctl enable ly
 }
 

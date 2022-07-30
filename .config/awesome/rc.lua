@@ -1091,7 +1091,12 @@ awful.keyboard.append_global_keybindings({
          {description = "brightness menu", group = "launcher"}),
       awful.key({ modkey }, "x", function() awful.util.spawn("volume") end,
          {description = "volume menu", group = "launcher"}),
-      awful.key({ modkey }, "w", function() awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers") end,
+      awful.key({ modkey }, "w", function()
+            awful.spawn.with_shell("mkdir -p $HOME/.cache/feh")
+            awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers;\
+                                    ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo \"[a-zA-Z0-9./]+\") $HOME/.cache/feh/wallpaper;\
+                                    betterlockscreen -u $HOME/.cache/feh/wallpaper")
+      end,
          {description = "wallpaper change", group = "launcher"}),
       awful.key({        }, "Print", function() awful.util.spawn("screenshot") end,
          {description = "take a screenshot", group = "launcher"}),
@@ -1160,5 +1165,8 @@ create_translator()
 awful.spawn.with_shell("nextcloud --background")
 awful.spawn.with_shell("lf -server")
 awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
-awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers")
+awful.spawn.with_shell("mkdir -p $HOME/.cache/feh")
+awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers;\
+                        ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo \"[a-zA-Z0-9./]+\") $HOME/.cache/feh/wallpaper;\
+                        betterlockscreen -u $HOME/.cache/feh/wallpaper")
 awful.spawn.with_shell("emacs --daemon --name emacsclient")
