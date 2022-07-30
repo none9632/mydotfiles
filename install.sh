@@ -5,7 +5,7 @@ bin_dir=~/.local/bin         # bin files directory
 old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
-pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch\
+pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch xf86-input-synaptics\
       awesome-git xorg feh ly betterlockscreen\
       rofi flameshot\
       emacs neovim\
