@@ -5,8 +5,9 @@ bin_dir=~/.local/bin         # bin files directory
 old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
-pkgs="alacritty neofetch zsh pkgfile fzf xdotool xsel xkb-switch xf86-input-synaptics\
+pkgs="alacritty neofetch zsh pkgfile fzf \
       awesome-git xorg feh ly betterlockscreen\
+      bc wget xclip xf86-input-synaptics xdotool xsel xkb-switch\
       rofi flameshot\
       emacs neovim\
       lf-bin zoxide rm-improved bc ueberzug udiskie\
@@ -123,6 +124,12 @@ WantedBy=suspend.target" | sudo tee /etc/systemd/system/betterlockscreen@.servic
     # gnome-keyring
     echo "auth       optional     pam_gnome_keyring.so
 session    optional     pam_gnome_keyring.so auto_start" | sudo tee -a /etc/pam.d/login
+
+    # zsh
+    if [ ! "$(ls /var/cache/pkgfile)" == "" ]
+    then
+        sudo pkgfile --update
+    fi
 }
 
 function install_misc ()
