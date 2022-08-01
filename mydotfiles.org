@@ -1458,6 +1458,7 @@ Install packages using pacman
                "Gpick",
                "Gcr-prompter",
                "Nextcloud",
+               "Electron",
             }
          },
          properties = {

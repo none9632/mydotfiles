@@ -167,6 +167,7 @@ ruled.client.connect_signal("request::rules", function()
              "Gpick",
              "Gcr-prompter",
              "Nextcloud",
+             "Electron",
           }
        },
        properties = {
