@@ -115,6 +115,7 @@ Environment=DISPLAY=:0
 ExecStart=/usr/bin/betterlockscreen --lock
 TimeoutSec=infinity
 ExecStartPost=/usr/bin/sleep 1
+ExecStartPre=/usr/bin/xkb-switch -s us
 
 [Install]
 WantedBy=sleep.target
