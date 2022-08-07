@@ -97,40 +97,6 @@ function install_config ()
 
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-
-    if [[ ! "$EUID" = 0 ]]; then
-        sudo ls /root
-    fi
-
-    # betterlockscreen
-    echo "[Unit]
-Description = Lock screen when going to sleep/suspend
-Before=sleep.target
-Before=suspend.target
-
-[Service]
-User=%i
-Type=simple
-Environment=DISPLAY=:0
-ExecStart=/usr/bin/betterlockscreen --lock
-TimeoutSec=infinity
-ExecStartPost=/usr/bin/sleep 1
-ExecStartPre=/usr/bin/xkb-switch -s us
-
-[Install]
-WantedBy=sleep.target
-WantedBy=suspend.target" | sudo tee /etc/systemd/system/betterlockscreen@.service
-    sudo systemctl enable betterlockscreen@$(whoami).service
-
-    # gnome-keyring
-    echo "auth       optional     pam_gnome_keyring.so
-session    optional     pam_gnome_keyring.so auto_start" | sudo tee -a /etc/pam.d/login
-
-    # zsh
-    if [ ! "$(ls /var/cache/pkgfile)" == "" ]
-    then
-        sudo pkgfile --update
-    fi
 }
 
 function install_misc ()
@@ -184,6 +150,36 @@ function install_pkgs ()
 
     # setting display manager
     sudo systemctl enable ly
+
+    # betterlockscreen
+    echo "[Unit]
+Description = Lock screen when going to sleep/suspend
+Before=sleep.target
+Before=suspend.target
+
+[Service]
+User=%i
+Type=simple
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/betterlockscreen --lock
+TimeoutSec=infinity
+ExecStartPost=/usr/bin/sleep 1
+ExecStartPre=/usr/bin/xkb-switch -s us
+
+[Install]
+WantedBy=sleep.target
+WantedBy=suspend.target" | sudo tee /etc/systemd/system/betterlockscreen@.service
+    sudo systemctl enable betterlockscreen@$(whoami).service
+
+    # gnome-keyring
+    echo "auth       optional     pam_gnome_keyring.so
+session    optional     pam_gnome_keyring.so auto_start" | sudo tee -a /etc/pam.d/login
+
+    # zsh
+    if [ "$(ls /var/cache/pkgfile)" == "" ]
+    then
+        sudo pkgfile --update
+    fi
 }
 
 # create dotfiles_old in homedir
