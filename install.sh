@@ -45,13 +45,15 @@ all         Install all.\n\
 bin         Install binary files only.\n\
 config      Install config files only.\n\
 misc        Install fonts, icons and themes.\n\
-system      Install the necessary packages and personal system configuration.\n\
+packages    Install the necessary packages.\n\
+system      Install personal system configuration.\n\
 help        Show this message and exit."
     exit 0
 }
 
 function install_all ()
 {
+    install_packages
     install_system
     install_config
     install_misc
@@ -119,7 +121,7 @@ function install_misc ()
     echo "done"
 }
 
-function install_system ()
+function install_packages ()
 {
     if [[ ! "$EUID" = 0 ]]; then
         sudo ls /root
@@ -144,6 +146,13 @@ function install_system ()
         cd VCP
         make
         sudo make install
+    fi
+}
+
+function install_system ()
+{
+    if [[ ! "$EUID" = 0 ]]; then
+        sudo ls /root
     fi
 
     # setting display manager
@@ -221,6 +230,18 @@ WantedBy=multi-user.target" | sudo tee /etc/systemd/system/touchpadfix.service
     sudo sed -i -e 's/#Color/Color/g' /etc/pacman.conf
     sudo sed -i -e 's/#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
     sudo sed -i -e 's/#ParallelDownloads = 5/ParallelDownloads = 5/g' /etc/pacman.conf
+
+    # changed default browser
+    mimeapps_dir="$HOME/.local/share/applications"
+    mimeapps_file="$mimeapps_dir/mimeapps.list"
+    if [[ ! -s $mimeapps_file ]]
+    then
+        mkdir -p $mimeapps_dir
+        touch $mimeapps_file
+        echo "[Default Applications]" > $mimeapps_file
+        echo "x-scheme-handler/http=librewolf.desktop" >> $mimeapps_file
+        echo "x-scheme-handler/https=librewolf.desktop" >> $mimeapps_file
+    fi
 }
 
 # create dotfiles_old in homedir
@@ -232,21 +253,11 @@ mkdir -p $old_dots_dir/.local/bin
 mkdir -p $old_dots_dir/.local/share/fonts
 
 case "$1" in
-    ""|config) install_config ;;
-    all)       install_all    ;;
-    bin)       install_bin    ;;
-    misc)      install_misc   ;;
-    system)    install_system ;;
-    help|*)    help           ;;
+    ""|config) install_config   ;;
+    all)       install_all      ;;
+    bin)       install_bin      ;;
+    misc)      install_misc     ;;
+    system)    install_system   ;;
+    packages)  install_packages ;;
+    help|*)    help             ;;
 esac
-
-mimeapps_dir="$HOME/.local/share/applications"
-mimeapps_file="$mimeapps_dir/mimeapps.list"
-if [[ ! -s $mimeapps_file ]]
-then
-    mkdir -p $mimeapps_dir
-    touch $mimeapps_file
-    echo "[Default Applications]" > $mimeapps_file
-    echo "x-scheme-handler/http=librewolf.desktop" >> $mimeapps_file
-    echo "x-scheme-handler/https=librewolf.desktop" >> $mimeapps_file
-fi
