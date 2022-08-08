@@ -76,21 +76,21 @@
       echo -e "\
   Usage: install.sh [COMMAND]\n\
   \n\
-  By default installs all.
+  By default installs config.
   \n\
   Commands:\n\
   all         Install all.\n\
   bin         Install binary files only.\n\
   config      Install config files only.\n\
   misc        Install fonts, icons and themes.\n\
-  packages    Install only the necessary packages.\n\
+  system      Install the necessary packages and personal system configuration.\n\
   help        Show this message and exit."
       exit 0
   }
 
   function install_all ()
   {
-      install_pkgs
+      install_system
       install_config
       install_misc
       install_bin
@@ -133,8 +133,6 @@
       echo "Creating symlink to .bash_profile"
       ln -s $dot_dir/.bash_profile ~/.bash_profile
 
-      sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   }
 
   function install_misc ()
@@ -159,7 +157,7 @@
       echo "done"
   }
 
-  function install_pkgs ()
+  function install_system ()
   {
       if [[ ! "$EUID" = 0 ]]; then
           sudo ls /root
@@ -218,6 +216,40 @@
       then
           sudo pkgfile --update
       fi
+
+      # vim-plug
+      sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+      # git configuration
+      git config --global user.email "none9632@protonmail.com"
+      git config --global user.name "none9632"
+
+      # Touchpad configuration
+      mkdir -p /etc/X11/xorg.conf.d
+      echo "Section \"InputClass\"
+      Identifier \"devname\"
+      Driver \"libinput\"
+      MatchIsTouchpad \"on\"
+          Option \"Tapping\" \"on\"
+          Option \"HorizontalScrolling\" \"on\"
+          Option \"TappingButtonMap\" \"lrm\"
+  EndSection" > /etc/X11/xorg.conf.d/40-libinput.conf
+
+      # Touchpad fix for my laptop (https://bbs.archlinux.org/viewtopic.php?id=263407)
+      echo "[Unit]
+  Description=I hope hope hope this works
+  Conflicts=getty@tty1.service
+  After=systemd-user-sessions.service getty@tty1.service systemd-logind.service
+
+  [Service]
+  ExecStart=/usr/bin/bash -c '\
+    /usr/bin/modprobe -r i2c_hid; \
+    /usr/bin/modprobe i2c_hid'
+
+  [Install]
+  WantedBy=multi-user.target" > /etc/systemd/system/touchpadfix.service
+      systemctl enable touchpadfix.service
   }
 
 #+end_src
@@ -235,12 +267,12 @@
   mkdir -p $old_dots_dir/.local/share/fonts
 
   case "$1" in
-      ""|all)   install_all    ;;
-      bin)      install_bin    ;;
-      config)   install_config ;;
-      misc)     install_misc   ;;
-      packages) install_pkgs   ;;
-      help|*)   help           ;;
+      ""|config) install_config ;;
+      all)       install_all    ;;
+      bin)       install_bin    ;;
+      misc)      install_misc   ;;
+      packages)  install_system ;;
+      help|*)    help           ;;
   esac
 
   mimeapps_dir="$HOME/.local/share/applications"
