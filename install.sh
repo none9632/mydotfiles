@@ -196,7 +196,7 @@ session    optional     pam_gnome_keyring.so auto_start" | sudo tee -a /etc/pam.
         Option \"Tapping\" \"on\"
         Option \"HorizontalScrolling\" \"on\"
         Option \"TappingButtonMap\" \"lrm\"
-EndSection" > /etc/X11/xorg.conf.d/40-libinput.conf
+EndSection" | sudo tee /etc/X11/xorg.conf.d/40-libinput.conf
 
     # Touchpad fix for my laptop (https://bbs.archlinux.org/viewtopic.php?id=263407)
     echo "[Unit]
@@ -210,8 +210,17 @@ ExecStart=/usr/bin/bash -c '\
   /usr/bin/modprobe i2c_hid'
 
 [Install]
-WantedBy=multi-user.target" > /etc/systemd/system/touchpadfix.service
+WantedBy=multi-user.target" | sudo tee /etc/systemd/system/touchpadfix.service
     systemctl enable touchpadfix.service
+
+    # sudo configuration
+    echo "$name myPC= NOPASSWD: /usr/bin/yay -Syy,/usr/bin/pacman -Sql" |
+        sudo tee -a /etc/sudoers
+
+    # pacman configuration
+    sudo sed -i -e 's/#Color/Color/g' /etc/pacman.conf
+    sudo sed -i -e 's/#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
+    sudo sed -i -e 's/#ParallelDownloads = 5/ParallelDownloads = 5/g' /etc/pacman.conf
 }
 
 # create dotfiles_old in homedir
@@ -227,7 +236,7 @@ case "$1" in
     all)       install_all    ;;
     bin)       install_bin    ;;
     misc)      install_misc   ;;
-    packages)  install_system ;;
+    system)    install_system ;;
     help|*)    help           ;;
 esac
 
