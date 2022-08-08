@@ -105,20 +105,14 @@ function install_misc ()
     icons_path=~/.local/share/icons
     themes_path=~/.local/share/themes
 
-    echo -n "Fonts installation..."
     [ ! -d $fonts_path ] && mkdir -p $fonts_path
     cp $dot_dir/fonts/* $fonts_path/
-    echo "done"
 
-    echo -n "Icons installation..."
     [ ! -d $icons_path ] && mkdir -p $icons_path
     cp -r $dot_dir/icons/* $icons_path/
-    echo "done"
 
-    echo -n "Themes installation..."
     [ ! -d $themes_path ] && mkdir -p $themes_path
     cp -r $dot_dir/themes/* $themes_path/
-    echo "done"
 }
 
 function install_packages ()
@@ -220,7 +214,7 @@ ExecStart=/usr/bin/bash -c '\
 
 [Install]
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/touchpadfix.service
-    systemctl enable touchpadfix.service
+    sudo systemctl enable touchpadfix.service
 
     # sudo configuration
     echo "$name myPC= NOPASSWD: /usr/bin/yay -Syy,/usr/bin/pacman -Sql" |
