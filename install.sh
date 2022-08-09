@@ -6,15 +6,14 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh pkgfile fzf\
-      awesome-git xorg feh ly betterlockscreen dunst\
+      awesome-git xorg feh ly betterlockscreen dunst picom-animations-git\
       bc wget xclip xf86-input-synaptics xdotool xsel xkb-switch\
       alsa-utils pulseaudio pulseaudio-alsa\
       rofi flameshot\
-      emacs neovim\
+      emacs neovim pip nodejs\
       lf-bin zoxide rm-improved bc ueberzug udiskie\
       librewolf-bin firefox tor-browser\
       nerd-fonts-source-code-pro ttf-iosevka-nerd ttf-roboto\
-      picom-animations-git\
       brightnessctl\
       evince eog font-manager gpick\
       nextcloud-client libsecret gnome-keyring\
