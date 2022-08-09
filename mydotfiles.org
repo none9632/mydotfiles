@@ -6,10 +6,10 @@
 
 #+begin_src text :tangle ./.gitignore
 
-  .config/nvim/bundle
-  .config/zsh/.zcompdump
-  .config/zsh/plugins
-  .config/gtk-3.0/bookmarks
+  config/nvim/bundle
+  config/zsh/.zcompdump
+  config/zsh/plugins
+  config/gtk-3.0/bookmarks
   bin/bar/cpu
   bin/bar/ram
 
@@ -121,13 +121,12 @@
       do
           [ -e ~/.config/$file ] && mv ~/.config/$file $old_dots_dir/.config
           echo "Creating symlink to $file in home directory."
-          ln -s $dot_dir/.config/$file ~/.config/$file
+          ln -s $dot_dir/config/$file ~/.config/$file
       done
 
       [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
       echo "Creating symlink to .bash_profile"
       ln -s $dot_dir/.bash_profile ~/.bash_profile
-
   }
 
   function install_misc ()
@@ -753,7 +752,7 @@ Install packages using pacman
 
 * Zsh
 :PROPERTIES:
-:header-args: :tangle ./.config/zsh/.zshrc :tangle-mode (identity #o755)
+:header-args: :tangle ./config/zsh/.zshrc :tangle-mode (identity #o755)
 :END:
 
 ** Functions
@@ -1199,7 +1198,7 @@ Install packages using pacman
 
 * Awesome
 :PROPERTIES:
-:header-args: :tangle ./.config/awesome/rc.lua
+:header-args: :tangle ./config/awesome/rc.lua
 :END:
 
 ** Libraries
@@ -2531,7 +2530,7 @@ Install packages using pacman
 
 * Alacritty
 :PROPERTIES:
-:header-args: :tangle ./.config/alacritty/alacritty.yml
+:header-args: :tangle ./config/alacritty/alacritty.yml
 :END:
 
 Configuration for Alacritty, the GPU enhanced terminal emulator.
@@ -3434,7 +3433,7 @@ And optionally:
 
 *** Cleaner
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_cleaner
+#+begin_src sh :tangle ./config/lf/scripts/lf_cleaner
 
   #!/bin/sh
 
@@ -3446,7 +3445,7 @@ And optionally:
 
 *** Disk
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_disk
+#+begin_src sh :tangle ./config/lf/scripts/lf_disk
 
   #!/bin/sh
 
@@ -3487,7 +3486,7 @@ And optionally:
 
 *** Prepare file
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_prepare_file
+#+begin_src sh :tangle ./config/lf/scripts/lf_prepare_file
 
   #!/bin/sh
 
@@ -3502,7 +3501,7 @@ And optionally:
 
 *** Previewer
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_previewer
+#+begin_src sh :tangle ./config/lf/scripts/lf_previewer
 
   #!/bin/sh
 
@@ -3656,7 +3655,7 @@ And optionally:
 
 *** Update
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_update
+#+begin_src sh :tangle ./config/lf/scripts/lf_update
 
   #!/bin/sh
 
@@ -3678,7 +3677,7 @@ And optionally:
 
 *** lfrun
 
-#+begin_src sh :tangle ./.config/lf/scripts/lfrun
+#+begin_src sh :tangle ./config/lf/scripts/lfrun
 
   #!/bin/sh
 
@@ -3710,7 +3709,7 @@ And optionally:
 
 *** Get pid
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_getpid
+#+begin_src sh :tangle ./config/lf/scripts/lf_getpid
 
   #!/bin/sh
 
@@ -3726,7 +3725,7 @@ And optionally:
 
 *** Trash restore
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_trash_restore
+#+begin_src sh :tangle ./config/lf/scripts/lf_trash_restore
 
   #!/bin/sh
 
@@ -3742,7 +3741,7 @@ And optionally:
 
 *** Jump_prev
 
-#+begin_src sh :tangle ./.config/lf/scripts/lf_jump_prev
+#+begin_src sh :tangle ./config/lf/scripts/lf_jump_prev
 
   #!/bin/sh
 
@@ -3765,7 +3764,7 @@ And optionally:
 
 ** icons
 
-#+begin_src conf :tangle ./.config/lf/icons
+#+begin_src conf :tangle ./config/lf/icons
 
   # file types (with matching order)
   ln                   䀺      # LINK
@@ -4076,7 +4075,7 @@ And optionally:
 
 ** lf configuration
 :PROPERTIES:
-:header-args: :tangle ./.config/lf/lfrc 
+:header-args: :tangle ./config/lf/lfrc
 :END:
 
 *** Options
@@ -4584,7 +4583,7 @@ And optionally:
 * Neovim
 ** init.vim
 :PROPERTIES:
-:header-args: :tangle ./.config/nvim/init.vim
+:header-args: :tangle ./config/nvim/init.vim
 :END:
 
 *** Plugins
@@ -4943,7 +4942,7 @@ And optionally:
 
 * Picom
 :PROPERTIES:
-:header-args: :tangle ./.config/picom/picom.conf
+:header-args: :tangle ./config/picom/picom.conf
 :END:
 
 ** Animations
@@ -5369,7 +5368,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 ** Config
 
-#+begin_src css :tangle ./.config/rofi/config.rasi
+#+begin_src css :tangle ./config/rofi/config.rasi
 
   configuration {
       show-icons:             true;
@@ -5412,7 +5411,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 ** Colors
 
-#+begin_src css :tangle ./.config/rofi/colors.rasi
+#+begin_src css :tangle ./config/rofi/colors.rasi
 
   ,* {
       accent:           #51afef;
@@ -5430,7 +5429,7 @@ Configuration based on https://github.com/adi1090x/rofi
 *** Menu themes
 **** Application launcher
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/appslauncher.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/appslauncher.rasi
 
   @import "../../colors.rasi"
 
@@ -5527,7 +5526,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Application menu
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/appsmenu.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/appsmenu.rasi
 
   configuration {
       show-icons:                     false;
@@ -5653,7 +5652,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Brightness
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/brightness.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/brightness.rasi
 
   configuration {
       show-icons:                     false;
@@ -5778,7 +5777,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** File search
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/filesearch.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/filesearch.rasi
 
   @import "../../colors.rasi"
 
@@ -5875,7 +5874,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** COMMENT Music Player Daemon
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/mdb.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/mdb.rasi
 
   configuration {
       font:                           "Comfortaa 14";
@@ -5997,9 +5996,9 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** Network
+**** COMMENT Network
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/network.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/network.rasi
 
   configuration {
       show-icons:                     false;
@@ -6125,7 +6124,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Power menu
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/powermenu.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/powermenu.rasi
 
   configuration {
       show-icons:                     false;
@@ -6250,7 +6249,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** COMMENT Quick links
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/quicklinks.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/quicklinks.rasi
 
   configuration {
       font:                           "Comfortaa 14";
@@ -6374,7 +6373,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Schreenshot
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/screenshot.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/screenshot.rasi
 
   configuration {
       show-icons:                     false;
@@ -6499,7 +6498,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** COMMENT Time
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/time.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/time.rasi
 
   configuration {
       show-icons:                     false;
@@ -6624,7 +6623,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Volume
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/volume.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/volume.rasi
 
   configuration {
       show-icons:                     false;
@@ -6747,9 +6746,9 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** Wifi
+**** COMMENT Wifi
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/wifi.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/wifi.rasi
 
   @import "../../colors.rasi"
 
@@ -6845,7 +6844,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** COMMENT Wifi
 
-#+begin_src css :tangle ./.config/rofi/themes/menu/wifi.rasi
+#+begin_src css :tangle ./config/rofi/themes/menu/wifi.rasi
 
   ,* {
       transparency:     "real";
@@ -6935,7 +6934,7 @@ Configuration based on https://github.com/adi1090x/rofi
 *** Other themes
 **** Blur background
 
-#+begin_src css :tangle ./.config/rofi/themes/other/blurbg.rasi
+#+begin_src css :tangle ./config/rofi/themes/other/blurbg.rasi
 
   ,* {
       background-color:               #00000000;
@@ -6946,7 +6945,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Error message
 
-#+begin_src css :tangle ./.config/rofi/themes/other/errormsg.rasi
+#+begin_src css :tangle ./config/rofi/themes/other/errormsg.rasi
 
   @import "../../colors.rasi"
 
@@ -6993,7 +6992,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Input
 
-#+begin_src css :tangle ./.config/rofi/themes/other/input.rasi
+#+begin_src css :tangle ./config/rofi/themes/other/input.rasi
 
   @import "../../colors.rasi"
 
@@ -7034,7 +7033,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Long input
 
-#+begin_src css :tangle ./.config/rofi/themes/other/longinput.rasi
+#+begin_src css :tangle ./config/rofi/themes/other/longinput.rasi
 
   @import "../../colors.rasi"
 
@@ -7081,7 +7080,7 @@ Configuration based on https://github.com/adi1090x/rofi
 *** Menu scripts
 **** Application launcher
 
-#+begin_src sh :tangle ./.config/rofi/scripts/appslauncher
+#+begin_src sh :tangle ./config/rofi/scripts/appslauncher
 
   #!/bin/sh
 
@@ -7096,7 +7095,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Application menu
 
-#+begin_src sh :tangle ./.config/rofi/scripts/appsmenu
+#+begin_src sh :tangle ./config/rofi/scripts/appsmenu
 
   #!/bin/sh
 
@@ -7160,7 +7159,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Brightness
 
-#+begin_src sh :tangle ./.config/rofi/scripts/brightness
+#+begin_src sh :tangle ./config/rofi/scripts/brightness
 
   #!/bin/sh
 
@@ -7212,7 +7211,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** File search
 
-#+begin_src sh :tangle ./.config/rofi/scripts/filesearch
+#+begin_src sh :tangle ./config/rofi/scripts/filesearch
 
   #!/bin/sh
 
@@ -7481,7 +7480,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** COMMENT Music Player Daemon
 
-#+begin_src sh :tangle ./.config/rofi/scripts/mdb.sh
+#+begin_src sh :tangle ./config/rofi/scripts/mdb.sh
 
   #!/usr/bin/env bash
 
@@ -7559,9 +7558,9 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** Network
+**** COMMENT Network
 
-#+begin_src sh :tangle ./.config/rofi/scripts/network
+#+begin_src sh :tangle ./config/rofi/scripts/network
 
   #!/bin/sh
 
@@ -7630,7 +7629,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Power menu
 
-#+begin_src sh :tangle ./.config/rofi/scripts/powermenu
+#+begin_src sh :tangle ./config/rofi/scripts/powermenu
 
   #!/bin/sh
 
@@ -7677,7 +7676,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** COMMENT Quick links
 
-#+begin_src sh :tangle ./.config/rofi/scripts/quicklinks.sh
+#+begin_src sh :tangle ./config/rofi/scripts/quicklinks.sh
 
   #!/usr/bin/env bash
 
@@ -7740,7 +7739,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Schreenshot
 
-#+begin_src sh :tangle ./.config/rofi/scripts/screenshot
+#+begin_src sh :tangle ./config/rofi/scripts/screenshot
 
   #!/bin/sh
 
@@ -7810,7 +7809,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** COMMENT Time
 
-#+begin_src sh :tangle ./.config/rofi/scripts/time.sh
+#+begin_src sh :tangle ./config/rofi/scripts/time.sh
 
   #!/usr/bin/env bash
 
@@ -7836,7 +7835,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Volume
 
-#+begin_src sh :tangle ./.config/rofi/scripts/volume
+#+begin_src sh :tangle ./config/rofi/scripts/volume
 
   #!/bin/sh
 
@@ -7883,9 +7882,9 @@ Configuration based on https://github.com/adi1090x/rofi
 
 #+end_src
 
-**** Wifi
+**** COMMENT Wifi
 
-#+begin_src sh :tangle ./.config/rofi/scripts/wifi
+#+begin_src sh :tangle ./config/rofi/scripts/wifi
 
   #!/bin/sh
 
@@ -7948,7 +7947,7 @@ Configuration based on https://github.com/adi1090x/rofi
 *** Other scripts
 **** Error message
 
-#+begin_src sh :tangle ./.config/rofi/scripts/errormsg
+#+begin_src sh :tangle ./config/rofi/scripts/errormsg
 
   #!/bin/sh
 
@@ -7965,7 +7964,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Input
 
-#+begin_src sh :tangle ./.config/rofi/scripts/input
+#+begin_src sh :tangle ./config/rofi/scripts/input
 
   #!/bin/sh
 
@@ -7993,7 +7992,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 **** Long input
 
-#+begin_src sh :tangle ./.config/rofi/scripts/longinput
+#+begin_src sh :tangle ./config/rofi/scripts/longinput
 
   #!/bin/sh
 
@@ -8022,7 +8021,7 @@ Configuration based on https://github.com/adi1090x/rofi
 * Misc
 ** flameshot
 
-#+begin_src conf :tangle ./.config/flameshot/flameshot.ini
+#+begin_src conf :tangle ./config/flameshot/flameshot.ini
 
   [General]
   buttons=@Variant(\0\0\0\x7f\0\0\0\vQList<int>\0\0\0\0\b\0\0\0\0\0\0\0\x1\0\0\0\x2\0\0\0\x3\0\0\0\x5\0\0\0\x12\0\0\0\xf\0\0\0\n)
@@ -8079,7 +8078,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 ** dunst
 
-#+begin_src conf :tangle ./.config/dunst/dunstrc
+#+begin_src conf :tangle ./config/dunst/dunstrc
 
   [global]
       ### Display ###
@@ -8525,7 +8524,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
 ** neofetch
 :PROPERTIES:
-:header-args: :tangle ./.config/neofetch/config.conf
+:header-args: :tangle ./config/neofetch/config.conf
 :END:
 
 Neofetch config
@@ -9634,7 +9633,7 @@ Neofetch config
 
 ** betterlockscreen
 
-#+begin_src conf :tangle ./.config/betterlockscreenrc
+#+begin_src conf :tangle ./config/betterlockscreenrc
 
   # options
   display_on=0
@@ -9677,7 +9676,7 @@ Neofetch config
 
 ** gtk
 
-#+begin_src conf :tangle ./.config/gtk-3.0/settings.ini
+#+begin_src conf :tangle ./config/gtk-3.0/settings.ini
 
   [Settings]
   gtk-theme-name = Skeuos-Blue-Dark

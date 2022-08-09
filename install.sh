@@ -83,13 +83,12 @@ function install_config ()
     do
         [ -e ~/.config/$file ] && mv ~/.config/$file $old_dots_dir/.config
         echo "Creating symlink to $file in home directory."
-        ln -s $dot_dir/.config/$file ~/.config/$file
+        ln -s $dot_dir/config/$file ~/.config/$file
     done
 
     [ -f ~/.bash_profile ] && mv ~/.bash_profile $old_dots_dir
     echo "Creating symlink to .bash_profile"
     ln -s $dot_dir/.bash_profile ~/.bash_profile
-
 }
 
 function install_misc ()
