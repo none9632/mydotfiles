@@ -10,7 +10,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       bc wget xclip xf86-input-synaptics xdotool xsel xkb-switch\
       alsa-utils pulseaudio pulseaudio-alsa\
       rofi flameshot\
-      emacs neovim pip nodejs\
+      emacs neovim python-pip nodejs\
       lf-bin zoxide rm-improved bc ueberzug udiskie\
       librewolf-bin firefox tor-browser\
       nerd-fonts-source-code-pro ttf-iosevka-nerd ttf-roboto\
