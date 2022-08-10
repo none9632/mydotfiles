@@ -716,6 +716,24 @@ Install packages using pacman
   export EDITOR="/bin/nvim"
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
+  # Clean-up
+  export XDG_CACHE_HOME="$HOME/.cache"
+  export XDG_CONFIG_HOME="$HOME/.config"
+  export XDG_DATA_HOME="$HOME/.local/share"
+  export HISTFILE="$XDG_CACHE_HOME/history"
+  export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+  export CARGO_HOME="$XDG_DATA_HOME/cargo"
+  export TEXMFHOME="$XDG_DATA_HOME/texmf"
+  export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
+  export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
+  export CALCHISTFILE="$XDG_CACHE_HOME/calc_history"
+  export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+
+  if [ ! -e $WGETRC ]
+  then
+      echo hsts-file \= "$XDG_CACHE_HOME"/wget-hsts > "$XDG_CONFIG_HOME/wgetrc"
+  fi
+
 #+end_src
 
 *** Startup the necessary commands
