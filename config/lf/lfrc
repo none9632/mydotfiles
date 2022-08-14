@@ -44,14 +44,12 @@ cmd my_open %{{
             fi
             ;;
         inode/directory)
-            # Some file names require additional processing
-            # Example: 'test (name)' -> 'test\ \(name\)'
-            fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+            fix_f="$(lf_file_fix $f)"
             lf -remote "send $id my_cd $fix_f" ;;
         inode/symlink)
             if [ -d "$f" ]
             then
-                fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+                fix_f="$(lf_file_fix $f)"
                 lf -remote "send $id my_cd $fix_f"
             else
                 lf -remote "send $id push e"
@@ -75,7 +73,7 @@ cmd my_cd &{{
     sed -i "1s|^|$PWD\n|" $FILE
     sed -i "1s|^|cd\n|" $FILE
 
-    fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+    fix_f="$(lf_file_fix $1)"
     eval zoxide add $fix_f
     lf -remote "send $id cd $fix_f"
     lf_update $1 $id
@@ -357,12 +355,12 @@ cmd select_for_emacs ${{
 cmd open_for_emacs %{{
     case $(file --mime-type $f -b 2> /dev/null) in
         inode/directory)
-            fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+            fix_f="$(lf_file_fix $f)"
             lf -remote "send $id my_cd $fix_f" ;;
         inode/symlink)
             if [ -d "$f" ]
             then
-                fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+                fix_f="$(lf_file_fix $f)"
                 lf -remote "send $id my_cd $fix_f"
             else
                 lf -remote "send $id select_for_emacs"

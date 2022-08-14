@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Some file names require additional processing
+# Example: 'test (name)' -> 'test\ \(name\)'
+
+echo $1 | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g'

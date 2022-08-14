@@ -3461,47 +3461,6 @@ And optionally:
 
 #+end_src
 
-*** Disk
-
-#+begin_src sh :tangle ./config/lf/scripts/lf_disk
-
-  #!/bin/sh
-
-  disk=$(df --output=source "$1" | tail -n 1 | grep /dev/)
-  [ "$disk" = "" ] && disk=/
-
-  IFS=" " read -ra disk_info <<< "$(df -P -BK ${disk} | tail -n 1)"
-
-  size=$(echo "${disk_info[1]}" | sed 's|[^[:digit:]]\+||g')
-  used=$(echo "${disk_info[2]}" | sed 's|[^[:digit:]]\+||g')
-
-  size_m=$(printf '%.1f' "$(echo "scale=1; $size/1024" | bc)")
-  used_m=$(printf '%.1f' "$(echo "scale=1; $used/1024" | bc)")
-
-  size_g=$(printf '%.1f' "$(echo "scale=1; x=$size_m; if (x>1024) x=x/1024; x" | bc)")
-  used_g=$(printf '%.1f' "$(echo "scale=1; x=$used_m; if (x>1024) x=x/1024; x" | bc)")
-
-  if [ "$size_m" = "$size_g" ]
-  then
-      size=$(echo "${size_m}M")
-  else
-      size=$(echo "${size_g}G")
-  fi
-
-  if [ "$used_m" = "$used_g" ]
-  then
-      used=$(echo "${used_m}M")
-  else
-      used=$(echo "${used_g}G")
-  fi
-
-  echo "\
-  \033[35;5;5m\033[3;1m${used}\
-  \033[38;5;8m/\
-  \033[35;5;5m\033[3;1m${size}\033[0m"
-
-#+end_src
-
 *** Prepare file
 
 #+begin_src sh :tangle ./config/lf/scripts/lf_prepare_file
@@ -3671,13 +3630,47 @@ And optionally:
 
 #+end_src
 
-*** Update
+*** Update prompt
 
 #+begin_src sh :tangle ./config/lf/scripts/lf_update
 
   #!/bin/sh
 
-  disk_info=$(lf_disk "$1")
+  function get_disk_info ()
+  {
+      disk=$(df --output=source "$1" | tail -n 1 | grep /dev/)
+      [ "$disk" = "" ] && disk=/
+
+      IFS=" " read -ra disk_info <<< "$(df -P -BK ${disk} | tail -n 1)"
+
+      size=$(echo "${disk_info[1]}" | sed 's|[^[:digit:]]\+||g')
+      used=$(echo "${disk_info[2]}" | sed 's|[^[:digit:]]\+||g')
+      size_m=$(printf '%.1f' "$(echo "scale=1; $size/1024" | bc)")
+      used_m=$(printf '%.1f' "$(echo "scale=1; $used/1024" | bc)")
+      size_g=$(printf '%.1f' "$(echo "scale=1; x=$size_m; if (x>1024) x=x/1024; x" | bc)")
+      used_g=$(printf '%.1f' "$(echo "scale=1; x=$used_m; if (x>1024) x=x/1024; x" | bc)")
+
+      if [ "$size_m" = "$size_g" ]
+      then
+      size=$(echo "${size_m}M")
+      else
+          size=$(echo "${size_g}G")
+      fi
+
+      if [ "$used_m" = "$used_g" ]
+      then
+          used=$(echo "${used_m}M")
+      else
+          used=$(echo "${used_g}G")
+      fi
+
+      echo "\
+  \033[35;5;5m\033[3;1m${used}\
+  \033[38;5;8m/\
+  \033[35;5;5m\033[3;1m${size}\033[0m"
+  }
+
+  disk_out=$(get_disk_info "$1")
 
   lf -remote "send $2 set promptfmt \"\
    \033[38;5;8m[\033[0m\
@@ -3685,7 +3678,7 @@ And optionally:
   \033[38;5;8m]─[\033[0m\
   \033[38;5;11m\033[3;1m%h\033[0m\
   \033[38;5;8m]─[\033[0m\
-  $disk_info\
+  $disk_out\
   \033[38;5;8m]─[\033[0m\
   \033[32;1m%d\033[0m\
   \033[3;1m%f\033[0m\
@@ -3757,7 +3750,7 @@ And optionally:
 
 #+end_src
 
-*** Jump_prev
+*** Jump prev
 
 #+begin_src sh :tangle ./config/lf/scripts/lf_jump_prev
 
@@ -3777,6 +3770,19 @@ And optionally:
   else
       echo -n cancel > $tmp_file
   fi
+
+#+end_src
+
+*** File name fix
+
+#+begin_src sh :tangle ./config/lf/scripts/lf_file_fix
+
+  #!/bin/sh
+
+  # Some file names require additional processing
+  # Example: 'test (name)' -> 'test\ \(name\)'
+
+  echo $1 | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g'
 
 #+end_src
 
@@ -4152,14 +4158,12 @@ And optionally:
               fi
               ;;
           inode/directory)
-              # Some file names require additional processing
-              # Example: 'test (name)' -> 'test\ \(name\)'
-              fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+              fix_f="$(lf_file_fix $f)"
               lf -remote "send $id my_cd $fix_f" ;;
           inode/symlink)
               if [ -d "$f" ]
               then
-                  fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+                  fix_f="$(lf_file_fix $f)"
                   lf -remote "send $id my_cd $fix_f"
               else
                   lf -remote "send $id push e"
@@ -4183,7 +4187,7 @@ And optionally:
       sed -i "1s|^|$PWD\n|" $FILE
       sed -i "1s|^|cd\n|" $FILE
 
-      fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+      fix_f="$(lf_file_fix $1)"
       eval zoxide add $fix_f
       lf -remote "send $id cd $fix_f"
       lf_update $1 $id
@@ -4465,12 +4469,12 @@ And optionally:
   cmd open_for_emacs %{{
       case $(file --mime-type $f -b 2> /dev/null) in
           inode/directory)
-              fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+              fix_f="$(lf_file_fix $f)"
               lf -remote "send $id my_cd $fix_f" ;;
           inode/symlink)
               if [ -d "$f" ]
               then
-                  fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
+                  fix_f="$(lf_file_fix $f)"
                   lf -remote "send $id my_cd $fix_f"
               else
                   lf -remote "send $id select_for_emacs"
