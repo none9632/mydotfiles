@@ -4142,7 +4142,7 @@ And optionally:
   }}
 
   cmd my_open %{{
-      case $(file --mime-type $f -b) in
+      case $(file --mime-type $f -b 2> /dev/null) in
           text/* | inode/x-empty)
               if [ "${f##*.}" == "org" ]
               then
@@ -4152,12 +4152,14 @@ And optionally:
               fi
               ;;
           inode/directory)
-              fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+              # Some file names require additional processing
+              # Example: 'test (name)' -> 'test\ \(name\)'
+              fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
               lf -remote "send $id my_cd $fix_f" ;;
           inode/symlink)
               if [ -d "$f" ]
               then
-                  fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+                  fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
                   lf -remote "send $id my_cd $fix_f"
               else
                   lf -remote "send $id push e"
@@ -4181,7 +4183,7 @@ And optionally:
       sed -i "1s|^|$PWD\n|" $FILE
       sed -i "1s|^|cd\n|" $FILE
 
-      fix_f="$(echo $1 | sed 's/\ /\\\ /g')"
+      fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
       eval zoxide add $fix_f
       lf -remote "send $id cd $fix_f"
       lf_update $1 $id
@@ -4461,21 +4463,21 @@ And optionally:
   }}
 
   cmd open_for_emacs %{{
-      case $(file --mime-type $f -b) in
+      case $(file --mime-type $f -b 2> /dev/null) in
           inode/directory)
-              fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+              fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
               lf -remote "send $id my_cd $fix_f" ;;
           inode/symlink)
               if [ -d "$f" ]
               then
-                  fix_f="$(echo $f | sed 's/\ /\\\ /g')"
+                  fix_f="$(echo $f | sed 's/\ /\\\ /g' | sed 's/(/\\(/g' | sed 's/)/\\)/g')"
                   lf -remote "send $id my_cd $fix_f"
               else
                   lf -remote "send $id select_for_emacs"
               fi
               ;;
           ,*)
-              lf -remote "send $id select_for_emacs"
+              lf -remote "send $id select_for_emacs" ;;
       esac
   }}
 
