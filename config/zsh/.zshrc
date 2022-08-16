@@ -265,6 +265,7 @@ function clip-paste ()
 function clip-copy ()
 {
     zle copy-region-as-kill
+    zle deactivate-region
     print -rn $CUTBUFFER | xsel -i -b
 }
 
@@ -275,6 +276,7 @@ bindkey -M viins "^y" clip-copy
 bindkey -M vicmd "y" clip-copy
 bindkey -M viins "^p" clip-paste
 bindkey -M vicmd "p" clip-paste
+bindkey -M visual "^I" select-in-word
 
 # Needed in order for the highlighting rules to apply
 function fix-autopair-insert ()

@@ -1092,6 +1092,7 @@ Install packages using pacman
   function clip-copy ()
   {
       zle copy-region-as-kill
+      zle deactivate-region
       print -rn $CUTBUFFER | xsel -i -b
   }
 
@@ -1102,6 +1103,7 @@ Install packages using pacman
   bindkey -M vicmd "y" clip-copy
   bindkey -M viins "^p" clip-paste
   bindkey -M vicmd "p" clip-paste
+  bindkey -M visual "^I" select-in-word
 
 #+end_src
 
