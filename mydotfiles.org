@@ -4264,25 +4264,34 @@ And optionally:
       total_size=$(echo "$output" | tail -n 1 | awk '{print $1}')
       total_files=$(echo "$output" | wc -l)
 
+      # If the files are on different devices must use vcp to copy
+      current_device=$(df --output='source' . | sed '1d')
+      for file in "$@"
+      do
+          file_device=$(df --output='source' $file | sed '1d')
+          if [ "$file_device" != "$current_device" ]
+          then
+              total_size="toobig"
+              break;
+          fi
+      done
+
       if [[ "$total_size" = "toobig" ]] ||
          [[ $total_size -ge 314572800 ]] ||
          [[ $total_files -ge 2500 && $total_size -ge 52428800 ]]
       then
-          files="$@"
           term_pid=$(lf_getpid $id)
-          if [ "$mode" = "move" ]
-          then
-              awesome-client "create_lf_terminal(\"cd $PWD;\
-                                                   vcp -cRH $files .;\
-                                                   rm -rf $files;\
-                                                   lf -remote \\\"send reload\\\"\",\
-                                                   800, 400, false, $term_pid)"
-          else
-              awesome-client "create_lf_terminal(\"cd $PWD;\
-                                                   vcp -cRH $files .;\
-                                                   lf -remote \\\"send reload\\\"\",\
-                                                   800, 400, false, $term_pid)"
-          fi
+          for file in "$@"
+          do
+              # Some file names require additional processing
+              # Example: 'test (name)' -> 'test\\\ \\\(name\\\)'
+              files+=" $(echo $file | sed 's/\ /\\\\ /g' | sed 's/(/\\\\(/g' | sed 's/)/\\\\)/g')"
+          done
+          awesome-client "create_lf_terminal(\"cd $PWD;\
+                                               vcp -cRH $files .;\
+                                               [ \\\"$mode\\\" = \\\"move\\\" ] && rm -rf $files;\
+                                               lf -remote \\\"send reload\\\"\",\
+                                               800, 400, false, $term_pid)"
       else
           for file in "$@"
           do
