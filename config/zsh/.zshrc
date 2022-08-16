@@ -232,27 +232,12 @@ function zle-keymap-select()
     zle reset-prompt
     zle -R
 }
+
 # Start every prompt in insert mode
 function zle-line-init ()
 {
     zle -K viins
 }
-
-zle -N zle-keymap-select
-zle -N zle-line-init
-
-bindkey -M  vicmd "U" redo
-bindkey -M  vicmd "k" up-history
-bindkey -M  vicmd "j" down-history
-bindkey -M  vicmd "L" forward-word
-bindkey -M  vicmd "H" backward-word
-bindkey -sM vicmd ":" ""
-bindkey -sM vicmd "/" ""
-
-bindkey -M viins "jj" vi-cmd-mode
-bindkey -M viins "^?" backward-delete-char
-bindkey -M viins "^[^?" backward-kill-word
-bindkey -M viins "^l" autosuggest-accept
 
 function clip-paste ()
 {
@@ -269,13 +254,30 @@ function clip-copy ()
     print -rn $CUTBUFFER | xsel -i -b
 }
 
+zle -N zle-keymap-select
+zle -N zle-line-init
 zle -N clip-paste
 zle -N clip-copy
 
-bindkey -M viins "^y" clip-copy
-bindkey -M vicmd "y" clip-copy
-bindkey -M viins "^p" clip-paste
-bindkey -M vicmd "p" clip-paste
+bindkey -M  vicmd "U"  redo
+bindkey -M  vicmd "k"  up-history
+bindkey -M  vicmd "j"  down-history
+bindkey -M  vicmd "L"  forward-word
+bindkey -M  vicmd "H"  backward-word
+bindkey -sM vicmd ":"  ""
+bindkey -sM vicmd "/"  ""
+bindkey -M  vicmd "y"  clip-copy
+bindkey -M  vicmd "^y" clip-copy
+bindkey -M  vicmd "p"  clip-paste
+bindkey -M  vicmd "^p" clip-paste
+
+bindkey -M viins "jj"   vi-cmd-mode
+bindkey -M viins "^?"   backward-delete-char
+bindkey -M viins "^[^?" backward-kill-word
+bindkey -M viins "^l"   autosuggest-accept
+bindkey -M viins "^y"   clip-copy
+bindkey -M viins "^p"   clip-paste
+
 bindkey -M visual "^I" select-in-word
 
 # Needed in order for the highlighting rules to apply
