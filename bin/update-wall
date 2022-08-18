@@ -1,0 +1,14 @@
+#!/bin/sh
+
+wall_dir="$HOME/Pictures/wallpapers"
+wall_cache_dir="$HOME/.cache/feh"
+wall_cache_file="$wall_cache_dir/wallpaper"
+
+mkdir -p $wall_cache_dir
+
+if [ -d $wall_dir ]
+then
+    feh -z --bg-fil $wall_dir
+    ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo "[a-zA-Z0-9./]+") $HOME/.cache/feh/wallpaper
+    betterlockscreen -u $wall_cache_file
+fi

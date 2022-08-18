@@ -25,7 +25,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
 # list of files/folders to symlink in homedir
 config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0"
 
-bin_files="inkscape-figures update list in pin re"
+bin_files="inkscape-figures update list in pin re update-wall"
 bar_c_files="cpu ram"
 bar_bin_files="$bar_c_files updates"
 

@@ -57,7 +57,7 @@
   # list of files/folders to symlink in homedir
   config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0"
 
-  bin_files="inkscape-figures update list in pin re"
+  bin_files="inkscape-figures update list in pin re update-wall"
   bar_c_files="cpu ram"
   bar_bin_files="$bar_c_files updates"
 
@@ -519,6 +519,27 @@ Install packages using pacman
 
   # Remove installed packages
   yay -Qq | fzf --bind 'ctrl-space:toggle' --reverse -q "$1" -m --preview 'yay -Qi {1}' | xargs -ro yay -Rns
+
+#+end_src
+
+** update wallpaper
+
+#+begin_src sh :tangle ./bin/update-wall :tangle-mode (identity #o755)
+
+  #!/bin/sh
+
+  wall_dir="$HOME/Pictures/wallpapers"
+  wall_cache_dir="$HOME/.cache/feh"
+  wall_cache_file="$wall_cache_dir/wallpaper"
+
+  mkdir -p $wall_cache_dir
+
+  if [ -d $wall_dir ]
+  then
+      feh -z --bg-fil $wall_dir
+      ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo "[a-zA-Z0-9./]+") $HOME/.cache/feh/wallpaper
+      betterlockscreen -u $wall_cache_file
+  fi
 
 #+end_src
 
@@ -2444,12 +2465,7 @@ Install packages using pacman
            {description = "brightness menu", group = "launcher"}),
         awful.key({ modkey }, "x", function() awful.util.spawn("volume") end,
            {description = "volume menu", group = "launcher"}),
-        awful.key({ modkey }, "w", function()
-              awful.spawn.with_shell("mkdir -p $HOME/.cache/feh")
-              awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers;\
-                                      ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo \"[a-zA-Z0-9./]+\") $HOME/.cache/feh/wallpaper;\
-                                      betterlockscreen -u $HOME/.cache/feh/wallpaper")
-        end,
+        awful.key({ modkey }, "w", function() awful.spawn.with_shell("update-wall") end,
            {description = "wallpaper change", group = "launcher"}),
         awful.key({        }, "Print", function() awful.util.spawn("screenshot") end,
            {description = "take a screenshot", group = "launcher"}),
@@ -2536,10 +2552,7 @@ Install packages using pacman
   awful.spawn.with_shell("nextcloud --background")
   awful.spawn.with_shell("lf -server")
   awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
-  awful.spawn.with_shell("mkdir -p $HOME/.cache/feh")
-  awful.spawn.with_shell("feh -z --bg-fill $HOME/Pictures/wallpapers;\
-                          ln -fs $(cat $HOME/.fehbg | awk '{print $4}' | grep -Eo \"[a-zA-Z0-9./]+\") $HOME/.cache/feh/wallpaper;\
-                          betterlockscreen -u $HOME/.cache/feh/wallpaper")
+  awful.spawn.with_shell("update-wall")
   awful.spawn.with_shell("emacs --daemon --name emacsclient")
 
 #+end_src
