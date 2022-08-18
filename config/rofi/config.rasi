@@ -31,6 +31,6 @@ configuration {
     kb-move-char-back:      "Left,Alt+h,Control+h";
     kb-move-char-forward:   "Right,Alt+l,Control+l";
     kb-accept-entry:        "Return,KP_Enter";
-    kb-row-up:              "Up,ISO_Left_Tab,Alt+k";
+    kb-row-up:              "Up,Alt+k";
     kb-row-down:            "Down,Alt+j";
 }

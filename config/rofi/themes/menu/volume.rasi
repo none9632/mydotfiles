@@ -82,7 +82,6 @@ element-text {
     font:                           "feather 32";
     expand:                         true;
     horizontal-align:               0.5;
-    vertical-align:                 0.5;
     margin:                         40px 0px 40px 0px;
 }
 

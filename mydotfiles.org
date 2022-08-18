@@ -5434,7 +5434,7 @@ Configuration based on https://github.com/adi1090x/rofi
       kb-move-char-back:      "Left,Alt+h,Control+h";
       kb-move-char-forward:   "Right,Alt+l,Control+l";
       kb-accept-entry:        "Return,KP_Enter";
-      kb-row-up:              "Up,ISO_Left_Tab,Alt+k";
+      kb-row-up:              "Up,Alt+k";
       kb-row-down:            "Down,Alt+j";
   }
 
@@ -5644,7 +5644,6 @@ Configuration based on https://github.com/adi1090x/rofi
       font:                           "feather 32";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0.5;
       margin:                         40px 0px 40px 0px;
   }
 
@@ -5769,7 +5768,6 @@ Configuration based on https://github.com/adi1090x/rofi
       font:                           "feather 32";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0.5;
       margin:                         40px 0px 40px 0px;
   }
 
@@ -6241,7 +6239,6 @@ Configuration based on https://github.com/adi1090x/rofi
       font:                           "feather 32";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0.5;
       margin:                         40px 0px 40px 0px;
   }
 
@@ -6490,7 +6487,6 @@ Configuration based on https://github.com/adi1090x/rofi
       font:                           "feather 32";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0.5;
       margin:                         40px 0px 40px 0px;
   }
 
@@ -6615,7 +6611,6 @@ Configuration based on https://github.com/adi1090x/rofi
       font:                           "Hurmit Nerd Font Mono 48";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0.5;
       margin:                         40px 0px 40px 0px;
   }
 
@@ -6740,7 +6735,6 @@ Configuration based on https://github.com/adi1090x/rofi
       font:                           "feather 32";
       expand:                         true;
       horizontal-align:               0.5;
-      vertical-align:                 0.5;
       margin:                         40px 0px 40px 0px;
   }
 
