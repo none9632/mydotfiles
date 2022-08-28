@@ -578,9 +578,9 @@ theme.border_marked = "#91231c"
 
 theme.taglist_bg_focus = "#51afef"
 theme.taglist_fg_focus = "#1c252a"
-
+theme.taglist_bg_urgent = "#ff6c6b"
+theme.taglist_fg_urgent = "#1c252a"
 theme.taglist_fg_occupied = "#51afef"
-
 theme.taglist_fg_empty = "#cad0da"
 
 -- Variables set for theming the menu:
