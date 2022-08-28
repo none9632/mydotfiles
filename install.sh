@@ -17,7 +17,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       brightnessctl\
       evince eog font-manager gpick\
       nextcloud-client libsecret gnome-keyring\
-      exa bat\
+      exa bat sd ripgrep\
       unrar p7zip unzip\
       texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra texlive-fontsextra\
       texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
