@@ -10,6 +10,7 @@ Usage: list [COMMAND]\n\
 By default shows available updates
 \n\
 Commands:\n\
+all         Show all available updates.
 install     Install available updates.
 help        Show this message and exit."
     exit 0
@@ -17,6 +18,7 @@ help        Show this message and exit."
 
 case "$1" in
     "")       yay -Qu $pkgs ;;
+    all)      yay -Qu ;;
     install)  yay -S --needed $pkgs  ;;
     help|*)   help          ;;
 esac

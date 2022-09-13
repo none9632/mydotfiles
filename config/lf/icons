@@ -280,6 +280,7 @@ gvimrc*              䂁
 
 # other formats
 *.pdf                䀻
+*.djv                䁈
 *.djvu               䁈
 *.ttf                䁠
 *.ttc                䁠
