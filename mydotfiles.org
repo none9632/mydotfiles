@@ -2042,8 +2042,6 @@ Install packages using pacman
                              client.focus:toggle_tag(t)
                           end
                     end),
-                    awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end),
                  }
               }
            },
@@ -4549,8 +4547,7 @@ And optionally:
   map cw my_rename
   map p my_paste
   map s cut
-  map d trash
-  map D delete
+  map dd trash
   map u undo
   map tr trash_restore
   map te trash_empty

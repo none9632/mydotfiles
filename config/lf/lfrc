@@ -437,8 +437,7 @@ map mf mkfile
 map cw my_rename
 map p my_paste
 map s cut
-map d trash
-map D delete
+map dd trash
 map u undo
 map tr trash_restore
 map te trash_empty
