@@ -401,6 +401,8 @@ map l my_open
 map h my_updir
 map r recol
 map / my_search
+map J low
+map K high
 
 # select/unselect everything
 map a glob-select *
