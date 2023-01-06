@@ -846,7 +846,8 @@ gears.timer {
                                            end
 
                                            if capacity <= 10 and bat_notification_count_1 == 0 then
-                                              awful.spawn.with_shell("notify-send -t 0 -i ~/Downloads/icons/low-battery.png -u normal \"Battery is low\" \"10% battery remaining\"")
+                                              awful.spawn.with_shell("notify-send -i ~/Downloads/icons/low-battery.png -u normal \"Battery is low\" \""
+                                                                     .. capacity .. "% battery remaining\"")
                                               bat_notification_count_1 = 1
                                            elseif capacity <= 1 and bat_notification_count_2 == 0 then
                                               awful.spawn.with_shell("notify-send -t 0 -u normal \"Battery is low\" \"1% battery remaining\"")

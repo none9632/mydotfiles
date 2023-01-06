@@ -15,7 +15,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       librewolf-bin firefox tor-browser\
       nerd-fonts-source-code-pro ttf-iosevka-nerd ttf-roboto\
       brightnessctl\
-      evince eog font-manager gpick\
+      evince eog font-manager gpick gimp\
       nextcloud-client libsecret gnome-keyring\
       exa bat sd ripgrep\
       unrar p7zip unzip zip\
