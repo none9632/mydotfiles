@@ -51,6 +51,7 @@
         nextcloud-client libsecret gnome-keyring\
         exa bat sd ripgrep\
         unrar p7zip unzip zip\
+        android-tools\
         texlive-core texlive-bin texlive-latexextra texlive-langextra texlive-formatsextra texlive-fontsextra\
         texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
@@ -729,6 +730,8 @@ Install packages using pacman
   export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
   export CALCHISTFILE="$XDG_CACHE_HOME/calc_history"
   export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+
+  mkdir -p $GNUPGHOME
 
   if [ ! -e $WGETRC ]
   then

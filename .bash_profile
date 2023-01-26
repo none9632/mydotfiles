@@ -19,6 +19,8 @@ export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 export CALCHISTFILE="$XDG_CACHE_HOME/calc_history"
 export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 
+mkdir -p $GNUPGHOME
+
 if [ ! -e $WGETRC ]
 then
     echo hsts-file \= "$XDG_CACHE_HOME"/wget-hsts > "$XDG_CONFIG_HOME/wgetrc"
