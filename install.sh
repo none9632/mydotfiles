@@ -11,7 +11,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       alsa-utils pulseaudio pulseaudio-alsa\
       rofi flameshot\
       emacs neovim python-pip nodejs\
-      lf-bin zoxide rm-improved bc ueberzug udiskie\
+      lf-bin zoxide rm-improved bc ueberzug udiskie ntfs-3g\
       librewolf-bin firefox tor-browser\
       nerd-fonts-source-code-pro ttf-iosevka-nerd ttf-roboto\
       brightnessctl\
