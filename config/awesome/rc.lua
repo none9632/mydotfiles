@@ -82,17 +82,20 @@ ruled.client.connect_signal("request::rules", function()
            focus     = awful.client.focus.filter,
            raise     = true,
            screen    = awful.screen.preferred,
-           placement = awful.placement.no_overlap+awful.placement.no_offscreen
+           placement = awful.placement.no_overlap + awful.placement.no_offscreen
         }
     }
 
     ruled.client.append_rule {
        rule_any = {
           name  = { "emacsclient" },
-          class = { "Eog" }
+          class = {
+             "Eog",
+             "Inkscape"
+          }
        },
        properties = {
-          floating = true,
+          floating  = true,
           placement = function(c)
              return awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
           end,
@@ -102,9 +105,9 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
        rule       = { class = "Evince" },
        properties = {
-          floating = true,
           -- This property allows to hide the resizing
-          hidden = true,
+          hidden   = true,
+          floating = true,
        },
        callback = function(c)
           c:emit_signal('request::geometry')
@@ -114,19 +117,9 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
        rule       = { class = "Font-viewer" },
        properties = {
-          floating = true,
-          width = 1000,
-          height = 600,
-          placement = function(c)
-             return awful.placement.centered(c, { margins = { top = 56 }})
-          end,
-       }
-    }
-
-    ruled.client.append_rule {
-       rule       = { class = "Codium" },
-       properties = {
-          floating = true,
+          floating  = true,
+          width     = 1000,
+          height    = 600,
           placement = function(c)
              return awful.placement.centered(c, { margins = { top = 56 }})
           end,
@@ -141,9 +134,9 @@ ruled.client.connect_signal("request::rules", function()
           }
        },
        properties = {
-          floating = true,
-          width = 1350,
-          height = 800,
+          floating  = true,
+          width     = 1350,
+          height    = 800,
           placement = function(c)
              return awful.placement.centered(c, { margins = { top = 56 }})
           end,
@@ -153,7 +146,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
        rule       = { class = "Gimp-2.10", floating = true },
        properties = {
-          ontop = true,
+          ontop     = true,
           placement = function(c)
              return awful.placement.centered(c, { margins = { top = 56 }})
           end,
@@ -171,8 +164,8 @@ ruled.client.connect_signal("request::rules", function()
           }
        },
        properties = {
-          floating = true,
-          ontop    = true,
+          floating  = true,
+          ontop     = true,
           placement = function(c)
              return awful.placement.centered(c, { margins = { top = 56 }})
           end,
