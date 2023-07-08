@@ -8,12 +8,12 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 pkgs="alacritty neofetch zsh pkgfile fzf\
       awesome-git xorg feh ly betterlockscreen dunst picom-animations-git\
       bc wget xclip xf86-input-synaptics xdotool xsel xkb-switch\
-      alsa-utils pulseaudio pulseaudio-alsa\
+      alsa-utils pulseaudio pulseaudio-alsa sof-firmware\
       rofi flameshot\
-      emacs neovim python-pip nodejs\
+      emacs neovim python-pip nodejs python-pynvim\
       lf-bin zoxide rm-improved bc ueberzug udiskie ntfs-3g\
       librewolf-bin firefox tor-browser\
-      nerd-fonts-source-code-pro ttf-iosevka-nerd ttf-roboto\
+      ttf-sourcecodepro-nerd ttf-iosevka-nerd ttf-roboto\
       brightnessctl\
       evince eog font-manager gpick gimp\
       nextcloud-client libsecret gnome-keyring\
