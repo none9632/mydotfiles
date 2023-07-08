@@ -1668,90 +1668,6 @@ Install packages using pacman
 
 #+end_src
 
-*** Translator
-
-#+begin_src lua
-
-  local translator_pid = 'notnil'
-  local translator_window
-  local translator_client
-  local translator_blurbg_pid = 'notnil'
-  local translator_blurbg_client
-
-  function create_translator()
-     if not translator_blurbg_client then
-        translator_blurbg_pid = create_blurbg("rofi-translator.pid")
-     end
-
-     if not translator_client then
-        translator_pid = awful.spawn("librewolf --new-window https://www.deepl.com/translator#en/ru/ ")
-     end
-  end
-
-  function toggle_translator()
-     local s = awful.screen.focused()
-     local c = client.focus
-
-     if not translator_client then
-        create_translator()
-     elseif c ~= translator_client then
-        if not translator_blurbg_client then
-           translator_blurbg_pid = create_blurbg("rofi-translator.pid")
-        else
-           translator_blurbg_client:move_to_tag(s.selected_tag)
-           translator_blurbg_client:raise()
-        end
-        raise_client(translator_client)
-     else
-        translator_client:move_to_tag(s.tags[8])
-        if translator_blurbg_client then
-           translator_blurbg_client:move_to_tag(s.tags[8])
-        end
-     end
-  end
-
-  client.connect_signal('manage', function(c)
-                           if c.pid == translator_pid and not translator_window then
-                              translator_client = c
-                              translator_window = c.window
-                              c.floating = true
-                              c.ontop = true
-                              c.width = 1350
-                              c.height = 800
-                              client.focus = c
-                              awful.placement.centered(c, { margins = { top = 56 }})
-                              c:move_to_tag(awful.screen.focused().tags[8])
-                           elseif c.pid == translator_pid
-                              and c.window ~= translator_window
-                              and c.instance == "Navigator"       -- Some windows that have instance "librewolf" must be floating
-                           then
-                              c.floating = false
-                           end
-                           if c.pid == translator_blurbg_pid then
-                              translator_blurbg_client = c
-                              c:lower()
-                              awful.placement.centered(c)
-                              c:move_to_tag(awful.screen.focused().tags[8])
-                           end
-  end)
-
-  client.connect_signal('unmanage', function(c)
-                           if c.pid == translator_pid and c.window == translator_window then
-                              translator_pid = 'notnil'
-                              translator_window = nil
-                              translator_client = nil
-                              if translator_blurbg_client then
-                                 translator_blurbg_client:kill()
-                              end
-                           end
-                           if c.pid == translator_blurbg_pid then
-                              translator_blurbg_pid = 'notnil'
-                              translator_blurbg_client = nil
-                           end
-  end)
-
-#+end_src
-
 *** lf for emacs
 
 #+begin_src lua
@@ -2450,8 +2366,6 @@ Install packages using pacman
            {description = "toggle splash terminal", group = "launcher"}),
         awful.key({ modkey }, "b", function() toggle_firefox() end,
            {description = "toggle splash firefox", group = "launcher"}),
-        awful.key({ modkey }, "t", function() toggle_translator() end,
-           {description = "toggle splash translator", group = "launcher"}),
         awful.key({ modkey }, "m", function() toggle_splash_height() end,
            {description = "resize splash app", group = "launcher"})
   })
@@ -2523,7 +2437,6 @@ Install packages using pacman
 
 #+begin_src lua
 
-  create_translator()
   awful.spawn.with_shell("nextcloud --background")
   awful.spawn.with_shell("lf -server")
   awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
