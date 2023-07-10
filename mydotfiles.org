@@ -2050,8 +2050,8 @@ Install packages using pacman
      call_now  = true,
      autostart = true,
      callback  = function()
-        awful.spawn.easy_async_with_shell("capacity=$(cat /sys/class/power_supply/BAT1/capacity | tr -d '\n');" ..
-                                          "status=$(cat /sys/class/power_supply/BAT1/status | tr -d '\n');" ..
+        awful.spawn.easy_async_with_shell("capacity=$(cat /sys/class/power_supply/BAT*/capacity | tr -d '\n');" ..
+                                          "status=$(cat /sys/class/power_supply/BAT*/status | tr -d '\n');" ..
                                           "echo -n \"$capacity $status\"",
                                           function(out)
                                              out = out:gsub("\n", "")
