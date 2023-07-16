@@ -197,6 +197,9 @@ client.connect_signal('unmanage', function(c)
                          end
 end)
 
+local splash_width = 1900
+local splash_height = 1150
+
 function create_blurbg(pid_file)
    local s = awful.screen.focused()
    return awful.spawn("rofi " ..
@@ -287,8 +290,8 @@ client.connect_signal('manage', function(c)
                             terminal_client = c
                             c.floating = true
                             c.ontop = true
-                            c.width = 1350
-                            c.height = 800
+                            c.width = splash_width
+                            c.height = splash_height
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
@@ -321,7 +324,7 @@ local firefox_blurbg_client
 
 function create_firefox()
    for _, c in ipairs(client.get()) do
-      if c.width == 1350 and c.class == "firefox" then
+      if c.width == splash_width and c.class == "firefox" then
          firefox_pid = c.pid
          firefox_window = c.window
          firefox_client = c
@@ -368,8 +371,8 @@ client.connect_signal('manage', function(c)
                             firefox_window = c.window
                             c.floating = true
                             c.ontop = true
-                            c.width = 1350
-                            c.height = 800
+                            c.width = splash_width
+                            c.height = splash_height
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
                          elseif c.pid == firefox_pid and c.window ~= firefox_window then
@@ -411,8 +414,8 @@ client.connect_signal('manage', function(c)
                          if c.pid == emacs_fm_pid then
                             c.ontop = true
                             c.floating = true
-                            c.width = 1400
-                            c.height = 800
+                            c.width = splash_width
+                            c.height = splash_height
                             awful.placement.centered(c, { margins = { top = 56 }})
                          end
 end)
