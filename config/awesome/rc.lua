@@ -825,11 +825,6 @@ function get_client(pid)
    end
 end
 
-function get_lfterm_width (term_pid)
-   local term_client = get_client(term_pid)
-   return term_client.width
-end
-
 client.connect_signal('property::width', function(c)
                          if c.class == "Alacritty" and c.floating == false then
                             awful.spawn.with_shell("lf -remote \"send recol\"")

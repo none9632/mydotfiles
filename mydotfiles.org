@@ -1134,7 +1134,7 @@ Install packages using pacman
   alias stcpu="stress -c 8"
   alias stmem="stress -vm 2 --vm-bytes"
 
-  alias ls="exa -la --color=always --group-directories-first"
+  alias ls="exa -lah --color=always --group-directories-first"
   alias cat="bat"
   alias vim="nvim"
   alias rm="rm -r"
@@ -2142,11 +2142,6 @@ Install packages using pacman
            return c
         end
      end
-  end
-
-  function get_lfterm_width (term_pid)
-     local term_client = get_client(term_pid)
-     return term_client.width
   end
 
   client.connect_signal('property::width', function(c)
@@ -4037,12 +4032,8 @@ And optionally:
   }}
 
   cmd recol &{{
-      term_pid="$(lf_getpid $id)"
-      w=$(awesome-client "return get_lfterm_width($term_pid)" | awk '{print $2}')
-      let mw=$(xrandr | grep -F '*' | awk -Fx '{print $1}' | awk '{print $1}')/2
-      if [ $w -le $mw ]
-      then
-          lf -remote "send $id set ratios 2:3"
+      if [ $lf_width -le 92 ]; then
+          lf -remote "send $id set ratios 1:2"
       else
           lf -remote "send $id set ratios 1:2:3"
       fi

@@ -23,12 +23,8 @@ set cleaner ~/.config/lf/scripts/lf_cleaner
 }}
 
 cmd recol &{{
-    term_pid="$(lf_getpid $id)"
-    w=$(awesome-client "return get_lfterm_width($term_pid)" | awk '{print $2}')
-    let mw=$(xrandr | grep -F '*' | awk -Fx '{print $1}' | awk '{print $1}')/2
-    if [ $w -le $mw ]
-    then
-        lf -remote "send $id set ratios 2:3"
+    if [ $lf_width -le 92 ]; then
+        lf -remote "send $id set ratios 1:2"
     else
         lf -remote "send $id set ratios 1:2:3"
     fi
