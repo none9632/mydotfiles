@@ -227,11 +227,11 @@ function toggle_splash_height()
    c = client.focus
 
    if c.pid == terminal_pid or c.class == "firefox" then
-      if c.width <= 1350 then
+      if c.width <= splash_width then
          awful.placement.maximize(c, { margins = beautiful.useless_gap * 2, honor_workarea = true })
       else
-         c.width = 1350
-         c.height = 800
+         c.width = splash_width
+         c.height = splash_height
          awful.placement.centered(c, { margins = { top = 56 }})
       end
    end
