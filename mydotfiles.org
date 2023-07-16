@@ -7071,7 +7071,9 @@ Configuration based on https://github.com/adi1090x/rofi
           fi
           ;;
       $settings)
-          ~/Desktop/st/st -e zsh &
+          if [[ -f /usr/bin/emacs ]]; then
+              emacs $HOME/Projects/mydotfiles/mydotfiles.org &
+          fi
           ;;
   esac
 
