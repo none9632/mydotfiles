@@ -339,7 +339,7 @@ function create_firefox()
    end
 
    if not firefox_client then
-      firefox_pid = awful.spawn("firefox")
+      firefox_pid = awful.spawn("firefox --new-window https://www.deepl.com/translator#ru/en/")
    end
 end
 
