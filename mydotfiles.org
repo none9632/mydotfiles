@@ -48,6 +48,7 @@
         ttf-sourcecodepro-nerd ttf-iosevka-nerd ttf-roboto\
         brightnessctl\
         evince eog font-manager gpick gimp\
+        zathura zathura-djvu zathura-pdf-mupdf\
         nextcloud-client libsecret gnome-keyring\
         exa bat sd ripgrep\
         unrar p7zip unzip zip\
@@ -56,7 +57,7 @@
         texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
   # list of files/folders to symlink in homedir
-  config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0"
+  config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0 zathura"
 
   bin_files="inkscape-figures update list in pin re update-wall"
   bar_c_files="cpu ram"
@@ -9605,6 +9606,38 @@ Neofetch config
 
 #+end_src
 
+** Zathura
+
+#+begin_src conf :tangle ./config/zathura/zathurarc
+
+  set font "SauceCodePro Nerd Font 12"
+  set default-bg "#141c21"
+  set statusbar-bg "#32424b"
+  set highlight-color "#F4BF75"
+  set highlight-active-color "#6A9FB5"
+
+  set inputbar-bg "#141c21"
+  set inputbar-fg "#e0e0e0"
+
+  # set recolor "true"
+  # background color
+  set recolor-darkcolor "#bbc2cf"
+  # foreground color
+  set recolor-lightcolor "#1c252a"
+  set recolor-reverse-video "true"
+  set recolor-keephue "true"
+
+  # copy selection to system clipboard
+  set selection-clipboard clipboard
+
+  set scroll-step 50
+  set statusbar-h-padding 0
+  set statusbar-v-padding 0
+  map L zoom in
+  map H zoom out
+
+#+end_src
+
 * COMMENT Unused configs
 ** Fish
 :PROPERTIES:
@@ -12473,38 +12506,6 @@ gcc -Wall -O3 battery.c -o battery
     fclose(capacity_f);
     return 0;
   }
-
-#+end_src
-
-** Zathura
-
-#+begin_src conf :tangle ./.config/zathura/zathurarc
-
-  set font "SauceCodePro Nerd Font 12"
-  set default-bg "#141c21"
-  set statusbar-bg "#32424b"
-  set highlight-color "#F4BF75"
-  set highlight-active-color "#6A9FB5"
-
-  set inputbar-bg "#141c21"
-  set inputbar-fg "#e0e0e0"
-
-  set recolor "true"
-  # background color
-  set recolor-darkcolor "#bbc2cf"
-  # foreground color
-  set recolor-lightcolor "#1c252a"
-  set recolor-reverse-video "true"
-  set recolor-keephue "true"
-
-  # copy selection to system clipboard
-  set selection-clipboard clipboard
-
-  set scroll-step 50
-  set statusbar-h-padding 0
-  set statusbar-v-padding 0
-  map L zoom in
-  map H zoom out
 
 #+end_src
 

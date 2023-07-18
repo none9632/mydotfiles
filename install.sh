@@ -16,6 +16,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       ttf-sourcecodepro-nerd ttf-iosevka-nerd ttf-roboto\
       brightnessctl\
       evince eog font-manager gpick gimp\
+      zathura zathura-djvu zathura-pdf-mupdf\
       nextcloud-client libsecret gnome-keyring\
       exa bat sd ripgrep\
       unrar p7zip unzip zip\
@@ -24,7 +25,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0"
+config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0 zathura"
 
 bin_files="inkscape-figures update list in pin re update-wall"
 bar_c_files="cpu ram"
