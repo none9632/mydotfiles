@@ -52,15 +52,11 @@ int main(void)
   regex_search(meminfo, "MemFree:",      mem_free_s);
   regex_search(meminfo, "Buffers:",      buffers_s);
   regex_search(meminfo, "Cached:",       cached_s);
-  regex_search(meminfo, "Shmem:",        shmem_s);
-  regex_search(meminfo, "SReclaimable:", sreclaimable_s);
 
   int mem_total    = take_num(mem_total_s),
       mem_free     = take_num(mem_free_s),
       buffers      = take_num(buffers_s),
-      shmem        = take_num(shmem_s),
-      sreclaimable = take_num(sreclaimable_s),
-      cached       = take_num(cached_s) + sreclaimable - shmem;
+      cached       = take_num(cached_s);
 
   int used = mem_total - (mem_free + buffers + cached);
   double total_M = mem_total / 1024;
