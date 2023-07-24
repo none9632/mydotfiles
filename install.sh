@@ -10,8 +10,8 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       bc wget xclip xf86-input-synaptics xdotool xsel xkb-switch\
       alsa-utils pulseaudio pulseaudio-alsa sof-firmware\
       rofi flameshot\
-      emacs neovim python-pip nodejs python-pynvim\
-      lf-bin zoxide rm-improved bc ueberzug udiskie ntfs-3g\
+      emacs neovim python-pip nodejs python-pynvim vscodium-bin\
+      lf-bin zoxide rm-improved bc ueberzug udiskie ntfs-3g xdg-user-dirs\
       librewolf-bin firefox tor-browser\
       ttf-sourcecodepro-nerd ttf-iosevka-nerd ttf-roboto\
       brightnessctl\
@@ -25,7 +25,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0 zathura"
+config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0 zathura user-dirs.dirs"
 
 bin_files="inkscape-figures update list in pin re update-wall"
 bar_c_files="cpu ram"

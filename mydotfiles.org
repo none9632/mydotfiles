@@ -42,8 +42,8 @@
         bc wget xclip xf86-input-synaptics xdotool xsel xkb-switch\
         alsa-utils pulseaudio pulseaudio-alsa sof-firmware\
         rofi flameshot\
-        emacs neovim python-pip nodejs python-pynvim\
-        lf-bin zoxide rm-improved bc ueberzug udiskie ntfs-3g\
+        emacs neovim python-pip nodejs python-pynvim vscodium-bin\
+        lf-bin zoxide rm-improved bc ueberzug udiskie ntfs-3g xdg-user-dirs\
         librewolf-bin firefox tor-browser\
         ttf-sourcecodepro-nerd ttf-iosevka-nerd ttf-roboto\
         brightnessctl\
@@ -57,7 +57,7 @@
         texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
   # list of files/folders to symlink in homedir
-  config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0 zathura"
+  config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0 zathura user-dirs.dirs"
 
   bin_files="inkscape-figures update list in pin re update-wall"
   bar_c_files="cpu ram"
@@ -9635,6 +9635,17 @@ Neofetch config
   set statusbar-v-padding 0
   map L zoom in
   map H zoom out
+
+#+end_src
+
+** XDG user directories
+
+#+begin_src conf :tangle ./config/user-dirs.dirs
+
+  XDG_DOCUMENTS_DIR="$HOME/Documents"
+  XDG_DOWNLOAD_DIR="$HOME/Downloads"
+  XDG_PUBLICSHARE_DIR="$HOME/Nextcloud"
+  XDG_PICTURES_DIR="$HOME/Pictures"
 
 #+end_src
 
