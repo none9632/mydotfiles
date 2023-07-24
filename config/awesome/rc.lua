@@ -464,7 +464,7 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "Iosevka Nerd Font 13"
+theme.font          = "Iosevka Nerd Font 15"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
@@ -590,7 +590,7 @@ myupdates = wibox.widget {
 mykeyboardlayout = wibox.widget {
    {
       {
-         markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'>䂌</span>",
+         markup = " <span font='MyFont' size='17.5pt' foreground='#d499e5'>䂌</span>",
          widget = wibox.widget.textbox
       },
       {
@@ -606,7 +606,7 @@ mykeyboardlayout = wibox.widget {
 mytextclock = wibox.widget {
    {
       {
-         markup = " <span font='MyFont' size='16pt' foreground='#51afef'>䂋</span>",
+         markup = " <span font='MyFont' size='17pt' foreground='#51afef'>䂋</span>",
          widget = wibox.widget.textbox
       },
       {
@@ -628,8 +628,8 @@ awful.screen.connect_for_each_screen(function(s)
             x 	  	= sgeo.x + gap * 2,
             y 	  	= sgeo.y + gap * 2,
             screen  = s,
-            width   = 245,
-            height  = 42,
+            width   = 266,
+            height  = 47,
             ontop   = true,
             visible = true,
             bg      = "#1c252acc",
@@ -670,7 +670,7 @@ awful.screen.connect_for_each_screen(function(s)
          placement = function(c)
             return awful.placement.top_right(c, { margins = gap * 2 })
          end,
-         minimum_height = 42,
+         minimum_height = 47,
          bg = "#00000000",
          ontop = true,
          widget = {
@@ -700,7 +700,7 @@ gears.timer {
    callback  = function()
       awful.spawn.easy_async_with_shell("cpu",
                                         function(out)
-                                           mycpu.text.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'>䂄</span> " ..
+                                           mycpu.text.markup = " <span font='Myfont' size='17.5pt' foreground='#ff6c6b'>䂄</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
       awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
@@ -724,12 +724,12 @@ gears.timer {
                                               mycputemp.bg = "#32424bcc"
                                            end
 
-                                           mycputemp.text.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'>" ..
+                                           mycputemp.text.markup = " <span font='Myfont' size='17.5pt' foreground='#ffaf00'>" ..
                                               icon .. "</span> " .. cputemp .. "°C "
       end)
       awful.spawn.easy_async_with_shell("ram",
                                         function(out)
-                                           myram.text.markup = " <span font='Myfont' size='18pt' foreground='#98be65'>䂎</span> " ..
+                                           myram.text.markup = " <span font='Myfont' size='19pt' foreground='#98be65'>䂎</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
    end
@@ -781,13 +781,13 @@ gears.timer {
                                               icon_index = bat_prev_index
                                            end
 
-                                           mybattery.text.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'>" ..
+                                           mybattery.text.markup = " <span font='MyFont' size='17.5pt' foreground='#46d9ff'>" ..
                                               bat_icons[icon_index] .. "</span> " .. capacity .. "% "
       end)
    end
 }
 
-myupdates.text.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> .. "
+myupdates.text.markup = " <span font='MyFont' size='17.5pt' foreground='#c38a48'>䂍</span> .. "
 updates_prev = 0
 
 gears.timer {
@@ -803,7 +803,7 @@ gears.timer {
                                            end
                                            updates_prev = tonumber(out)
 
-                                           myupdates.text.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> " ..
+                                           myupdates.text.markup = " <span font='MyFont' size='17.5pt' foreground='#c38a48'>䂍</span> " ..
                                               out:gsub("%\n", "") .. " "
       end)
    end

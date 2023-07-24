@@ -1753,7 +1753,7 @@ Install packages using pacman
 
   local theme = {}
 
-  theme.font          = "Iosevka Nerd Font 13"
+  theme.font          = "Iosevka Nerd Font 15"
 
   theme.bg_normal     = "#222222"
   theme.bg_focus      = "#535d6c"
@@ -1886,7 +1886,7 @@ Install packages using pacman
   mykeyboardlayout = wibox.widget {
      {
         {
-           markup = " <span font='MyFont' size='16.5pt' foreground='#d499e5'>䂌</span>",
+           markup = " <span font='MyFont' size='17.5pt' foreground='#d499e5'>䂌</span>",
            widget = wibox.widget.textbox
         },
         {
@@ -1902,7 +1902,7 @@ Install packages using pacman
   mytextclock = wibox.widget {
      {
         {
-           markup = " <span font='MyFont' size='16pt' foreground='#51afef'>䂋</span>",
+           markup = " <span font='MyFont' size='17pt' foreground='#51afef'>䂋</span>",
            widget = wibox.widget.textbox
         },
         {
@@ -1930,8 +1930,8 @@ Install packages using pacman
               x 	  	= sgeo.x + gap * 2,
               y 	  	= sgeo.y + gap * 2,
               screen  = s,
-              width   = 245,
-              height  = 42,
+              width   = 266,
+              height  = 47,
               ontop   = true,
               visible = true,
               bg      = "#1c252acc",
@@ -1972,7 +1972,7 @@ Install packages using pacman
            placement = function(c)
               return awful.placement.top_right(c, { margins = gap * 2 })
            end,
-           minimum_height = 42,
+           minimum_height = 47,
            bg = "#00000000",
            ontop = true,
            widget = {
@@ -2008,7 +2008,7 @@ Install packages using pacman
      callback  = function()
         awful.spawn.easy_async_with_shell("cpu",
                                           function(out)
-                                             mycpu.text.markup = " <span font='Myfont' size='16.5pt' foreground='#ff6c6b'>䂄</span> " ..
+                                             mycpu.text.markup = " <span font='Myfont' size='17.5pt' foreground='#ff6c6b'>䂄</span> " ..
                                                 out:gsub("%\n", "") .. " "
         end)
         awful.spawn.easy_async_with_shell("cat /sys/class/hwmon/hwmon3/temp1_input",
@@ -2032,12 +2032,12 @@ Install packages using pacman
                                                 mycputemp.bg = "#32424bcc"
                                              end
 
-                                             mycputemp.text.markup = " <span font='Myfont' size='16.5pt' foreground='#ffaf00'>" ..
+                                             mycputemp.text.markup = " <span font='Myfont' size='17.5pt' foreground='#ffaf00'>" ..
                                                 icon .. "</span> " .. cputemp .. "°C "
         end)
         awful.spawn.easy_async_with_shell("ram",
                                           function(out)
-                                             myram.text.markup = " <span font='Myfont' size='18pt' foreground='#98be65'>䂎</span> " ..
+                                             myram.text.markup = " <span font='Myfont' size='19pt' foreground='#98be65'>䂎</span> " ..
                                                 out:gsub("%\n", "") .. " "
         end)
      end
@@ -2089,13 +2089,13 @@ Install packages using pacman
                                                 icon_index = bat_prev_index
                                              end
 
-                                             mybattery.text.markup = " <span font='MyFont' size='16.5pt' foreground='#46d9ff'>" ..
+                                             mybattery.text.markup = " <span font='MyFont' size='17.5pt' foreground='#46d9ff'>" ..
                                                 bat_icons[icon_index] .. "</span> " .. capacity .. "% "
         end)
      end
   }
 
-  myupdates.text.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> .. "
+  myupdates.text.markup = " <span font='MyFont' size='17.5pt' foreground='#c38a48'>䂍</span> .. "
   updates_prev = 0
 
   gears.timer {
@@ -2111,7 +2111,7 @@ Install packages using pacman
                                              end
                                              updates_prev = tonumber(out)
 
-                                             myupdates.text.markup = " <span font='MyFont' size='16.5pt' foreground='#c38a48'>䂍</span> " ..
+                                             myupdates.text.markup = " <span font='MyFont' size='17.5pt' foreground='#c38a48'>䂍</span> " ..
                                                 out:gsub("%\n", "") .. " "
         end)
      end
@@ -7726,7 +7726,7 @@ Configuration based on https://github.com/adi1090x/rofi
   if [ -n "$scr_name" ]
   then
       tmp_small_image=/tmp/screenshot_tmp
-      convert $scr_dir/$scr_name -resize 100x60 $tmp_small_image
+      convert $scr_dir/$scr_name -resize 200x100 $tmp_small_image
       notify-send -u normal -i $tmp_small_image \
                   "Screenshot" "Screenshot save as $scr_name"
   fi
@@ -8030,16 +8030,16 @@ Configuration based on https://github.com/adi1090x/rofi
       # dynamic width from 0 to 300
       # width = (0, 300)
       # constant width of 300
-      width = (0, 400)
+      width = (0, 500)
 
       # The maximum height of a single notification, excluding the frame.
-      height = 100
+      height = 150
 
       # Position the notification in the top right corner
       origin = top-right
 
       # Offset from the origin
-      offset = 14x70
+      offset = 14x75
 
       # Scale factor. It is auto-detected if value is 0.
       scale = 0
@@ -8082,10 +8082,10 @@ Configuration based on https://github.com/adi1090x/rofi
       separator_height = 2
 
       # Padding between text and separator.
-      padding = 14
+      padding = 16
 
       # Horizontal padding.
-      horizontal_padding = 14
+      horizontal_padding = 16
 
       # Padding between text and icon.
       text_icon_padding = 0
@@ -8117,7 +8117,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
       ### Text ###
 
-      font = Roboto Regular 11
+      font = Roboto Regular 14
 
       # The spacing between lines.  If the height is smaller than the
       # font height, it will get raised to the font height.
@@ -8157,7 +8157,7 @@ Configuration based on https://github.com/adi1090x/rofi
       #   %n  progress value if set without any extra characters
       #   %%  Literal %
       # Markup is allowed
-      format = "<b>%s</b>\n%b"
+      format = "<span size='110%'><b>%s</b></span>\n%b"
 
       # Alignment of message text.
       # Possible values are "left", "center" and "right".
@@ -8199,7 +8199,7 @@ Configuration based on https://github.com/adi1090x/rofi
       min_icon_size = 0
 
       # Scale larger icons down to this size, set to 0 to disable
-      max_icon_size = 60
+      max_icon_size = 120
 
       # Paths to default icons.
       icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/

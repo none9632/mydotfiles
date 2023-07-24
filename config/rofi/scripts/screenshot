@@ -57,7 +57,7 @@ esac
 if [ -n "$scr_name" ]
 then
     tmp_small_image=/tmp/screenshot_tmp
-    convert $scr_dir/$scr_name -resize 100x60 $tmp_small_image
+    convert $scr_dir/$scr_name -resize 200x100 $tmp_small_image
     notify-send -u normal -i $tmp_small_image \
                 "Screenshot" "Screenshot save as $scr_name"
 fi
