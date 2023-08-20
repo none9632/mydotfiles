@@ -172,11 +172,13 @@ cmd my_paste &{{
             # Example: 'test (name)' -> 'test\\\ \\\(name\\\)'
             files+=" $(echo $file | sed 's/\ /\\\\ /g' | sed 's/(/\\\\(/g' | sed 's/)/\\\\)/g')"
         done
+        # sleep is needed for vcp to be displayed normally
         awesome-client "create_lf_terminal(\"cd $PWD;\
+                                             sleep 0.1;\
                                              vcp -cRH $files .;\
                                              [ \\\"$mode\\\" = \\\"move\\\" ] && rm -rf $files;\
                                              lf -remote \\\"send reload\\\"\",\
-                                             800, 400, false, $term_pid)"
+                                             1600, 500, false, $term_pid)"
     else
         for file in "$@"
         do
@@ -261,7 +263,7 @@ cmd trash_restore &{{
         res="$res$file\n"
     done
     awesome-client "create_lf_terminal(\"lf_trash_restore \\\"$res\\\" $tmp_file\",\
-                                       800, 400, false, $term_pid)"
+                                       1700, 1000, false, $term_pid)"
     while ! [ -s $tmp_file ]; do sleep 0.1; done
 
     path=$(cat $tmp_file)
@@ -294,7 +296,7 @@ cmd fzf_jump ${{
 
 cmd fzf_jump_prev &{{
     tmp_file=$(mktemp)
-    awesome-client "create_lf_terminal(\"lf_jump_prev $tmp_file\", 1100, 600, true, nil)"
+    awesome-client "create_lf_terminal(\"lf_jump_prev $tmp_file\", 1900, 1100, true, nil)"
     while ! [ -s $tmp_file ]; do sleep 0.1; done
     path="$(cat $tmp_file | sed 's/\ /\\\ /g')"
     [ "$path" != "cancel" ] && lf -remote "send $id my_cd $path"
