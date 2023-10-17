@@ -416,6 +416,7 @@ map gc goto_config
 map gp my_cd ~/Pictures
 map gD my_cd ~/Documents
 map gd my_cd ~/Downloads
+map gn my_cd ~/Nextcloud
 map g/ my_cd /
 map gt my_cd /tmp
 map ge my_cd /etc
