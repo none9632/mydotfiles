@@ -7037,7 +7037,7 @@ Configuration based on https://github.com/adi1090x/rofi
 
   # Links
   terminal=""
-  files=""
+  messenger=""
   editor=""
   browser=""
   settings=""
@@ -7049,7 +7049,7 @@ Configuration based on https://github.com/adi1090x/rofi
   fi
 
   # Variable passed to rofi
-  options="$files\n$editor\n$terminal\n$browser\n$settings"
+  options="$messenger\n$editor\n$terminal\n$browser\n$settings"
 
   xkb-switch -s us
 
@@ -7058,11 +7058,11 @@ Configuration based on https://github.com/adi1090x/rofi
       $terminal)
           $term -o env.run_neofetch=yes &
           ;;
-      $files)
-          if [[ -f /usr/bin/lf ]]; then
-              $term -e lfrun &
+      $messenger)
+          if [[ -f /sbin/telegram-desktop ]]; then
+              telegram-desktop &
           else
-              errormsg "No suitable file manager found!"
+              errormsg "No suitable messenger found!"
           fi
           ;;
       $editor)
