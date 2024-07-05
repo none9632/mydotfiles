@@ -4040,7 +4040,7 @@ And optionally:
   cmd my_open %{{
       case $(file --mime-type $f -b 2> /dev/null) in
           text/* | inode/x-empty)
-              if [ "${f##*.}" == "org" ]
+              if [ "${f##*.}" == "org" ] || [ "${f##*.}" == el ]
               then
                   emacsclient -c -a emacs $f
               else
