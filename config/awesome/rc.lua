@@ -316,30 +316,27 @@ client.connect_signal('unmanage', function(c)
                          end
 end)
 
-local firefox_pid = 'notnil'
-local firefox_window
-local firefox_client
-local firefox_blurbg_pid = 'notnil'
-local firefox_blurbg_client
+local deepl_window_name = "DeepL Translate: The world's most accurate translator — Mozilla Firefox"
+local deepl_client
+local deepl_blurbg_pid = 'notnil'
+local deepl_blurbg_client
 
 function create_firefox()
    for _, c in ipairs(client.get()) do
-      if c.width == splash_width and c.class == "firefox" then
-         firefox_pid = c.pid
-         firefox_window = c.window
-         firefox_client = c
+      if c.name == deepl_window_name then
+         deepl_client = c
          c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
          raise_client(firefox_client)
       end
    end
 
-   if not firefox_blurbg_client then
-      firefox_blurbg_pid = create_blurbg("rofi-firefox.pid")
+   if not deepl_blurbg_client then
+      deepl_blurbg_pid = create_blurbg("rofi-firefox.pid")
    end
 
-   if not firefox_client then
-      firefox_pid = awful.spawn("firefox --new-window https://www.deepl.com/translator#ru/en/")
+   if not deepl_client then
+      awful.spawn("firefox -P deepl --no-remote")
    end
 end
 
@@ -347,55 +344,50 @@ function toggle_firefox()
    local s = awful.screen.focused()
    local c = client.focus
 
-   if not firefox_client then
+   if not deepl_client then
       create_firefox()
-   elseif c ~= firefox_client then
-      if not firefox_blurbg_client then
-         firefox_blurbg_pid = create_blurbg("rofi-firefox.pid")
+   elseif c ~= deepl_client then
+      if not deepl_blurbg_client then
+         deepl_blurbg_pid = create_blurbg("rofi-firefox.pid")
       else
-         firefox_blurbg_client:move_to_tag(s.selected_tag)
-         firefox_blurbg_client:raise()
+         deepl_blurbg_client:move_to_tag(s.selected_tag)
+         deepl_blurbg_client:raise()
       end
-      raise_client(firefox_client)
+      raise_client(deepl_client)
    else
-      firefox_client:move_to_tag(s.tags[8])
-      if firefox_blurbg_client then
-         firefox_blurbg_client:move_to_tag(s.tags[8])
+      deepl_client:move_to_tag(s.tags[8])
+      if deepl_blurbg_client then
+         deepl_blurbg_client:move_to_tag(s.tags[8])
       end
    end
 end
 
 client.connect_signal('manage', function(c)
-                         if c.pid == firefox_pid and not firefox_window then
-                            firefox_client = c
-                            firefox_window = c.window
+                         if c.name == deepl_window_name then
+                            deepl_client = c
                             c.floating = true
                             c.ontop = true
                             c.width = splash_width
                             c.height = splash_height
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
-                         elseif c.pid == firefox_pid and c.window ~= firefox_window then
-                            c.floating = false
-                         elseif c.pid == firefox_blurbg_pid then
-                            firefox_blurbg_client = c
+                         elseif c.pid == deepl_blurbg_pid then
+                            deepl_blurbg_client = c
                             c:lower()
                             awful.placement.centered(c)
                          end
 end)
 
 client.connect_signal('unmanage', function(c)
-                         if c.pid == firefox_pid and c.window == firefox_window then
-                            firefox_pid = 'notnil'
-                            firefox_window = nil
-                            firefox_client = nil
-                            if firefox_blurbg_client then
-                               firefox_blurbg_client:kill()
+                         if c.name == deepl_window_name then
+                            deepl_client = nil
+                            if deepl_blurbg_client then
+                               deepl_blurbg_client:kill()
                             end
                          end
                          if c.pid == firefox_blurbg_pid then
-                            firefox_blurbg_client = nil
-                            firefox_blurbg_pid = 'notnil'
+                            deepl_blurbg_client = nil
+                            deepl_blurbg_pid = 'notnil'
                          end
 end)
 
