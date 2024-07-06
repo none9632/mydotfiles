@@ -317,6 +317,7 @@ client.connect_signal('unmanage', function(c)
 end)
 
 local deepl_window_name = "DeepL Translate: The world's most accurate translator — Mozilla Firefox"
+local deepl_pid = 'notnil'
 local deepl_client
 local deepl_blurbg_pid = 'notnil'
 local deepl_blurbg_client
@@ -324,10 +325,12 @@ local deepl_blurbg_client
 function create_firefox()
    for _, c in ipairs(client.get()) do
       if c.name == deepl_window_name then
+         awful.spawn.with_shell("notify-send -t 0 -u normal \"test\" \"" .. c.name .. "\"")
+         deepl_pid = c.pid
          deepl_client = c
          c.ontop = true
          awful.placement.centered(c, { margins = { top = 56 }})
-         raise_client(firefox_client)
+         raise_client(deepl_client)
       end
    end
 
@@ -336,11 +339,11 @@ function create_firefox()
    end
 
    if not deepl_client then
-      awful.spawn("firefox -P deepl --no-remote")
+      deepl_pid = awful.spawn("firefox -P deepl --no-remote")
    end
 end
 
-function toggle_firefox()
+function toggle_deepl()
    local s = awful.screen.focused()
    local c = client.focus
 
@@ -363,7 +366,7 @@ function toggle_firefox()
 end
 
 client.connect_signal('manage', function(c)
-                         if c.name == deepl_window_name then
+                         if c.pid == deepl_pid then
                             deepl_client = c
                             c.floating = true
                             c.ontop = true
@@ -371,7 +374,8 @@ client.connect_signal('manage', function(c)
                             c.height = splash_height
                             client.focus = c
                             awful.placement.centered(c, { margins = { top = 56 }})
-                         elseif c.pid == deepl_blurbg_pid then
+                         end
+                         if c.pid == deepl_blurbg_pid then
                             deepl_blurbg_client = c
                             c:lower()
                             awful.placement.centered(c)
@@ -381,11 +385,12 @@ end)
 client.connect_signal('unmanage', function(c)
                          if c.name == deepl_window_name then
                             deepl_client = nil
+                            deepl_pid = 'notnil'
                             if deepl_blurbg_client then
                                deepl_blurbg_client:kill()
                             end
                          end
-                         if c.pid == firefox_blurbg_pid then
+                         if c.pid == deepl_blurbg_pid then
                             deepl_blurbg_client = nil
                             deepl_blurbg_pid = 'notnil'
                          end
@@ -1004,8 +1009,8 @@ awful.keyboard.append_global_keybindings({
          {description = "take a screenshot", group = "launcher"}),
       awful.key({ modkey }, "`", function() toggle_terminal() end,
          {description = "toggle splash terminal", group = "launcher"}),
-      awful.key({ modkey }, "b", function() toggle_firefox() end,
-         {description = "toggle splash firefox", group = "launcher"}),
+      awful.key({ modkey }, "b", function() toggle_deepl() end,
+         {description = "toggle splash firefox with deepl website", group = "launcher"}),
       awful.key({ modkey }, "m", function() toggle_splash_height() end,
          {description = "resize splash app", group = "launcher"})
 })
