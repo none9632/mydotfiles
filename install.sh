@@ -6,7 +6,7 @@ old_dots_dir=~/.dotfiles.old # old dotfiles backup directory
 
 # list of packages that will be installed
 pkgs="alacritty neofetch zsh pkgfile fzf\
-      awesome-git xorg feh ly betterlockscreen dunst picom-animations-git\
+      awesome-git xorg feh ly betterlockscreen dunst compfy\
       bc wget xclip xf86-input-synaptics xdotool xsel xkb-switch\
       alsa-utils pulseaudio pulseaudio-alsa sof-firmware\
       rofi flameshot\
@@ -25,7 +25,7 @@ pkgs="alacritty neofetch zsh pkgfile fzf\
       texlive-humanities texlive-science texlive-publishers texlive-langcyrillic texlive-langgreek"
 
 # list of files/folders to symlink in homedir
-config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh picom betterlockscreenrc gtk-3.0 zathura user-dirs.dirs"
+config_files="alacritty awesome dunst flameshot lf neofetch nvim rofi zsh compfy betterlockscreenrc gtk-3.0 zathura user-dirs.dirs"
 
 bin_files="inkscape-figures update list in pin re update-wall"
 bar_c_files="cpu ram"

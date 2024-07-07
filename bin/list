@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pkgs="alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim picom-animations-git linux-zen awesome-git bat firefox librewolf-bin tor-browser pacman yay fzf dunst evince"
+pkgs="alacritty rofi lf-bin flameshot emacs zsh bash neofetch neovim compfy linux-zen awesome-git bat firefox librewolf-bin tor-browser pacman yay fzf dunst evince"
 
 function help
 {

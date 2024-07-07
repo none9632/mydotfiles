@@ -1065,6 +1065,6 @@ end)
 
 awful.spawn.with_shell("nextcloud --background")
 awful.spawn.with_shell("lf -server")
-awful.spawn.with_shell("picom -b --experimental-backends --config $HOME/.config/picom/picom.conf")
+awful.spawn.with_shell("compfy")
 awful.spawn.with_shell("update-wall")
 awful.spawn.with_shell("emacs --daemon --name emacsclient")
