@@ -325,7 +325,6 @@ local deepl_blurbg_client
 function create_firefox()
    for _, c in ipairs(client.get()) do
       if c.name == deepl_window_name then
-         awful.spawn.with_shell("notify-send -t 0 -u normal \"test\" \"" .. c.name .. "\"")
          deepl_pid = c.pid
          deepl_client = c
          c.ontop = true
