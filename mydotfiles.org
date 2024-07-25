@@ -5049,7 +5049,9 @@ And optionally:
   inactive-exclude = [
     "class_g = 'awesome'",
     "class_g = 'Rofi'",
-    # "class_g = 'TelegramDesktop'",
+    "window_type = 'utility'",
+    "class_g = 'TelegramDesktop'",
+    "class_g = 'i3lock'",
   ];
 
 
