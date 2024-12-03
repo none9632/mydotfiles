@@ -7558,7 +7558,7 @@ Configuration based on https://github.com/adi1090x/rofi
   case $chosen in
       $screen)
           scr_name=full-$(getStamp).png
-          flameshot full -p ${scr_dir}/${scr_name}
+          flameshot full -p ${scr_dir}/${scr_name} -c
           ;;
       $window)
           scr_name=window-$(getStamp).png
@@ -7566,11 +7566,11 @@ Configuration based on https://github.com/adi1090x/rofi
           position_x="$(echo $position | awk 'BEGIN{FS=","} {print $1}')"
           position_y="$(echo $position | awk 'BEGIN{FS=","} {print $2}')"
           size="$(xdotool getwindowfocus getwindowgeometry | grep Geometry | awk '{print $2}')"
-          flameshot full --region $(echo "$size+$position_x+$position_y") -p ${scr_dir}/${scr_name}
+          flameshot full --region $(echo "$size+$position_x+$position_y") -p ${scr_dir}/${scr_name} -c
           ;;
       $area)
           window_focus=$(xdotool getwindowfocus)
-          flameshot gui --path "$scr_dir" -r > /dev/null
+          flameshot gui --path "$scr_dir" -c -r > /dev/null
           scr_path=$(find "$scr_dir" -type f -newermt `date --date='1 second ago' +%Y-%m-%dT%H:%M:%S` | head -n 1)
           scr_name=$(basename $scr_path)
           xdotool windowfocus $window_focus
